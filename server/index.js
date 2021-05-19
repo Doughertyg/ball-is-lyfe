@@ -1,21 +1,30 @@
-var express = require('express');
-var app = express();
-var path = require('path');
-var port = 3000; // change to env var
+const { ApolloServer } = require('apollo-server');
+const gql = require('graphql-tag');
+const mongoose = require('mongoose');
 
-// start the server
-app.listen(port, function() {
-  console.log('app started');
+const {MONGODB, PORT} = require('../.env');
+
+const typeDefs = gql`
+  type Query {
+    sayHi: String!
+  }
+`;
+
+const resolvers = {
+  Query: {
+    sayHi: () => 'Hello World!'
+  }
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers
 });
 
-app.use(express.static(path.join(__dirname, '../public')));
-
-// route our app
-app.get('/', function(req, res) {
-  res.send('hello world!');
-});
-
-// use for 404 errors
-app.get('*', (req,res) =>{
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+mongoose.connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true})
+  .then(() => {
+    return server.listen({ port: PORT});
+  })
+  .then((res) => {
+    console.log(`Server running at ${res.url}`);
 });
