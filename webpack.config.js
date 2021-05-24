@@ -49,5 +49,10 @@ module.exports = {
         ],
       },
     ]
-  }
+  },
+  devServer: {
+    contentBase: DEST_DIR,
+    compress: true,
+    port: 9000,
+  },
 };
