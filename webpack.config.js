@@ -6,7 +6,8 @@ module.exports = {
   entry: `${SRC_DIR}/index.jsx`,
   output: {
     filename: "bundle.js",
-    path: DEST_DIR
+    path: DEST_DIR,
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -53,6 +54,7 @@ module.exports = {
   devServer: {
     contentBase: DEST_DIR,
     compress: true,
-    port: 9000,
+    historyApiFallback: true,
+    port: 3000,
   },
 };
