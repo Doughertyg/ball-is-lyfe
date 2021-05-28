@@ -46,9 +46,10 @@ module.exports = {
     },
     async register(_āparents, { registerInput: { username, email, password, confirmPassword }}) {
       // todo: validate user data
+      let inputErrors = {};
       const { valid, errors} = validateRegisterInput(username, email, password, confirmPassword);
       if (!valid) {
-        throw new UserInputError('Errors', { errors });
+        inputErrors = {...inputErrors, ...errors};
       }
       // todo: make sure user doesn't already exist
       const user = await User.findOne({
@@ -56,12 +57,13 @@ module.exports = {
       });
 
       if (user) {
-        throw new UserInputError('Username is taken', {
-          errors: {
-            username: 'This username is taken'
-          }
-        })
+        inputErrors = {...inputErrors, username: 'This username is taken'};
       }
+
+      if (user || !valid) {
+        throw new UserInputError('Errors registering a new user!', {errors: inputErrors});
+      }
+
       password = await bcrypt.hash(password, 12);
 
       const newUser = new User({

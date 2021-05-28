@@ -5,17 +5,7 @@ import gql from 'graphql-tag';
 
 import PostCard from '../../components/PostCard.jsx';
 
-const CenteredContainer = styled.div`
-  margin: 0 auto;
-  text-align: center;
-  vertical-align: middle;
-`;
-
-const PageHeader = styled.h1`
-  font-weight: 600;
-  font-size: 24px;
-  margin: 20px 0;
-`;
+import {CenteredContainer, PageHeader} from '../../styled-components/common';
 
 const FETCH_POSTS_QUERY = gql`
   {

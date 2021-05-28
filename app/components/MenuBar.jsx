@@ -3,30 +3,14 @@ import { useState } from 'react';
 import { NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import {ButtonContainer, FlexContainer} from '../styled-components/common';
+
 const Wrapper = styled.div`
   border-bottom: 1px solid lightgrey;
 `;
 
-const FlexContainer = styled.div`
-  align: center;
-  display: flex;
-  flex-direction: row;
-  width: ${props => props.width ?? 'auto'};
-`;
-
 const FlexComponent = styled.div`
   flex-grow: 1;
-`;
-
-const ButtonContainer = styled.div`
-  && {
-    color: ${props => props.active ? 'teal' : 'black'};
-    text-decoration: none;
-    padding: 12px 8px;
-    border-bottom: ${props => props.active ? '3px solid teal' : 'none'};
-    box-sizing: border-box;
-  }
-  
 `;
 
 function MenuBar({ match }) {

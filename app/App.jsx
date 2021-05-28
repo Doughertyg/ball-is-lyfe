@@ -7,12 +7,7 @@ import Login from './pages/login/Login.jsx';
 import Register from './pages/register/Register.jsx';
 import MenuBar from './components/MenuBar.jsx';
 
-const CommonPageLayout = styled.div`
-  color: black !important;
-  font-family: Arial !important;
-  max-width: 1000px;
-  margin: 0 auto;
-`;
+import {CommonPageLayout} from './styled-components/common';
 
 function App() {
   return (
