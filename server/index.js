@@ -1,11 +1,9 @@
 const { ApolloServer, PubSub } = require('apollo-server');
-const gql = require('graphql-tag');
 const mongoose = require('mongoose');
 
 const {MONGODB, PORT} = require('../.env');
 const resolvers = require('../graphql/resolvers');
 const typeDefs = require('../graphql/typeDefs');
-const User = require('../db/models/User');
 
 const pubSub = new PubSub();
 
@@ -21,4 +19,7 @@ mongoose.connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true})
   })
   .then((res) => {
     console.log(`Server running at ${res.url}`);
+  })
+  .catch((err) => {
+    console.log('error connecting to the db! err: ', err);
 });

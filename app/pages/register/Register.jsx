@@ -71,7 +71,6 @@ function Register() {
 
   const validateForm = () => {
     const formErrors = {};
-    console.log('inputs: ', username, email, password, confirmPassword);
     if (username === '') {
       formErrors.username = 'Must type a username';
     }
