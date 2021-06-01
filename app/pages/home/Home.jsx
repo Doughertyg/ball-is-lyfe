@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import PostCard from '../../components/PostCard.jsx';
-
-import {CenteredContainer, PageHeader} from '../../styled-components/common';
+import { AuthContext } from '../../context/auth';
+import {CenteredContainer, FlexContainer, PageHeader} from '../../styled-components/common';
+import PostForm from '../../components/PostForm.jsx';
 
 const FETCH_POSTS_QUERY = gql`
   {
@@ -31,22 +32,28 @@ const FETCH_POSTS_QUERY = gql`
 
 function Home() {
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
+  const { user } = useContext(AuthContext);
 
   if (data) {
     console.log(data)
   }
   
   return (
-    <CenteredContainer>
-      <PageHeader>Recent Posts</PageHeader>
-      {loading ? (<h1>LOADING...</h1>) :  
-        data.getPosts.map(post => {
-          return (
-            <PostCard key={post.id} post={post} />
-          )
-        })
-      }
-    </CenteredContainer>
+    <FlexContainer justify="flex-start">
+      {user && (
+        <PostForm />
+      )}
+      <CenteredContainer>
+        <PageHeader>Recent Posts</PageHeader>
+        {loading ? (<h1>LOADING...</h1>) :  
+          data.getPosts.map(post => {
+            return (
+              <PostCard key={post.id} post={post} />
+            )
+          })
+        }
+      </CenteredContainer>
+    </FlexContainer>
   )
 };
 

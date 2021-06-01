@@ -13,15 +13,19 @@ export const CardContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  height: ${props => props.height ?? 'auto'};
+  width: ${props => props.width ?? 'auto'};
 `;
 
 export const CardWrapper = styled.div`
 max-width: 400px;
 border: 1px solid rgba(0, 0, 0, 0.1);
 border-radius: 8px;
+height: ${props => props.height ?? 'auto'};
 padding: 16px;
 margin: 0 auto;
 margin-bottom: 4px;
+margin-top: ${props => props.marginTop ?? 0};
 `;
 
 

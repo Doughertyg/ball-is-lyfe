@@ -21,8 +21,10 @@ export const Input = styled.input`
   border-radius: 0;
   box-sizing: border-box;
   border: ${props => props.errors != null ? "1px solid red" : "1px solid dimgrey"};
-  width: 100%;
+  height: ${props => props.height ?? 'auto'};
+  width:${props => props.width ?? '100%'};
   max-width: ${props => props.maxWidth ?? "400px"};
+  line-height: 40px; 
 `;
 
 export const InputError = styled.div`

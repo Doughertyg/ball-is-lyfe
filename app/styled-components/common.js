@@ -35,13 +35,14 @@ width: 100%;
 height: 0;
 border-top: 1px solid rgba(0, 0, 0, 0.1);
 margin-top: 10px;
+margin-bottom: ${props => props.marginBottom ?? 0};
 `;
 
 export const FlexContainer = styled.div`
 align-content: center;
 display: flex;
 flex-direction: row;
-justify-content: center;
+justify-content: ${props => props.justify ?? 'center'};
 width: ${props => props.width ?? 'auto'};
 `;
 

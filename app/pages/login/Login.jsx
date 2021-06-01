@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {useState} from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
@@ -6,10 +6,10 @@ import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router';
 
 import InputField from '../../components/InputField.jsx';
-
 import {ButtonContainer, Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styled-components/common';
 import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components/card';
 import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
+import { AuthContext } from '../../context/auth.js';
 
 const CenteredContainer = styled.div`
   margin: 0 auto;
@@ -40,17 +40,19 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [username, setUsername] = useState('');
   const history = useHistory();
+  const { login, logout } = useContext(AuthContext);
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onCompleted: (res) => {
       console.log('completed! res: ', res);
       history.push('/');
     },
-    update(proxy, result) {
-      console.log('results: ', result);
+    update(_proxy, { data: { login: userData }}) {
+      console.log('results: ', userData);
+      login(userData);
     },
     onError: (err) => {
-      console.log('err: ', err.graphQLErrors);
+      console.log('errs: ', err.graphQLErrors, err);
       setErrors({...errors, ...err.graphQLErrors[0]?.extensions.exception.errors})
     },
     variables: {
@@ -115,11 +117,11 @@ function Login() {
               />
               <Divider />
                 <Button 
-                  aria-label="Submit"
+                  aria-label="Login"
                   disabled={loading}
                   marginTop="20px"
                   onClick={submitForm}
-                >Submit</Button>
+                >Login</Button>
             </CardBody>
           </CardContentWrapper>
         </CardWrapper>

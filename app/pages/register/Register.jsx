@@ -1,12 +1,12 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router';
 
 import InputField from '../../components/InputField.jsx';
-
+import { AuthContext } from '../../context/auth';
 import {ButtonContainer, Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styled-components/common';
 import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components/card';
 import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
@@ -48,14 +48,16 @@ function Register() {
   const [username, setUsername] = useState('');
   const [errors, setErrors] = useState({});
   const history = useHistory();
+  const { login } = useContext(AuthContext);
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     onCompleted: (res) => {
       console.log('completed! res: ', res);
       history.push('/');
     },
-    update(proxy, result) {
-      console.log('results: ', result);
+    update(proxy, { data: { register: userData }}) {
+      console.log('results: ', userData);
+      login(userData);
     },
     onError: (err) => {
       console.log('err: ', err.graphQLErrors);

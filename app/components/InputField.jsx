@@ -19,12 +19,14 @@ const ContentWrapper = styled.div`
 function InputField({
   errors,
   disabled,
+  height,
   name,
   minLength,
   maxLength,
   onChange,
   type,
   placeholder,
+  width,
   value
 }) {
 
@@ -35,11 +37,13 @@ function InputField({
           type={type ?? "text"}
           id={name ?? "username"}
           errors={errors}
+          height={height ?? 'auto'}
           disabled={disabled}
           minLength={minLength ?? "8"}
-          maxLength={maxLength ?? "16"}
+          maxLength={maxLength ?? "36"}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder ?? "Type a username..."}
+          width={width ?? 'auto'}
           value={value}
         />
         {errors != null ? (
