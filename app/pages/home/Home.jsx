@@ -7,28 +7,7 @@ import PostCard from '../../components/PostCard.jsx';
 import { AuthContext } from '../../context/auth';
 import {CenteredContainer, FlexContainer, PageHeader} from '../../styled-components/common';
 import PostForm from '../../components/PostForm.jsx';
-
-const FETCH_POSTS_QUERY = gql`
-  {
-    getPosts {
-      id
-      body
-      createdAt
-      username
-      likeCount
-      likes {
-        username
-      }
-      commentCount
-      comments {
-        id
-        username
-        createdAt
-        body
-      }
-    }
-  }
-`;
+import { FETCH_POSTS_QUERY } from '../../../graphql/queries/graphql';
 
 function Home() {
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);

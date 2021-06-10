@@ -6,6 +6,8 @@ import InputField from './InputField.jsx';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 
+import { FETCH_POSTS_QUERY } from '../../graphql/queries/graphql';
+
 const CREATE_POST_MUTATION = gql`
   mutation createPost($body: String!) {
     createPost(body: $body) {
@@ -33,8 +35,14 @@ function PostForm() {
   const [ postText, setPostText ] = useState('');
   const [createPost, { error }] = useMutation(CREATE_POST_MUTATION, {
     variables: { body: postText },
-    update(_, result) {
-      console.log(result);
+    update(proxy, result) {
+      const data = proxy.readQuery({
+        query: FETCH_POSTS_QUERY
+      });
+      const updatedPosts = {
+        getPosts: [result.data.createPost, ...data.getPosts]
+      };
+      proxy.writeQuery({ query: FETCH_POSTS_QUERY, data: updatedPosts});
       setPostText('');
     }
   })
@@ -45,6 +53,7 @@ function PostForm() {
         <h2>New Post</h2>
         <Divider marginBottom="10px" />
         <InputField
+          errors={error?.message}
           height="200px"
           maxLength={256}
           minLength={1}

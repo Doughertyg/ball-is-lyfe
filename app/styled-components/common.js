@@ -31,18 +31,29 @@ export const DetailsText = styled.div`
 `;
 
 export const Divider = styled.div`
-width: 100%;
-height: 0;
-border-top: 1px solid rgba(0, 0, 0, 0.1);
-margin-top: 10px;
-margin-bottom: ${props => props.marginBottom ?? 0};
+  width: 100%;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  margin-bottom: ${props => props.marginBottom ?? 0};
+`;
+
+export const VerticalDivider = styled.div`
+  width: 0;
+  height: ${props => props.height ?? '100%'};
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  margin: ${props => props.margin ?? '0 10px'};
 `;
 
 export const FlexContainer = styled.div`
 align-content: center;
 display: flex;
+margin: ${props => props.margin ?? 'initial'};
+margin-bottom: ${props => props.marginBottom ?? 'initial'};
+margin-top: ${props => props.marginTop ?? 'initial'};
 flex-direction: row;
 justify-content: ${props => props.justify ?? 'center'};
+padding-top: ${props => props.paddingTop ?? '0px'};
 width: ${props => props.width ?? 'auto'};
 `;
 
