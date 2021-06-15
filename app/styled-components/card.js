@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
 export const CardBody = styled.div`
+  align-items: ${props => props.align ?? 'flex-start'};
   background-color: white;
   border-radius: 6px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   padding: 16px;
   padding-left: 0;
   width: 100%;
@@ -19,7 +22,7 @@ export const CardContentWrapper = styled.div`
 
 export const CardWrapper = styled.div`
 max-width: 400px;
-border: 1px solid rgba(0, 0, 0, 0.1);
+border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
 border-radius: 8px;
 height: ${props => props.height ?? 'auto'};
 padding: 16px;

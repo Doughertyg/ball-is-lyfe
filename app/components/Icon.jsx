@@ -21,7 +21,7 @@ function SvgComponent({ icon, ...rest }) {
     case 'comments':
       return <Comments {...rest} />
     case 'heart':
-      return <Heart {...rest} filled={true} />
+      return <Heart {...rest} />
     case 'message':
       return <Message {...rest} />
     case 'trash':

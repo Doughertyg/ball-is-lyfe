@@ -9,7 +9,7 @@ import {CenteredContainer, FlexContainer, PageHeader} from '../../styled-compone
 import PostForm from '../../components/PostForm.jsx';
 import { FETCH_POSTS_QUERY } from '../../../graphql/queries/graphql';
 
-function Home() {
+function Home(props) {
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const { user } = useContext(AuthContext);
 
@@ -27,7 +27,7 @@ function Home() {
         {loading ? (<h1>LOADING...</h1>) :  
           data.getPosts.map(post => {
             return (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
             )
           })
         }

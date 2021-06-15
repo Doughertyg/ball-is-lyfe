@@ -8,7 +8,7 @@ import Login from './pages/login/Login.jsx';
 import Register from './pages/register/Register.jsx';
 import MenuBar from './components/MenuBar.jsx';
 import AuthRoute from './pages/authRoute/AuthRoute.jsx';
-import Post from './pages/Post.jsx';
+import Post from './pages/Post/Post.jsx';
 
 import {CommonPageLayout} from './styled-components/common';
 

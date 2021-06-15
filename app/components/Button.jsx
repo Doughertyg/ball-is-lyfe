@@ -6,16 +6,19 @@ function Button({
   border,
   children,
   height,
+  isDisabled,
+  isLoading,
   label,
   margin,
+  marginTop,
   onClick,
   width
 }) {
 
   return (
-    <ButtonWrapper border={border} height={height} margin={margin} onClick={onClick} width={width}>
+    <ButtonWrapper border={border} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} width={width}>
       <FlexContainer>
-        {children}{label}
+        {isLoading ? 'Loading...' : (<>{children}{label}</>)}
       </FlexContainer>
     </ButtonWrapper>
   )

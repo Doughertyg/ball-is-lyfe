@@ -27,7 +27,11 @@ export const DetailsText = styled.div`
   font-size: 12px;
   font-weight: 300;
   color: DimGrey;
+  cursor: pointer;
   margin-bottom: 6px;
+  &:hover {
+    color: teal;
+  }
 `;
 
 export const Divider = styled.div`
