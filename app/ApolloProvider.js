@@ -7,7 +7,7 @@ import { setContext } from 'apollo-link-context';
 const GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
 
 const httpLink = createHttpLink({
-  uri: GRAPHQL_ADDRESS
+  uri: 'https://protected-fortress-16665.herokuapp.com/'
 });
 
 const authLink = setContext(() => {
