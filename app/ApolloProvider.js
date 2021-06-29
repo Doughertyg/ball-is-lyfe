@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from 'apollo-link-context';
 
 const GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
-
+console.log('graphql address: ', GRAPHQL_ADDRESS);
 const httpLink = createHttpLink({
   uri: GRAPHQL_ADDRESS
 });
