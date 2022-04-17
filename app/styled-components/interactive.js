@@ -19,6 +19,13 @@ export const Button = styled.button`
   }
 `;
 
+export const Clickable = styled.div`
+&:hover {
+  background-color: teal;
+  color: white;
+}
+`;
+
 export const Input = styled.input`
   border-radius: 8px;
   box-sizing: border-box;

@@ -6,6 +6,7 @@ import Comments from '../icons/comments.svg';
 import Heart from '../icons/heart.svg';
 import Message from '../icons/message.svg';
 import Trash from '../icons/trash.svg';
+import { Clickable } from '../styled-components/interactive';
 
 const IconWrapper = styled.div`
   fill: ${props => props.fill ?? 'black'};
@@ -22,6 +23,8 @@ function SvgComponent({ icon, ...rest }) {
       return <Comments {...rest} />
     case 'heart':
       return <Heart {...rest} />
+    case 'info':
+      return <Comments {...rest} />
     case 'message':
       return <Message {...rest} />
     case 'trash':
@@ -29,11 +32,19 @@ function SvgComponent({ icon, ...rest }) {
   }
 }
 
-function Icon({ fill, height, icon,  width}) {
+function Icon({ fill, height, icon, onClick, width}) {
   return (
-    <IconWrapper fill={fill} height={height} width={width}>
-      <SvgComponent icon={icon} />
-    </IconWrapper>
+    onClick != null ? (
+      <Clickable onClick={onClick}>
+        <IconWrapper fill={fill} height={height} width={width}>
+          <SvgComponent icon={icon} />
+        </IconWrapper>
+      </Clickable>
+    ) : (
+      <IconWrapper fill={fill} height={height} width={width}>
+        <SvgComponent icon={icon} />
+      </IconWrapper>
+    )
   )
 }
 
