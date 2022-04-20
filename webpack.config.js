@@ -1,6 +1,7 @@
 var path = require("path");
 var SRC_DIR = path.join(__dirname, "/app");
 var DEST_DIR = path.join(__dirname, "/public");
+var TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: `${SRC_DIR}/index.jsx`,
@@ -9,21 +10,23 @@ module.exports = {
     path: DEST_DIR,
     publicPath: '/',
   },
+  devtool: "eval-source-map",
+  mode: 'development',
   module: {
     rules: [
       {
         test: /\.jsx?/,
         include: SRC_DIR,
-	use: {
-	  loader: 'babel-loader',
-	  options: {
-	    presets: [
+	      use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
               '@babel/preset-env',
               '@babel/preset-react',
               '@babel/preset-typescript',
-	    ]
-	  }
-	}
+            ]
+          }
+	      }
       },
       {
         test: /\.s[ac]ss$/i,
@@ -32,7 +35,7 @@ module.exports = {
           'style-loader',
           // Translates CSS into CommonJS
           'css-loader',
-	  'resolve-url-loader',
+	        'resolve-url-loader',
           // Compiles Sass to CSS
           'sass-loader',
         ],
@@ -40,8 +43,8 @@ module.exports = {
       {
         test: /\.(gif|jpg|png)$/,
         use: [
-	  "file-loader",
-	],
+	        "file-loader",
+      	],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -53,10 +56,15 @@ module.exports = {
         test: /\.svg$/,
         use: ['@svgr/webpack'],
       }
-    ]
+    ],
+  },
+  optimization: {
+    minimize: false,
   },
   devServer: {
-    contentBase: DEST_DIR,
+    static: {
+      directory: DEST_DIR
+    },
     compress: true,
     historyApiFallback: true,
     port: 3000,
