@@ -21,3 +21,11 @@ export const FETCH_POSTS_QUERY = gql`
     }
   }
 `;
+
+// export const FETCH_LEAGUE_QUERY = gql`
+//   {
+//     getLeagueSeason {
+      
+//     }
+//   }
+// `;

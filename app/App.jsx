@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Routes, Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AuthProvider } from './context/auth';
@@ -9,21 +9,26 @@ import Register from './pages/register/Register.jsx';
 import MenuBar from './components/MenuBar.jsx';
 import AuthRoute from './pages/authRoute/AuthRoute.jsx';
 import Post from './pages/Post/Post.jsx';
+import Season from './pages/season/Season.jsx';
 
 import {CommonPageLayout} from './styled-components/common';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Routes>
         <CommonPageLayout>
           <MenuBar />
-          <Route exact path='/' component={Home} />
-          <AuthRoute exact path='/login' component={Login} />
-          <AuthRoute exact path='/register' component={Register} />
-          <Route exact path="/posts/:postId" component={Post} />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <AuthRoute exact path='/login' component={Login} />
+            <AuthRoute exact path='/register' component={Register} />
+            <Route exact path="/posts/:postId" component={Post} />
+            <Route exact path="/season/:seasonID" component={Season} />
+            <Route exact render={() => <Redirect to="/" />} />
+          </Switch>
         </CommonPageLayout>
-      </Router>
+      </Routes>
     </AuthProvider>   
   )
 }

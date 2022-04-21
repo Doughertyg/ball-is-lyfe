@@ -8,10 +8,6 @@ const seasonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'league'
   },
-  seasons: [{
-    type: Schema.Types.ObjectId,
-    ref: 'season'
-  }],
   admins: [{
       type: Schema.Types.ObjectId,
       ref: 'users'
@@ -19,6 +15,10 @@ const seasonSchema = new Schema({
   teams: [{
     type: Schema.Types.ObjectId,
     ref: 'teamInstance'
+  }],
+  players: [{
+    type: Schema.Types.ObjectId,
+    ref: 'uers'
   }]
 });
 

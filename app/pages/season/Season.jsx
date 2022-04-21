@@ -1,6 +1,8 @@
-import react from 'react';
-import Icon from '../../components/Icon';
+import React, {useContext} from 'react';
+import Icon from '../../components/Icon.jsx';
+import { AuthContext } from '../../context/auth';
 import { Divider, FlexContainer, PageHeader, SectionHeadingText } from '../../styled-components/common';
+import {useHistory} from 'react-router';
 
 /**
  * Home page for league. Logged in user sees stats, games, standings
@@ -31,19 +33,25 @@ import { Divider, FlexContainer, PageHeader, SectionHeadingText } from '../../st
  *      `-----------------------------------"
  * 
  */
-export default LeagueHome = (props) => {
+const Season = ({match}) => {
   const { user } = useContext(AuthContext);
+  const leagueID = match.params?.seasonID;
+  const history = useHistory();
 
   if (user == null) {
     // redirect to login page
-    return "Please login....";
+    history.push('/login');
+  }
+
+  if (leagueID == null) {
+    history.push('/');
   }
 
   return (
-    <FlexContainer>
+    <FlexContainer direction="column">
       <PageHeader>League SFGBA</PageHeader>
       <SectionHeadingText>Spring 2022</SectionHeadingText>
-      <Icon icon="info" onClick={() => {/* Open league info panel */}} />
+      <Icon icon="info" onClick={() => {console.log('league info open!'/* Open league info panel */);}} />
       <Divider />
         <SectionHeadingText>Recent Games</SectionHeadingText>
           "Recent Games..."
@@ -56,7 +64,7 @@ export default LeagueHome = (props) => {
       <SectionHeadingText>Standings</SectionHeadingText>
         "league standings..."
     </FlexContainer>
-  )
+  );
+}
 
-
-};
+export default Season;
