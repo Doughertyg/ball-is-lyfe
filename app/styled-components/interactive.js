@@ -20,9 +20,12 @@ export const Button = styled.button`
 `;
 
 export const Clickable = styled.div`
+border-radius: ${props => props.borderRadius ?? "0"};
+cursor: pointer;
 &:hover {
-  background-color: teal;
+  background-color: rgba(200, 200, 200, 0.14);
   color: white;
+  fill: white;
 }
 `;
 

@@ -10,6 +10,7 @@ import MenuBar from './components/MenuBar.jsx';
 import AuthRoute from './pages/authRoute/AuthRoute.jsx';
 import Post from './pages/Post/Post.jsx';
 import Season from './pages/season/Season.jsx';
+import LeagueNewPage from './pages/league/LeagueNewPage.jsx';
 
 import {CommonPageLayout} from './styled-components/common';
 
@@ -25,6 +26,7 @@ function App() {
             <AuthRoute exact path='/register' component={Register} />
             <Route exact path="/posts/:postId" component={Post} />
             <Route exact path="/season/:seasonID" component={Season} />
+            <Route exact path="/league/new" component={LeagueNewPage} />
             <Route exact render={() => <Redirect to="/" />} />
           </Switch>
         </CommonPageLayout>

@@ -29,6 +29,7 @@ export const DetailsText = styled.div`
   color: DimGrey;
   cursor: pointer;
   margin-bottom: 6px;
+  margin: ${props => props.margin ?? 'initial'};
   &:hover {
     color: teal;
   }
@@ -51,6 +52,7 @@ export const VerticalDivider = styled.div`
 
 export const FlexContainer = styled.div`
 align-content: ${props => props.alignContent ?? 'center'};
+align-items: ${props => props.alignItems ?? "initial"};
 display: flex;
 margin: ${props => props.margin ?? 'initial'};
 margin-bottom: ${props => props.marginBottom ?? 'initial'};
@@ -65,7 +67,7 @@ overflow: ${props => props.overFlow ?? 'auto'};
 export const PageHeader = styled.h1`
   font-weight: 600;
   font-size: 24px;
-  margin: 20px 0;
+  margin: ${props => props.margin ?? "20px 0"};
 `;
 
 export const SectionHeadingText = styled.div`

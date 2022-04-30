@@ -2,12 +2,14 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import { useHistory } from 'react-router';
 
 import PostCard from '../../components/PostCard.jsx';
 import { AuthContext } from '../../context/auth';
-import {CenteredContainer, FlexContainer, PageHeader} from '../../styled-components/common';
+import {CenteredContainer, DetailsText, FlexContainer, PageHeader} from '../../styled-components/common';
 import PostForm from '../../components/PostForm.jsx';
 import { FETCH_POSTS_QUERY } from '../../../graphql/queries/graphql';
+import Icon from '../../components/Icon.jsx';
 
 const FETCH_LEAGUES_QUERY = gql`
   query($userID: ID!) {
@@ -90,41 +92,55 @@ function Home(props) {
   const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const { user } = useContext(AuthContext);
+  const history = useHistory();
 
-  if (data) {
-    console.log(data)
+  if (user == null) {
+    history.push('/login');
   }
   
   return (
-    <FlexContainer alignContent="start" direction="column" justify="flex-start">
+    <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start">
       <PageHeader>Active seasons</PageHeader>
       <FlexContainer justify="start" overFlow="scroll" width="100%">
-        {loading ? (<h1>LOADING...</h1>) :  
-          data.getPosts.map(post => {
+        {loadingSeasons ?
+          (<h1>LOADING...</h1>) :
+          seasonData?.getSeasonsByUser?.length > 0 ?
+          seasonData?.getSeasonsByUser?.map(post => {
             return (
               <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
             )
-          })
+          }) :
+          <DetailsText>No Seasons</DetailsText>
         }
       </FlexContainer>
-      <PageHeader>Leagues (+)</PageHeader>
+      <FlexContainer alignItems="center">
+        <PageHeader margin="20px 12px 20px 0">Leagues</PageHeader>
+        <Icon borderRadius="50%" icon="plus" onClick={() => history.push('/league/new')} />
+      </FlexContainer>
       <FlexContainer justify="start" overFlow="scroll" width="100%">
-        {loading ? (<h1>LOADING...</h1>) :  
-          data.getPosts.map(post => {
-            return (
-              <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
-            )
-          })
+        {loadingLeagues ? (<h1>LOADING...</h1>) :
+          leagueData?.getLeaguesByUser?.length > 0 ?
+            leagueData?.getLeaguesByUser?.map(post => {
+              return (
+                <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
+              )
+            }) :
+            <DetailsText>No Leagues</DetailsText>
         }
       </FlexContainer>
-      <PageHeader>Teams (+)</PageHeader>
+      <FlexContainer alignItems="center">
+        <PageHeader margin="20px 12px 20px 0">Teams</PageHeader>
+        <Icon borderRadius="50%" icon="plus" onClick={() => {console.log('add Team!');}} />
+      </FlexContainer>
       <FlexContainer justify="start" overFlow="scroll" width="100%">
-        {loading ? (<h1>LOADING...</h1>) :  
-          data.getPosts.map(post => {
-            return (
-              <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
-            )
-          })
+        {loadingTeams ? (<h1>LOADING...</h1>) :
+          teamData?.getTeamsByUser?.length > 0 ?
+            teamData?.getTeamsByUser.map(post => {
+              return (
+                <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
+              )
+            }) :
+            <DetailsText>No teams</DetailsText>
         }
       </FlexContainer>
     </FlexContainer>

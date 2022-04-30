@@ -24,23 +24,28 @@ function MenuBar({ match }) {
       <FlexContainer width={'100%'}>
         {user ?
           (<>
-            <ButtonContainer active={active === "home"}>
-              <NavLink onClick={() => setActive("home")} exact to="/">
-                {user.username}
+            <ButtonContainer active={active === 'home'}>
+              <NavLink onClick={() => setActive('home')} exact to="/">
+                Home
               </NavLink>
             </ButtonContainer>
             <FlexComponent />
             <FlexContainer>
               <ButtonContainer>
-                <NavLink onClick={logout} exact exact to="/login">
+                <NavLink onClick={logout} exact to="/login">
                   Logout
+                </NavLink>
+              </ButtonContainer>
+              <ButtonContainer active={active === 'profile'}>
+                <NavLink onClick={() => setActive('profile')} exact to="/profile">
+                  {user.username}
                 </NavLink>
               </ButtonContainer>
             </FlexContainer>
           </>
           ) : (
             <>
-              <ButtonContainer active={active === "home"}>
+              <ButtonContainer active={active === 'home'}>
                 <NavLink onClick={() => setActive("home")} exact to="/">
                   Home
                 </NavLink>
@@ -48,12 +53,12 @@ function MenuBar({ match }) {
               <FlexComponent />
               <FlexContainer>
                 <ButtonContainer active={active === "login"}>
-                  <NavLink onClick={() => setActive('login')} exact exact to="/login">
+                  <NavLink onClick={() => setActive('login')} exact to="/login">
                     Login
                   </NavLink>
                 </ButtonContainer>
                 <ButtonContainer active={active === "register"}>
-                  <NavLink onClick={() => setActive("register")} exact exact to="/register">
+                  <NavLink onClick={() => setActive("register")} exact to="/register">
                     Register
                   </NavLink>
                 </ButtonContainer>
