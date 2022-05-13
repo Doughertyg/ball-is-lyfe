@@ -27,6 +27,7 @@ function App() {
             <Route exact path="/posts/:postId" component={Post} />
             <Route exact path="/season/:seasonID" component={Season} />
             <Route exact path="/league/new" component={LeagueNewPage} />
+            <Route exact path="/league/:leagueID" component={Season} />
             <Route exact render={() => <Redirect to="/" />} />
           </Switch>
         </CommonPageLayout>

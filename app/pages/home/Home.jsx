@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { useHistory } from 'react-router';
 
 import PostCard from '../../components/PostCard.jsx';
+import Card from '../../components/Card.jsx';
 import { AuthContext } from '../../context/auth';
 import {CenteredContainer, DetailsText, FlexContainer, PageHeader} from '../../styled-components/common';
 import PostForm from '../../components/PostForm.jsx';
@@ -14,10 +15,12 @@ import Icon from '../../components/Icon.jsx';
 const FETCH_LEAGUES_QUERY = gql`
   query($userID: ID!) {
     getLeaguesByUser(userID: $userID) {
+      id
       name
       description
       profilePicture
       sport
+      location
     }
   }
 `;
@@ -87,16 +90,22 @@ const FETCH_TEAMS_QUERY = gql`
  *      `-----------------------------------"
  */
 function Home(props) {
-  const { loading: loadingLeagues, data: leagueData } = useQuery(FETCH_LEAGUES_QUERY);
-  const { loading: loadingSeasons, data: seasonData } = useQuery(FETCH_SEASONS_QUERY);
-  const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
-  const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const { user } = useContext(AuthContext);
+  console.log('user: ', user);
   const history = useHistory();
-
   if (user == null) {
     history.push('/login');
   }
+
+  const data = useQuery(FETCH_LEAGUES_QUERY, {
+    variables: {userID: user?.id}
+  });
+  const { loading: loadingSeasons, data: seasonData } = useQuery(FETCH_SEASONS_QUERY);
+  const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
+  // const { loading, data } = useQuery(FETCH_POSTS_QUERY);
+
+  console.log('leagueData: ', data.data);
+  const {loadingLeagues, data: leagueData } = data;
   
   return (
     <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start">
@@ -120,9 +129,14 @@ function Home(props) {
       <FlexContainer justify="start" overFlow="scroll" width="100%">
         {loadingLeagues ? (<h1>LOADING...</h1>) :
           leagueData?.getLeaguesByUser?.length > 0 ?
-            leagueData?.getLeaguesByUser?.map(post => {
+            leagueData?.getLeaguesByUser?.map(league => {
               return (
-                <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
+                <Card
+                  body={league.description ?? ''}
+                  onClick={() => history.push(`/season/${league.id}`)}
+                  subTitle={`${league.location} - ${league.sport}`}
+                  title={league.name} 
+                />
               )
             }) :
             <DetailsText>No Leagues</DetailsText>

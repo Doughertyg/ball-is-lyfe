@@ -37,6 +37,7 @@ const Season = ({match}) => {
   const { user } = useContext(AuthContext);
   const leagueID = match.params?.seasonID;
   const history = useHistory();
+  console.log('season page');
 
   if (user == null) {
     // redirect to login page
@@ -44,6 +45,7 @@ const Season = ({match}) => {
   }
 
   if (leagueID == null) {
+    console.log('redirecting home');
     history.push('/');
   }
 

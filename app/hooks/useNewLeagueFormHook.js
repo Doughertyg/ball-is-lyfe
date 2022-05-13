@@ -5,6 +5,7 @@ const MISSING_INPUT_ERROR = 'must be filled in';
 export default function useNewLeagueFormHook() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
   const [sport, setSport] = useState(''); // consider changing this to a db-backed object
   const [profilePicture, setProfilePicture] = useState('');
   const [bannerPicture, setBannerPicture] = useState('');
@@ -30,6 +31,7 @@ export default function useNewLeagueFormHook() {
     inputs: {
       name,
       description,
+      location,
       sport,
       profilePicture,
       bannerPicture,
@@ -38,6 +40,7 @@ export default function useNewLeagueFormHook() {
     setters: {
       setBannerPicture,
       setDescription,
+      setLocation,
       setName,
       setPlayers,
       setProfilePicture,

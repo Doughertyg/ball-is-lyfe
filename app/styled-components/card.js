@@ -7,8 +7,11 @@ export const CardBody = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  overflow: 'hidden';
   padding: 16px;
   padding-left: 0;
+  text-overflow: 'elipsis';
+  white-space: 'nowrap';
   width: 100%;
 `;
 
@@ -21,9 +24,12 @@ export const CardContentWrapper = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-max-width: 400px;
+max-width: ${props => props.maxWidth ?? '400px'};
 border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
 border-radius: 8px;
+box-shadow: props.boxShadow ?? 'none';
+box-sizing: border-box;
+cursor: ${props => props.onClick != null ? 'pointer' : 'default'};
 height: ${props => props.height ?? 'auto'};
 padding: 16px;
 margin: 0 auto;

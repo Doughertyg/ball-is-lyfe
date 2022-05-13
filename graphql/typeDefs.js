@@ -4,6 +4,7 @@ module.exports = gql`
   type Query {
     getPosts: [Post]
     getPost(postId: ID!): Post
+    getLeaguesByUser(userID: ID!): [League]
   }
   type Post {
     id: ID!
@@ -20,6 +21,19 @@ module.exports = gql`
     createdAt: String!
     username: String!
     body: String!
+  }
+  type League {
+    id: ID!
+    createdAt: String!
+    name: String!
+    description: String!
+    location: String!
+    sport: String!
+    players: [ID]!
+    admin: [ID]!
+    seasons: [ID]!
+    profilePicture: String!
+    bannerPicture: String!
   }
   type Like {
     id: ID!
@@ -39,12 +53,22 @@ module.exports = gql`
     confirmPassword: String!
     email: String!
   }
+  input CreateLeagueInput {
+    name: String!
+    description: String!
+    location: String!
+    sport: String!
+    profilePicture: String!
+    bannerPicture: String!
+    players: [ID]
+  }
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
     createPost(body: String!): Post!
     deletePost(postId: String!): String!
     createComment(postId: ID!, body: String!): Post!
+    createLeague(leagueInput: CreateLeagueInput): League!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }

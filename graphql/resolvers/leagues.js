@@ -6,36 +6,39 @@ const authenticate = require('../../util/authenticate');
 module.exports = {
   Query: {
     async getLeaguesByUser(_, { userID }) {
+      console.log('getLeaguesByUser. userID: ', userID);
       try {
-        const leagues = League.find(league => league.players?.includes(userID))
+        const leagues = await League.find(league => league != null && league.players != null && league.players.includes(userID))
           .sort({ createdAt: -1 });
-        return leagues ?? [];
+        console.log('leagues in query: ', leagues);
+        return leagues;
       } catch (err) {
+        console.log('error queryingf leagues');
         throw new Error(err);
       }
     },
-    Mutation: {
-      async createLeague(_, { data }, context) {
-        const user = authenticate(context);
+  },
+  Mutation: {
+    async createLeague(_, { leagueInput }, context) {
+      console.log('league input: ', leagueInput);
+      const user = authenticate(context);
 
-        const newLeague = new League({
-          ...data,
-          createdAt: new Date().toDateString(),
-          createdBy: user.id,
-          admins: [user.id]
-        });
+      const newLeague = new League({
+        ...leagueInput,
+        createdAt: new Date().toDateString(),
+        admins: [user.id],
+        players: [user.id],
+        seasons: []
+      });
 
-        const league = await newLeague.save();
-        context.pubSub.publish('NEW_LEAGUE', {
-          newLeague: league
-        });
-        return league;
-      }
-    },
-    Subscription: {
-      newLeague: {
-        subscribe: (_, __, { pubSub }) => pubSub.asyncIterator('NEW_LEAGUE')
-      }
+      const league = await newLeague.save();
+      
+      return league;
+    }
+  },
+  Subscription: {
+    newLeague: {
+      subscribe: (_, __, { pubSub }) => pubSub.asyncIterator('NEW_LEAGUE')
     }
   }
 }
