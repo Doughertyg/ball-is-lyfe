@@ -5,6 +5,7 @@ module.exports = gql`
     getPosts: [Post]
     getPost(postId: ID!): Post
     getLeaguesByUser(userID: ID!): [League]
+    getLeagueByID(leagueID: ID!): League
   }
   type Post {
     id: ID!
@@ -23,7 +24,7 @@ module.exports = gql`
     body: String!
   }
   type League {
-    id: ID!
+    _id: ID!
     createdAt: String!
     name: String!
     description: String!

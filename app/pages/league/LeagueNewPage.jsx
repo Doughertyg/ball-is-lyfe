@@ -5,7 +5,7 @@ import useNewLeagueFormHook from '../../hooks/useNewLeagueFormHook';
 import {useHistory} from 'react-router';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
-import {Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styled-components/common';
+import {CardText, Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styled-components/common';
 import Button from '../../components/Button.jsx';
 
 const CREATE_LEAGUE = gql`

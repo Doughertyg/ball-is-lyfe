@@ -76,3 +76,14 @@ font-weight: 600;
 margin-bottom: 8px;
 margin-top: ${props => props.marginTop ?? 0}
 `;
+
+export const BodyText = styled.div`
+font-size: 16px;
+overflow: hidden;
+text-align: left;
+text-overflow: ellipsis;
+white-space: pre-line;
+display: -webkit-box;
+-webkit-line-clamp: 5;
+-webkit-box-orient: vertical; 
+`;

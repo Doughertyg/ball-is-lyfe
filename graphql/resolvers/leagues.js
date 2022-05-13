@@ -17,6 +17,17 @@ module.exports = {
         throw new Error(err);
       }
     },
+    async getLeagueByID(_, { leagueID }) {
+      console.log('getLeagueByID');
+      try {
+        const league = await League.findById(leagueID);
+        console.log('league in query: ', league);
+        return league;
+      } catch (err) {
+        console.log('error queryin league! err: ', err);
+        throw new Error(err);
+      }
+    }
   },
   Mutation: {
     async createLeague(_, { leagueInput }, context) {

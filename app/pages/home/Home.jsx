@@ -15,7 +15,7 @@ import Icon from '../../components/Icon.jsx';
 const FETCH_LEAGUES_QUERY = gql`
   query($userID: ID!) {
     getLeaguesByUser(userID: $userID) {
-      id
+      _id
       name
       description
       profilePicture
@@ -133,7 +133,7 @@ function Home(props) {
               return (
                 <Card
                   body={league.description ?? ''}
-                  onClick={() => history.push(`/season/${league.id}`)}
+                  onClick={() => history.push(`/league/${league._id}`)}
                   subTitle={`${league.location} - ${league.sport}`}
                   title={league.name} 
                 />

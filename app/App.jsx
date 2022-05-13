@@ -13,6 +13,7 @@ import Season from './pages/season/Season.jsx';
 import LeagueNewPage from './pages/league/LeagueNewPage.jsx';
 
 import {CommonPageLayout} from './styled-components/common';
+import League from './pages/league/LeaguePage.jsx';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
             <Route exact path="/posts/:postId" component={Post} />
             <Route exact path="/season/:seasonID" component={Season} />
             <Route exact path="/league/new" component={LeagueNewPage} />
-            <Route exact path="/league/:leagueID" component={Season} />
+            <Route exact path="/league/:leagueID" component={League} />
             <Route exact render={() => <Redirect to="/" />} />
           </Switch>
         </CommonPageLayout>
