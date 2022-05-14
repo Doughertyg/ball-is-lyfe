@@ -27,7 +27,7 @@ export const CardWrapper = styled.div`
 max-width: ${props => props.maxWidth ?? '400px'};
 border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
 border-radius: 8px;
-box-shadow: props.boxShadow ?? 'none';
+box-shadow: ${props => props.boxShadow ?? 'none'};
 box-sizing: border-box;
 cursor: ${props => props.onClick != null ? 'pointer' : 'default'};
 height: ${props => props.height ?? 'auto'};
@@ -35,6 +35,10 @@ padding: 16px;
 margin: 0 auto;
 margin-bottom: 4px;
 margin-top: ${props => props.marginTop ?? 0};
+${props => props.onClick ?
+  '&:hover {box-shadow: 0 0 15px rgba(0, 0, 0, 0.1)}'
+  : ''
+}
 `;
 
 
