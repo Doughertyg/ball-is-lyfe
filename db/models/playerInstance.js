@@ -1,11 +1,12 @@
 const {model, Schema} = require('mongoose');
 
-const teamPlayerSchema = new Schema({
+const playerInstanceSchema = new Schema({
   season: {
     type: Schema.Types.ObjectId,
     ref: 'season'
   },
   playerNumber: Number,
+  position: String,
   user: {
     type: Schema.Types.ObjectId,
     ref: 'user'
@@ -13,4 +14,4 @@ const teamPlayerSchema = new Schema({
   createdAt: String
 });
 
-module.exports = model('teamPlayer', teamPlayerSchema);
+module.exports = model('playerInstance', playerInstanceSchema);

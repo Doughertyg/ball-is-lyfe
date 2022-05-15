@@ -30,11 +30,116 @@ module.exports = gql`
     description: String!
     location: String!
     sport: String!
-    players: [ID]!
-    admin: [ID]!
+    players: [User]!
+    admin: [User]!
     seasons: [ID]!
     profilePicture: String!
     bannerPicture: String!
+  }
+  type Season {
+    id: ID!
+    admin: [User]!
+    createdAt: String!
+    name: String!
+    description: String!
+    seasonStart: String!
+    seasonEnd: String!
+    league: League!
+    players: [User]!
+    teams: [TeamInstance]!
+  }
+  type Team {
+    id: ID!
+    bannerPicture: String!
+    createdAt: String!
+    description: String!
+    admin: [User]!
+    players: [User]!
+    profilePicture: String!
+    name: String!
+    sport: String!
+  }
+  type TeamInstance {
+    id: ID!
+    createdAt: String!
+    players: [User]!
+    captain: User!
+    team: Team!
+    season: Season!
+  }
+  type PlayerInstance {
+    id: ID!
+    season: Season!
+    playerNumber: Int! 
+    position: String!
+    user: User!
+  }
+  type Game {
+    id: ID!
+    season: Season!
+    date: String!
+    awayTeam: TeamInstance!
+    awayScore: Int!
+    homeTime: TeamInstance!
+    homeScore: Int!
+  }
+  type StatUnit {
+    name: String!
+    value: Int!
+  }
+  type Stat {
+    id: ID!
+    name: String!
+    operations: [String]!
+    statUnits: [StatUnit]!
+  }
+  type PlayerStatUnits {
+    id: ID!
+    player: PlayerInstance!
+    statUnit: StatUnit!
+    game: Game!
+  }
+  type PlayerGameStats {
+    id: ID!
+    player: PlayerInstance!
+    game: Game!
+    stat: Stat!
+    value: Int!
+  }
+  type PlayerSeasonStats {
+    id: ID!
+    player: PlayerInstance!
+    season: Season!
+    stat: Stat!
+    value: Int!
+  }
+  type PlayerLeagueStats {
+    id: ID!
+    player: User!
+    league: League!
+    stat: Stat!
+    value: Int!
+  }
+  type TeamGameStats {
+    id: ID!
+    team: TeamInstance!
+    game: Game!
+    stat: Stat!
+    value: Int!
+  }
+  type TeamSeasonStats {
+    id: ID!
+    team: TeamInstance!
+    season: Season!
+    stat: Stat!
+    value: Int!
+  }
+  type TeamLeagueStats {
+    id: ID!
+    team: Team!
+    league: League!
+    stat: Stat!
+    value: Int!
   }
   type Like {
     id: ID!
@@ -43,6 +148,14 @@ module.exports = gql`
   }
   type User {
     id: ID!
+    bio: String!
+    profilePicture: String!
+    bannerPicture: String!
+    phoneNumber: Int!
+    height: String!
+    weight: Int!
+    location: String!
+    name: String!
     email: String!
     token: String!
     username: String!

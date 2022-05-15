@@ -1,16 +1,16 @@
 const {model, Schema} = require('mongoose');
 
 const gameSchema = new Schema({
-  playDate: String,
+  date: String,
   homeTeam: {
     type: Schema.Types.ObjectId,
-    ref: 'teamSeasonInstance'
+    ref: 'teamInstance'
   },
   homeScore: Number,
   awayScore: Number,
   awayTeam: {
     type: Schema.Types.ObjectId,
-    ref: 'teamSeasonInstance'
+    ref: 'teamInstance'
   },
   createdAt: String,
   season: {

@@ -19,6 +19,14 @@ const seasonSchema = new Schema({
   players: [{
     type: Schema.Types.ObjectId,
     ref: 'uers'
+  }],
+  stats: [{
+    type: Schema.Types.ObjectId,
+    ref: 'stat'
+  }],
+  statUnits: [{
+    type: Schema.Types.ObjectId,
+    ref: 'statUnit'
   }]
 });
 
