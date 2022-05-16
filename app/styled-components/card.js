@@ -35,6 +35,7 @@ padding: 16px;
 margin: 0 auto;
 margin-bottom: 4px;
 margin-top: ${props => props.marginTop ?? 0};
+margin-right: 20px;
 ${props => props.onClick ?
   '&:hover {box-shadow: 0 0 15px rgba(0, 0, 0, 0.1)}'
   : ''

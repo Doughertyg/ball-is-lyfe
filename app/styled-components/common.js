@@ -74,7 +74,7 @@ export const SectionHeadingText = styled.div`
 font-size: 16px;
 font-weight: 600;
 margin-bottom: 8px;
-margin-top: ${props => props.marginTop ?? 0}
+margin: ${props => props.margin ?? 0}
 `;
 
 export const BodyText = styled.div`

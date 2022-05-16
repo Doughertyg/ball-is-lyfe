@@ -23,9 +23,8 @@ export const Clickable = styled.div`
 border-radius: ${props => props.borderRadius ?? "0"};
 cursor: pointer;
 &:hover {
-  background-color: rgba(200, 200, 200, 0.14);
-  color: white;
-  fill: white;
+  stroke: white;
+  fill: black;
 }
 `;
 

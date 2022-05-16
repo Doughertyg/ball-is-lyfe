@@ -14,11 +14,11 @@ const leagueSchema = new Schema({
   }],
   admins: [{
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: 'User'
   }],
   players: [{
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: 'User'
   }]
 });
 

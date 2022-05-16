@@ -27,7 +27,7 @@ const CREATE_LEAGUE = gql`
         bannerPicture: $bannerPicture
       }
     ) {
-      id
+      _id
       name
       description
       sport

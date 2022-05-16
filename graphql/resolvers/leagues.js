@@ -9,7 +9,7 @@ module.exports = {
       console.log('getLeaguesByUser. userID: ', userID);
       try {
         const leagues = await League.find(league => league != null && league.players != null && league.players.includes(userID))
-          .sort({ createdAt: -1 });
+          .sort({ createdAt: -1 }).populate('admins').exec();
         console.log('leagues in query: ', leagues);
         return leagues;
       } catch (err) {
@@ -20,7 +20,8 @@ module.exports = {
     async getLeagueByID(_, { leagueID }) {
       console.log('getLeagueByID');
       try {
-        const league = await League.findById(leagueID);
+        console.log('top of query');
+        const league = await League.findById(leagueID).populate('admins').exec();
         console.log('league in query: ', league);
         return league;
       } catch (err) {

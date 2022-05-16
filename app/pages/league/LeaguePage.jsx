@@ -12,6 +12,9 @@ const FETCH_LEAGUE_QUERY = gql`
   query($leagueID: ID!) {
     getLeagueByID(leagueID: $leagueID) {
       _id
+      admins {
+        id
+      }
       name
       description
       profilePicture
@@ -76,6 +79,11 @@ const League = ({match}) => {
   console.log('data: ', leagueData);
   console.log('error:::::  ', error);
 
+  // consider using useMemo
+  const isLeagueAdmin = leagueData?.getLeagueByID?.admins?.reduce((acc, admin) => {
+    return admin.id === user.id ? true : acc;
+  }, false) ?? false;
+
   return (
     <FlexContainer direction="column">
       {loading ? <h1>Loading...</h1> : (
@@ -95,8 +103,12 @@ const League = ({match}) => {
             {leagueData?.getLeagueByID?.description}
           </BodyText>
           <Divider marginBottom="12px" />
-          <SectionHeadingText>Recent Seasons</SectionHeadingText>
-            {leagueData?.getLeagueByID?.seasons?.map(season => {
+          <FlexContainer alignItems="center" justify="start">
+            <SectionHeadingText margin="20px 12px 20px 0">Recent Seasons</SectionHeadingText>
+            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push('/season/new')} />}
+          </FlexContainer>
+          {leagueData?.getLeaguesByUser?.length > 0 ?
+            leagueData?.getLeagueByID?.seasons?.map(season => {
               return (
                 <Card
                   body={season?.description}
@@ -104,7 +116,9 @@ const League = ({match}) => {
                   title={season?.name}
                 />
               )
-            })}
+          }) :
+            <DetailsText>No Seasons</DetailsText>
+          }
           <Divider marginBottom="12px" />
           <SectionHeadingText>Stat Leaders</SectionHeadingText>
             :: :: :: :: stat cards :: :: :: :: 

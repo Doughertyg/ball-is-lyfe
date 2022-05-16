@@ -104,7 +104,7 @@ function Home(props) {
   const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
   // const { loading, data } = useQuery(FETCH_POSTS_QUERY);
 
-  console.log('leagueData: ', data.data);
+  console.log('leagueData: ', data);
   const {loadingLeagues, data: leagueData } = data;
   
   return (

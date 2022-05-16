@@ -31,7 +31,7 @@ module.exports = gql`
     location: String!
     sport: String!
     players: [User]!
-    admin: [User]!
+    admins: [User]!
     seasons: [ID]!
     profilePicture: String!
     bannerPicture: String!
