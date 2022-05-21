@@ -119,10 +119,10 @@ const League = ({match}) => {
           }) :
             <DetailsText>No Seasons</DetailsText>
           }
-          <Divider marginBottom="12px" />
+          {/* <Divider marginBottom="12px" />
           <SectionHeadingText>Stat Leaders</SectionHeadingText>
             :: :: :: :: stat cards :: :: :: :: 
-          <Divider />
+          <Divider /> */}
         </>
       )}
     </FlexContainer>

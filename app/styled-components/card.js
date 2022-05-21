@@ -16,6 +16,7 @@ export const CardBody = styled.div`
 `;
 
 export const CardContentWrapper = styled.div`
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -25,6 +26,7 @@ export const CardContentWrapper = styled.div`
 
 export const CardWrapper = styled.div`
 max-width: ${props => props.maxWidth ?? '400px'};
+background-color: white;
 border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
 border-radius: 8px;
 box-shadow: ${props => props.boxShadow ?? 'none'};

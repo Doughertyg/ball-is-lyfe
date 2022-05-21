@@ -35,16 +35,16 @@ import {useHistory} from 'react-router';
  */
 const Season = ({match}) => {
   const { user } = useContext(AuthContext);
-  const leagueID = match.params?.seasonID;
+  const seasonID = match.params?.seasonID;
   const history = useHistory();
-  console.log('season page');
+  console.log('season page. id: ', seasonID);
 
   if (user == null) {
     // redirect to login page
     history.push('/login');
   }
 
-  if (leagueID == null) {
+  if (seasonID == null) {
     console.log('redirecting home');
     history.push('/');
   }
