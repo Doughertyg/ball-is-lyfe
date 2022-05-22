@@ -17,7 +17,7 @@ import {CommonPageLayout} from './styled-components/common';
 import League from './pages/league/LeaguePage.jsx';
 
 const Wrapper = styled.div`
-  background-color: rgba(0, 0, 55, 0.01);
+  background-color: rgba(0, 0, 155, 0.01);
   height: 100vh;
   width: 100vw;
 `;
@@ -34,10 +34,10 @@ function App() {
               <AuthRoute exact path='/login' component={Login} />
               <AuthRoute exact path='/register' component={Register} />
               <Route exact path="/posts/:postId" component={Post} />
-              <Route exact path="/season/new" component={SeasonNewPage} />
               <Route exact path="/season/:seasonID" component={Season} />
               <Route exact path="/league/new" component={LeagueNewPage} />
               <Route exact path="/league/:leagueID" component={League} />
+              <Route exact path="/league/:leagueID/season/new" component={SeasonNewPage} />
               <Route exact render={() => <Redirect to="/" />} />
             </Switch>
           </CommonPageLayout>

@@ -32,7 +32,7 @@ module.exports = gql`
     sport: String!
     players: [User]!
     admins: [User]!
-    seasons: [ID]!
+    seasons: [Season]!
     profilePicture: String!
     bannerPicture: String!
   }
@@ -176,6 +176,14 @@ module.exports = gql`
     bannerPicture: String!
     players: [ID]
   }
+  input CreateSeasonInput {
+    name: String!
+    description: String!
+    seasonEnd: String!
+    league: ID!
+    players: [ID]!
+    seasonStart: String!
+  }
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
@@ -183,6 +191,7 @@ module.exports = gql`
     deletePost(postId: String!): String!
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
+    createSeason(seasonInput: CreateSeasonInput): Season!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }

@@ -21,7 +21,12 @@ module.exports = {
       console.log('getLeagueByID');
       try {
         console.log('top of query');
-        const league = await League.findById(leagueID).populate('admins').exec();
+        const league =
+          await League.findById(leagueID)
+            .populate('admins')
+            .populate('seasons')
+            .populate('players')
+            .exec();
         console.log('league in query: ', league);
         return league;
       } catch (err) {

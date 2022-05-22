@@ -1,15 +1,16 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Season = require('../../db/models/Season');
+const League = require('../../db/models/League');
 const authenticate = require('../../util/authenticate');
 
 module.exports = {
   Query: {
     async getSeasonsByUser(_, {userID}) {
       try {
-        const seasons = Season.find(season => season.players?.includes(userID))
+        const seasons = Season.find(season => season.players.includes(userID))
           .sort({ createdAt: -1 });
-        return seasons ?? [];
+        return seasons || [];
       } catch (err) {
         throw new Error(err);
       }
@@ -28,20 +29,26 @@ module.exports = {
     },
   },
   Mutation: {
-    async createSeason(_, { data }, context) {
+    async createSeason(_, { seasonInput }, context) {
+      console.log('season input:::::::::::: ', seasonInput);
       const user = authenticate(context);
 
       const newSeason = new Season({
-        ...data,
-        createAt: new Date().toISOString(),
-        createdBy: user.id,
-        admins: [userID]
+        ...seasonInput,
+        createdAt: new Date().toISOString(),
+        admins: [user.id]
       });
 
       const season = await newSeason.save();
-      context.pubSub.publish('NEW_SEASON', {
-        newSeason: season
-      });
+      // handle if season save fails
+      const league = await League.findByIdAndUpdate(
+        seasonInput.league,
+        {
+          $push: {"seasons": season.id}
+        }
+      );
+      // handle error
+      console.log('updated league:  ', league);
       return season;
     }
   },

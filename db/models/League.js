@@ -10,7 +10,7 @@ const leagueSchema = new Schema({
   sport: String,
   seasons: [{
     type: Schema.Types.ObjectId,
-    ref: 'season'
+    ref: 'Season'
   }],
   admins: [{
     type: Schema.Types.ObjectId,
