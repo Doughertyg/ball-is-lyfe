@@ -44,6 +44,7 @@
     "mongoose": "^5.13.14",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
+    "react-is": "^18.1.0",
     "resolve-url-loader": "^3.1.1",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.3",
@@ -60,6 +61,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.10",
     "body-parser": "^1.19.0",
+    "dayjs": "^1.11.2",
     "express": "^4.17.1",
     "graphql-subscriptions": "^2.0.0",
     "jwt-decode": "^3.1.2",

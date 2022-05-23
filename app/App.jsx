@@ -17,8 +17,8 @@ import {CommonPageLayout} from './styled-components/common';
 import League from './pages/league/LeaguePage.jsx';
 
 const Wrapper = styled.div`
-  background-color: rgba(0, 0, 155, 0.01);
-  height: 100vh;
+  background-color: white;
+  height: 100%;
   width: 100vw;
 `;
 

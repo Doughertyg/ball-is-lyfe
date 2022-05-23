@@ -6,6 +6,7 @@ import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import Card from '../../components/Card.jsx';
+import dayjs from 'dayjs';
 
 
 const FETCH_LEAGUE_QUERY = gql`
@@ -20,7 +21,11 @@ const FETCH_LEAGUE_QUERY = gql`
       description
       profilePicture
       seasons {
+        id
         name
+        description
+        seasonEnd
+        seasonStart
       }
       sport
       location
@@ -110,19 +115,25 @@ const League = ({match}) => {
             <SectionHeadingText margin="20px 12px 20px 0">Recent Seasons</SectionHeadingText>
             {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push(`/league/${leagueID}/season/new`)} />}
           </FlexContainer>
-          {leagueData?.getLeaguesByUser?.length > 0 ?
+          <FlexContainer justify="start" overFlow="scroll" width="100%">
+          {leagueData?.getLeagueByID?.seasons.length > 0 ?
             leagueData?.getLeagueByID?.seasons?.map((season, idx) => {
+              const start = dayjs(season?.seasonStart).format('MMM YYYY');
+              const end = dayjs(season?.seasonEnd).format('MMM YYYY');
               return (
                 <Card
                   body={season?.description}
                   key={idx}
-                  subTitle={season?.start + ' - ' + seasons?.end}
+                  subTitle={start + ' - ' + end}
                   title={season?.name}
+                  margin="0 20px 0 0"
+                  onClick={() => {history.push(`/season/${season.id}`)}}
                 />
               )
           }) :
             <DetailsText>No Seasons</DetailsText>
           }
+           </FlexContainer>
           {/* <Divider marginBottom="12px" />
           <SectionHeadingText>Stat Leaders</SectionHeadingText>
             :: :: :: :: stat cards :: :: :: :: 

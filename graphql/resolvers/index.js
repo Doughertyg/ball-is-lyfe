@@ -13,7 +13,8 @@ module.exports = {
   },
   Query: {
     ...postResolvers.Query,
-    ...leagueResolvers.Query
+    ...leagueResolvers.Query,
+    ...seasonResolvers.Query,
   },
   Mutation: {
     ...userResolvers.Mutation,

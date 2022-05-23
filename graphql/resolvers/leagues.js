@@ -10,10 +10,10 @@ module.exports = {
       try {
         const leagues = await League.find(league => league != null && league.players != null && league.players.includes(userID))
           .sort({ createdAt: -1 }).populate('admins').exec();
-        console.log('leagues in query: ', leagues);
+        console.log('returning leagues:  ');
         return leagues;
       } catch (err) {
-        console.log('error queryingf leagues');
+        console.log('error in getLeaguesByUser. err: ', err);
         throw new Error(err);
       }
     },

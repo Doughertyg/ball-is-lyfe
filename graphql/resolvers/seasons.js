@@ -8,14 +8,20 @@ module.exports = {
   Query: {
     async getSeasonsByUser(_, {userID}) {
       try {
-        const seasons = Season.find(season => season.players.includes(userID))
-          .sort({ createdAt: -1 });
-        return seasons || [];
+        const seasons = await Season.find(season =>
+          season != null &&
+          season.players != null &&
+          season.players.includes(userID) ||
+          season != null &&
+          season.admins != null &&
+          season.admins.includes(userID)
+        ).sort({createdAt: -1}).exec();
+        return seasons;
       } catch (err) {
         throw new Error(err);
       }
     },
-    async getSeason(_, { seasonID }) {
+    async getSeasonByID(_, { seasonID }) {
       try {
         const season = Season.findById(seasonID);
         if (season) {

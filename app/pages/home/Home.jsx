@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -11,6 +11,9 @@ import {CenteredContainer, DetailsText, FlexContainer, PageHeader} from '../../s
 import PostForm from '../../components/PostForm.jsx';
 import { FETCH_POSTS_QUERY } from '../../../graphql/queries/graphql';
 import Icon from '../../components/Icon.jsx';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+dayjs.extend(isBetween);
 
 const FETCH_LEAGUES_QUERY = gql`
   query($userID: ID!) {
@@ -28,12 +31,10 @@ const FETCH_LEAGUES_QUERY = gql`
 const FETCH_SEASONS_QUERY = gql`
   query($userID: ID!) {
     getSeasonsByUser(userID: $userID) {
+      name
+      description
       seasonStart
       seasonEnd
-      league {
-        name
-        sport
-      }
     }
   }
 `;
@@ -91,35 +92,71 @@ const FETCH_TEAMS_QUERY = gql`
  */
 function Home(props) {
   const { user } = useContext(AuthContext);
-  console.log('user: ', user);
   const history = useHistory();
   if (user == null) {
     history.push('/login');
   }
 
-  const data = useQuery(FETCH_LEAGUES_QUERY, {
+  const {
+    loading: loadingLeagues,
+    data: leagueData,
+    error: leagueQueryError
+  } = useQuery(FETCH_LEAGUES_QUERY, {
     variables: {userID: user?.id}
   });
-  const { loading: loadingSeasons, data: seasonData } = useQuery(FETCH_SEASONS_QUERY);
-  const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
-  // const { loading, data } = useQuery(FETCH_POSTS_QUERY);
 
-  console.log('leagueData: ', data);
-  const {loadingLeagues, data: leagueData } = data;
+  const {
+    loading: loadingSeasons,
+    data: seasonData,
+    error: seasonQueryError
+  } = useQuery(FETCH_SEASONS_QUERY, {
+    variables: {userID: user?.id}
+  });
+  
+  const activeSeasons = useMemo(() => {
+    return seasonData?.getSeasonsByUser?.filter(season => {
+      return dayjs().isBetween(season.seasonStart, season.seasonEnd);
+    }) ?? [];
+  }, [seasonData]);
+
+  const pastSeasons = useMemo(() => {
+    return seasonData?.getSeasonsByUser?.filter(season => {
+      return !dayjs().isBetween(season.seasonStart, season.seasonEnd) &&
+      dayjs().isAfter(season.seasonEnd);
+    }) ?? [];
+  }, [seasonData]);
+
+  const futureSeasons = useMemo(() => {
+    return seasonData?.getSeasonsByUser?.filter(season => {
+      return !dayjs().isBetween(season.seasonStart, season.seasonEnd) &&
+      dayjs().isBefore(season.seasonStart);
+    }) ?? [];
+  }, [seasonData]);
+
+  const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
+
+  if (seasonQueryError) {
+    console.log('error:  ', JSON.stringify(seasonQueryError, null, 2))
+  }
   
   return (
     <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start">
       <PageHeader>Active seasons</PageHeader>
       <FlexContainer justify="start" overFlow="scroll" width="100%">
-        {loadingSeasons ?
-          (<h1>LOADING...</h1>) :
-          seasonData?.getSeasonsByUser?.length > 0 ?
-          seasonData?.getSeasonsByUser?.map(post => {
+        {loadingSeasons ? <h1>LOADING...</h1> :
+          activeSeasons?.length > 0 ?
+          activeSeasons?.map(season => {
             return (
-              <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
+              <Card
+                body={season.description}
+                key={season.id}
+                margin="0 20px 0 0"
+                subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
+                title={season.name}
+              />
             )
           }) :
-          <DetailsText>No Seasons</DetailsText>
+          <DetailsText>No active seasons</DetailsText>
         }
       </FlexContainer>
       <FlexContainer alignItems="center">
@@ -135,11 +172,49 @@ function Home(props) {
                   body={league.description ?? ''}
                   onClick={() => history.push(`/league/${league._id}`)}
                   subTitle={`${league.location} - ${league.sport}`}
-                  title={league.name} 
+                  title={league.name}
+                  margin="0 20px 0 0"
+                  key={league._id}
                 />
               )
             }) :
             <DetailsText>No Leagues</DetailsText>
+        }
+      </FlexContainer>
+      <PageHeader>Past seasons</PageHeader>
+      <FlexContainer justify="start" overFlow="scroll" width="100%">
+        {loadingSeasons ? <h1>LOADING...</h1> :
+          pastSeasons?.length > 0 ?
+          pastSeasons?.map(season => {
+            return (
+              <Card
+                body={season.description}
+                key={season.id}
+                margin="0 20px 0 0"
+                subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
+                title={season.name}
+              />
+            )
+          }) :
+          <DetailsText>No past seasons</DetailsText>
+        }
+      </FlexContainer>
+      <PageHeader>Upcoming seasons</PageHeader>
+      <FlexContainer justify="start" overFlow="scroll" width="100%">
+        {loadingSeasons ? <h1>LOADING...</h1> :
+          futureSeasons?.length > 0 ?
+          futureSeasons?.map(season => {
+            return (
+              <Card
+                body={season.description}
+                key={season.id}
+                margin="0 20px 0 0"
+                subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
+                title={season.name}
+              />
+            )
+          }) :
+          <DetailsText>No upcoming seasons</DetailsText>
         }
       </FlexContainer>
       <FlexContainer alignItems="center">
