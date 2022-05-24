@@ -54,6 +54,7 @@ export const FlexContainer = styled.div`
 align-content: ${props => props.alignContent ?? 'center'};
 align-items: ${props => props.alignItems ?? "initial"};
 display: flex;
+height: ${props => props.height ?? 'auto'};
 margin: ${props => props.margin ?? 'initial'};
 margin-bottom: ${props => props.marginBottom ?? 'initial'};
 margin-top: ${props => props.marginTop ?? 'initial'};
@@ -86,4 +87,13 @@ white-space: pre-line;
 display: -webkit-box;
 -webkit-line-clamp: 5;
 -webkit-box-orient: vertical; 
+`;
+
+export const ModalStyle = styled.div`
+  position: absolute;
+  border-radius: 6px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);
+  background-color: white;
+  width: 100%;
+  z-index: 100;
 `;

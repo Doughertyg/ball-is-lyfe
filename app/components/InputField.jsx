@@ -17,6 +17,7 @@ const ContentWrapper = styled.div`
 `;
 
 function InputField({
+  autoComplete = true,
   errors,
   disabled,
   height,
@@ -34,6 +35,7 @@ function InputField({
     <InputWrapper>
       <ContentWrapper>
         <Input 
+          autoComplete={autoComplete ? 'on' : 'off'}
           type={type ?? "text"}
           id={name ?? "username"}
           errors={errors}

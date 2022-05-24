@@ -1,4 +1,5 @@
 const User = require('../../db/models/User');
+const League = require('../../db/models/League');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError} = require('apollo-server');
@@ -81,6 +82,21 @@ module.exports = {
         ...res._doc,
         id: res._id,
         token
+      }
+    }
+  },
+  Query: {
+    async getPlayersInLeague(_, {leagueID}) {
+      try {
+        const league = await League.findById(leagueID)
+          .populate('players').exec();
+
+        if (league == null) {
+          throw new Error('League unexpectedly null');
+        }
+        return league.players || [];
+      } catch (err) {
+        throw new Error(err);
       }
     }
   }

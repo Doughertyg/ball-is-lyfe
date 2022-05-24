@@ -15,6 +15,7 @@ module.exports = {
     ...postResolvers.Query,
     ...leagueResolvers.Query,
     ...seasonResolvers.Query,
+    ...userResolvers.Query,
   },
   Mutation: {
     ...userResolvers.Mutation,

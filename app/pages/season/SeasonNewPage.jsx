@@ -11,7 +11,13 @@ import {
   SectionHeadingText
 } from '../../styled-components/common';
 import Button from '../../components/Button.jsx';
+import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 import useNewSeasonFormHook from '../../hooks/useNewSeasonFormHook';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  height: 100vh;
+`;
 
 const CREATE_SEASON = gql`
   mutation createSeason(
@@ -106,24 +112,28 @@ const SeasonNewPage = ({ match }) => {
   console.log('start: ', inputs.start);
 
   return (
-    <FlexContainer alignItems="center" direction="column" width="100%">
-      <PageHeader>New Season</PageHeader>
-      <Divider />
-      <FlexContainer direction="column">
-        <SectionHeadingText margin="8px 0">Name</SectionHeadingText>
-        <InputField errors={errors.name ?? null} name="name" onChange={setters.setName} width="700px" value={inputs.name} />
-        <SectionHeadingText margin="8px 0">Description</SectionHeadingText>
-        <InputField errors={errors.description ?? null} name="description" onChange={setters.setDescription} width="700px" value={inputs.description} />
-        <SectionHeadingText margin="8px 0">Start date</SectionHeadingText>
-        <InputField errors={errors.start ?? null} onChange={setters.setStart} width="700px" value={inputs.sport} type="date" />
-        <SectionHeadingText margin="8px 0">End date</SectionHeadingText>
-        <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="700px" value={inputs.location} type="date" />
-        <FlexContainer marginTop="12px">
-          <Button label="Cancel" onClick={() => {history.goBack()}} />
-          <Button label="Create season" onClick={onSubmit} />
+    <Wrapper>
+      <FlexContainer alignItems="center" direction="column" height="100vh" width="100%">
+        <PageHeader>New Season</PageHeader>
+        <Divider />
+        <FlexContainer direction="column" height="100%" justify="flex-start">
+          <SectionHeadingText margin="8px 0">Name</SectionHeadingText>
+          <InputField errors={errors.name ?? null} name="name" onChange={setters.setName} width="700px" value={inputs.name} />
+          <SectionHeadingText margin="8px 0">Description</SectionHeadingText>
+          <InputField errors={errors.description ?? null} name="description" onChange={setters.setDescription} width="700px" value={inputs.description} />
+          <SectionHeadingText margin="8px 0">Start date</SectionHeadingText>
+          <InputField errors={errors.start ?? null} onChange={setters.setStart} width="700px" value={inputs.sport} type="date" />
+          <SectionHeadingText margin="8px 0">End date</SectionHeadingText>
+          <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="700px" value={inputs.location} type="date" />
+          <SectionHeadingText margin="8px 0">Players</SectionHeadingText>
+          <PlayerSearchField leagueID={leagueID} />
+          <FlexContainer marginTop="12px">
+            <Button label="Cancel" onClick={() => {history.goBack()}} />
+            <Button label="Create season" onClick={onSubmit} />
+          </FlexContainer>
         </FlexContainer>
       </FlexContainer>
-    </FlexContainer>
+    </Wrapper>
   )
 }
 

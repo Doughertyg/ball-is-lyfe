@@ -8,9 +8,13 @@ module.exports = {
     async getLeaguesByUser(_, { userID }) {
       console.log('getLeaguesByUser. userID: ', userID);
       try {
-        const leagues = await League.find(league => league != null && league.players != null && league.players.includes(userID))
-          .sort({ createdAt: -1 }).populate('admins').exec();
-        console.log('returning leagues:  ');
+        const leagues = await League.find({
+            players: {$in: [userID]}
+          })
+          .sort({ createdAt: -1 })
+          .populate('admins')
+          .exec();
+        console.log('returning leagues:  ', leagues);
         return leagues;
       } catch (err) {
         console.log('error in getLeaguesByUser. err: ', err);
