@@ -5,6 +5,8 @@ import { AuthContext } from '../../context/auth';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 import {
+  BodyText,
+  DetailsText,
   Divider,
   FlexContainer,
   PageHeader,
@@ -17,6 +19,11 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   height: 100vh;
+`;
+
+const RowWrapper = styled.div`
+  padding: 8px;
+  padding-bottom: 0;
 `;
 
 const CREATE_SEASON = gql`
@@ -71,6 +78,7 @@ const CREATE_SEASON = gql`
  */
 const SeasonNewPage = ({ match }) => {
   const [errors, setErrors] = useState({});
+  const [players, setPlayers] = useState({});
   const { user } = useContext(AuthContext);
   const history = useHistory();
   const leagueID = match.params?.leagueID;
@@ -109,7 +117,31 @@ const SeasonNewPage = ({ match }) => {
     }
   }
 
-  console.log('start: ', inputs.start);
+  const onSelectPlayer = (player) => {
+    const idxOfPlayer = inputs.players.indexOf(player.id);
+    console.log('selected player: ', player);
+
+    if (idxOfPlayer === -1) {
+      // set values in input and in obj map
+      const newPlayersArray = [...inputs.players];
+      newPlayersArray.push(player.id);
+      const newPlayersMap = {...players};
+      newPlayersMap[player.id] = player;
+      console.log('new stuff: ', newPlayersArray, ' map: ', newPlayersMap);
+      setPlayers(newPlayersMap);
+      setters.setPlayers(newPlayersArray);
+    } else {
+      const newPlayersArray = [...inputs.players];
+      newPlayersArray.splice(idxOfPlayer, 1);
+      const newPlayersMap = {...players};
+      delete newPlayersMap[player.id];
+      
+      setPlayers(newPlayersMap);
+      setters.setPlayers(newPlayersArray);
+    }
+  }
+
+  console.log('start: ', inputs, '   map:  ', players);
 
   return (
     <Wrapper>
@@ -126,7 +158,20 @@ const SeasonNewPage = ({ match }) => {
           <SectionHeadingText margin="8px 0">End date</SectionHeadingText>
           <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="700px" value={inputs.location} type="date" />
           <SectionHeadingText margin="8px 0">Players</SectionHeadingText>
-          <PlayerSearchField leagueID={leagueID} />
+          <PlayerSearchField leagueID={leagueID} onClick={onSelectPlayer} />
+          {Object.values(players).map((player, idx) => (
+            <div key={player.id}>
+              {idx !== 0 && <Divider marginBottom="10px" />}
+              <RowWrapper >
+                <FlexContainer alignItems="center" justify="space-between">
+                  <BodyText>
+                    {player.username}
+                  </BodyText>
+                    <DetailsText onClick={() => onSelectPlayer(player)}>remove</DetailsText>
+                </FlexContainer>
+              </RowWrapper>
+            </div>
+          ))}
           <FlexContainer marginTop="12px">
             <Button label="Cancel" onClick={() => {history.goBack()}} />
             <Button label="Create season" onClick={onSubmit} />

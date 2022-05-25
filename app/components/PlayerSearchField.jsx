@@ -3,7 +3,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import gql from 'graphql-tag';
 import InputField from './InputField.jsx';
 import styled from 'styled-components';
-import { BodyText, Divider, ModalStyle } from '../styled-components/common.js';
+import { BodyText, DetailsText, Divider, FlexContainer, ModalStyle } from '../styled-components/common.js';
 
 const ModalWrapper = styled.div`
   position: relative;
@@ -19,6 +19,7 @@ const ContentWrapper = styled.div`
  const FETCH_LEAGUE_PLAYERS_QUERY = gql`
   query($leagueID: ID!) {
     getPlayersInLeague(leagueID: $leagueID) {
+      id
       username
     }
   }
@@ -37,8 +38,9 @@ const ContentWrapper = styled.div`
  * 
  * 
  */
-export default function PlayerSearchField({leagueID}) {
+export default function PlayerSearchField({leagueID, onClick}) {
   const [input, setInput] = useState('');
+  const [selected, setSelected] = useState({});
   const { loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
     variables: {leagueID: leagueID}
   });
@@ -48,13 +50,27 @@ export default function PlayerSearchField({leagueID}) {
     console.log('error querying for players in the PlayerSearchField. Error: ', error);
   }
 
-  const dummy = [{username: 'sasquatch'}, {username: 'marc'}, {username: 'randall stevens'}, {username: 'kevin'}];
+  const dummy = [{username: 'sasquatch', id: 'dfslklk23lk'}, {username: 'marc', id: 'lkj234lkjlknlkn'}, {username: 'randall stevens', id: 'wef3sdfsdf4354'}, {username: 'kevin', id: '23fer4fwefsdfs'}];
 
   const results = useMemo(() => {
     return input != '' ? dummy.filter(
       player => player?.username?.includes(input)
     ) : []
   }, [data, input]);
+
+  const onRowClick = (player) => {
+    if (selected[player.id]) {
+      const newSelected = {...selected};
+      delete newSelected[player.id];
+      setSelected(newSelected);
+    } else {
+      const newSelected = {...selected};
+      newSelected[player.id] = true;
+      setSelected(newSelected);
+    }
+
+    onClick?.(player);
+  }
 
   return (
     <>
@@ -69,14 +85,24 @@ export default function PlayerSearchField({leagueID}) {
         <ModalWrapper>
           <ModalStyle>
             <ContentWrapper>
-            {results?.map((player, idx) => (
-              <>
+            {results?.map((player, idx) => {
+              console.log('player: ', player, '   selected: ', selected);
+              return (
+              <div key={idx} onClick={() => onRowClick(player)}>
                 {idx !== 0 && <Divider marginBottom="10px" />}
-                <BodyText>
-                  {player.username}
-                </BodyText>
-              </>
-            ))}
+                <FlexContainer justify="space-between">
+                  <BodyText>
+                    {player.username}
+                  </BodyText>
+                  {selected[player.id] ? (
+                    <DetailsText>deselect</DetailsText>
+                  ) :
+                  (
+                    <DetailsText>select</DetailsText>
+                  )}
+                </FlexContainer>
+              </div>);
+            })}
             </ContentWrapper> 
           </ModalStyle>
         </ModalWrapper>
