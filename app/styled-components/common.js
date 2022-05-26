@@ -39,7 +39,7 @@ export const Divider = styled.div`
   width: 100%;
   height: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
+  margin-top: ${props => props.marginTop ?? "10px"};
   margin-bottom: ${props => props.marginBottom ?? 0};
 `;
 
@@ -63,6 +63,15 @@ justify-content: ${props => props.justify ?? 'center'};
 padding-top: ${props => props.paddingTop ?? '0px'};
 width: ${props => props.width ?? 'auto'};
 overflow: ${props => props.overFlow ?? 'auto'};
+`;
+
+export const ScrollableContainer = styled.div`
+border-radius: ${props => props.borderRadius ?? "8px"};
+border: ${props => props.border ?? "1px solid rgba(0, 0, 0, 0.1)"};
+max-height: ${props => props.maxHeight ?? "88px"};
+height: ${props => props.height ?? "auto"};
+overflow: scroll;
+width: ${props => props.width ?? "auto"};
 `;
 
 export const PageHeader = styled.h1`

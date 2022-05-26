@@ -10,7 +10,8 @@ import {
   Divider,
   FlexContainer,
   PageHeader,
-  SectionHeadingText
+  SectionHeadingText,
+  ScrollableContainer
 } from '../../styled-components/common';
 import Button from '../../components/Button.jsx';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
@@ -18,12 +19,11 @@ import useNewSeasonFormHook from '../../hooks/useNewSeasonFormHook';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: auto;
 `;
 
 const RowWrapper = styled.div`
   padding: 8px;
-  padding-bottom: 0;
 `;
 
 const CREATE_SEASON = gql`
@@ -145,10 +145,11 @@ const SeasonNewPage = ({ match }) => {
 
   return (
     <Wrapper>
-      <FlexContainer alignItems="center" direction="column" height="100vh" width="100%">
+      <FlexContainer alignItems="center" direction="column" justify="start" width="100%">
         <PageHeader>New Season</PageHeader>
         <Divider />
-        <FlexContainer direction="column" height="100%" justify="flex-start">
+        <ScrollableContainer border="none" borderRadius="0" maxHeight="none">
+        <FlexContainer direction="column" justify="flex-start">
           <SectionHeadingText margin="8px 0">Name</SectionHeadingText>
           <InputField errors={errors.name ?? null} name="name" onChange={setters.setName} width="700px" value={inputs.name} />
           <SectionHeadingText margin="8px 0">Description</SectionHeadingText>
@@ -159,24 +160,28 @@ const SeasonNewPage = ({ match }) => {
           <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="700px" value={inputs.location} type="date" />
           <SectionHeadingText margin="8px 0">Players</SectionHeadingText>
           <PlayerSearchField leagueID={leagueID} onClick={onSelectPlayer} />
-          {Object.values(players).map((player, idx) => (
-            <div key={player.id}>
-              {idx !== 0 && <Divider marginBottom="10px" />}
-              <RowWrapper >
-                <FlexContainer alignItems="center" justify="space-between">
-                  <BodyText>
-                    {player.username}
-                  </BodyText>
-                    <DetailsText onClick={() => onSelectPlayer(player)}>remove</DetailsText>
-                </FlexContainer>
-              </RowWrapper>
-            </div>
-          ))}
+          {Object.keys(players).length > 0 && (
+          <ScrollableContainer>
+            {Object.values(players).map((player, idx) => (
+              <div key={player.id}>
+                {idx !== 0 && <Divider marginTop="0" />}
+                <RowWrapper >
+                  <FlexContainer alignItems="center" justify="space-between">
+                    <BodyText>
+                      {player.username}
+                    </BodyText>
+                      <DetailsText onClick={() => onSelectPlayer(player)}>remove</DetailsText>
+                  </FlexContainer>
+                </RowWrapper>
+              </div>
+            ))}
+          </ScrollableContainer>)}
           <FlexContainer marginTop="12px">
             <Button label="Cancel" onClick={() => {history.goBack()}} />
             <Button label="Create season" onClick={onSubmit} />
           </FlexContainer>
         </FlexContainer>
+        </ScrollableContainer>
       </FlexContainer>
     </Wrapper>
   )
