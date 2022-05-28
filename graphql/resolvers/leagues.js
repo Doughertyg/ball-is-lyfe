@@ -6,7 +6,6 @@ const authenticate = require('../../util/authenticate');
 module.exports = {
   Query: {
     async getLeaguesByUser(_, { userID }) {
-      console.log('getLeaguesByUser. userID: ', userID);
       try {
         const leagues = await League.find({
             players: {$in: [userID]}
@@ -14,34 +13,51 @@ module.exports = {
           .sort({ createdAt: -1 })
           .populate('admins')
           .exec();
-        console.log('returning leagues:  ', leagues);
         return leagues;
       } catch (err) {
-        console.log('error in getLeaguesByUser. err: ', err);
         throw new Error(err);
       }
     },
     async getLeagueByID(_, { leagueID }) {
-      console.log('getLeagueByID');
       try {
-        console.log('top of query');
         const league =
           await League.findById(leagueID)
             .populate('admins')
             .populate('seasons')
             .populate('players')
             .exec();
-        console.log('league in query: ', league);
         return league;
       } catch (err) {
-        console.log('error queryin league! err: ', err);
         throw new Error(err);
       }
     }
   },
   Mutation: {
+    async addPlayersToLeague(_, { leagueID, playersToAdd }, context) {
+      const league = await League.findById(leagueID).exec();
+      console.log('league in mutation: ', league);
+
+      try {
+        playersToAdd.forEach(playerID => {
+          if (
+            league.players != null &&
+            league.players.includes(playerID)
+          ) {
+            throw new Error('Cannot add a player that is already in the league');
+          }
+
+          if (league.players != null) {
+            league.players.push(playerID);
+            league.save();
+          }
+        })
+      } catch (err) {
+        throw new Error(err);
+      }
+      
+      return league;
+    },
     async createLeague(_, { leagueInput }, context) {
-      console.log('league input: ', leagueInput);
       const user = authenticate(context);
 
       const newLeague = new League({

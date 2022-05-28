@@ -7,6 +7,7 @@ module.exports = gql`
     getLeaguesByUser(userID: ID!): [League]
     getLeagueByID(leagueID: ID!): League
     getPlayersInLeague(leagueID: ID): [User]
+    getPlayersNotInLeague(leagueID: ID): [User]
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!): Season
   }
@@ -188,6 +189,7 @@ module.exports = gql`
     seasonStart: String!
   }
   type Mutation {
+    addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
     createPost(body: String!): Post!

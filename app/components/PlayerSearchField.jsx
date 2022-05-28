@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import React, {useEffect, useMemo, useState} from 'react';
 import gql from 'graphql-tag';
 import InputField from './InputField.jsx';
@@ -16,14 +16,18 @@ const ContentWrapper = styled.div`
   box-sizing: border-box;
 `;
 
- const FETCH_LEAGUE_PLAYERS_QUERY = gql`
+const FETCH_LEAGUE_PLAYERS_QUERY = gql`
   query($leagueID: ID) {
     getPlayersInLeague(leagueID: $leagueID) {
       id
       username
     }
+    getPlayersNotInLeague(leagueID: $leagueID) {
+      id
+      username
+    }
   }
- `;
+`;
 
 /**
  * Component for searching for players in a given league
@@ -38,9 +42,14 @@ const ContentWrapper = styled.div`
  * 
  * 
  */
-export default function PlayerSearchField({leagueID, onClick}) {
+export default function PlayerSearchField({
+  excludeLeague = false,
+  height,
+  leagueID,
+  onClick,
+  selected = {}
+}) {
   const [input, setInput] = useState('');
-  const [selected, setSelected] = useState({});
   const { loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
     variables: {leagueID: leagueID}
   });
@@ -50,10 +59,11 @@ export default function PlayerSearchField({leagueID, onClick}) {
     console.log('error querying for players in the PlayerSearchField. Error: ', error);
   }
 
-  const dummyData = [{username: 'sasquatch', id: 'dfslklk23lk'}, {username: 'marc', id: 'lkj234lkjlknlkn'}, {username: 'randall stevens', id: 'wef3sdfsdf4354'}, {username: 'kevin', id: '23fer4fwefsdfs'}];
-
+  const source = excludeLeague ?
+    data?.getPlayersNotInLeague
+    : data?.getPlayersInLeague;
   const results = useMemo(() => {
-    return input != '' ? data?.getPlayersInLeague?.filter(
+    return input != '' ? source?.filter(
       player => player?.username?.includes(input)
     ) ?? [] : []
   }, [data, input]);
@@ -76,6 +86,7 @@ export default function PlayerSearchField({leagueID, onClick}) {
     <>
       <InputField
         autoComplete={false}
+        height={height}
         onChange={setInput}
         placeholder="Search for players to add..."
         value={input}
@@ -88,7 +99,7 @@ export default function PlayerSearchField({leagueID, onClick}) {
             {results?.map((player, idx) => {
               console.log('player: ', player, '   selected: ', selected);
               return (
-              <div key={idx} onClick={() => onRowClick(player)}>
+              <div key={idx} onClick={() => onClick(player)}>
                 {idx !== 0 && <Divider marginBottom="10px" />}
                 <FlexContainer justify="space-between">
                   <BodyText>
@@ -107,6 +118,15 @@ export default function PlayerSearchField({leagueID, onClick}) {
           </ModalStyle>
         </ModalWrapper>
       )}
+      {source?.length === 0 || source == null ? (
+        <ModalWrapper>
+          <ModalStyle>
+            <ContentWrapper>
+              <DetailsText>No players to add.</DetailsText>
+            </ContentWrapper> 
+          </ModalStyle>
+        </ModalWrapper>
+      ) : null}
     </>
   )
 }

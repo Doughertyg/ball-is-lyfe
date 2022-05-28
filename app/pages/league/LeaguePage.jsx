@@ -1,13 +1,35 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import Icon from '../../components/Icon.jsx';
 import { AuthContext } from '../../context/auth';
-import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../../styled-components/common';
+import {
+  BodyText,
+  DetailsText,
+  Divider,
+  FlexContainer,
+  PageHeader,
+  SectionHeadingText,
+  ScrollableContainer
+} from '../../styled-components/common';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import Card from '../../components/Card.jsx';
+import Button from '../../components/Button.jsx';
 import dayjs from 'dayjs';
+import styled from 'styled-components';
+import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 
+const SearchWrapper = styled.div`
+  height: ${props => props.height ?? 0};
+  max-width: 400px;
+  overflow: ${props => props.overflow ?? 'hidden'};
+  transition: height .24s;
+  transition-timing-function: ease-out;
+`;
+
+const RowWrapper = styled.div`
+  padding: 8px;
+`;
 
 const FETCH_LEAGUE_QUERY = gql`
   query($leagueID: ID!) {
@@ -29,6 +51,25 @@ const FETCH_LEAGUE_QUERY = gql`
       }
       sport
       location
+    }
+    getPlayersInLeague(leagueID: $leagueID) {
+      id
+      username
+    }
+  }
+`;
+
+const ADD_PLAYERS_TO_LEAGUE_MUTATION = gql`
+  mutation addPlayersToLeague(
+    $leagueID: ID!,
+    $playersToAdd: [ID!]
+  ) {
+    addPlayersToLeague(
+      leagueID: $leagueID,
+      playersToAdd: $playersToAdd
+    ) {
+      name
+      _id
     }
   }
 `;
@@ -69,6 +110,8 @@ const League = ({match}) => {
   const { user } = useContext(AuthContext);
   const leagueID = match.params?.leagueID;
   const history = useHistory();
+  const [searchExpanded, setSearchExpanded] = useState(false);
+  const [players, setPlayers] = useState({});
   console.log('league page. id: ', leagueID);
 
   if (user == null) {
@@ -81,6 +124,20 @@ const League = ({match}) => {
     history.push('/');
   }
 
+  const [addPlayersToLeague, {isSubmitting}] = useMutation(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
+    onCompleted: (res) => {
+      console.log('mutation completed!!! res: ', res);
+      history.push(`/league/${leagueID}`);
+    },
+    onError: (error) => {
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+    },
+    variables: {
+      leagueID,
+      playersToAdd: Object.keys(players)
+    }
+  })
+
   const { loading, data: leagueData, error} = useQuery(FETCH_LEAGUE_QUERY, {
     variables: {leagueID: leagueID}
   });
@@ -92,8 +149,20 @@ const League = ({match}) => {
     return admin.id === user.id ? true : acc;
   }, false) ?? false;
 
+  const onSelectPlayer = (player) => {
+    if (!players[player.id]) {
+      const newPlayersMap = {...players};
+      newPlayersMap[player.id] = player;
+      setPlayers(newPlayersMap);
+    } else {
+      const newPlayersMap = {...players};
+      delete newPlayersMap[player.id];      
+      setPlayers(newPlayersMap);
+    }
+  }
+
   return (
-    <FlexContainer direction="column">
+    <FlexContainer direction="column" justify="flex-start">
       {loading ? <h1>Loading...</h1> : (
         <>
           <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.name}</PageHeader>
@@ -115,7 +184,7 @@ const League = ({match}) => {
             <SectionHeadingText margin="20px 12px 20px 0">Recent Seasons</SectionHeadingText>
             {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push(`/league/${leagueID}/season/new`)} />}
           </FlexContainer>
-          <FlexContainer justify="start" overFlow="scroll" width="100%">
+          <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
           {leagueData?.getLeagueByID?.seasons.length > 0 ?
             leagueData?.getLeagueByID?.seasons?.map((season, idx) => {
               const start = dayjs(season?.seasonStart).format('MMM YYYY');
@@ -134,6 +203,50 @@ const League = ({match}) => {
             <DetailsText>No Seasons</DetailsText>
           }
            </FlexContainer>
+           <FlexContainer alignItems="center" justify="flex-start">
+              <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
+              {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setSearchExpanded(!searchExpanded)} />}
+          </FlexContainer>
+          <SearchWrapper height={searchExpanded ? '100%' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
+            <PlayerSearchField excludeLeague leagueID={leagueID} onClick={onSelectPlayer} selected={players} />
+          </SearchWrapper>
+          {Object.keys(players).length > 0 && (
+            <>
+              <ScrollableContainer>
+                {Object.values(players).map((player, idx) => (
+                  <div key={player.id}>
+                    {idx !== 0 && <Divider marginTop="0" />}
+                    <RowWrapper >
+                      <FlexContainer alignItems="center" justify="space-between">
+                        <BodyText>
+                          {player.username}
+                        </BodyText>
+                          <DetailsText onClick={() => onSelectPlayer(player)}>remove</DetailsText>
+                      </FlexContainer>
+                    </RowWrapper>
+                  </div>
+                ))}
+              </ScrollableContainer>
+              <FlexContainer marginTop="12px">
+                <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setPlayers({})} />
+                <Button isLoading={isSubmitting} label="Add players to league" onClick={() => addPlayersToLeague()} />
+              </FlexContainer>
+            </>)}
+          <FlexContainer justify="flex-start">
+          {leagueData?.getPlayersInLeague?.length > 0 ?
+            leagueData.getPlayersInLeague.map((player, idx) => {
+              return (
+                <Card
+                  key={idx}
+                  title={player.username}
+                  subTitle={player.position ?? ''}
+                  margin="0 20px 0 0"
+                />
+              )
+            }) :
+            <DetailsText>No players in league</DetailsText>
+          }
+          </FlexContainer>
           {/* <Divider marginBottom="12px" />
           <SectionHeadingText>Stat Leaders</SectionHeadingText>
             :: :: :: :: stat cards :: :: :: :: 

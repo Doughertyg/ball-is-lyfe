@@ -105,5 +105,5 @@ export const ModalStyle = styled.div`
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);
   background-color: white;
   width: 100%;
-  z-index: 100;
+  z-index: 1000;
 `;

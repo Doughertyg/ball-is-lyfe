@@ -103,6 +103,20 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+    async getPlayersNotInLeague(_, {leagueID}) {
+      try {
+        const league = await League.findById(leagueID).exec();
+
+        const players = await User.find().exec();
+        if (league == null) {
+          throw new Error('League unexpectedly null');
+        }
+
+        return players.filter(player => !league.players.includes(player.id));
+      } catch (err) {
+        throw new Error(err);
+      }
     }
   }
 }

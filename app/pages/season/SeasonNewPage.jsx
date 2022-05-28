@@ -159,7 +159,7 @@ const SeasonNewPage = ({ match }) => {
           <SectionHeadingText margin="8px 0">End date</SectionHeadingText>
           <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="700px" value={inputs.location} type="date" />
           <SectionHeadingText margin="8px 0">Players</SectionHeadingText>
-          <PlayerSearchField leagueID={leagueID} onClick={onSelectPlayer} />
+          <PlayerSearchField leagueID={leagueID} onClick={onSelectPlayer} selected={players} />
           {Object.keys(players).length > 0 && (
           <ScrollableContainer>
             {Object.values(players).map((player, idx) => (
