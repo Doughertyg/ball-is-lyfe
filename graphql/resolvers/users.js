@@ -88,6 +88,11 @@ module.exports = {
   Query: {
     async getPlayersInLeague(_, {leagueID}) {
       try {
+        // querying all players
+        if (leagueID == null) {
+          return await User.find().exec();
+        }
+        // query players by league
         const league = await League.findById(leagueID)
           .populate('players').exec();
 

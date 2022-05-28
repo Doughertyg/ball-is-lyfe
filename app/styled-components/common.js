@@ -19,6 +19,7 @@ vertical-align: middle;
 export const CommonPageLayout = styled.div`
   color: black !important;
   font-family: Arial !important;
+  height: 100vh;
   max-width: 1000px;
   margin: 0 auto;
 `;

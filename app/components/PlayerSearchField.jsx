@@ -17,7 +17,7 @@ const ContentWrapper = styled.div`
 `;
 
  const FETCH_LEAGUE_PLAYERS_QUERY = gql`
-  query($leagueID: ID!) {
+  query($leagueID: ID) {
     getPlayersInLeague(leagueID: $leagueID) {
       id
       username
@@ -50,12 +50,12 @@ export default function PlayerSearchField({leagueID, onClick}) {
     console.log('error querying for players in the PlayerSearchField. Error: ', error);
   }
 
-  const dummy = [{username: 'sasquatch', id: 'dfslklk23lk'}, {username: 'marc', id: 'lkj234lkjlknlkn'}, {username: 'randall stevens', id: 'wef3sdfsdf4354'}, {username: 'kevin', id: '23fer4fwefsdfs'}];
+  const dummyData = [{username: 'sasquatch', id: 'dfslklk23lk'}, {username: 'marc', id: 'lkj234lkjlknlkn'}, {username: 'randall stevens', id: 'wef3sdfsdf4354'}, {username: 'kevin', id: '23fer4fwefsdfs'}];
 
   const results = useMemo(() => {
-    return input != '' ? dummy.filter(
+    return input != '' ? data?.getPlayersInLeague?.filter(
       player => player?.username?.includes(input)
-    ) : []
+    ) ?? [] : []
   }, [data, input]);
 
   const onRowClick = (player) => {
