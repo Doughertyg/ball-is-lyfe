@@ -5,15 +5,10 @@ import Comment from '../icons/comment.svg';
 import Comments from '../icons/comments.svg';
 import Heart from '../icons/heart.svg';
 import Message from '../icons/message.svg';
+import Plus from '../icons/plus.svg'
+import StyledSVG from '../styled-components/icons/styledSVG.js';
 import Trash from '../icons/trash.svg';
 import { Clickable } from '../styled-components/interactive';
-
-const IconWrapper = styled.div`
-  fill: ${props => props.fill ?? 'black'};
-  height: ${props => props.height ?? "24px"};
-  margin: 4px;
-  width: ${props => props.width ?? "24px"};
-`;
 
 function SvgComponent({ icon, ...rest }) {
   switch (icon) {
@@ -27,23 +22,25 @@ function SvgComponent({ icon, ...rest }) {
       return <Comments {...rest} />
     case 'message':
       return <Message {...rest} />
+    case 'plus':
+      return <Plus {...rest} />
     case 'trash':
       return <Trash {...rest} />
   }
 }
 
-function Icon({ fill, height, icon, onClick, width}) {
+function Icon({ borderRadius, fill, height, icon, margin, onClick, width}) {
   return (
     onClick != null ? (
-      <Clickable onClick={onClick}>
-        <IconWrapper fill={fill} height={height} width={width}>
+      <Clickable borderRadius={borderRadius} onClick={onClick}>
+        <StyledSVG fill={fill} height={height} margin={margin} width={width}>
           <SvgComponent icon={icon} />
-        </IconWrapper>
+        </StyledSVG>
       </Clickable>
     ) : (
-      <IconWrapper fill={fill} height={height} width={width}>
+      <StyledSVG fill={fill} height={height} width={width}>
         <SvgComponent icon={icon} />
-      </IconWrapper>
+      </StyledSVG>
     )
   )
 }

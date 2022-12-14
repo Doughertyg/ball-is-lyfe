@@ -7,12 +7,15 @@ export const CardBody = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  padding-left: 0;
+  overflow: 'hidden';
+  padding-top: 16px;
+  text-overflow: 'elipsis';
+  white-space: 'nowrap';
   width: 100%;
 `;
 
 export const CardContentWrapper = styled.div`
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -21,14 +24,22 @@ export const CardContentWrapper = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-max-width: 400px;
+max-width: ${props => props.maxWidth ?? '400px'};
+background-color: white;
 border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
 border-radius: 8px;
+box-shadow: ${props => props.boxShadow ?? 'none'};
+box-sizing: border-box;
+cursor: ${props => props.onClick != null ? 'pointer' : 'default'};
 height: ${props => props.height ?? 'auto'};
 padding: 16px;
-margin: 0 auto;
+margin: ${props => props.margin ?? '0 auto'};
 margin-bottom: 4px;
 margin-top: ${props => props.marginTop ?? 0};
+${props => props.onClick ?
+  '&:hover {box-shadow: 0 0 15px rgba(0, 0, 0, 0.1)}'
+  : ''
+}
 `;
 
 
