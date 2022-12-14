@@ -5,21 +5,8 @@ const {model, Schema} = require('mongoose');
  *  A statistic using a stat unit
  *  e.g.: "Field Goal percentage"
  */
-const statUnitSchema = new Schema({
+const statSchema = new Schema({
   name: String,
-  createdAt: String,
-  player: {
-    type: Schema.Types.ObjectId,
-    ref: 'users'
-  },
-  team: {
-    type: Schema.Types.ObjectId,
-    ref: 'teams'
-  },
-  teamSeason: {
-    type: Schema.Types.ObjectId,
-    ref: 'teamSeasonInstance'
-  },
   statUnits: [{
     type: Schema.Types.ObjectId,
     ref: 'statUnit'
@@ -27,4 +14,4 @@ const statUnitSchema = new Schema({
   operations: [string]
 });
 
-module.exports = model('Stat', statUnitSchema);
+module.exports = model('Stat', statSchema);

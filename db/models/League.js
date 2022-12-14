@@ -5,19 +5,20 @@ const leagueSchema = new Schema({
   description: String,
   createdAt: String,
   profilePicture: String,
+  location: String,
   bannerPicture: String,
   sport: String,
   seasons: [{
     type: Schema.Types.ObjectId,
-    ref: 'season'
+    ref: 'Season'
   }],
   admins: [{
-      type: Schema.Types.ObjectId,
-      ref: 'users'
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }],
   players: [{
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: 'User'
   }]
 });
 

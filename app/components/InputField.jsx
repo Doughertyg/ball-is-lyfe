@@ -17,6 +17,7 @@ const ContentWrapper = styled.div`
 `;
 
 function InputField({
+  autoComplete = true,
   errors,
   disabled,
   height,
@@ -34,6 +35,7 @@ function InputField({
     <InputWrapper>
       <ContentWrapper>
         <Input 
+          autoComplete={autoComplete ? 'on' : 'off'}
           type={type ?? "text"}
           id={name ?? "username"}
           errors={errors}
@@ -42,7 +44,7 @@ function InputField({
           minLength={minLength ?? "8"}
           maxLength={maxLength ?? "36"}
           onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder ?? "Type a username..."}
+          placeholder={placeholder ? placeholder : name ? `Type a ${name}...` : ''}
           width={width ?? 'auto'}
           value={value}
         />

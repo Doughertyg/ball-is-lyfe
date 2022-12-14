@@ -1,6 +1,12 @@
-const { ApolloServer, PubSub } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
+const { PubSub } = require('graphql-subscriptions');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
+if (process.env.NODE_ENV === 'development') {
+  // if we are in dev mode, put .env vars into process
+  dotenv.config();
+}
 
 const resolvers = require('../graphql/resolvers');
 const typeDefs = require('../graphql/typeDefs');
@@ -8,7 +14,7 @@ const typeDefs = require('../graphql/typeDefs');
 const pubSub = new PubSub();
 
 const PORT = process.env.PORT || 5000;
-const MONGODB = process.env.MONGODB;
+const MONGODB = process.env.MONGODB || '';
 
 const server = new ApolloServer({
   typeDefs,
