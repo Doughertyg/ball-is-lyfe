@@ -9,7 +9,7 @@ const playerInstanceSchema = new Schema({
   position: String,
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'users'
   },
   createdAt: String
 });

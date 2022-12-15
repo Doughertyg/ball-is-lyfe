@@ -6,6 +6,7 @@ const teamSchema = new Schema({
   createdAt: String,
   profilePicture: String,
   bannerPicture: String,
+  sport: String,
   admins: [{
       type: Schema.Types.ObjectId,
       ref: 'users'
