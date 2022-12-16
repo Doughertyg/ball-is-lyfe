@@ -1,4 +1,4 @@
 import ReactDOM from 'react-dom';
-import ApolloProvider from './ApolloProvider.js';
+import ApolloProvider from './apolloprovider.js';
 
 ReactDOM.render(ApolloProvider, document.getElementById('app'));

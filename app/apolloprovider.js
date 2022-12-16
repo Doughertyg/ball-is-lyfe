@@ -1,5 +1,5 @@
 import React from 'react';
-import App from './App.jsx';
+import App from './app.jsx';
 import { ApolloClient, InMemoryCache, createHttpLink, } from '@apollo/client';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from 'apollo-link-context';
