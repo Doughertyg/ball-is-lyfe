@@ -192,6 +192,7 @@ module.exports = gql`
     addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
+    loginUser(token: String!): User!
     createPost(body: String!): Post!
     deletePost(postId: String!): String!
     createComment(postId: ID!, body: String!): Post!

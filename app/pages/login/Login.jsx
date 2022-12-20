@@ -4,12 +4,15 @@ import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router';
+import { GoogleLogin } from 'react-google-login';
 
 import InputField from '../../components/InputField.jsx';
-import {ButtonContainer, Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styled-components/common';
+import {Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styled-components/common';
 import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components/card';
-import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
+import {Button, ErrorList, ErrorListWrapper} from '../../styled-components/interactive';
 import { AuthContext } from '../../context/auth.js';
+
+const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
 
 const CenteredContainer = styled.div`
   margin: 0 auto;
@@ -35,24 +38,52 @@ const LOGIN_USER = gql`
   }
 `;
 
-function Login() {
+const LOGIN = gql`
+  mutation loginUser(
+    $token: String!
+  ) {
+    loginUser(
+      token: $token
+    ) {
+      email
+      id
+      username
+      token
+    }
+  }
+`;
+
+function Login({ oldLoginPageFlag }) {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [username, setUsername] = useState('');
   const history = useHistory();
   const { login, logout } = useContext(AuthContext);
 
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+  const onGoogleAuthError = (err) => {
+    console.log('err: ', err);
+    const graphQLErrors = err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
+    setErrors({...errors, ...graphQLErrors});
+  }
+
+  const [loginWithGoogleToken, { loading }] = useMutation(LOGIN, {
     onCompleted: (res) => {
-      console.log('completed! res: ', res);
+      history.push('/home');
+    },
+    update: (_proxy, { data: { loginUser } }) => {
+      login(loginUser);
+    },
+    onError: onGoogleAuthError
+  })
+
+  const [_loginUser, { _loading }] = useMutation(LOGIN_USER, {
+    onCompleted: (res) => {
       history.push('/');
     },
     update(_proxy, { data: { login: userData }}) {
-      console.log('results: ', userData);
       login(userData);
     },
     onError: (err) => {
-      console.log('errs: ', err.graphQLErrors, err);
       setErrors({...errors, ...err.graphQLErrors[0]?.extensions.exception.errors})
     },
     variables: {
@@ -61,7 +92,7 @@ function Login() {
     }
   })
 
-  const validateForm = () => {
+  const _validateForm = () => {
     const formErrors = {};
 
     if (username === '') {
@@ -76,14 +107,22 @@ function Login() {
     return formErrors;
   }
 
-  const submitForm = () => {
+  const _submitForm = () => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       return;
     }
 
-    console.log('input: ', username, password);
     loginUser();
+  }
+
+  const onGoogleAuthSuccess = (res) => {
+    loginWithGoogleToken({
+      variables: {
+        token: res.tokenId,
+        userData: res.profileObj
+      }
+    });
   }
   
   return (
@@ -91,40 +130,49 @@ function Login() {
         <PageHeader>
           LOGIN
         </PageHeader>
-        <CardWrapper>
-          <CardContentWrapper>
-            <CardBody>
-              <SectionHeadingText>Username</SectionHeadingText>
-              <InputField 
-                type="text"
-                errors={errors.username}
-                disabled={loading}
-                name="username"
-                onChange={setUsername}
-                placeholder="Type a username..."
-                value={username}
-              />
-              <Divider />
-              <SectionHeadingText marginTop="20px">Password</SectionHeadingText>
-              <InputField 
-                type="password"
-                errors={errors.password}
-                disabled={loading}
-                name="password"
-                onChange={setPassword}
-                placeholder="Password..."
-                value={password}
-              />
-              <Divider />
-                <Button 
-                  aria-label="Login"
+        <GoogleLogin
+          clientId={CLIENT_ID}
+          onSuccess={onGoogleAuthSuccess}
+          onFailure={onGoogleAuthError}
+          cookiePolicy='single_host_origin'
+          prompt='consent'
+        />
+        {oldLoginPageFlag && (
+          <CardWrapper>
+            <CardContentWrapper>
+              <CardBody>
+                <SectionHeadingText>Username</SectionHeadingText>
+                <InputField 
+                  type="text"
+                  errors={errors.username}
                   disabled={loading}
-                  marginTop="20px"
-                  onClick={submitForm}
-                >Login</Button>
-            </CardBody>
-          </CardContentWrapper>
-        </CardWrapper>
+                  name="username"
+                  onChange={setUsername}
+                  placeholder="Type a username..."
+                  value={username}
+                />
+                <Divider />
+                <SectionHeadingText marginTop="20px">Password</SectionHeadingText>
+                <InputField 
+                  type="password"
+                  errors={errors.password}
+                  disabled={loading}
+                  name="password"
+                  onChange={setPassword}
+                  placeholder="Password..."
+                  value={password}
+                />
+                <Divider />
+                  <Button 
+                    aria-label="Login"
+                    disabled={loading}
+                    marginTop="20px"
+                    onClick={submitForm}
+                  >Login</Button>
+              </CardBody>
+            </CardContentWrapper>
+          </CardWrapper>
+        )}
         {errors != null && Object.keys(errors).length > 0 && 
           (
             <FlexContainer>
