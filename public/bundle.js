@@ -4406,7 +4406,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../context/auth */ "./app/context/auth.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
-var _templateObject, _templateObject2;
+var _templateObject, _templateObject2, _templateObject3;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -4422,6 +4422,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-bottom: 1px solid lightgrey;\n"])));
 var FlexComponent = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  flex-grow: 1;\n"])));
+var Offset = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  width: 72px;\n"])));
 function MenuBar(_ref) {
   var _useLocation;
   var match = _ref.match;
@@ -4434,6 +4435,7 @@ function MenuBar(_ref) {
     user = _useContext.user,
     logout = _useContext.logout;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    backgroundColor: "rgba(239, 239, 239, 1)",
     width: '100%'
   }, user ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, {
     active: active === 'home'
@@ -4443,7 +4445,14 @@ function MenuBar(_ref) {
     },
     exact: true,
     to: "/home"
-  }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FlexComponent, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
+  }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FlexComponent, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    alignItems: "center",
+    height: "43px",
+    overFlow: "hidden"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Offset, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+    height: 310,
+    src: "./logo.jpeg"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
     onClick: logout,
     exact: true,
     to: "/login"
@@ -4455,7 +4464,7 @@ function MenuBar(_ref) {
     },
     exact: true,
     to: "/profile"
-  }, user.username)))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, {
+  }, user.name.split(' ')[0])))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, {
     active: active === 'home'
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
     onClick: function onClick() {
@@ -4463,7 +4472,14 @@ function MenuBar(_ref) {
     },
     exact: true,
     to: "/"
-  }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FlexComponent, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, {
+  }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FlexComponent, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    alignItems: "center",
+    height: "43px",
+    overFlow: "hidden"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Offset, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+    height: 310,
+    src: "./logo.jpeg"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, {
     active: active === "login"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
     onClick: function onClick() {
@@ -6285,15 +6301,15 @@ function Register() {
         console.log('completed! res: ', res);
         history.push('/');
       },
-      update: function update(proxy, _ref) {
-        var userData = _ref.data.register;
-        console.log('results: ', userData);
-        login(userData);
-      },
       onError: function onError(err) {
         var _err$graphQLErrors$;
         console.log('err: ', err.graphQLErrors);
         setErrors(_objectSpread(_objectSpread({}, errors), (_err$graphQLErrors$ = err.graphQLErrors[0]) === null || _err$graphQLErrors$ === void 0 ? void 0 : _err$graphQLErrors$.extensions.exception.errors));
+      },
+      update: function update(proxy, _ref) {
+        var userData = _ref.data.register;
+        console.log('results: ', userData);
+        login(userData);
       },
       variables: {
         username: username,
@@ -6719,7 +6735,8 @@ function SplashPage() {
     alignContent: "center",
     alignItems: "center",
     direction: "column",
-    justify: "flex-start"
+    height: "100%",
+    justify: "start"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, null, "StreetBall Stats"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, "Get your game on"));
 }
 
@@ -6830,12 +6847,15 @@ var VerticalDivider = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   var _props$margin2;
   return (_props$margin2 = props.margin) !== null && _props$margin2 !== void 0 ? _props$margin2 : '0 10px';
 });
-var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\ndisplay: flex;\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nflex-direction: ", ";\njustify-content: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
+var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\ndisplay: flex;\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nflex-direction: ", ";\njustify-content: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
   var _props$alignContent;
   return (_props$alignContent = props.alignContent) !== null && _props$alignContent !== void 0 ? _props$alignContent : 'center';
 }, function (props) {
   var _props$alignItems;
   return (_props$alignItems = props.alignItems) !== null && _props$alignItems !== void 0 ? _props$alignItems : "initial";
+}, function (props) {
+  var _props$backgroundColo;
+  return (_props$backgroundColo = props.backgroundColor) !== null && _props$backgroundColo !== void 0 ? _props$backgroundColo : 'initial';
 }, function (props) {
   var _props$height2;
   return (_props$height2 = props.height) !== null && _props$height2 !== void 0 ? _props$height2 : 'auto';

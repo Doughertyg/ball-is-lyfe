@@ -54,6 +54,7 @@ export const VerticalDivider = styled.div`
 export const FlexContainer = styled.div`
 align-content: ${props => props.alignContent ?? 'center'};
 align-items: ${props => props.alignItems ?? "initial"};
+background-color: ${props => props.backgroundColor ?? 'initial'};
 display: flex;
 height: ${props => props.height ?? 'auto'};
 margin: ${props => props.margin ?? 'initial'};

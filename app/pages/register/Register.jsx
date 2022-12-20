@@ -55,13 +55,13 @@ function Register() {
       console.log('completed! res: ', res);
       history.push('/');
     },
-    update(proxy, { data: { register: userData }}) {
-      console.log('results: ', userData);
-      login(userData);
-    },
     onError: (err) => {
       console.log('err: ', err.graphQLErrors);
       setErrors({...errors, ...err.graphQLErrors[0]?.extensions.exception.errors})
+    },
+    update(proxy, { data: { register: userData }}) {
+      console.log('results: ', userData);
+      login(userData);
     },
     variables: {
       username: username,
