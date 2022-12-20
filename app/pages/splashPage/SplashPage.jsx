@@ -8,7 +8,7 @@ import { DetailsText, FlexContainer, PageHeader} from '../../styled-components/c
 export default function SplashPage() {
 
   return (
-    <FlexContainer alignContent="center" alignItems="center" direction="column" justify="flex-start">
+    <FlexContainer alignContent="center" alignItems="center" direction="column" height="100%" justify="start">
       <PageHeader>StreetBall Stats</PageHeader>
       <DetailsText>Get your game on</DetailsText>
     </FlexContainer>

@@ -14,6 +14,10 @@ const FlexComponent = styled.div`
   flex-grow: 1;
 `;
 
+const Offset = styled.div`
+  width: 72px;
+`;
+
 function MenuBar({ match }) {
   const path = useLocation()?.pathname;
   const [ active, setActive ] = useState(path === '/' ? 'home' : path.split('/')[1]);
@@ -21,7 +25,7 @@ function MenuBar({ match }) {
 
   return (
     <Wrapper>
-      <FlexContainer width={'100%'}>
+      <FlexContainer backgroundColor="rgba(239, 239, 239, 1)" width={'100%'}>
         {user ?
           (<>
             <ButtonContainer active={active === 'home'}>
@@ -29,7 +33,12 @@ function MenuBar({ match }) {
                 Home
               </NavLink>
             </ButtonContainer>
-            <FlexComponent />
+            <FlexComponent>
+              <FlexContainer alignItems="center" height="43px" overFlow="hidden">
+                <Offset />
+                <img height={310} src="./logo.jpeg" />
+              </FlexContainer>
+            </FlexComponent>
             <FlexContainer>
               <ButtonContainer>
                 <NavLink onClick={logout} exact to="/login">
@@ -38,7 +47,7 @@ function MenuBar({ match }) {
               </ButtonContainer>
               <ButtonContainer active={active === 'profile'}>
                 <NavLink onClick={() => setActive('profile')} exact to="/profile">
-                  {user.username}
+                  {user.name.split(' ')[0]}
                 </NavLink>
               </ButtonContainer>
             </FlexContainer>
@@ -50,7 +59,12 @@ function MenuBar({ match }) {
                   Home
                 </NavLink>
               </ButtonContainer>
-              <FlexComponent />
+              <FlexComponent>
+                <FlexContainer alignItems="center" height="43px" overFlow="hidden">
+                  <Offset />
+                  <img height={310} src="./logo.jpeg" />
+                </FlexContainer>
+              </FlexComponent>
               <FlexContainer>
                 <ButtonContainer active={active === "login"}>
                   <NavLink onClick={() => setActive('login')} exact to="/login">
