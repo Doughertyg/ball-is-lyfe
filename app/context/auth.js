@@ -1,4 +1,4 @@
-import React, {createContext, useReducer } from 'react';
+import React, {createContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
@@ -7,18 +7,19 @@ const initialState = {
 
 if (localStorage.getItem('jwtToken')) {
   const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
-  console.log('decodedToken: ', decodedToken);
 
   if (decodedToken.exp * 1000 < Date.now()) {
     localStorage.removeItem('jwtToken');
   } else {
     initialState.user = decodedToken;
+    console.log('initial state user created from decoded token: ', initialState.user);
   }
 }
 
 const AuthContext = createContext({
   user: null,
-  login: (data) => {},
+  checkIsTokenValid: () => {},
+  login: (data) => {},  
   logout: () => {}
 })
 
@@ -43,7 +44,6 @@ function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const login = (data) => {
-    console.log('data: ', data);
     localStorage.setItem('jwtToken', data.token);
 
     dispatch({
@@ -59,9 +59,30 @@ function AuthProvider(props) {
     })
   }
 
+  const checkIsTokenValid = () => {
+    console.log('checkIsTokenValid RUN');
+    if (localStorage.getItem('jwtToken')) {
+      const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
+    
+      // is token expired?
+      if (decodedToken.exp * 1000 < Date.now()) {
+        console.log('token expired, logout user');
+        localStorage.removeItem('jwtToken');
+        dispatch({
+          type: 'LOGOUT'
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    console.log('IN USE EFFECT');
+    checkIsTokenValid();
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ user: state.user, login, logout}}
+      value={{ user: state.user, checkIsTokenValid, login, logout}}
       {...props}
     />
   )

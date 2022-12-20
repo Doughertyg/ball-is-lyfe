@@ -25,7 +25,7 @@ function MenuBar({ match }) {
         {user ?
           (<>
             <ButtonContainer active={active === 'home'}>
-              <NavLink onClick={() => setActive('home')} exact to="/">
+              <NavLink onClick={() => setActive('home')} exact to="/home">
                 Home
               </NavLink>
             </ButtonContainer>
