@@ -60,13 +60,11 @@ function AuthProvider(props) {
   }
 
   const checkIsTokenValid = () => {
-    console.log('checkIsTokenValid RUN');
     if (localStorage.getItem('jwtToken')) {
       const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
     
       // is token expired?
       if (decodedToken.exp * 1000 < Date.now()) {
-        console.log('token expired, logout user');
         localStorage.removeItem('jwtToken');
         dispatch({
           type: 'LOGOUT'
