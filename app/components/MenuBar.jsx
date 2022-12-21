@@ -36,7 +36,9 @@ function MenuBar({ match }) {
             <FlexComponent>
               <FlexContainer alignItems="center" height="43px" overFlow="hidden">
                 <Offset />
-                <img height={310} src="./logo.jpeg" />
+                <NavLink to="/">
+                  <img height={310} src="./logo.jpeg" />
+                </NavLink>
               </FlexContainer>
             </FlexComponent>
             <FlexContainer>
@@ -47,7 +49,7 @@ function MenuBar({ match }) {
               </ButtonContainer>
               <ButtonContainer active={active === 'profile'}>
                 <NavLink onClick={() => setActive('profile')} exact to="/profile">
-                  {user.name.split(' ')[0]}
+                  {user.name?.split(' ')[0] ?? user.username}
                 </NavLink>
               </ButtonContainer>
             </FlexContainer>
