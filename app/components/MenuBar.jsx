@@ -64,7 +64,9 @@ function MenuBar({ match }) {
               <FlexComponent>
                 <FlexContainer alignItems="center" height="43px" overFlow="hidden">
                   <Offset />
-                  <img height={310} src="./logo.jpeg" />
+                  <NavLink to="/">
+                    <img height={310} src="./logo.jpeg" />
+                  </NavLink>
                 </FlexContainer>
               </FlexComponent>
               <FlexContainer>
