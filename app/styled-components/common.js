@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
 export const ButtonContainer = styled.div`
-&& {
   color: ${props => props.active ? 'teal' : 'black'};
   text-decoration: none;
-  padding: 12px 8px;
+  padding: ${props => props.padding ?? "12px 8px"};
   border-bottom: ${props => props.active ? '3px solid teal' : 'none'};
   box-sizing: border-box;
-}
 `;
 
 export const CenteredContainer = styled.div`
@@ -108,4 +106,11 @@ export const ModalStyle = styled.div`
   background-color: white;
   width: 100%;
   z-index: 1000;
+`;
+
+export const ProfilePictureThumb = styled.img`
+  border-radius: 50%;
+  height: 32px;
+  margin: ${props => props.margin ?? "4px"};
+  width: 32px;
 `;
