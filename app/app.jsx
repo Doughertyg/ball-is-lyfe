@@ -16,7 +16,7 @@ import LeagueNewPage from './pages/league/LeagueNewPage.jsx';
 import SeasonNewPage from './pages/season/SeasonNewPage.jsx';
 import SplashPage from './pages/splashPage/SplashPage.jsx';
 
-import {CommonPageLayout} from './styled-components/common';
+import {CommonPageLayout, FlexContainer} from './styled-components/common';
 import League from './pages/league/LeaguePage.jsx';
 
 const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
@@ -25,6 +25,15 @@ const Wrapper = styled.div`
   background-color: white;
   height: 100%;
   width: 100vw;
+`;
+
+const ScrollContainer = styled.div`
+  height: calc(100vh - 44px);
+  max-width: 1000px;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 function App() {
@@ -44,18 +53,22 @@ function App() {
         <Wrapper>
           <CommonPageLayout>
             <MenuBar />
-            <Switch>
-              <Route exact path='/' component={SplashPage} />
-              <ProtectedRoute exact path='/home' component={Home} />
-              <AuthRoute exact path='/login' component={Login} />
-              <AuthRoute exact path='/register' component={Register} />
-              <ProtectedRoute exact path="/posts/:postId" component={Post} />
-              <ProtectedRoute exact path="/season/:seasonID" component={Season} />
-              <ProtectedRoute exact path="/league/new" component={LeagueNewPage} />
-              <ProtectedRoute exact path="/league/:leagueID" component={League} />
-              <ProtectedRoute exact path="/league/:leagueID/season/new" component={SeasonNewPage} />
-              <Route exact render={() => <Redirect to="/" />} />
-            </Switch>
+            <FlexContainer>
+              <ScrollContainer>
+                <Switch>
+                  <Route exact path='/' component={SplashPage} />
+                  <ProtectedRoute exact path='/home' component={Home} />
+                  <AuthRoute exact path='/login' component={Login} />
+                  <AuthRoute exact path='/register' component={Register} />
+                  <ProtectedRoute exact path="/posts/:postId" component={Post} />
+                  <ProtectedRoute exact path="/season/:seasonID" component={Season} />
+                  <ProtectedRoute exact path="/league/new" component={LeagueNewPage} />
+                  <ProtectedRoute exact path="/league/:leagueID" component={League} />
+                  <ProtectedRoute exact path="/league/:leagueID/season/new" component={SeasonNewPage} />
+                  <Route exact render={() => <Redirect to="/" />} />
+                </Switch>
+              </ScrollContainer>
+            </FlexContainer>
           </CommonPageLayout>
         </Wrapper>
       </Routes>

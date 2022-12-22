@@ -17,10 +17,11 @@ vertical-align: middle;
 `;
 
 export const CommonPageLayout = styled.div`
+  background-color: rgba(239, 239, 239, 0.25);
   color: black !important;
   font-family: Arial !important;
   height: 100vh;
-  max-width: 1000px;
+  width: 100vw;
   margin: 0 auto;
 `;
 
