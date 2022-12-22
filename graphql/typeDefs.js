@@ -10,6 +10,7 @@ module.exports = gql`
     getPlayersNotInLeague(leagueID: ID): [User]
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!): Season
+    getUserContext(token: String!): User
   }
   type Post {
     id: ID!
