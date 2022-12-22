@@ -1,5 +1,7 @@
 import React, {createContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
+import gql from 'graphql-tag';
+import { useLazyQuery } from '@apollo/react-hooks';
 
 const initialState = {
   user: null
@@ -12,7 +14,6 @@ if (localStorage.getItem('jwtToken')) {
     localStorage.removeItem('jwtToken');
   } else {
     initialState.user = decodedToken;
-    console.log('initial state user created from decoded token: ', initialState.user);
   }
 }
 
@@ -22,6 +23,18 @@ const AuthContext = createContext({
   login: (data) => {},  
   logout: () => {}
 })
+
+const USER_QUERY = gql`
+  query($token: String!) {
+    getUserContext(token: $token) {
+      id
+      name
+      profilePicture
+      email
+      username
+    }
+  }
+`;
 
 function authReducer(state, action) {
   switch(action.type) {
@@ -42,6 +55,10 @@ function authReducer(state, action) {
 
 function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  const [loadUserData, { called }] = useLazyQuery(
+    USER_QUERY
+  )
 
   const login = (data) => {
     localStorage.setItem('jwtToken', data.token);
@@ -72,6 +89,22 @@ function AuthProvider(props) {
       }
     }
   }
+
+  /**
+   * if the page is refreshed with a valid token in storage
+   * but the user object in state is null or does not include userID
+   * refresh/rehydrate the user object from the backend
+   */
+  useEffect(() => {
+    if (localStorage.getItem('jwtToken') && (state?.user == null || state?.user?.id == null) && !called) {
+      loadUserData({ variables: { token: localStorage.getItem('jwtToken') }}).then(res => {
+        dispatch({
+          type: 'LOGIN',
+          value: {...res.data.getUserContext}
+        })
+      })
+    }
+  }, [state.user, called]);
 
   useEffect(() => {
     console.log('IN USE EFFECT');

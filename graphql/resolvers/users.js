@@ -48,6 +48,28 @@ const authenticateUser = async (token) => {
   }
 };
 
+const authenticateExistingUser = async (token) => {
+  const ticket = await googleClient.verifyIdToken({
+    idToken: token,
+    audient: `${process.env.GOOGLE_CLIENT_ID}`,
+  });
+
+  const payload = ticket.getPayload();
+  let user = await User.findOne({ email: payload?.email });
+  if (!user) {
+    return null;
+  }
+
+  return {
+    ...user._doc,
+    ...user,
+    name: payload.name,
+    profilePicture: payload.picture,
+    id: user._id,
+    token
+  }
+}
+
 module.exports = {
   Mutation: {
     async login (_, { username, password }) {
@@ -152,6 +174,13 @@ module.exports = {
         return players.filter(player => !league.players.includes(player.id));
       } catch (err) {
         throw new Error(err);
+      }
+    },
+    async getUserContext(_, {token}) {
+      try {
+        return await authenticateExistingUser(token);
+      } catch (err) {
+        throw new Error(err)
       }
     }
   }
