@@ -4,7 +4,7 @@ import { NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AuthContext } from '../context/auth';
-import {ButtonContainer, FlexContainer} from '../styled-components/common';
+import {ButtonContainer, FlexContainer, ProfilePictureThumb} from '../styled-components/common';
 
 const Wrapper = styled.div`
   border-bottom: 1px solid lightgrey;
@@ -47,9 +47,12 @@ function MenuBar({ match }) {
                   Logout
                 </NavLink>
               </ButtonContainer>
-              <ButtonContainer active={active === 'profile'}>
+              <ButtonContainer active={active === 'profile'} padding="none">
                 <NavLink onClick={() => setActive('profile')} exact to="/profile">
-                  {user.name?.split(' ')[0] ?? user.username}
+                  <FlexContainer alignItems="center">
+                    {user.name?.split(' ')[0] ?? user.username}
+                    <ProfilePictureThumb src={user.profilePicture} />
+                  </FlexContainer>
                 </NavLink>
               </ButtonContainer>
             </FlexContainer>
