@@ -2,7 +2,7 @@
   "name": "",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.jsx",
   "scripts": {
     "start": "node server/index",
     "start-dev": "NODE_ENV=development node server/index",
