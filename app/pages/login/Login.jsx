@@ -20,6 +20,10 @@ const CenteredContainer = styled.div`
   vertical-align: middle;
 `;
 
+const ErrorWrapper = styled.div`
+  margin-top: 8px;
+`;
+
 const LOGIN_USER = gql`
   mutation login(
     $username: String!
@@ -61,8 +65,7 @@ function Login({ oldLoginPageFlag }) {
   const { login, logout } = useContext(AuthContext);
 
   const onGoogleAuthError = (err) => {
-    console.log('err: ', err);
-    const graphQLErrors = err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
+    const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
     setErrors({...errors, ...graphQLErrors});
   }
 
@@ -175,13 +178,15 @@ function Login({ oldLoginPageFlag }) {
         )}
         {errors != null && Object.keys(errors).length > 0 && 
           (
-            <FlexContainer>
-              <ErrorListWrapper>
-                <ErrorList>
-                  {Object.values(errors).map(error => (<li>{error}</li>))}
-                </ErrorList>
-              </ErrorListWrapper>
-            </FlexContainer>
+            <ErrorWrapper>
+              <FlexContainer>
+                <ErrorListWrapper>
+                  <ErrorList>
+                    {Object.values(errors).map(error => (<li>{error}</li>))}
+                  </ErrorList>
+                </ErrorListWrapper>
+              </FlexContainer>
+            </ErrorWrapper>
           )
         }
     </CenteredContainer>

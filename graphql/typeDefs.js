@@ -154,16 +154,16 @@ module.exports = gql`
   type User {
     id: ID!
     bio: String!
-    profilePicture: String!
+    profilePicture: String
     bannerPicture: String!
     phoneNumber: Int!
     height: String!
     weight: Int!
     location: String!
-    name: String!
+    name: String
     email: String!
     token: String!
-    username: String!
+    username: String
     createdAt: String!
   }
   input RegisterInput {
@@ -192,6 +192,7 @@ module.exports = gql`
   type Mutation {
     addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
     register(registerInput: RegisterInput): User!
+    registerUser(token: String!): User!
     login(username: String!, password: String!): User!
     loginUser(token: String!): User!
     createPost(body: String!): Post!
