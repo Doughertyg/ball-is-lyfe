@@ -20,7 +20,7 @@ const googleClient = new OAuth2Client({
   clientId: `${CLIENT_ID}`,
 });
 
-const authenticateUser = async (token) => {
+const authenticateNewUser = async (token) => {
   const ticket = await googleClient.verifyIdToken({
     idToken: token,
     audient: `${process.env.GOOGLE_CLIENT_ID}`,
@@ -101,7 +101,13 @@ module.exports = {
       };
     },
     async loginUser (_, { token }) {
-      return authenticateUser(token);
+      const user = await authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new UserInputError('User not yet registered.');
+      }
+
+      return user;
     },
     async register(_āparents, { registerInput: { username, email, password, confirmPassword }}) {
       // todo: validate user data
@@ -141,6 +147,9 @@ module.exports = {
         id: res._id,
         token
       }
+    },
+    async registerUser(_, { token }) {
+      return await authenticateNewUser(token);
     }
   },
   Query: {
