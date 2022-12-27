@@ -7,7 +7,7 @@
     "start": "node server/index",
     "start-dev": "NODE_ENV=development node server/index",
     "serve": "webpack serve",
-    "dev": "webpack --devtool source-map --watch",
+    "dev": "webpack --devtool source-map",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
