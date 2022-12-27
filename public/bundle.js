@@ -3879,8 +3879,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
+var URI =  true ? 'http://localhost:5000/' : 0;
 var httpLink = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_2__.createHttpLink)({
-  uri: 'https://protected-fortress-16665.herokuapp.com/'
+  uri: URI
 });
 var authLink = (0,apollo_link_context__WEBPACK_IMPORTED_MODULE_3__.setContext)(function () {
   var token = localStorage.getItem('jwtToken');
