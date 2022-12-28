@@ -8,6 +8,7 @@ const GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
 const URI = process.env.NODE_ENV == 'development' ?
   'http://localhost:5000/' :
   'https://protected-fortress-16665.herokuapp.com/';
+console.log(' uri:   ', URI,  ' process.env.NODE_ENV:  ', process.env.NODE_ENV);
 
 const httpLink = createHttpLink({
   uri: URI
