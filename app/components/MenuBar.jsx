@@ -4,7 +4,7 @@ import { NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AuthContext } from '../context/auth';
-import {ButtonContainer, FlexContainer} from '../styled-components/common';
+import {ButtonContainer, FlexContainer, ProfilePictureThumb} from '../styled-components/common';
 
 const Wrapper = styled.div`
   border-bottom: 1px solid lightgrey;
@@ -14,6 +14,10 @@ const FlexComponent = styled.div`
   flex-grow: 1;
 `;
 
+const Offset = styled.div`
+  width: 72px;
+`;
+
 function MenuBar({ match }) {
   const path = useLocation()?.pathname;
   const [ active, setActive ] = useState(path === '/' ? 'home' : path.split('/')[1]);
@@ -21,24 +25,34 @@ function MenuBar({ match }) {
 
   return (
     <Wrapper>
-      <FlexContainer width={'100%'}>
+      <FlexContainer backgroundColor="rgba(239, 239, 239, 1)" width={'100%'}>
         {user ?
           (<>
             <ButtonContainer active={active === 'home'}>
-              <NavLink onClick={() => setActive('home')} exact to="/">
+              <NavLink onClick={() => setActive('home')} exact to="/home">
                 Home
               </NavLink>
             </ButtonContainer>
-            <FlexComponent />
+            <FlexComponent>
+              <FlexContainer alignItems="center" height="43px" overFlow="hidden">
+                <Offset />
+                <NavLink to="/">
+                  <img height={310} src="./logo.jpeg" />
+                </NavLink>
+              </FlexContainer>
+            </FlexComponent>
             <FlexContainer>
               <ButtonContainer>
                 <NavLink onClick={logout} exact to="/login">
                   Logout
                 </NavLink>
               </ButtonContainer>
-              <ButtonContainer active={active === 'profile'}>
+              <ButtonContainer active={active === 'profile'} padding="none">
                 <NavLink onClick={() => setActive('profile')} exact to="/profile">
-                  {user.username}
+                  <FlexContainer alignItems="center">
+                    {user.name?.split(' ')[0] ?? user.username}
+                    <ProfilePictureThumb src={user.profilePicture} />
+                  </FlexContainer>
                 </NavLink>
               </ButtonContainer>
             </FlexContainer>
@@ -50,7 +64,14 @@ function MenuBar({ match }) {
                   Home
                 </NavLink>
               </ButtonContainer>
-              <FlexComponent />
+              <FlexComponent>
+                <FlexContainer alignItems="center" height="43px" overFlow="hidden">
+                  <Offset />
+                  <NavLink to="/">
+                    <img height={310} src="./logo.jpeg" />
+                  </NavLink>
+                </FlexContainer>
+              </FlexComponent>
               <FlexContainer>
                 <ButtonContainer active={active === "login"}>
                   <NavLink onClick={() => setActive('login')} exact to="/login">

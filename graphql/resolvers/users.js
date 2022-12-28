@@ -3,6 +3,7 @@ const League = require('../../db/models/League');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError} = require('apollo-server');
+const { OAuth2Client } = require("google-auth-library");
 const {validateRegisterInput, validateLoginInput} = require('../../util/validators');
 
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -12,6 +13,61 @@ function generateToken(user) {
     email: user.email,
     username: user.username
   }, SECRET_KEY, { expiresIn: '1h'});
+}
+
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const googleClient = new OAuth2Client({
+  clientId: `${CLIENT_ID}`,
+});
+
+const authenticateNewUser = async (token) => {
+  const ticket = await googleClient.verifyIdToken({
+    idToken: token,
+    audient: `${process.env.GOOGLE_CLIENT_ID}`,
+  });
+
+  const payload = ticket.getPayload();
+
+  let user = await User.findOne({ email: payload?.email });
+  if (!user) {
+    user = await new User({
+      email: payload?.email,
+      profilePicture: payload?.picture,
+      name: payload?.name,
+      createdAt: new Date().toISOString()
+    });
+
+    await user.save();
+  }
+
+  return {
+    ...user._doc,
+    ...user,
+    id: user._id,
+    token
+  }
+};
+
+const authenticateExistingUser = async (token) => {
+  const ticket = await googleClient.verifyIdToken({
+    idToken: token,
+    audient: `${process.env.GOOGLE_CLIENT_ID}`,
+  });
+
+  const payload = ticket.getPayload();
+  let user = await User.findOne({ email: payload?.email });
+  if (!user) {
+    return null;
+  }
+
+  return {
+    ...user._doc,
+    ...user,
+    name: payload.name,
+    profilePicture: payload.picture,
+    id: user._id,
+    token
+  }
 }
 
 module.exports = {
@@ -43,6 +99,15 @@ module.exports = {
         id: user._id,
         token
       };
+    },
+    async loginUser (_, { token }) {
+      const user = await authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new UserInputError('User not yet registered.');
+      }
+
+      return user;
     },
     async register(_āparents, { registerInput: { username, email, password, confirmPassword }}) {
       // todo: validate user data
@@ -82,6 +147,9 @@ module.exports = {
         id: res._id,
         token
       }
+    },
+    async registerUser(_, { token }) {
+      return await authenticateNewUser(token);
     }
   },
   Query: {
@@ -115,6 +183,13 @@ module.exports = {
         return players.filter(player => !league.players.includes(player.id));
       } catch (err) {
         throw new Error(err);
+      }
+    },
+    async getUserContext(_, {token}) {
+      try {
+        return await authenticateExistingUser(token);
+      } catch (err) {
+        throw new Error(err)
       }
     }
   }

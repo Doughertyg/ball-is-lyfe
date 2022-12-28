@@ -93,9 +93,6 @@ const FETCH_TEAMS_QUERY = gql`
 function Home(props) {
   const { user } = useContext(AuthContext);
   const history = useHistory();
-  if (user == null) {
-    history.push('/login');
-  }
 
   const {
     loading: loadingLeagues,
