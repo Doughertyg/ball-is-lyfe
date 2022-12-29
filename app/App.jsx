@@ -56,7 +56,6 @@ function App() {
             <FlexContainer>
               <ScrollContainer>
                 <Switch>
-                  <Route exact path='/' component={SplashPage} />
                   <ProtectedRoute exact path='/home' component={Home} />
                   <AuthRoute exact path='/login' component={Login} />
                   <AuthRoute exact path='/register' component={Register} />
@@ -65,6 +64,7 @@ function App() {
                   <ProtectedRoute exact path="/league/new" component={LeagueNewPage} />
                   <ProtectedRoute exact path="/league/:leagueID" component={League} />
                   <ProtectedRoute exact path="/league/:leagueID/season/new" component={SeasonNewPage} />
+                  <Route exact path='/' component={SplashPage} />
                   <Route exact render={() => <Redirect to="/" />} />
                 </Switch>
               </ScrollContainer>
