@@ -88,12 +88,12 @@ export default function LeagueNewPage() {
 
   const [createLeague, { loading }] = useMutation(CREATE_LEAGUE, {
     onCompleted: (res) => {
-      console.log('onCompleted mutation: res:  ', res);
-      onMutationCompleted?.();
-      history.push(`/`);
+      history.push(`/home`);
     },
     onError: (error) => {
       console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
+      const graphQLErrors = error.message ? {error: error.message} : error?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
+      setErrors({...errors, ...graphQLErrors});
     },
     update(proxy, { data: { newLeague: userData }}) {
       console.log('results: ', userData);
