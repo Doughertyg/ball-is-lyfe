@@ -4801,97 +4801,6 @@ function PostCard(_ref) {
 
 /***/ }),
 
-/***/ "./app/components/PostForm.jsx":
-/*!*************************************!*\
-  !*** ./app/components/PostForm.jsx ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _styled_components_card__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/card */ "./app/styled-components/card.js");
-/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
-/* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
-/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
-/* harmony import */ var _graphql_queries_graphql__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../graphql/queries/graphql */ "./graphql/queries/graphql.js");
-var _templateObject;
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-
-
-
-
-
-
-
-var CREATE_POST_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  mutation createPost($body: String!) {\n    createPost(body: $body) {\n      id\n      body \n      createdAt\n      username\n      likes {\n        id\n        username\n        createdAt\n      }\n      likeCount\n      comments {\n        id\n        body \n        username\n        createdAt\n      }\n    }\n  }\n"])));
-function PostForm() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState2 = _slicedToArray(_useState, 2),
-    postText = _useState2[0],
-    setPostText = _useState2[1];
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__.useMutation)(CREATE_POST_MUTATION, {
-      variables: {
-        body: postText
-      },
-      update: function update(proxy, result) {
-        var data = proxy.readQuery({
-          query: _graphql_queries_graphql__WEBPACK_IMPORTED_MODULE_5__.FETCH_POSTS_QUERY
-        });
-        var updatedPosts = {
-          getPosts: [result.data.createPost].concat(_toConsumableArray(data.getPosts))
-        };
-        proxy.writeQuery({
-          query: _graphql_queries_graphql__WEBPACK_IMPORTED_MODULE_5__.FETCH_POSTS_QUERY,
-          data: updatedPosts
-        });
-        setPostText('');
-      }
-    }),
-    _useMutation2 = _slicedToArray(_useMutation, 2),
-    createPost = _useMutation2[0],
-    error = _useMutation2[1].error;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_1__.CardWrapper, {
-    height: "300px",
-    marginTop: "64px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_1__.CardContentWrapper, {
-    width: "400px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "New Post"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.Divider, {
-    marginBottom: "10px"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    errors: error === null || error === void 0 ? void 0 : error.message,
-    height: "200px",
-    maxLength: 256,
-    minLength: 1,
-    name: "New Post",
-    onChange: setPostText,
-    placeholder: "Create a new post...",
-    width: "400px",
-    value: postText
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_3__.Button, {
-    onClick: createPost
-  }, "Post"))));
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PostForm);
-
-/***/ }),
-
 /***/ "./app/components/ProtectedRoute.jsx":
 /*!*******************************************!*\
   !*** ./app/components/ProtectedRoute.jsx ***!
@@ -5393,20 +5302,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var _components_PostCard_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/PostCard.jsx */ "./app/components/PostCard.jsx");
 /* harmony import */ var _components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Card.jsx */ "./app/components/Card.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../styled-components/common */ "./app/styled-components/common.js");
-/* harmony import */ var _components_PostForm_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/PostForm.jsx */ "./app/components/PostForm.jsx");
-/* harmony import */ var _graphql_queries_graphql__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../graphql/queries/graphql */ "./graphql/queries/graphql.js");
-/* harmony import */ var _components_Icon_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/Icon.jsx */ "./app/components/Icon.jsx");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! dayjs/plugin/isBetween */ "./node_modules/dayjs/plugin/isBetween.js");
-/* harmony import */ var dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _components_Icon_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Icon.jsx */ "./app/components/Icon.jsx");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! dayjs/plugin/isBetween */ "./node_modules/dayjs/plugin/isBetween.js");
+/* harmony import */ var dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7__);
 var _templateObject, _templateObject2, _templateObject3;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -5421,12 +5328,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-
-
-dayjs__WEBPACK_IMPORTED_MODULE_8___default().extend((dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_9___default()));
-var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
-var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      name\n      description\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
-var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getTeamsByUser(userID: $userID) {\n      name\n      description\n      profilePicture\n      bannerPicture\n      sport\n      players {\n        name\n        profilePicture\n      }\n    }\n  }\n"])));
+dayjs__WEBPACK_IMPORTED_MODULE_6___default().extend((dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7___default()));
+var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
+var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      id\n      name\n      description\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
+var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getTeamsByUser(userID: $userID) {\n      id\n      name\n      description\n      profilePicture\n      bannerPicture\n      sport\n      players {\n        name\n        profilePicture\n      }\n    }\n  }\n"])));
 
 /**
  * 
@@ -5466,8 +5371,8 @@ function Home(props) {
   var _leagueData$getLeague, _leagueData$getLeague2, _teamData$getTeamsByU;
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_3__.AuthContext),
     user = _useContext.user;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_11__.useHistory)();
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useQuery)(FETCH_LEAGUES_QUERY, {
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_9__.useHistory)();
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(FETCH_LEAGUES_QUERY, {
       variables: {
         userID: user === null || user === void 0 ? void 0 : user.id
       }
@@ -5475,7 +5380,7 @@ function Home(props) {
     loadingLeagues = _useQuery.loading,
     leagueData = _useQuery.data,
     leagueQueryError = _useQuery.error;
-  var _useQuery2 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useQuery)(FETCH_SEASONS_QUERY, {
+  var _useQuery2 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(FETCH_SEASONS_QUERY, {
       variables: {
         userID: user === null || user === void 0 ? void 0 : user.id
       }
@@ -5486,22 +5391,22 @@ function Home(props) {
   var activeSeasons = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var _seasonData$getSeason, _seasonData$getSeason2;
     return (_seasonData$getSeason = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason2 = seasonData.getSeasonsByUser) === null || _seasonData$getSeason2 === void 0 ? void 0 : _seasonData$getSeason2.filter(function (season) {
-      return dayjs__WEBPACK_IMPORTED_MODULE_8___default()().isBetween(season.seasonStart, season.seasonEnd);
+      return dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBetween(season.seasonStart, season.seasonEnd);
     })) !== null && _seasonData$getSeason !== void 0 ? _seasonData$getSeason : [];
   }, [seasonData]);
   var pastSeasons = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var _seasonData$getSeason3, _seasonData$getSeason4;
     return (_seasonData$getSeason3 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason4 = seasonData.getSeasonsByUser) === null || _seasonData$getSeason4 === void 0 ? void 0 : _seasonData$getSeason4.filter(function (season) {
-      return !dayjs__WEBPACK_IMPORTED_MODULE_8___default()().isBetween(season.seasonStart, season.seasonEnd) && dayjs__WEBPACK_IMPORTED_MODULE_8___default()().isAfter(season.seasonEnd);
+      return !dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBetween(season.seasonStart, season.seasonEnd) && dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isAfter(season.seasonEnd);
     })) !== null && _seasonData$getSeason3 !== void 0 ? _seasonData$getSeason3 : [];
   }, [seasonData]);
   var futureSeasons = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var _seasonData$getSeason5, _seasonData$getSeason6;
     return (_seasonData$getSeason5 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason6 = seasonData.getSeasonsByUser) === null || _seasonData$getSeason6 === void 0 ? void 0 : _seasonData$getSeason6.filter(function (season) {
-      return !dayjs__WEBPACK_IMPORTED_MODULE_8___default()().isBetween(season.seasonStart, season.seasonEnd) && dayjs__WEBPACK_IMPORTED_MODULE_8___default()().isBefore(season.seasonStart);
+      return !dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBetween(season.seasonStart, season.seasonEnd) && dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBefore(season.seasonStart);
     })) !== null && _seasonData$getSeason5 !== void 0 ? _seasonData$getSeason5 : [];
   }, [seasonData]);
-  var _useQuery3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useQuery)(FETCH_TEAMS_QUERY),
+  var _useQuery3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(FETCH_TEAMS_QUERY),
     loadingTeams = _useQuery3.loading,
     teamData = _useQuery3.data;
   if (seasonQueryError) {
@@ -5516,19 +5421,23 @@ function Home(props) {
     justify: "start",
     overFlow: "scroll",
     width: "100%"
-  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.length) > 0 ? activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.map(function (season) {
+  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.length) > 0 ? activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.map(function (season, idx) {
+    var _season$id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
-      key: season.id,
+      key: (_season$id = season.id) !== null && _season$id !== void 0 ? _season$id : idx,
       margin: "0 20px 0 0",
-      subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_8___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_8___default()(season.seasonEnd).format('MMM YYYY')),
+      onClick: function onClick() {
+        return history.push("/season/".concat(season.id));
+      },
+      subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonEnd).format('MMM YYYY')),
       title: season.name
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No active seasons")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     alignItems: "center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, {
     margin: "20px 12px 20px 0"
-  }, "Leagues"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, "Leagues"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     borderRadius: "50%",
     icon: "plus",
     onClick: function onClick() {
@@ -5538,8 +5447,8 @@ function Home(props) {
     justify: "start",
     overFlow: "scroll",
     width: "100%"
-  }, loadingLeagues ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league) {
-    var _league$description;
+  }, loadingLeagues ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league, idx) {
+    var _league$description, _league$_id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: (_league$description = league.description) !== null && _league$description !== void 0 ? _league$description : '',
       onClick: function onClick() {
@@ -5548,37 +5457,45 @@ function Home(props) {
       subTitle: "".concat(league.location, " - ").concat(league.sport),
       title: league.name,
       margin: "0 20px 0 0",
-      key: league._id
+      key: (_league$_id = league._id) !== null && _league$_id !== void 0 ? _league$_id : idx
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No Leagues")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Past seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
     overFlow: "scroll",
     width: "100%"
-  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.length) > 0 ? pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.map(function (season) {
+  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.length) > 0 ? pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.map(function (season, idx) {
+    var _season$id2;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
-      key: season.id,
+      key: (_season$id2 = season.id) !== null && _season$id2 !== void 0 ? _season$id2 : idx,
       margin: "0 20px 0 0",
-      subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_8___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_8___default()(season.seasonEnd).format('MMM YYYY')),
+      onClick: function onClick() {
+        return history.push("/season/".concat(season.id));
+      },
+      subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonEnd).format('MMM YYYY')),
       title: season.name
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No past seasons")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Upcoming seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
     overFlow: "scroll",
     width: "100%"
-  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.length) > 0 ? futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.map(function (season) {
+  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.length) > 0 ? futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.map(function (season, idx) {
+    var _season$id3;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
-      key: season.id,
+      key: (_season$id3 = season.id) !== null && _season$id3 !== void 0 ? _season$id3 : idx,
       margin: "0 20px 0 0",
-      subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_8___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_8___default()(season.seasonEnd).format('MMM YYYY')),
+      onClick: function onClick() {
+        return history.push("/season/".concat(season.id));
+      },
+      subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonEnd).format('MMM YYYY')),
       title: season.name
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No upcoming seasons")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     alignItems: "center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, {
     margin: "20px 12px 20px 0"
-  }, "Teams"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, "Teams"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     borderRadius: "50%",
     icon: "plus",
     onClick: function onClick() {
@@ -5588,9 +5505,10 @@ function Home(props) {
     justify: "start",
     overFlow: "scroll",
     width: "100%"
-  }, loadingTeams ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (teamData === null || teamData === void 0 ? void 0 : (_teamData$getTeamsByU = teamData.getTeamsByUser) === null || _teamData$getTeamsByU === void 0 ? void 0 : _teamData$getTeamsByU.length) > 0 ? teamData === null || teamData === void 0 ? void 0 : teamData.getTeamsByUser.map(function (post) {
+  }, loadingTeams ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (teamData === null || teamData === void 0 ? void 0 : (_teamData$getTeamsByU = teamData.getTeamsByUser) === null || _teamData$getTeamsByU === void 0 ? void 0 : _teamData$getTeamsByU.length) > 0 ? teamData === null || teamData === void 0 ? void 0 : teamData.getTeamsByUser.map(function (post, idx) {
+    var _post$id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_PostCard_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
-      key: post.id,
+      key: (_post$id = post.id) !== null && _post$id !== void 0 ? _post$id : idx,
       post: post,
       link: function link() {
         return props.history.push("/posts/".concat(post.id));

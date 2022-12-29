@@ -7,9 +7,7 @@ import { useHistory } from 'react-router';
 import PostCard from '../../components/PostCard.jsx';
 import Card from '../../components/Card.jsx';
 import { AuthContext } from '../../context/auth';
-import {CenteredContainer, DetailsText, FlexContainer, PageHeader} from '../../styled-components/common';
-import PostForm from '../../components/PostForm.jsx';
-import { FETCH_POSTS_QUERY } from '../../../graphql/queries/graphql';
+import {DetailsText, FlexContainer, PageHeader} from '../../styled-components/common';
 import Icon from '../../components/Icon.jsx';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -31,6 +29,7 @@ const FETCH_LEAGUES_QUERY = gql`
 const FETCH_SEASONS_QUERY = gql`
   query($userID: ID!) {
     getSeasonsByUser(userID: $userID) {
+      id
       name
       description
       seasonStart
@@ -42,6 +41,7 @@ const FETCH_SEASONS_QUERY = gql`
 const FETCH_TEAMS_QUERY = gql`
   query($userID: ID!) {
     getTeamsByUser(userID: $userID) {
+      id
       name
       description
       profilePicture
@@ -142,12 +142,13 @@ function Home(props) {
       <FlexContainer justify="start" overFlow="scroll" width="100%">
         {loadingSeasons ? <h1>LOADING...</h1> :
           activeSeasons?.length > 0 ?
-          activeSeasons?.map(season => {
+          activeSeasons?.map((season, idx) => {
             return (
               <Card
                 body={season.description}
-                key={season.id}
+                key={season.id ?? idx}
                 margin="0 20px 0 0"
+                onClick={() => history.push(`/season/${season.id}`)}
                 subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
                 title={season.name}
               />
@@ -163,7 +164,7 @@ function Home(props) {
       <FlexContainer justify="start" overFlow="scroll" width="100%">
         {loadingLeagues ? (<h1>LOADING...</h1>) :
           leagueData?.getLeaguesByUser?.length > 0 ?
-            leagueData?.getLeaguesByUser?.map(league => {
+            leagueData?.getLeaguesByUser?.map((league, idx) => {
               return (
                 <Card
                   body={league.description ?? ''}
@@ -171,7 +172,7 @@ function Home(props) {
                   subTitle={`${league.location} - ${league.sport}`}
                   title={league.name}
                   margin="0 20px 0 0"
-                  key={league._id}
+                  key={league._id ?? idx}
                 />
               )
             }) :
@@ -182,12 +183,13 @@ function Home(props) {
       <FlexContainer justify="start" overFlow="scroll" width="100%">
         {loadingSeasons ? <h1>LOADING...</h1> :
           pastSeasons?.length > 0 ?
-          pastSeasons?.map(season => {
+          pastSeasons?.map((season, idx) => {
             return (
               <Card
                 body={season.description}
-                key={season.id}
+                key={season.id ?? idx}
                 margin="0 20px 0 0"
+                onClick={() => history.push(`/season/${season.id}`)}
                 subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
                 title={season.name}
               />
@@ -200,12 +202,13 @@ function Home(props) {
       <FlexContainer justify="start" overFlow="scroll" width="100%">
         {loadingSeasons ? <h1>LOADING...</h1> :
           futureSeasons?.length > 0 ?
-          futureSeasons?.map(season => {
+          futureSeasons?.map((season, idx) => {
             return (
               <Card
                 body={season.description}
-                key={season.id}
+                key={season.id ?? idx}
                 margin="0 20px 0 0"
+                onClick={() => history.push(`/season/${season.id}`)}
                 subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
                 title={season.name}
               />
@@ -221,9 +224,9 @@ function Home(props) {
       <FlexContainer justify="start" overFlow="scroll" width="100%">
         {loadingTeams ? (<h1>LOADING...</h1>) :
           teamData?.getTeamsByUser?.length > 0 ?
-            teamData?.getTeamsByUser.map(post => {
+            teamData?.getTeamsByUser.map((post, idx) => {
               return (
-                <PostCard key={post.id} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
+                <PostCard key={post.id ?? idx} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
               )
             }) :
             <DetailsText>No teams</DetailsText>
