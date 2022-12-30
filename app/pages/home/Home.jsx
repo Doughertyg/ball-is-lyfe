@@ -1,5 +1,4 @@
 import React, { useContext, useMemo } from 'react';
-import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useHistory } from 'react-router';
@@ -137,9 +136,9 @@ function Home(props) {
   }
   
   return (
-    <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start">
+    <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start" maxWidth="800px" width="100%">
       <PageHeader>Active seasons</PageHeader>
-      <FlexContainer justify="start" overFlow="scroll" width="100%">
+      <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingSeasons ? <h1>LOADING...</h1> :
           activeSeasons?.length > 0 ?
           activeSeasons?.map((season, idx) => {
@@ -154,14 +153,16 @@ function Home(props) {
               />
             )
           }) :
-          <DetailsText>No active seasons</DetailsText>
+          <FlexContainer justify="flex-start" width="800px">
+            <DetailsText>No active seasons</DetailsText>
+          </FlexContainer>
         }
       </FlexContainer>
       <FlexContainer alignItems="center">
         <PageHeader margin="20px 12px 20px 0">Leagues</PageHeader>
         <Icon borderRadius="50%" icon="plus" onClick={() => history.push('/league/new')} />
       </FlexContainer>
-      <FlexContainer justify="start" overFlow="scroll" width="100%">
+      <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingLeagues ? (<h1>LOADING...</h1>) :
           leagueData?.getLeaguesByUser?.length > 0 ?
             leagueData?.getLeaguesByUser?.map((league, idx) => {
@@ -176,11 +177,13 @@ function Home(props) {
                 />
               )
             }) :
-            <DetailsText>No Leagues</DetailsText>
+            <FlexContainer justify="flex-start" width="800px">
+              <DetailsText>No Leagues</DetailsText>
+            </FlexContainer>
         }
       </FlexContainer>
       <PageHeader>Past seasons</PageHeader>
-      <FlexContainer justify="start" overFlow="scroll" width="100%">
+      <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingSeasons ? <h1>LOADING...</h1> :
           pastSeasons?.length > 0 ?
           pastSeasons?.map((season, idx) => {
@@ -195,11 +198,13 @@ function Home(props) {
               />
             )
           }) :
-          <DetailsText>No past seasons</DetailsText>
+          <FlexContainer justify="flex-start" width="800px">
+            <DetailsText>No past seasons</DetailsText>
+          </FlexContainer>
         }
       </FlexContainer>
       <PageHeader>Upcoming seasons</PageHeader>
-      <FlexContainer justify="start" overFlow="scroll" width="100%">
+      <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingSeasons ? <h1>LOADING...</h1> :
           futureSeasons?.length > 0 ?
           futureSeasons?.map((season, idx) => {
@@ -214,14 +219,16 @@ function Home(props) {
               />
             )
           }) :
-          <DetailsText>No upcoming seasons</DetailsText>
+          <FlexContainer justify="flex-start" width="800px">
+            <DetailsText>No upcoming seasons</DetailsText>
+          </FlexContainer>
         }
       </FlexContainer>
       <FlexContainer alignItems="center">
         <PageHeader margin="20px 12px 20px 0">Teams</PageHeader>
         <Icon borderRadius="50%" icon="plus" onClick={() => {console.log('add Team!');}} />
       </FlexContainer>
-      <FlexContainer justify="start" overFlow="scroll" width="100%">
+      <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingTeams ? (<h1>LOADING...</h1>) :
           teamData?.getTeamsByUser?.length > 0 ?
             teamData?.getTeamsByUser.map((post, idx) => {
@@ -229,7 +236,9 @@ function Home(props) {
                 <PostCard key={post.id ?? idx} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
               )
             }) :
-            <DetailsText>No teams</DetailsText>
+            <FlexContainer justify="flex-start" width="800px">
+              <DetailsText>No teams</DetailsText>
+            </FlexContainer>
         }
       </FlexContainer>
     </FlexContainer>

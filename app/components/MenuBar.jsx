@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { useState } from 'react';
 import { NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -22,6 +22,16 @@ function MenuBar({ match }) {
   const path = useLocation()?.pathname;
   const [ active, setActive ] = useState(path === '/' ? 'home' : path.split('/')[1]);
   const { user, logout } = useContext(AuthContext);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const onResize = () => {
+      setInnerWidth(window.innerWidth);
+    }
+
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   return (
     <Wrapper>
@@ -35,10 +45,13 @@ function MenuBar({ match }) {
             </ButtonContainer>
             <FlexComponent>
               <FlexContainer alignItems="center" height="43px" overFlow="hidden">
-                <Offset />
-                <NavLink to="/">
-                  <img height={310} src="./logo.jpeg" />
-                </NavLink>
+                {innerWidth > 600 && (
+                  <>
+                    <Offset />
+                    <NavLink to="/">
+                      <img height={310} src="./logo.jpeg" />
+                    </NavLink>
+                  </>)}
               </FlexContainer>
             </FlexComponent>
             <FlexContainer>

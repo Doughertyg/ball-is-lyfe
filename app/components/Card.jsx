@@ -11,7 +11,7 @@ function Card({body, margin, onClick, subTitle, title}) {
         boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
         height={'200px'} margin={margin}
         marginTop="4px"
-        maxWidth={'200px'}
+        width={'165px'}
         onClick={onClick}>
         <CardContentWrapper>
           <PageHeader margin={'0 0 8px 0'}>{title}</PageHeader>

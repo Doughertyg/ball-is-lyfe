@@ -4085,7 +4085,7 @@ function Card(_ref) {
     height: '200px',
     margin: margin,
     marginTop: "4px",
-    maxWidth: '200px',
+    width: '165px',
     onClick: onClick
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: '0 0 8px 0'
@@ -4435,6 +4435,19 @@ function MenuBar(_ref) {
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_1__.AuthContext),
     user = _useContext.user,
     logout = _useContext.logout;
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(window.innerWidth),
+    _useState4 = _slicedToArray(_useState3, 2),
+    innerWidth = _useState4[0],
+    setInnerWidth = _useState4[1];
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var onResize = function onResize() {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', onResize);
+    return function () {
+      return window.removeEventListener('resize', onResize);
+    };
+  }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
     backgroundColor: "rgba(239, 239, 239, 1)",
     width: '100%'
@@ -4450,12 +4463,12 @@ function MenuBar(_ref) {
     alignItems: "center",
     height: "43px",
     overFlow: "hidden"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Offset, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
+  }, innerWidth > 600 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Offset, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
     to: "/"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
     height: 310,
     src: "./logo.jpeg"
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ButtonContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
     onClick: logout,
     exact: true,
     to: "/login"
@@ -5327,7 +5340,6 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-
 dayjs__WEBPACK_IMPORTED_MODULE_6___default().extend((dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7___default()));
 var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
 var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      id\n      name\n      description\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
@@ -5416,10 +5428,12 @@ function Home(props) {
     alignContent: "start",
     alignItems: "start",
     direction: "column",
-    justify: "flex-start"
+    justify: "flex-start",
+    maxWidth: "800px",
+    width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Active seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
-    overFlow: "scroll",
+    flexWrap: "wrap",
     width: "100%"
   }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.length) > 0 ? activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.map(function (season, idx) {
     var _season$id;
@@ -5433,7 +5447,10 @@ function Home(props) {
       subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonEnd).format('MMM YYYY')),
       title: season.name
     });
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No active seasons")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No active seasons"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     alignItems: "center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, {
     margin: "20px 12px 20px 0"
@@ -5445,7 +5462,7 @@ function Home(props) {
     }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
-    overFlow: "scroll",
+    flexWrap: "wrap",
     width: "100%"
   }, loadingLeagues ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league, idx) {
     var _league$description, _league$_id;
@@ -5459,9 +5476,12 @@ function Home(props) {
       margin: "0 20px 0 0",
       key: (_league$_id = league._id) !== null && _league$_id !== void 0 ? _league$_id : idx
     });
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No Leagues")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Past seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No Leagues"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Past seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
-    overFlow: "scroll",
+    flexWrap: "wrap",
     width: "100%"
   }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.length) > 0 ? pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.map(function (season, idx) {
     var _season$id2;
@@ -5475,9 +5495,12 @@ function Home(props) {
       subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonEnd).format('MMM YYYY')),
       title: season.name
     });
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No past seasons")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Upcoming seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No past seasons"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Upcoming seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
-    overFlow: "scroll",
+    flexWrap: "wrap",
     width: "100%"
   }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.length) > 0 ? futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.map(function (season, idx) {
     var _season$id3;
@@ -5491,7 +5514,10 @@ function Home(props) {
       subTitle: "".concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonStart).format('MMM YYYY'), " - ").concat(dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season.seasonEnd).format('MMM YYYY')),
       title: season.name
     });
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No upcoming seasons")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No upcoming seasons"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     alignItems: "center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, {
     margin: "20px 12px 20px 0"
@@ -5503,7 +5529,7 @@ function Home(props) {
     }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
-    overFlow: "scroll",
+    flexWrap: "wrap",
     width: "100%"
   }, loadingTeams ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (teamData === null || teamData === void 0 ? void 0 : (_teamData$getTeamsByU = teamData.getTeamsByUser) === null || _teamData$getTeamsByU === void 0 ? void 0 : _teamData$getTeamsByU.length) > 0 ? teamData === null || teamData === void 0 ? void 0 : teamData.getTeamsByUser.map(function (post, idx) {
     var _post$id;
@@ -5514,7 +5540,10 @@ function Home(props) {
         return props.history.push("/posts/".concat(post.id));
       }
     });
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No teams")));
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No teams"))));
 }
 ;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Home);
@@ -6793,7 +6822,7 @@ var CardContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
 });
-var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: white;\nborder: ", ";\nborder-radius: 8px;\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: 16px;\nmargin: ", ";\nmargin-bottom: 4px;\nmargin-top: ", ";\n", "\n"])), function (props) {
+var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: white;\nborder: ", ";\nborder-radius: 8px;\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: 16px;\nmargin: ", ";\nmargin-bottom: 4px;\nmargin-top: ", ";\nwidth: ", ";\n", "\n"])), function (props) {
   var _props$maxWidth;
   return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : '400px';
 }, function (props) {
@@ -6813,6 +6842,9 @@ var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(
 }, function (props) {
   var _props$marginTop;
   return (_props$marginTop = props.marginTop) !== null && _props$marginTop !== void 0 ? _props$marginTop : 0;
+}, function (props) {
+  var _props$width2;
+  return (_props$width2 = props.width) !== null && _props$width2 !== void 0 ? _props$width2 : 'auto';
 }, function (props) {
   return props.onClick ? '&:hover {box-shadow: 0 0 15px rgba(0, 0, 0, 0.1)}' : '';
 });
@@ -6874,7 +6906,7 @@ var VerticalDivider = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   var _props$margin2;
   return (_props$margin2 = props.margin) !== null && _props$margin2 !== void 0 ? _props$margin2 : '0 10px';
 });
-var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\ndisplay: flex;\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nflex-direction: ", ";\njustify-content: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
+var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\ndisplay: flex;\nflex-wrap: ", ";\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nmax-width: ", ";\nmin-width: ", ";\nflex-direction: ", ";\njustify-content: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
   var _props$alignContent;
   return (_props$alignContent = props.alignContent) !== null && _props$alignContent !== void 0 ? _props$alignContent : 'center';
 }, function (props) {
@@ -6883,6 +6915,9 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
 }, function (props) {
   var _props$backgroundColo;
   return (_props$backgroundColo = props.backgroundColor) !== null && _props$backgroundColo !== void 0 ? _props$backgroundColo : 'initial';
+}, function (props) {
+  var _props$flexWrap;
+  return (_props$flexWrap = props.flexWrap) !== null && _props$flexWrap !== void 0 ? _props$flexWrap : 'initial';
 }, function (props) {
   var _props$height2;
   return (_props$height2 = props.height) !== null && _props$height2 !== void 0 ? _props$height2 : 'auto';
@@ -6895,6 +6930,12 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
 }, function (props) {
   var _props$marginTop2;
   return (_props$marginTop2 = props.marginTop) !== null && _props$marginTop2 !== void 0 ? _props$marginTop2 : 'initial';
+}, function (props) {
+  var _props$maxWidth;
+  return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : 'initial';
+}, function (props) {
+  var _props$minWidth;
+  return (_props$minWidth = props.minWidth) !== null && _props$minWidth !== void 0 ? _props$minWidth : 'initial';
 }, function (props) {
   var _props$direction;
   return (_props$direction = props.direction) !== null && _props$direction !== void 0 ? _props$direction : 'row';
