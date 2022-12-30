@@ -96,7 +96,7 @@ function Register({ oldRegisterFlow }) {
     }
   })
 
-  const [registerUser, { _loading }] = useMutation(REGISTER_GOOGLE_USER, {
+  const [registerUser, { registeringGoogleUser }] = useMutation(REGISTER_GOOGLE_USER, {
     onCompleted: (res) => {
       console.log('completed new registration!');
       history.push('/');
@@ -159,16 +159,20 @@ function Register({ oldRegisterFlow }) {
   
   return (
     <CenteredContainer>
-        <PageHeader>
-          REGISTER
-        </PageHeader>
-        <GoogleLogin
-          clientId={CLIENT_ID}
-          onSuccess={onGoogleAuthSuccess}
-          onFailure={onGoogleAuthError}
-          cookiePolicy='single_host_origin'
-          prompt='consent'
-        />
+        {registeringGoogleUser ? <h1>Registering user...</h1> : (
+          <>
+            <PageHeader>
+              REGISTER
+            </PageHeader>
+            <GoogleLogin
+              clientId={CLIENT_ID}
+              onSuccess={onGoogleAuthSuccess}
+              onFailure={onGoogleAuthError}
+              cookiePolicy='single_host_origin'
+              prompt='consent'
+            />
+          </>
+        )}
         {oldRegisterFlow && (
           <CardWrapper>
             <CardContentWrapper>

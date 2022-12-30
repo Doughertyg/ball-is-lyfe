@@ -6181,13 +6181,13 @@ function Login(_ref) {
       }
     });
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, null, "LOGIN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Logging in...") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, null, "LOGIN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
     clientId: CLIENT_ID,
     onSuccess: onGoogleAuthSuccess,
     onFailure: onGoogleAuthError,
     cookiePolicy: "single_host_origin",
     prompt: "consent"
-  }), oldLoginPageFlag && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_4__.CardWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_4__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_4__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, null, "Username"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  })), oldLoginPageFlag && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_4__.CardWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_4__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_4__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, null, "Username"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     type: "text",
     errors: errors.username,
     disabled: loading,
@@ -6342,7 +6342,7 @@ function Register(_ref) {
     }),
     _useMutation4 = _slicedToArray(_useMutation3, 2),
     registerUser = _useMutation4[0],
-    _loading = _useMutation4[1]._loading;
+    registeringGoogleUser = _useMutation4[1].registeringGoogleUser;
   var validateForm = function validateForm() {
     var formErrors = {};
     if (username === '') {
@@ -6386,13 +6386,13 @@ function Register(_ref) {
     };
     setErrors(_objectSpread(_objectSpread({}, errors), graphQLErrors));
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "REGISTER"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, registeringGoogleUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Registering user...") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "REGISTER"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
     clientId: CLIENT_ID,
     onSuccess: onGoogleAuthSuccess,
     onFailure: onGoogleAuthError,
     cookiePolicy: "single_host_origin",
     prompt: "consent"
-  }), oldRegisterFlow && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_5__.CardWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_5__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_5__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.SectionHeadingText, null, "Username"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  })), oldRegisterFlow && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_5__.CardWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_5__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_5__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.SectionHeadingText, null, "Username"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     type: "text",
     errors: errors.username,
     disabled: loading,

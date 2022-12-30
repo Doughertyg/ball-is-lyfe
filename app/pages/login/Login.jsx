@@ -130,16 +130,19 @@ function Login({ oldLoginPageFlag }) {
   
   return (
     <CenteredContainer>
-        <PageHeader>
-          LOGIN
-        </PageHeader>
-        <GoogleLogin
-          clientId={CLIENT_ID}
-          onSuccess={onGoogleAuthSuccess}
-          onFailure={onGoogleAuthError}
-          cookiePolicy='single_host_origin'
-          prompt='consent'
-        />
+        {loading ? <h1>Logging in...</h1> : (
+        <>
+          <PageHeader>
+            LOGIN
+          </PageHeader>
+          <GoogleLogin
+            clientId={CLIENT_ID}
+            onSuccess={onGoogleAuthSuccess}
+            onFailure={onGoogleAuthError}
+            cookiePolicy='single_host_origin'
+            prompt='consent'
+          />
+        </>)}
         {oldLoginPageFlag && (
           <CardWrapper>
             <CardContentWrapper>
