@@ -28,9 +28,13 @@ const FETCH_LEAGUES_QUERY = gql`
 const FETCH_SEASONS_QUERY = gql`
   query($userID: ID!) {
     getSeasonsByUser(userID: $userID) {
-      id
-      name
       description
+      id
+      league {
+        name
+        sport
+      }
+      name
       seasonStart
       seasonEnd
     }
@@ -139,12 +143,19 @@ function Home(props) {
     <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start" maxWidth="800px" width="100%">
       <PageHeader>Active seasons</PageHeader>
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingSeasons ? <h1>LOADING...</h1> :
+        {loadingSeasons ? 
+          (
+            <FlexContainer justify="flex-start" width="800px">
+              <h1>LOADING...</h1>
+            </FlexContainer>
+          ) :
           activeSeasons?.length > 0 ?
           activeSeasons?.map((season, idx) => {
             return (
               <Card
                 body={season.description}
+                bodyTitle={season?.league?.name?.toUpperCase()}
+                bodySubTitle={`(${season?.league?.sport})`}
                 key={season.id ?? idx}
                 margin="0 20px 0 0"
                 onClick={() => history.push(`/season/${season.id}`)}
@@ -163,7 +174,12 @@ function Home(props) {
         <Icon borderRadius="50%" icon="plus" onClick={() => history.push('/league/new')} />
       </FlexContainer>
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingLeagues ? (<h1>LOADING...</h1>) :
+        {loadingLeagues ? 
+          (
+            <FlexContainer justify="flex-start" width="800px">
+              <h1>LOADING...</h1>
+            </FlexContainer>
+          ) :
           leagueData?.getLeaguesByUser?.length > 0 ?
             leagueData?.getLeaguesByUser?.map((league, idx) => {
               return (
@@ -184,12 +200,19 @@ function Home(props) {
       </FlexContainer>
       <PageHeader>Past seasons</PageHeader>
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingSeasons ? <h1>LOADING...</h1> :
+        {loadingSeasons ? 
+          (
+            <FlexContainer justify="flex-start" width="800px">
+              <h1>LOADING...</h1>
+            </FlexContainer>
+          ) :
           pastSeasons?.length > 0 ?
           pastSeasons?.map((season, idx) => {
             return (
               <Card
                 body={season.description}
+                bodyTitle={season?.league?.name?.toUpperCase()}
+                bodySubTitle={`(${season?.league?.sport})`}
                 key={season.id ?? idx}
                 margin="0 20px 0 0"
                 onClick={() => history.push(`/season/${season.id}`)}
@@ -205,12 +228,19 @@ function Home(props) {
       </FlexContainer>
       <PageHeader>Upcoming seasons</PageHeader>
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingSeasons ? <h1>LOADING...</h1> :
+        {loadingSeasons ? 
+          (
+            <FlexContainer justify="flex-start" width="800px">
+              <h1>LOADING...</h1>
+            </FlexContainer>
+          ) :
           futureSeasons?.length > 0 ?
           futureSeasons?.map((season, idx) => {
             return (
               <Card
                 body={season.description}
+                bodyTitle={season?.league?.name?.toUpperCase()}
+                bodySubTitle={`(${season?.league?.sport})`}
                 key={season.id ?? idx}
                 margin="0 20px 0 0"
                 onClick={() => history.push(`/season/${season.id}`)}
@@ -229,7 +259,12 @@ function Home(props) {
         <Icon borderRadius="50%" icon="plus" onClick={() => {console.log('add Team!');}} />
       </FlexContainer>
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingTeams ? (<h1>LOADING...</h1>) :
+        {loadingTeams ? 
+          (
+            <FlexContainer justify="flex-start" width="800px">
+              <h1>LOADING...</h1>
+            </FlexContainer>
+          ) :
           teamData?.getTeamsByUser?.length > 0 ?
             teamData?.getTeamsByUser.map((post, idx) => {
               return (

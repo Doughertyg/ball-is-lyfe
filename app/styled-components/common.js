@@ -28,8 +28,8 @@ export const DetailsText = styled.div`
   font-weight: 300;
   color: DimGrey;
   cursor: pointer;
-  margin-bottom: 6px;
   margin: ${props => props.margin ?? 'initial'};
+  margin-bottom: ${props => props.marginBottom ?? '0'};
   &:hover {
     color: teal;
   }
@@ -97,9 +97,12 @@ overflow: hidden;
 text-align: left;
 text-overflow: ellipsis;
 white-space: pre-line;
+margin-top: ${props => props.marginTop ?? '0'};
 display: -webkit-box;
--webkit-line-clamp: 5;
+-webkit-line-clamp: 3;
 -webkit-box-orient: vertical; 
+max-width: 100%;
+width: 100%;
 `;
 
 export const ModalStyle = styled.div`

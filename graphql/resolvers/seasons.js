@@ -8,14 +8,16 @@ module.exports = {
   Query: {
     async getSeasonsByUser(_, {userID}) {
       try {
-        const seasons = await Season.find(season =>
-          season != null &&
-          season.players != null &&
-          season.players.includes(userID) ||
-          season != null &&
-          season.admins != null &&
-          season.admins.includes(userID)
-        ).sort({createdAt: -1}).exec();
+        const adminLeagues = await League.find({
+          admins: {$in: [userID]}
+        }).exec();
+        const seasons = await Season.find({ $or: [
+          { players: {$in: [userID]} },
+          { league: {$in: adminLeagues} }
+        ]})
+        .populate('league')
+        .sort({createdAt: -1})
+        .exec();
         return seasons;
       } catch (err) {
         throw new Error(err);

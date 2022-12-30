@@ -4076,6 +4076,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function Card(_ref) {
   var body = _ref.body,
+    bodyTitle = _ref.bodyTitle,
+    bodySubTitle = _ref.bodySubTitle,
     margin = _ref.margin,
     onClick = _ref.onClick,
     subTitle = _ref.subTitle,
@@ -4089,7 +4091,9 @@ function Card(_ref) {
     onClick: onClick
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: '0 0 8px 0'
-  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, subTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, null, body)))));
+  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, subTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardBody, null, bodyTitle && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, null, bodyTitle)), bodySubTitle && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, bodySubTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
+    marginTop: bodyTitle || bodySubTitle ? "8px" : "0"
+  }, body)))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Card);
 
@@ -5342,7 +5346,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 dayjs__WEBPACK_IMPORTED_MODULE_6___default().extend((dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7___default()));
 var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
-var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      id\n      name\n      description\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
+var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      description\n      id\n      league {\n        name\n        sport\n      }\n      name\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
 var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getTeamsByUser(userID: $userID) {\n      id\n      name\n      description\n      profilePicture\n      bannerPicture\n      sport\n      players {\n        name\n        profilePicture\n      }\n    }\n  }\n"])));
 
 /**
@@ -5435,10 +5439,15 @@ function Home(props) {
     justify: "start",
     flexWrap: "wrap",
     width: "100%"
-  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.length) > 0 ? activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.map(function (season, idx) {
-    var _season$id;
+  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.length) > 0 ? activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.map(function (season, idx) {
+    var _season$league, _season$league$name, _season$league2, _season$id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
+      bodyTitle: season === null || season === void 0 ? void 0 : (_season$league = season.league) === null || _season$league === void 0 ? void 0 : (_season$league$name = _season$league.name) === null || _season$league$name === void 0 ? void 0 : _season$league$name.toUpperCase(),
+      bodySubTitle: "(".concat(season === null || season === void 0 ? void 0 : (_season$league2 = season.league) === null || _season$league2 === void 0 ? void 0 : _season$league2.sport, ")"),
       key: (_season$id = season.id) !== null && _season$id !== void 0 ? _season$id : idx,
       margin: "0 20px 0 0",
       onClick: function onClick() {
@@ -5464,7 +5473,10 @@ function Home(props) {
     justify: "start",
     flexWrap: "wrap",
     width: "100%"
-  }, loadingLeagues ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league, idx) {
+  }, loadingLeagues ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league, idx) {
     var _league$description, _league$_id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: (_league$description = league.description) !== null && _league$description !== void 0 ? _league$description : '',
@@ -5483,10 +5495,15 @@ function Home(props) {
     justify: "start",
     flexWrap: "wrap",
     width: "100%"
-  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.length) > 0 ? pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.map(function (season, idx) {
-    var _season$id2;
+  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.length) > 0 ? pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.map(function (season, idx) {
+    var _season$league3, _season$league3$name, _season$league4, _season$id2;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
+      bodyTitle: season === null || season === void 0 ? void 0 : (_season$league3 = season.league) === null || _season$league3 === void 0 ? void 0 : (_season$league3$name = _season$league3.name) === null || _season$league3$name === void 0 ? void 0 : _season$league3$name.toUpperCase(),
+      bodySubTitle: "(".concat(season === null || season === void 0 ? void 0 : (_season$league4 = season.league) === null || _season$league4 === void 0 ? void 0 : _season$league4.sport, ")"),
       key: (_season$id2 = season.id) !== null && _season$id2 !== void 0 ? _season$id2 : idx,
       margin: "0 20px 0 0",
       onClick: function onClick() {
@@ -5502,10 +5519,15 @@ function Home(props) {
     justify: "start",
     flexWrap: "wrap",
     width: "100%"
-  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.length) > 0 ? futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.map(function (season, idx) {
-    var _season$id3;
+  }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.length) > 0 ? futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.map(function (season, idx) {
+    var _season$league5, _season$league5$name, _season$league6, _season$id3;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
+      bodyTitle: season === null || season === void 0 ? void 0 : (_season$league5 = season.league) === null || _season$league5 === void 0 ? void 0 : (_season$league5$name = _season$league5.name) === null || _season$league5$name === void 0 ? void 0 : _season$league5$name.toUpperCase(),
+      bodySubTitle: "(".concat(season === null || season === void 0 ? void 0 : (_season$league6 = season.league) === null || _season$league6 === void 0 ? void 0 : _season$league6.sport, ")"),
       key: (_season$id3 = season.id) !== null && _season$id3 !== void 0 ? _season$id3 : idx,
       margin: "0 20px 0 0",
       onClick: function onClick() {
@@ -5531,7 +5553,10 @@ function Home(props) {
     justify: "start",
     flexWrap: "wrap",
     width: "100%"
-  }, loadingTeams ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...") : (teamData === null || teamData === void 0 ? void 0 : (_teamData$getTeamsByU = teamData.getTeamsByUser) === null || _teamData$getTeamsByU === void 0 ? void 0 : _teamData$getTeamsByU.length) > 0 ? teamData === null || teamData === void 0 ? void 0 : teamData.getTeamsByUser.map(function (post, idx) {
+  }, loadingTeams ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (teamData === null || teamData === void 0 ? void 0 : (_teamData$getTeamsByU = teamData.getTeamsByUser) === null || _teamData$getTeamsByU === void 0 ? void 0 : _teamData$getTeamsByU.length) > 0 ? teamData === null || teamData === void 0 ? void 0 : teamData.getTeamsByUser.map(function (post, idx) {
     var _post$id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_PostCard_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
       key: (_post$id = post.id) !== null && _post$id !== void 0 ? _post$id : idx,
@@ -6811,7 +6836,7 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject, _templateObject2, _templateObject3;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var CardBody = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: ", ";\n  background-color: white;\n  border-radius: 6px;\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n  overflow: 'hidden';\n  padding-top: 16px;\n  text-overflow: 'elipsis';\n  white-space: 'nowrap';\n  width: 100%;\n"])), function (props) {
+var CardBody = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: ", ";\n  background-color: white;\n  border-radius: 6px;\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n  padding-top: 8px;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n"])), function (props) {
   var _props$align;
   return (_props$align = props.align) !== null && _props$align !== void 0 ? _props$align : 'flex-start';
 });
@@ -6888,16 +6913,19 @@ var ButtonContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
 });
 var CenteredContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\nmargin: 0 auto;\ntext-align: center;\nvertical-align: middle;\n"])));
 var CommonPageLayout = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  background-color: rgba(239, 239, 239, 0.25);\n  color: black !important;\n  font-family: Arial !important;\n  height: 100vh;\n  width: 100vw;\n  margin: 0 auto;\n"])));
-var DetailsText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  font-size: 12px;\n  font-weight: 300;\n  color: DimGrey;\n  cursor: pointer;\n  margin-bottom: 6px;\n  margin: ", ";\n  &:hover {\n    color: teal;\n  }\n"])), function (props) {
+var DetailsText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  font-size: 12px;\n  font-weight: 300;\n  color: DimGrey;\n  cursor: pointer;\n  margin: ", ";\n  margin-bottom: ", ";\n  &:hover {\n    color: teal;\n  }\n"])), function (props) {
   var _props$margin;
   return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : 'initial';
+}, function (props) {
+  var _props$marginBottom;
+  return (_props$marginBottom = props.marginBottom) !== null && _props$marginBottom !== void 0 ? _props$marginBottom : '0';
 });
 var Divider = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 0;\n  border-top: 1px solid rgba(0, 0, 0, 0.1);\n  margin-top: ", ";\n  margin-bottom: ", ";\n"])), function (props) {
   var _props$marginTop;
   return (_props$marginTop = props.marginTop) !== null && _props$marginTop !== void 0 ? _props$marginTop : "10px";
 }, function (props) {
-  var _props$marginBottom;
-  return (_props$marginBottom = props.marginBottom) !== null && _props$marginBottom !== void 0 ? _props$marginBottom : 0;
+  var _props$marginBottom2;
+  return (_props$marginBottom2 = props.marginBottom) !== null && _props$marginBottom2 !== void 0 ? _props$marginBottom2 : 0;
 });
 var VerticalDivider = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n  width: 0;\n  height: ", ";\n  border-right: 1px solid rgba(0, 0, 0, 0.1);\n  margin: ", ";\n"])), function (props) {
   var _props$height;
@@ -6925,8 +6953,8 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
   var _props$margin3;
   return (_props$margin3 = props.margin) !== null && _props$margin3 !== void 0 ? _props$margin3 : 'initial';
 }, function (props) {
-  var _props$marginBottom2;
-  return (_props$marginBottom2 = props.marginBottom) !== null && _props$marginBottom2 !== void 0 ? _props$marginBottom2 : 'initial';
+  var _props$marginBottom3;
+  return (_props$marginBottom3 = props.marginBottom) !== null && _props$marginBottom3 !== void 0 ? _props$marginBottom3 : 'initial';
 }, function (props) {
   var _props$marginTop2;
   return (_props$marginTop2 = props.marginTop) !== null && _props$marginTop2 !== void 0 ? _props$marginTop2 : 'initial';
@@ -6976,7 +7004,10 @@ var SectionHeadingText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default
   var _props$margin5;
   return (_props$margin5 = props.margin) !== null && _props$margin5 !== void 0 ? _props$margin5 : 0;
 });
-var BodyText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["\nfont-size: 16px;\noverflow: hidden;\ntext-align: left;\ntext-overflow: ellipsis;\nwhite-space: pre-line;\ndisplay: -webkit-box;\n-webkit-line-clamp: 5;\n-webkit-box-orient: vertical; \n"])));
+var BodyText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["\nfont-size: 16px;\noverflow: hidden;\ntext-align: left;\ntext-overflow: ellipsis;\nwhite-space: pre-line;\nmargin-top: ", ";\ndisplay: -webkit-box;\n-webkit-line-clamp: 3;\n-webkit-box-orient: vertical; \nmax-width: 100%;\nwidth: 100%;\n"])), function (props) {
+  var _props$marginTop3;
+  return (_props$marginTop3 = props.marginTop) !== null && _props$marginTop3 !== void 0 ? _props$marginTop3 : '0';
+});
 var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["\n  position: absolute;\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: 100%;\n  z-index: 1000;\n"])));
 var ProfilePictureThumb = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].img(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["\n  border-radius: 50%;\n  height: 32px;\n  margin: ", ";\n  width: 32px;\n"])), function (props) {
   var _props$margin6;

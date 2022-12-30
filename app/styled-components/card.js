@@ -7,10 +7,11 @@ export const CardBody = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  overflow: 'hidden';
-  padding-top: 16px;
-  text-overflow: 'elipsis';
-  white-space: 'nowrap';
+  height: 100%;
+  overflow: hidden;
+  padding-top: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   width: 100%;
 `;
 

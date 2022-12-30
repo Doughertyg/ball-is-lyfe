@@ -9,8 +9,10 @@ module.exports = {
     async getLeaguesByUser(_, { userID }) {
       try {
         const leagues = await League.find({
-            players: {$in: [userID]}
-          })
+          $or: [
+            { players: {$in: [userID]} },
+            { admins: {$in: [userID]} }
+          ]})
           .sort({ createdAt: -1 })
           .populate('admins')
           .exec();

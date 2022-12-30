@@ -8,11 +8,11 @@ const seasonSchema = new Schema({
   seasonEnd: String,
   league: {
     type: Schema.Types.ObjectId,
-    ref: 'league'
+    ref: 'League'
   },
   players: [{
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: 'User'
   }],
 });
 
