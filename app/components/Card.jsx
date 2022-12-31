@@ -15,13 +15,13 @@ function Card({body, bodyTitle, bodySubTitle, margin, onClick, subTitle, title})
         width={'165px'}
         onClick={onClick}>
         <CardContentWrapper>
-          <PageHeader margin={'0 0 8px 0'}>{title}</PageHeader>
+          <PageHeader margin="0">{title}</PageHeader>
+          {bodyTitle && <DetailsText><SectionHeadingText>{bodyTitle}</SectionHeadingText></DetailsText>}
+          {bodySubTitle && <DetailsText marginBottom="4px">{bodySubTitle}</DetailsText>}
           <DetailsText>{subTitle}</DetailsText>
           <Divider />
           <CardBody>
-            {bodyTitle && <DetailsText><SectionHeadingText>{bodyTitle}</SectionHeadingText></DetailsText>}
-            {bodySubTitle && <DetailsText>{bodySubTitle}</DetailsText>}
-            <BodyText marginTop={(bodyTitle || bodySubTitle) ? "8px" : "0"}>{body}</BodyText>
+            <BodyText>{body}</BodyText>
           </CardBody>
         </CardContentWrapper>
       </CardWrapper>
