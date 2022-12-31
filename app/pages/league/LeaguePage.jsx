@@ -8,7 +8,8 @@ import {
   FlexContainer,
   PageHeader,
   SectionHeadingText,
-  ScrollableContainer
+  ScrollableContainer,
+  ProfilePictureThumb
 } from '../../styled-components/common';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
@@ -18,6 +19,7 @@ import Button from '../../components/Button.jsx';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
+import { CardWrapper } from '../../styled-components/card.js';
 
 const SearchWrapper = styled.div`
   height: 100%;
@@ -200,31 +202,41 @@ const League = ({match}) => {
           }) :
             <DetailsText>No Seasons</DetailsText>
           }
-           </FlexContainer>
-           <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
-              <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
-              <SearchWrapper width={searchExpanded ? '400px' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
-                <PlayerSearchField excludeLeague leagueID={leagueID} onClick={onSelectPlayer} selected={players} width={searchExpanded ? '400px' : '0'} />
-              </SearchWrapper>
-              {isLeagueAdmin && <Icon borderRadius="50%" icon={searchExpanded ? "close" : "plus"} onClick={() => setSearchExpanded(!searchExpanded)} />}
+          </FlexContainer>
+          <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
+            <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
+            <SearchWrapper width={searchExpanded ? '400px' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
+              <PlayerSearchField excludeLeague leagueID={leagueID} onClick={onSelectPlayer} selected={players} width={searchExpanded ? '400px' : '0'} />
+            </SearchWrapper>
+            {isLeagueAdmin && <Icon borderRadius="50%" icon={searchExpanded ? "close" : "plus"} onClick={() => setSearchExpanded(!searchExpanded)} />}
           </FlexContainer>
           {Object.keys(players).length > 0 && (
             <>
-              <ScrollableContainer>
+              <FlexContainer flexWrap="wrap" justify="start">
                 {Object.values(players).map((player, idx) => (
-                  <div key={player.id}>
-                    {idx !== 0 && <Divider marginTop="0" />}
-                    <RowWrapper >
+                    <CardWrapper
+                      boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
+                      margin="0 0 0 4px"
+                      marginTop="4px">
                       <FlexContainer alignItems="center" justify="space-between">
-                        <BodyText>
-                          {player.username}
-                        </BodyText>
-                          <DetailsText onClick={() => onSelectPlayer(player)}>remove</DetailsText>
+                        {player.profilePicture && (
+                          <ProfilePictureThumb
+                            height="32px"
+                            referrerPolicy="no-referrer"
+                            src={player.profilePicture}
+                            width="32px" />
+                        )}
+                        <FlexContainer direction="column">
+                          <BodyText marginBottom="4px">
+                            {player.name ?? player.username}
+                          </BodyText>
+                          <DetailsText>{player.email}</DetailsText>
+                        </FlexContainer>
+                        <Icon icon="close" onClick={() => onSelectPlayer(player)} />
                       </FlexContainer>
-                    </RowWrapper>
-                  </div>
+                    </CardWrapper>
                 ))}
-              </ScrollableContainer>
+              </FlexContainer>
               <FlexContainer marginTop="12px">
                 <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setPlayers({})} />
                 <Button isLoading={isSubmitting} label="Add players to league" onClick={() => addPlayersToLeague()} />

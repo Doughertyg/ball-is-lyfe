@@ -6,14 +6,25 @@ import Comments from '../icons/comments.svg';
 import Heart from '../icons/heart.svg';
 import Message from '../icons/message.svg';
 import Plus from '../icons/plus.svg'
+import PlusRound from '../icons/plusround.svg';
+import Circle from '../icons/circle.svg';
+import Check from '../icons/checkcircle.svg';
+import CheckFilled from '../icons/checkcirclefilled.svg';
+import Close from '../icons/close.svg';
 import StyledSVG from '../styled-components/icons/styledSVG.js';
 import Trash from '../icons/trash.svg';
 import { Clickable } from '../styled-components/interactive';
 
 function SvgComponent({ icon, ...rest }) {
   switch (icon) {
+    case 'check':
+      return <Check {...rest} />
+    case 'checkFilled':
+      return <CheckFilled {...rest} />
+    case 'circle':
+      return <Circle {...rest} />
     case 'close':
-      return <Plus {...rest} />
+      return <Close {...rest} />
     case 'comment':
       return <Comment {...rest} />
     case 'comments':
@@ -25,7 +36,7 @@ function SvgComponent({ icon, ...rest }) {
     case 'message':
       return <Message {...rest} />
     case 'plus':
-      return <Plus {...rest} />
+      return <PlusRound {...rest} />
     case 'trash':
       return <Trash {...rest} />
   }
@@ -35,12 +46,12 @@ function Icon({ borderRadius, fill, height, icon, margin, onClick, width}) {
   return (
     onClick != null ? (
       <Clickable borderRadius={borderRadius} onClick={onClick}>
-        <StyledSVG fill={fill} height={height} margin={margin} transform={icon === 'close' && "rotate(45deg)"} width={width}>
+        <StyledSVG fill={fill} height={height} margin={margin} width={width}>
           <SvgComponent icon={icon} />
         </StyledSVG>
       </Clickable>
     ) : (
-      <StyledSVG fill={fill} height={height} transform={icon === 'close' && "rotate(45deg)"} width={width}>
+      <StyledSVG fill={fill} height={height} width={width}>
         <SvgComponent icon={icon} />
       </StyledSVG>
     )

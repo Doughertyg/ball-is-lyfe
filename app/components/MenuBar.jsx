@@ -64,7 +64,7 @@ function MenuBar({ match }) {
                 <NavLink onClick={() => setActive('profile')} exact to="/profile">
                   <FlexContainer alignItems="center">
                     {user.name?.split(' ')[0] ?? user.username}
-                    <ProfilePictureThumb src={user.profilePicture} />
+                    <ProfilePictureThumb referrerPolicy="no-referrer" src={user.profilePicture} />
                   </FlexContainer>
                 </NavLink>
               </ButtonContainer>

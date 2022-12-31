@@ -24,15 +24,17 @@ export const CommonPageLayout = styled.div`
 `;
 
 export const DetailsText = styled.div`
+  flex-grow: ${props => props.flexGrow ?? 'initial'};
   font-size: 12px;
   font-weight: 300;
   color: DimGrey;
-  cursor: pointer;
+  cursor: ${props => props.onClick ? 'pointer' : 'initial'};
   margin: ${props => props.margin ?? 'initial'};
   margin-bottom: ${props => props.marginBottom ?? '0'};
-  &:hover {
-    color: teal;
-  }
+  ${props => props.onClick ?
+    '&:hover {color: teal}'
+    : ''
+  };
 `;
 
 export const Divider = styled.div`
@@ -98,11 +100,12 @@ text-align: left;
 text-overflow: ellipsis;
 white-space: pre-line;
 margin-top: ${props => props.marginTop ?? '0'};
+margin-bottom: ${props => props.marginBottom ?? '0'};
 display: -webkit-box;
 -webkit-line-clamp: 3;
 -webkit-box-orient: vertical; 
 max-width: 100%;
-width: 100%;
+width: ${props => props.width ?? '100%'};
 `;
 
 export const ModalStyle = styled.div`
@@ -116,7 +119,7 @@ export const ModalStyle = styled.div`
 
 export const ProfilePictureThumb = styled.img`
   border-radius: 50%;
-  height: 32px;
+  height: ${props => props.height ?? "32px"};
   margin: ${props => props.margin ?? "4px"};
-  width: 32px;
+  width: ${props => props.width ?? "32px"};
 `;

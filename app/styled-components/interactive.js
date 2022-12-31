@@ -2,20 +2,20 @@ import styled from 'styled-components';
 
 export const Button = styled.button`
   background-color: white;
-  border: ${props => props.border ?? '1px solid dimgrey'};
+  border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
   border-radius: ${props => props.borderRadius ?? "4px"};
   height: ${props => props.height ?? 'auto'};
   padding: 8px 20px;
   margin: ${props => props.margin ?? '4px'};
   margin-top: ${props => props.marginTop ?? 0};
   width: ${props => props.width ?? 'auto'};
+  box-shadow: ${props => props.boxShadow ?? "0 0 10px rgba(0, 0, 0, 0.07)"};
   &:hover {
-    background-color: teal;
-    color: white;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   }
   &:active {
-    color: black;
-    background-color: white;
+    background-color: teal;
+    color: white;
   }
 `;
 

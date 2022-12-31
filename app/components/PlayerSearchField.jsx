@@ -3,7 +3,8 @@ import React, {useEffect, useMemo, useState} from 'react';
 import gql from 'graphql-tag';
 import InputField from './InputField.jsx';
 import styled from 'styled-components';
-import { BodyText, DetailsText, Divider, FlexContainer, ModalStyle } from '../styled-components/common.js';
+import { BodyText, DetailsText, Divider, FlexContainer, ModalStyle, ProfilePictureThumb } from '../styled-components/common.js';
+import Icon from './Icon.jsx';
 
 const ModalWrapper = styled.div`
   position: relative;
@@ -20,11 +21,17 @@ const ContentWrapper = styled.div`
 const FETCH_LEAGUE_PLAYERS_QUERY = gql`
   query($leagueID: ID) {
     getPlayersInLeague(leagueID: $leagueID) {
+      email
       id
+      name
+      profilePicture
       username
     }
     getPlayersNotInLeague(leagueID: $leagueID) {
+      email
       id
+      name
+      profilePicture
       username
     }
   }
@@ -52,6 +59,7 @@ export default function PlayerSearchField({
   width
 }) {
   const [input, setInput] = useState('');
+  const [resultsOpen, setResultsOpen] = useState(false);
   const { loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
     variables: {leagueID: leagueID}
   });
@@ -65,23 +73,24 @@ export default function PlayerSearchField({
     data?.getPlayersNotInLeague
     : data?.getPlayersInLeague;
   const results = useMemo(() => {
-    return input != '' ? source?.filter(
-      player => player?.username?.includes(input)
-    ) ?? [] : []
+    return input != '' ? source?.filter(player => {
+      return player?.username?.includes(input) ||
+        player?.name?.includes(input) ||
+        player?.email?.includes(input);
+    }) ?? [] : []
   }, [data, input]);
 
   const onRowClick = (player) => {
-    if (selected[player.id]) {
-      const newSelected = {...selected};
-      delete newSelected[player.id];
-      setSelected(newSelected);
-    } else {
-      const newSelected = {...selected};
-      newSelected[player.id] = true;
-      setSelected(newSelected);
+    onClick(player);
+    setResultsOpen(false);
+  }
+
+  const inputChange = (input) => {
+    if (!resultsOpen) {
+      setResultsOpen(true);
     }
 
-    onClick?.(player);
+    setInput(input);
   }
 
   return (
@@ -89,32 +98,42 @@ export default function PlayerSearchField({
       <InputField
         autoComplete={false}
         height={height}
-        onChange={setInput}
+        onChange={inputChange}
         placeholder="Search for players to add..."
         value={input}
         width={width ?? "700px"}
       />
-      {results.length > 0 && (
+      {results.length > 0 && resultsOpen && (
         <ModalWrapper>
           <ModalStyle>
             <ContentWrapper>
             {results?.map((player, idx) => {
-              console.log('player: ', player, '   selected: ', selected);
               return (
-              <div key={idx} onClick={() => onClick(player)}>
-                {idx !== 0 && <Divider marginBottom="10px" />}
-                <FlexContainer justify="space-between">
-                  <BodyText>
-                    {player.username}
-                  </BodyText>
-                  {selected[player.id] ? (
-                    <DetailsText>deselect</DetailsText>
-                  ) :
-                  (
-                    <DetailsText>select</DetailsText>
-                  )}
-                </FlexContainer>
-              </div>);
+                <div key={idx} onClick={() => onRowClick(player)}>
+                  {idx !== 0 && <Divider marginBottom="10px" />}
+                  <FlexContainer alignItems="center" justify="space-between">
+                    {player.profilePicture && (
+                      <ProfilePictureThumb
+                        height="32px"
+                        referrerPolicy="no-referrer"
+                        src={player.profilePicture}
+                        width="32px" />
+                    )}
+                    <BodyText width="fit-content">
+                      {player.name ?? player.username}
+                    </BodyText>
+                    <DetailsText flexGrow="1" margin="0 0 0 4px">
+                      {player.email}
+                    </DetailsText>
+                    {selected[player.id] ? (
+                      <Icon icon="checkFilled" />
+                    ) :
+                    (
+                      <Icon icon="circle" />
+                    )}
+                  </FlexContainer>
+                </div>
+              );
             })}
             </ContentWrapper> 
           </ModalStyle>
