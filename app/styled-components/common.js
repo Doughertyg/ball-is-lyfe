@@ -66,7 +66,7 @@ flex-direction: ${props => props.direction ?? 'row'};
 justify-content: ${props => props.justify ?? 'center'};
 padding-top: ${props => props.paddingTop ?? '0px'};
 width: ${props => props.width ?? 'auto'};
-overflow: ${props => props.overFlow ?? 'auto'};
+overflow: ${props => props.overflow ?? 'auto'};
 `;
 
 export const ScrollableContainer = styled.div`

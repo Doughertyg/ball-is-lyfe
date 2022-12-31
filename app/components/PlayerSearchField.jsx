@@ -9,6 +9,7 @@ const ModalWrapper = styled.div`
   position: relative;
   margin: 8px;
   margin-top: 4px;
+  z-index: 1000;
 `;
 
 const ContentWrapper = styled.div`
@@ -47,7 +48,8 @@ export default function PlayerSearchField({
   height,
   leagueID,
   onClick,
-  selected = {}
+  selected = {},
+  width
 }) {
   const [input, setInput] = useState('');
   const { loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
@@ -90,7 +92,7 @@ export default function PlayerSearchField({
         onChange={setInput}
         placeholder="Search for players to add..."
         value={input}
-        width="700px"
+        width={width ?? "700px"}
       />
       {results.length > 0 && (
         <ModalWrapper>

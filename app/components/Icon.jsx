@@ -12,6 +12,8 @@ import { Clickable } from '../styled-components/interactive';
 
 function SvgComponent({ icon, ...rest }) {
   switch (icon) {
+    case 'close':
+      return <Plus {...rest} />
     case 'comment':
       return <Comment {...rest} />
     case 'comments':
@@ -33,12 +35,12 @@ function Icon({ borderRadius, fill, height, icon, margin, onClick, width}) {
   return (
     onClick != null ? (
       <Clickable borderRadius={borderRadius} onClick={onClick}>
-        <StyledSVG fill={fill} height={height} margin={margin} width={width}>
+        <StyledSVG fill={fill} height={height} margin={margin} transform={icon === 'close' && "rotate(45deg)"} width={width}>
           <SvgComponent icon={icon} />
         </StyledSVG>
       </Clickable>
     ) : (
-      <StyledSVG fill={fill} height={height} width={width}>
+      <StyledSVG fill={fill} height={height} transform={icon === 'close' && "rotate(45deg)"} width={width}>
         <SvgComponent icon={icon} />
       </StyledSVG>
     )

@@ -4291,6 +4291,8 @@ function SvgComponent(_ref) {
   var icon = _ref.icon,
     rest = _objectWithoutProperties(_ref, _excluded);
   switch (icon) {
+    case 'close':
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_icons_plus_svg__WEBPACK_IMPORTED_MODULE_5__["default"], rest);
     case 'comment':
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_icons_comment_svg__WEBPACK_IMPORTED_MODULE_1__["default"], rest);
     case 'comments':
@@ -4322,12 +4324,14 @@ function Icon(_ref2) {
     fill: fill,
     height: height,
     margin: margin,
+    transform: icon === 'close' && "rotate(45deg)",
     width: width
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SvgComponent, {
     icon: icon
   }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_icons_styledSVG_js__WEBPACK_IMPORTED_MODULE_6__["default"], {
     fill: fill,
     height: height,
+    transform: icon === 'close' && "rotate(45deg)",
     width: width
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SvgComponent, {
     icon: icon
@@ -4565,7 +4569,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: relative;\n  margin: 8px;\n  margin-top: 4px;\n"])));
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: relative;\n  margin: 8px;\n  margin-top: 4px;\n  z-index: 1000;\n"])));
 var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
 var FETCH_LEAGUE_PLAYERS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_4__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($leagueID: ID) {\n    getPlayersInLeague(leagueID: $leagueID) {\n      id\n      username\n    }\n    getPlayersNotInLeague(leagueID: $leagueID) {\n      id\n      username\n    }\n  }\n"])));
 
@@ -4589,7 +4593,8 @@ function PlayerSearchField(_ref) {
     leagueID = _ref.leagueID,
     _onClick = _ref.onClick,
     _ref$selected = _ref.selected,
-    selected = _ref$selected === void 0 ? {} : _ref$selected;
+    selected = _ref$selected === void 0 ? {} : _ref$selected,
+    width = _ref.width;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
     input = _useState2[0],
@@ -4632,7 +4637,7 @@ function PlayerSearchField(_ref) {
     onChange: setInput,
     placeholder: "Search for players to add...",
     value: input,
-    width: "700px"
+    width: width !== null && width !== void 0 ? width : "700px"
   }), results.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, results === null || results === void 0 ? void 0 : results.map(function (player, idx) {
     console.log('player: ', player, '   selected: ', selected);
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -5852,9 +5857,9 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: ", ";\n  max-width: 400px;\n  overflow: ", ";\n  transition: height .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
-  var _props$height;
-  return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : 0;
+var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: 100%;\n  width: ", ";\n  overflow: ", ";\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 0;
 }, function (props) {
   var _props$overflow;
   return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : 'hidden';
@@ -5911,12 +5916,8 @@ var League = function League(_ref) {
     players = _useState4[0],
     setPlayers = _useState4[1];
   console.log('league page. id: ', leagueID);
-  if (user == null) {
-    // redirect to login page
-    history.push('/login');
-  }
   if (leagueID == null) {
-    console.log('redirecting home');
+    console.log('leagueID null, redirecting home');
     history.push('/');
   }
   var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
@@ -5944,7 +5945,6 @@ var League = function League(_ref) {
     leagueData = _useQuery.data,
     error = _useQuery.error;
   console.log('data: ', leagueData);
-  console.log('error:::::  ', JSON.stringify(error, null, 2));
 
   // consider using useMemo
   var isLeagueAdmin = (_leagueData$getLeague = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeagueByID) === null || _leagueData$getLeague2 === void 0 ? void 0 : (_leagueData$getLeague3 = _leagueData$getLeague2.admins) === null || _leagueData$getLeague3 === void 0 ? void 0 : _leagueData$getLeague3.reduce(function (acc, admin) {
@@ -5963,8 +5963,12 @@ var League = function League(_ref) {
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
-    justify: "flex-start"
-  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Loading...") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
+    justify: "flex-start",
+    maxWidth: "800px"
+  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Loading...")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
     margin: "20px 0 0 0"
   }, leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague4 = leagueData.getLeagueByID) === null || _leagueData$getLeague4 === void 0 ? void 0 : _leagueData$getLeague4.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
@@ -6006,23 +6010,25 @@ var League = function League(_ref) {
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No Seasons")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
-    justify: "flex-start"
+    justify: "flex-start",
+    overflow: "initial"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
     margin: "20px 12px 20px 0"
-  }, "Players"), isLeagueAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    borderRadius: "50%",
-    icon: "plus",
-    onClick: function onClick() {
-      return setSearchExpanded(!searchExpanded);
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SearchWrapper, {
-    height: searchExpanded ? '100%' : '0',
+  }, "Players"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SearchWrapper, {
+    width: searchExpanded ? '400px' : '0',
     overflow: searchExpanded ? 'initial' : 'hidden'
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_PlayerSearchField_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     excludeLeague: true,
     leagueID: leagueID,
     onClick: onSelectPlayer,
-    selected: players
+    selected: players,
+    width: searchExpanded ? '400px' : '0'
+  })), isLeagueAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    borderRadius: "50%",
+    icon: searchExpanded ? "close" : "plus",
+    onClick: function onClick() {
+      return setSearchExpanded(!searchExpanded);
+    }
   })), Object.keys(players).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.ScrollableContainer, null, Object.values(players).map(function (player, idx) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       key: player.id
@@ -6977,8 +6983,8 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
 }, function (props) {
-  var _props$overFlow;
-  return (_props$overFlow = props.overFlow) !== null && _props$overFlow !== void 0 ? _props$overFlow : 'auto';
+  var _props$overflow;
+  return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : 'auto';
 });
 var ScrollableContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["\nborder-radius: ", ";\nborder: ", ";\nmax-height: ", ";\nheight: ", ";\noverflow: scroll;\nwidth: ", ";\n"])), function (props) {
   var _props$borderRadius;
@@ -7031,7 +7037,7 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var StyledSVG = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].svg(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  fill: ", ";\n  height: ", ";\n  margin: ", ";\n  width: ", ";\n"])), function (props) {
+var StyledSVG = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].svg(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  fill: ", ";\n  height: ", ";\n  margin: ", ";\n  transform: ", ";\n  width: ", ";\n"])), function (props) {
   var _props$fill;
   return (_props$fill = props.fill) !== null && _props$fill !== void 0 ? _props$fill : 'black';
 }, function (props) {
@@ -7040,6 +7046,9 @@ var StyledSVG = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].svg(_t
 }, function (props) {
   var _props$margin;
   return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : "4px";
+}, function (props) {
+  var _props$transform;
+  return (_props$transform = props.transform) !== null && _props$transform !== void 0 ? _props$transform : 'none';
 }, function (props) {
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : "24px";
@@ -7069,9 +7078,12 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border: ", ";\n  border-radius: 0;\n  height: ", ";\n  padding: 8px 20px;\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  &:hover {\n    background-color: teal;\n    color: white;\n  }\n  &:active {\n    color: black;\n    background-color: white;\n  }\n"])), function (props) {
+var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border: ", ";\n  border-radius: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  &:hover {\n    background-color: teal;\n    color: white;\n  }\n  &:active {\n    color: black;\n    background-color: white;\n  }\n"])), function (props) {
   var _props$border;
   return (_props$border = props.border) !== null && _props$border !== void 0 ? _props$border : '1px solid dimgrey';
+}, function (props) {
+  var _props$borderRadius;
+  return (_props$borderRadius = props.borderRadius) !== null && _props$borderRadius !== void 0 ? _props$borderRadius : "4px";
 }, function (props) {
   var _props$height;
   return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : 'auto';
@@ -7086,10 +7098,10 @@ var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_t
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
 });
 var Clickable = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\nborder-radius: ", ";\ncursor: pointer;\n&:hover {\n  stroke: white;\n  fill: black;\n}\n"])), function (props) {
-  var _props$borderRadius;
-  return (_props$borderRadius = props.borderRadius) !== null && _props$borderRadius !== void 0 ? _props$borderRadius : "0";
+  var _props$borderRadius2;
+  return (_props$borderRadius2 = props.borderRadius) !== null && _props$borderRadius2 !== void 0 ? _props$borderRadius2 : "0";
 });
-var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  box-sizing: border-box;\n  border: ", ";\n  height: ", ";\n  width:", ";\n  max-width: ", ";\n  line-height: 20px;\n  padding: 12px;\n"])), function (props) {
+var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  box-sizing: border-box;\n  border: ", ";\n  height: ", ";\n  width: ", ";\n  max-width: ", ";\n  line-height: 20px;\n  padding: 12px;\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
   return props.errors != null ? "1px solid red" : "1px solid rgba(0, 0, 0, 0.1)";
 }, function (props) {
   var _props$height2;

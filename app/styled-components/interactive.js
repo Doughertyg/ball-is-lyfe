@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Button = styled.button`
   background-color: white;
   border: ${props => props.border ?? '1px solid dimgrey'};
-  border-radius: 0;
+  border-radius: ${props => props.borderRadius ?? "4px"};
   height: ${props => props.height ?? 'auto'};
   padding: 8px 20px;
   margin: ${props => props.margin ?? '4px'};
@@ -33,10 +33,12 @@ export const Input = styled.input`
   box-sizing: border-box;
   border: ${props => props.errors != null ? "1px solid red" : "1px solid rgba(0, 0, 0, 0.1)"};
   height: ${props => props.height ?? 'auto'};
-  width:${props => props.width ?? '100%'};
+  width: ${props => props.width ?? '100%'};
   max-width: ${props => props.maxWidth ?? "400px"};
   line-height: 20px;
   padding: 12px;
+  transition: width .24s;
+  transition-timing-function: ease-out;
 `;
 
 export const InputError = styled.div`

@@ -20,10 +20,10 @@ import styled from 'styled-components';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 
 const SearchWrapper = styled.div`
-  height: ${props => props.height ?? 0};
-  max-width: 400px;
+  height: 100%;
+  width: ${props => props.width ?? 0};
   overflow: ${props => props.overflow ?? 'hidden'};
-  transition: height .24s;
+  transition: width .24s;
   transition-timing-function: ease-out;
 `;
 
@@ -114,13 +114,8 @@ const League = ({match}) => {
   const [players, setPlayers] = useState({});
   console.log('league page. id: ', leagueID);
 
-  if (user == null) {
-    // redirect to login page
-    history.push('/login');
-  }
-
   if (leagueID == null) {
-    console.log('redirecting home');
+    console.log('leagueID null, redirecting home');
     history.push('/');
   }
 
@@ -142,7 +137,6 @@ const League = ({match}) => {
     variables: {leagueID: leagueID}
   });
   console.log('data: ', leagueData);
-  console.log('error:::::  ', JSON.stringify(error, null, 2));
 
   // consider using useMemo
   const isLeagueAdmin = leagueData?.getLeagueByID?.admins?.reduce((acc, admin) => {
@@ -162,8 +156,12 @@ const League = ({match}) => {
   }
 
   return (
-    <FlexContainer direction="column" justify="flex-start">
-      {loading ? <h1>Loading...</h1> : (
+    <FlexContainer direction="column" justify="flex-start" maxWidth="800px">
+      {loading ? (
+        <FlexContainer justify="flex-start" width="800px">
+          <h1>Loading...</h1>
+        </FlexContainer>
+      ) : (
         <>
           <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.name}</PageHeader>
           <FlexContainer alignItems="center" justify="start">
@@ -203,13 +201,13 @@ const League = ({match}) => {
             <DetailsText>No Seasons</DetailsText>
           }
            </FlexContainer>
-           <FlexContainer alignItems="center" justify="flex-start">
+           <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
               <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
-              {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setSearchExpanded(!searchExpanded)} />}
+              <SearchWrapper width={searchExpanded ? '400px' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
+                <PlayerSearchField excludeLeague leagueID={leagueID} onClick={onSelectPlayer} selected={players} width={searchExpanded ? '400px' : '0'} />
+              </SearchWrapper>
+              {isLeagueAdmin && <Icon borderRadius="50%" icon={searchExpanded ? "close" : "plus"} onClick={() => setSearchExpanded(!searchExpanded)} />}
           </FlexContainer>
-          <SearchWrapper height={searchExpanded ? '100%' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
-            <PlayerSearchField excludeLeague leagueID={leagueID} onClick={onSelectPlayer} selected={players} />
-          </SearchWrapper>
           {Object.keys(players).length > 0 && (
             <>
               <ScrollableContainer>
