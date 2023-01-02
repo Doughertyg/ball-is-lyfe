@@ -21,15 +21,15 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getLeagueByID(_, { leagueID }) {
+    async getLeagueByID(_, { leagueID, userID }) {
       try {
         const league =
           await League.findById(leagueID)
-            .populate('admins')
             .populate('seasons')
             .populate('players')
             .exec();
-        return league;
+        const isAdmin = league.admins.includes(userID);
+        return {league, isAdmin};
       } catch (err) {
         throw new Error(err);
       }

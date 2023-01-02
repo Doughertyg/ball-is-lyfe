@@ -5,12 +5,16 @@ module.exports = gql`
     getPosts: [Post]
     getPost(postId: ID!): Post
     getLeaguesByUser(userID: ID!): [League]
-    getLeagueByID(leagueID: ID!): League
+    getLeagueByID(leagueID: ID!, userID: ID!): GetLeagueByIDReturnType
     getPlayersInLeague(leagueID: ID): [User]
     getPlayersNotInLeague(leagueID: ID): [User]
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!): Season
     getUserContext(token: String!): User
+  }
+  type GetLeagueByIDReturnType {
+    league: League
+    isAdmin: Boolean
   }
   type Post {
     id: ID!

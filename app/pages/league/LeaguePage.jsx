@@ -30,30 +30,25 @@ const SearchWrapper = styled.div`
   transition-timing-function: ease-out;
 `;
 
-const RowWrapper = styled.div`
-  padding: 8px;
-`;
-
 const FETCH_LEAGUE_QUERY = gql`
-  query($leagueID: ID!) {
-    getLeagueByID(leagueID: $leagueID) {
-      _id
-      admins {
-        id
-        username
-      }
-      name
-      description
-      profilePicture
-      seasons {
-        id
+  query($leagueID: ID!, $userID: ID!) {
+    getLeagueByID(leagueID: $leagueID, userID: $userID) {
+      isAdmin
+      league {
+        _id
         name
         description
-        seasonEnd
-        seasonStart
+        profilePicture
+        seasons {
+          id
+          name
+          description
+          seasonEnd
+          seasonStart
+        }
+        sport
+        location
       }
-      sport
-      location
     }
     getPlayersInLeague(leagueID: $leagueID) {
       email
@@ -140,14 +135,9 @@ const League = ({match}) => {
   })
 
   const { loading, data: leagueData, error} = useQuery(FETCH_LEAGUE_QUERY, {
-    variables: {leagueID: leagueID}
+    variables: {leagueID: leagueID, userID: user.id}
   });
-  console.log('data: ', leagueData);
-
-  // consider using useMemo
-  const isLeagueAdmin = leagueData?.getLeagueByID?.admins?.reduce((acc, admin) => {
-    return admin.id === user.id ? true : acc;
-  }, false) ?? false;
+  const isLeagueAdmin = leagueData?.getLeagueByID?.isAdmin;
 
   const onSelectPlayer = (player) => {
     if (!players[player.id]) {
@@ -169,10 +159,10 @@ const League = ({match}) => {
         </FlexContainer>
       ) : (
         <>
-          <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.name}</PageHeader>
+          <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.league?.name}</PageHeader>
           <FlexContainer alignItems="center" justify="start">
             <DetailsText>{
-              leagueData?.getLeagueByID?.location + ' - ' + leagueData?.getLeagueByID?.sport
+              leagueData?.getLeagueByID?.league?.location + ' - ' + leagueData?.getLeagueByID?.league?.sport
             }</DetailsText>
             <Icon
               icon="info"
@@ -181,7 +171,7 @@ const League = ({match}) => {
           </FlexContainer>
           <br />
           <BodyText>
-            {leagueData?.getLeagueByID?.description}
+            {leagueData?.getLeagueByID?.league?.description}
           </BodyText>
           <Divider marginBottom="12px" />
           <FlexContainer alignItems="center" justify="start">
@@ -189,8 +179,8 @@ const League = ({match}) => {
             {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push(`/league/${leagueID}/season/new`)} />}
           </FlexContainer>
           <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
-          {leagueData?.getLeagueByID?.seasons.length > 0 ?
-            leagueData?.getLeagueByID?.seasons?.map((season, idx) => {
+          {leagueData?.getLeagueByID?.league?.seasons.length > 0 ?
+            leagueData?.getLeagueByID?.league?.seasons?.map((season, idx) => {
               const start = dayjs(season?.seasonStart).format('MMM YYYY');
               const end = dayjs(season?.seasonEnd).format('MMM YYYY');
               return (
