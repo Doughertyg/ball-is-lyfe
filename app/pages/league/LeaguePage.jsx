@@ -159,10 +159,10 @@ const League = ({match}) => {
         </FlexContainer>
       ) : (
         <>
-          <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.league?.name}</PageHeader>
+          <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}</PageHeader>
           <FlexContainer alignItems="center" justify="start">
             <DetailsText>{
-              leagueData?.getLeagueByID?.league?.location + ' - ' + leagueData?.getLeagueByID?.league?.sport
+              (leagueData?.getLeagueByID?.league?.location ?? 'League location missing') + ' - ' + (leagueData?.getLeagueByID?.league?.sport ?? 'League sport missing')
             }</DetailsText>
             <Icon
               icon="info"
@@ -193,9 +193,11 @@ const League = ({match}) => {
                   onClick={() => {history.push(`/season/${season.id}`)}}
                 />
               )
-          }) :
+          }) : (
+          <FlexContainer justify="flex-start" width="800px">
             <DetailsText>No Seasons</DetailsText>
-          }
+          </FlexContainer>
+          )}
           </FlexContainer>
           <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
             <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
@@ -249,8 +251,11 @@ const League = ({match}) => {
                   username={player.username}
                 />
               )
-            }) :
-            <DetailsText>No players in league</DetailsText>
+            }) : (
+              <FlexContainer justify="flex-start" width="800px">
+                <DetailsText>No players in league</DetailsText>
+              </FlexContainer>
+            )
           }
           </FlexContainer>
           {/* <Divider marginBottom="12px" />
