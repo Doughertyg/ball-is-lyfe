@@ -4246,7 +4246,6 @@ function Card(_ref) {
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
     height: '200px',
     margin: margin,
-    marginTop: "4px",
     width: '165px',
     onClick: onClick
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
@@ -4704,6 +4703,93 @@ function MenuBar(_ref) {
   }, "Register"))))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MenuBar);
+
+/***/ }),
+
+/***/ "./app/components/PlayerCard.jsx":
+/*!***************************************!*\
+  !*** ./app/components/PlayerCard.jsx ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/card.js */ "./app/styled-components/card.js");
+/* harmony import */ var _transitions_FadeInTransition_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./transitions/FadeInTransition.jsx */ "./app/components/transitions/FadeInTransition.jsx");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var NameWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: pre-line;\n  margin-top: ", ";\n  margin-bottom: ", ";\n  display: -webkit-box;\n  -webkit-line-clamp: ", ";\n  -webkit-box-orient: vertical; \n  max-width: 100%;\n  width: 100%;\n"])), function (props) {
+  var _props$marginTop;
+  return (_props$marginTop = props.marginTop) !== null && _props$marginTop !== void 0 ? _props$marginTop : '0';
+}, function (props) {
+  var _props$marginBottom;
+  return (_props$marginBottom = props.marginBottom) !== null && _props$marginBottom !== void 0 ? _props$marginBottom : '0';
+}, function (props) {
+  var _props$lineClamp;
+  return (_props$lineClamp = props.lineClamp) !== null && _props$lineClamp !== void 0 ? _props$lineClamp : '2';
+});
+var PictureWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  display: flex;\n  justify-content: center;\n  width: 100%;\n"])));
+var PositionWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  position: relative;\n  width: 165px;\n"])));
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  width: 165px;\n  &:hover {\n    z-index: 1000;\n    position: absolute;\n    width: auto;\n  }\n"])));
+function PlayerCard(_ref) {
+  var email = _ref.email,
+    margin = _ref.margin,
+    onClick = _ref.onClick,
+    name = _ref.name,
+    picture = _ref.picture,
+    username = _ref.username;
+  var getPlayerInitials = function getPlayerInitials(name, username) {
+    var _name$split$;
+    var nameInitials = name != null ? name.slice(0, 1) + ((_name$split$ = name.split(' ')[1]) === null || _name$split$ === void 0 ? void 0 : _name$split$.slice(0, 1)) : null;
+    var usernameInitials = username != null ? username.slice(0, 1) + username.slice(1, 2) : null;
+    return nameInitials !== null && nameInitials !== void 0 ? nameInitials : usernameInitials;
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_transitions_FadeInTransition_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(PositionWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardWrapper, {
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
+    height: '200px',
+    margin: margin,
+    padding: "16px 16px 0 16px",
+    onClick: onClick
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardContentWrapper, {
+    height: "100%"
+  }, picture != null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(PictureWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.ProfilePictureThumb, {
+    borderRadius: "4px",
+    height: "65px",
+    src: picture,
+    width: "65px"
+  })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(PictureWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.EmptyProfilePicture, {
+    borderRadius: "4px",
+    height: "65px",
+    src: picture,
+    width: "65px"
+  }, getPlayerInitials(name, username).toUpperCase())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+    marginBottom: "8px"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(NameWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
+    margin: "0"
+  }, name !== null && name !== void 0 ? name : username)), email && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(NameWrapper, {
+    lineClamp: "1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    marginBottom: "4px",
+    width: "100%",
+    overflow: "hidden"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, null, email))), username && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    width: "100%",
+    overflow: "hidden",
+    marginBottom: "4px"
+  }, username))))));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PlayerCard);
 
 /***/ }),
 
@@ -5642,7 +5728,7 @@ function Home(props) {
       bodyTitle: season === null || season === void 0 ? void 0 : (_season$league = season.league) === null || _season$league === void 0 ? void 0 : (_season$league$name = _season$league.name) === null || _season$league$name === void 0 ? void 0 : _season$league$name.toUpperCase(),
       bodySubTitle: "(".concat(season === null || season === void 0 ? void 0 : (_season$league2 = season.league) === null || _season$league2 === void 0 ? void 0 : _season$league2.sport, ")"),
       key: (_season$id = season.id) !== null && _season$id !== void 0 ? _season$id : idx,
-      margin: "0 20px 0 0",
+      margin: "0 8px 8px 0",
       onClick: function onClick() {
         return history.push("/season/".concat(season.id));
       },
@@ -5678,7 +5764,7 @@ function Home(props) {
       },
       subTitle: "".concat(league.location, " - ").concat(league.sport),
       title: league.name,
-      margin: "0 20px 0 0",
+      margin: "0 8px 8px 0",
       key: (_league$_id = league._id) !== null && _league$_id !== void 0 ? _league$_id : idx
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
@@ -5698,7 +5784,7 @@ function Home(props) {
       bodyTitle: season === null || season === void 0 ? void 0 : (_season$league3 = season.league) === null || _season$league3 === void 0 ? void 0 : (_season$league3$name = _season$league3.name) === null || _season$league3$name === void 0 ? void 0 : _season$league3$name.toUpperCase(),
       bodySubTitle: "(".concat(season === null || season === void 0 ? void 0 : (_season$league4 = season.league) === null || _season$league4 === void 0 ? void 0 : _season$league4.sport, ")"),
       key: (_season$id2 = season.id) !== null && _season$id2 !== void 0 ? _season$id2 : idx,
-      margin: "0 20px 0 0",
+      margin: "0 8px 8px 0",
       onClick: function onClick() {
         return history.push("/season/".concat(season.id));
       },
@@ -5722,7 +5808,7 @@ function Home(props) {
       bodyTitle: season === null || season === void 0 ? void 0 : (_season$league5 = season.league) === null || _season$league5 === void 0 ? void 0 : (_season$league5$name = _season$league5.name) === null || _season$league5$name === void 0 ? void 0 : _season$league5$name.toUpperCase(),
       bodySubTitle: "(".concat(season === null || season === void 0 ? void 0 : (_season$league6 = season.league) === null || _season$league6 === void 0 ? void 0 : _season$league6.sport, ")"),
       key: (_season$id3 = season.id) !== null && _season$id3 !== void 0 ? _season$id3 : idx,
-      margin: "0 20px 0 0",
+      margin: "0 8px 8px 0",
       onClick: function onClick() {
         return history.push("/season/".concat(season.id));
       },
@@ -6009,17 +6095,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Icon.jsx */ "./app/components/Icon.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../styled-components/common */ "./app/styled-components/common.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
 /* harmony import */ var _components_Card_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Card.jsx */ "./app/components/Card.jsx");
 /* harmony import */ var _components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Button.jsx */ "./app/components/Button.jsx");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _components_PlayerSearchField_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/PlayerSearchField.jsx */ "./app/components/PlayerSearchField.jsx");
-/* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../styled-components/card.js */ "./app/styled-components/card.js");
+/* harmony import */ var _components_PlayerCard_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/PlayerCard.jsx */ "./app/components/PlayerCard.jsx");
+/* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../styled-components/card.js */ "./app/styled-components/card.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -6047,16 +6134,17 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: 100%;\n  width: ", ";\n  overflow: ", ";\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
+
+var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_10__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: 100%;\n  width: ", ";\n  overflow: ", ";\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 0;
 }, function (props) {
   var _props$overflow;
   return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : 'hidden';
 });
-var RowWrapper = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  padding: 8px;\n"])));
-var FETCH_LEAGUE_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($leagueID: ID!) {\n    getLeagueByID(leagueID: $leagueID) {\n      _id\n      admins {\n        id\n        username\n      }\n      name\n      description\n      profilePicture\n      seasons {\n        id\n        name\n        description\n        seasonEnd\n        seasonStart\n      }\n      sport\n      location\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      id\n      username\n    }\n  }\n"])));
-var ADD_PLAYERS_TO_LEAGUE_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addPlayersToLeague(\n    $leagueID: ID!,\n    $playersToAdd: [ID!]\n  ) {\n    addPlayersToLeague(\n      leagueID: $leagueID,\n      playersToAdd: $playersToAdd\n    ) {\n      name\n      _id\n    }\n  }\n"])));
+var RowWrapper = styled_components__WEBPACK_IMPORTED_MODULE_10__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  padding: 8px;\n"])));
+var FETCH_LEAGUE_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($leagueID: ID!) {\n    getLeagueByID(leagueID: $leagueID) {\n      _id\n      admins {\n        id\n        username\n      }\n      name\n      description\n      profilePicture\n      seasons {\n        id\n        name\n        description\n        seasonEnd\n        seasonStart\n      }\n      sport\n      location\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
+var ADD_PLAYERS_TO_LEAGUE_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addPlayersToLeague(\n    $leagueID: ID!,\n    $playersToAdd: [ID!]\n  ) {\n    addPlayersToLeague(\n      leagueID: $leagueID,\n      playersToAdd: $playersToAdd\n    ) {\n      name\n      _id\n    }\n  }\n"])));
 
 /**
  * Home page for league. Logged in user sees stats, games, standings
@@ -6096,7 +6184,7 @@ var League = function League(_ref) {
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
   var leagueID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.leagueID;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_11__.useHistory)();
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_12__.useHistory)();
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     searchExpanded = _useState2[0],
@@ -6110,7 +6198,7 @@ var League = function League(_ref) {
     console.log('leagueID null, redirecting home');
     history.push('/');
   }
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useMutation)(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useMutation)(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         history.push('/');
@@ -6126,7 +6214,7 @@ var League = function League(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     addPlayersToLeague = _useMutation2[0],
     isSubmitting = _useMutation2[1].isSubmitting;
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(FETCH_LEAGUE_QUERY, {
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_14__.useQuery)(FETCH_LEAGUE_QUERY, {
       variables: {
         leagueID: leagueID
       }
@@ -6193,7 +6281,7 @@ var League = function League(_ref) {
       key: idx,
       subTitle: start + ' - ' + end,
       title: season === null || season === void 0 ? void 0 : season.name,
-      margin: "0 20px 0 0",
+      margin: "0 8px 0 0",
       onClick: function onClick() {
         history.push("/season/".concat(season.id));
       }
@@ -6223,11 +6311,11 @@ var League = function League(_ref) {
     flexWrap: "wrap",
     justify: "start"
   }, Object.values(players).map(function (player, idx) {
-    var _player$name;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_8__.CardWrapper, {
+    var _player$id, _player$name;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_9__.CardWrapper, {
       boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
-      margin: "0 0 0 4px",
-      marginTop: "4px"
+      key: (_player$id = player.id) !== null && _player$id !== void 0 ? _player$id : idx,
+      margin: "4px 4px 0 0"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
       alignItems: "center",
       justify: "space-between"
@@ -6261,14 +6349,17 @@ var League = function League(_ref) {
       return addPlayersToLeague();
     }
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    justify: "flex-start"
+    justify: "flex-start",
+    flexWrap: "wrap"
   }, (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getPlayer = leagueData.getPlayersInLeague) === null || _leagueData$getPlayer === void 0 ? void 0 : _leagueData$getPlayer.length) > 0 ? leagueData.getPlayersInLeague.map(function (player, idx) {
-    var _player$position;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      key: idx,
-      title: player.username,
-      subTitle: (_player$position = player.position) !== null && _player$position !== void 0 ? _player$position : '',
-      margin: "0 20px 0 0"
+    var _player$id2;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_PlayerCard_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      email: player.email,
+      key: (_player$id2 = player.id) !== null && _player$id2 !== void 0 ? _player$id2 : idx,
+      margin: "0 8px 8px 0",
+      name: player.name,
+      picture: player.profilePicture,
+      username: player.username
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No players in league"))));
 };
@@ -7050,14 +7141,17 @@ var CardBody = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_te
   var _props$align;
   return (_props$align = props.align) !== null && _props$align !== void 0 ? _props$align : 'flex-start';
 });
-var CardContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  background-color: white;\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n  height: ", ";\n  width: ", ";\n"])), function (props) {
+var CardContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  background-color: white;\n  display: flex;\n  flex-direction: column;\n  align-items: ", ";\n  height: ", ";\n  width: ", ";\n"])), function (props) {
+  var _props$alignItems;
+  return (_props$alignItems = props.alignItems) !== null && _props$alignItems !== void 0 ? _props$alignItems : 'flex-start';
+}, function (props) {
   var _props$height;
   return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : 'auto';
 }, function (props) {
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
 });
-var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: white;\nborder: ", ";\nborder-radius: 8px;\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: 16px;\nmargin: ", ";\nmargin-bottom: 4px;\nmargin-top: ", ";\nwidth: ", ";\n", "\n"])), function (props) {
+var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: white;\nborder: ", ";\nborder-radius: 8px;\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: ", ";\nmargin-bottom: 4px;\nmargin-right: ", ";\nmargin-top: ", ";\nmargin: ", ";\nwidth: ", ";\n", "\n"])), function (props) {
   var _props$maxWidth;
   return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : '400px';
 }, function (props) {
@@ -7072,11 +7166,17 @@ var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(
   var _props$height2;
   return (_props$height2 = props.height) !== null && _props$height2 !== void 0 ? _props$height2 : 'auto';
 }, function (props) {
-  var _props$margin;
-  return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '0 auto';
+  var _props$padding;
+  return (_props$padding = props.padding) !== null && _props$padding !== void 0 ? _props$padding : '16px';
+}, function (props) {
+  var _props$marginRight;
+  return (_props$marginRight = props.marginRight) !== null && _props$marginRight !== void 0 ? _props$marginRight : "0";
 }, function (props) {
   var _props$marginTop;
-  return (_props$marginTop = props.marginTop) !== null && _props$marginTop !== void 0 ? _props$marginTop : 0;
+  return (_props$marginTop = props.marginTop) !== null && _props$marginTop !== void 0 ? _props$marginTop : "0";
+}, function (props) {
+  var _props$margin;
+  return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '0';
 }, function (props) {
   var _props$width2;
   return (_props$width2 = props.width) !== null && _props$width2 !== void 0 ? _props$width2 : 'auto';
@@ -7101,6 +7201,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "CommonPageLayout": () => (/* binding */ CommonPageLayout),
 /* harmony export */   "DetailsText": () => (/* binding */ DetailsText),
 /* harmony export */   "Divider": () => (/* binding */ Divider),
+/* harmony export */   "EmptyProfilePicture": () => (/* binding */ EmptyProfilePicture),
 /* harmony export */   "FlexContainer": () => (/* binding */ FlexContainer),
 /* harmony export */   "ModalStyle": () => (/* binding */ ModalStyle),
 /* harmony export */   "PageHeader": () => (/* binding */ PageHeader),
@@ -7110,7 +7211,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VerticalDivider": () => (/* binding */ VerticalDivider)
 /* harmony export */ });
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12, _templateObject13;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var ButtonContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  color: ", ";\n  text-decoration: none;\n  padding: ", ";\n  border-bottom: ", ";\n  box-sizing: border-box;\n"])), function (props) {
@@ -7123,17 +7224,26 @@ var ButtonContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
 });
 var CenteredContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\nmargin: 0 auto;\ntext-align: center;\nvertical-align: middle;\n"])));
 var CommonPageLayout = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  background-color: rgba(239, 239, 239, 0.25);\n  color: black !important;\n  font-family: Arial !important;\n  height: 100vh;\n  width: 100vw;\n  margin: 0 auto;\n"])));
-var DetailsText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  flex-grow: ", ";\n  font-size: 12px;\n  font-weight: 300;\n  color: DimGrey;\n  cursor: ", ";\n  margin: ", ";\n  margin-bottom: ", ";\n  ", ";\n"])), function (props) {
+var DetailsText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  flex-grow: ", ";\n  font-size: 12px;\n  font-weight: 300;\n  color: DimGrey;\n  cursor: ", ";\n  line-break: ", ";\n  margin: ", ";\n  margin-bottom: ", ";\n  overflow: ", ";\n  width: ", ";\n  ", ";\n"])), function (props) {
   var _props$flexGrow;
   return (_props$flexGrow = props.flexGrow) !== null && _props$flexGrow !== void 0 ? _props$flexGrow : 'initial';
 }, function (props) {
   return props.onClick ? 'pointer' : 'initial';
+}, function (props) {
+  var _props$lineBreak;
+  return (_props$lineBreak = props.lineBreak) !== null && _props$lineBreak !== void 0 ? _props$lineBreak : 'initial';
 }, function (props) {
   var _props$margin;
   return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : 'initial';
 }, function (props) {
   var _props$marginBottom;
   return (_props$marginBottom = props.marginBottom) !== null && _props$marginBottom !== void 0 ? _props$marginBottom : '0';
+}, function (props) {
+  var _props$overflow;
+  return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : "auto";
+}, function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
 }, function (props) {
   return props.onClick ? '&:hover {color: teal}' : '';
 });
@@ -7191,11 +7301,11 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
   var _props$paddingTop;
   return (_props$paddingTop = props.paddingTop) !== null && _props$paddingTop !== void 0 ? _props$paddingTop : '0px';
 }, function (props) {
-  var _props$width;
-  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
+  var _props$width2;
+  return (_props$width2 = props.width) !== null && _props$width2 !== void 0 ? _props$width2 : 'auto';
 }, function (props) {
-  var _props$overflow;
-  return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : 'auto';
+  var _props$overflow2;
+  return (_props$overflow2 = props.overflow) !== null && _props$overflow2 !== void 0 ? _props$overflow2 : 'auto';
 });
 var ScrollableContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["\nborder-radius: ", ";\nborder: ", ";\nmax-height: ", ";\nheight: ", ";\noverflow: scroll;\nwidth: ", ";\n"])), function (props) {
   var _props$borderRadius;
@@ -7210,8 +7320,8 @@ var ScrollableContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["defaul
   var _props$height3;
   return (_props$height3 = props.height) !== null && _props$height3 !== void 0 ? _props$height3 : "auto";
 }, function (props) {
-  var _props$width2;
-  return (_props$width2 = props.width) !== null && _props$width2 !== void 0 ? _props$width2 : "auto";
+  var _props$width3;
+  return (_props$width3 = props.width) !== null && _props$width3 !== void 0 ? _props$width3 : "auto";
 });
 var PageHeader = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].h1(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["\n  font-weight: 600;\n  font-size: 24px;\n  margin: ", ";\n"])), function (props) {
   var _props$margin4;
@@ -7228,19 +7338,35 @@ var BodyText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_te
   var _props$marginBottom4;
   return (_props$marginBottom4 = props.marginBottom) !== null && _props$marginBottom4 !== void 0 ? _props$marginBottom4 : '0';
 }, function (props) {
-  var _props$width3;
-  return (_props$width3 = props.width) !== null && _props$width3 !== void 0 ? _props$width3 : '100%';
+  var _props$width4;
+  return (_props$width4 = props.width) !== null && _props$width4 !== void 0 ? _props$width4 : '100%';
 });
 var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["\n  position: absolute;\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: 100%;\n  z-index: 1000;\n"])));
-var ProfilePictureThumb = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].img(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["\n  border-radius: 50%;\n  height: ", ";\n  margin: ", ";\n  width: ", ";\n"])), function (props) {
+var ProfilePictureThumb = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].img(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["\n  border-radius: ", ";\n  height: ", ";\n  margin: ", ";\n  width: ", ";\n"])), function (props) {
+  var _props$borderRadius2;
+  return (_props$borderRadius2 = props.borderRadius) !== null && _props$borderRadius2 !== void 0 ? _props$borderRadius2 : '50%';
+}, function (props) {
   var _props$height4;
   return (_props$height4 = props.height) !== null && _props$height4 !== void 0 ? _props$height4 : "32px";
 }, function (props) {
   var _props$margin6;
   return (_props$margin6 = props.margin) !== null && _props$margin6 !== void 0 ? _props$margin6 : "4px";
 }, function (props) {
-  var _props$width4;
-  return (_props$width4 = props.width) !== null && _props$width4 !== void 0 ? _props$width4 : "32px";
+  var _props$width5;
+  return (_props$width5 = props.width) !== null && _props$width5 !== void 0 ? _props$width5 : "32px";
+});
+var EmptyProfilePicture = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["\n  align-items: center;\n  background-color: rgb(85, 82, 219);\n  border-radius: ", ";\n  color: white;\n  display: flex;\n  font-size: 24px;\n  font-weight: 600;\n  height: ", ";\n  justify-content: center;\n  margin: ", ";\n  width: ", ";\n"])), function (props) {
+  var _props$borderRadius3;
+  return (_props$borderRadius3 = props.borderRadius) !== null && _props$borderRadius3 !== void 0 ? _props$borderRadius3 : '50%';
+}, function (props) {
+  var _props$height5;
+  return (_props$height5 = props.height) !== null && _props$height5 !== void 0 ? _props$height5 : "32px";
+}, function (props) {
+  var _props$margin7;
+  return (_props$margin7 = props.margin) !== null && _props$margin7 !== void 0 ? _props$margin7 : "4px";
+}, function (props) {
+  var _props$width6;
+  return (_props$width6 = props.width) !== null && _props$width6 !== void 0 ? _props$width6 : "32px";
 });
 
 /***/ }),

@@ -157,7 +157,7 @@ function Home(props) {
                 bodyTitle={season?.league?.name?.toUpperCase()}
                 bodySubTitle={`(${season?.league?.sport})`}
                 key={season.id ?? idx}
-                margin="0 20px 0 0"
+                margin="0 8px 8px 0"
                 onClick={() => history.push(`/season/${season.id}`)}
                 subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
                 title={season.name}
@@ -188,7 +188,7 @@ function Home(props) {
                   onClick={() => history.push(`/league/${league._id}`)}
                   subTitle={`${league.location} - ${league.sport}`}
                   title={league.name}
-                  margin="0 20px 0 0"
+                  margin="0 8px 8px 0"
                   key={league._id ?? idx}
                 />
               )
@@ -214,7 +214,7 @@ function Home(props) {
                 bodyTitle={season?.league?.name?.toUpperCase()}
                 bodySubTitle={`(${season?.league?.sport})`}
                 key={season.id ?? idx}
-                margin="0 20px 0 0"
+                margin="0 8px 8px 0"
                 onClick={() => history.push(`/season/${season.id}`)}
                 subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
                 title={season.name}
@@ -242,7 +242,7 @@ function Home(props) {
                 bodyTitle={season?.league?.name?.toUpperCase()}
                 bodySubTitle={`(${season?.league?.sport})`}
                 key={season.id ?? idx}
-                margin="0 20px 0 0"
+                margin="0 8px 8px 0"
                 onClick={() => history.push(`/season/${season.id}`)}
                 subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
                 title={season.name}

@@ -19,6 +19,7 @@ import Button from '../../components/Button.jsx';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
+import PlayerCard from '../../components/PlayerCard.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
 
 const SearchWrapper = styled.div`
@@ -55,7 +56,10 @@ const FETCH_LEAGUE_QUERY = gql`
       location
     }
     getPlayersInLeague(leagueID: $leagueID) {
+      email
       id
+      name
+      profilePicture
       username
     }
   }
@@ -195,7 +199,7 @@ const League = ({match}) => {
                   key={idx}
                   subTitle={start + ' - ' + end}
                   title={season?.name}
-                  margin="0 20px 0 0"
+                  margin="0 8px 0 0"
                   onClick={() => {history.push(`/season/${season.id}`)}}
                 />
               )
@@ -216,8 +220,8 @@ const League = ({match}) => {
                 {Object.values(players).map((player, idx) => (
                     <CardWrapper
                       boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
-                      margin="0 0 0 4px"
-                      marginTop="4px">
+                      key={player.id ?? idx}
+                      margin='4px 4px 0 0'>
                       <FlexContainer alignItems="center" justify="space-between">
                         {player.profilePicture && (
                           <ProfilePictureThumb
@@ -242,15 +246,17 @@ const League = ({match}) => {
                 <Button isLoading={isSubmitting} label="Add players to league" onClick={() => addPlayersToLeague()} />
               </FlexContainer>
             </>)}
-          <FlexContainer justify="flex-start">
+          <FlexContainer justify="flex-start" flexWrap="wrap">
           {leagueData?.getPlayersInLeague?.length > 0 ?
             leagueData.getPlayersInLeague.map((player, idx) => {
               return (
-                <Card
-                  key={idx}
-                  title={player.username}
-                  subTitle={player.position ?? ''}
-                  margin="0 20px 0 0"
+                <PlayerCard
+                  email={player.email}
+                  key={player.id ?? idx}
+                  margin="0 8px 8px 0"
+                  name={player.name}
+                  picture={player.profilePicture}
+                  username={player.username}
                 />
               )
             }) :

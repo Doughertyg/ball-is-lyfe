@@ -29,8 +29,11 @@ export const DetailsText = styled.div`
   font-weight: 300;
   color: DimGrey;
   cursor: ${props => props.onClick ? 'pointer' : 'initial'};
+  line-break: ${props => props.lineBreak ?? 'initial'};
   margin: ${props => props.margin ?? 'initial'};
   margin-bottom: ${props => props.marginBottom ?? '0'};
+  overflow: ${props => props.overflow ?? "auto"};
+  width: ${props => props.width ?? 'auto'};
   ${props => props.onClick ?
     '&:hover {color: teal}'
     : ''
@@ -118,8 +121,22 @@ export const ModalStyle = styled.div`
 `;
 
 export const ProfilePictureThumb = styled.img`
-  border-radius: 50%;
+  border-radius: ${props => props.borderRadius ?? '50%'};
   height: ${props => props.height ?? "32px"};
+  margin: ${props => props.margin ?? "4px"};
+  width: ${props => props.width ?? "32px"};
+`;
+
+export const EmptyProfilePicture = styled.div`
+  align-items: center;
+  background-color: rgb(85, 82, 219);
+  border-radius: ${props => props.borderRadius ?? '50%'};
+  color: white;
+  display: flex;
+  font-size: 24px;
+  font-weight: 600;
+  height: ${props => props.height ?? "32px"};
+  justify-content: center;
   margin: ${props => props.margin ?? "4px"};
   width: ${props => props.width ?? "32px"};
 `;
