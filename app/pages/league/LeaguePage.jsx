@@ -123,7 +123,7 @@ const League = ({match}) => {
   const [addPlayersToLeague, {isSubmitting}] = useMutation(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
     onCompleted: (res) => {
       console.log('mutation completed!!! res: ', res);
-      history.push('/');
+      location.reload();
     },
     onError: (error) => {
       console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))

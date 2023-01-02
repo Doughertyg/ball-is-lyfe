@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server');
+const { AuthenticationError, ForbiddenError } = require('apollo-server');
 
 const League = require('../../db/models/League');
 const authenticate = require('../../util/authenticate');
@@ -37,8 +37,23 @@ module.exports = {
   },
   Mutation: {
     async addPlayersToLeague(_, { leagueID, playersToAdd }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
       const league = await League.findById(leagueID).exec();
-      console.log('league in mutation: ', league);
+      const isAdmin = league.admins.includes(user.id);
+
+      if (!isAdmin) {
+        throw new ForbiddenError('Only league admins can add players to the league');
+      }
 
       try {
         playersToAdd.forEach(playerID => {

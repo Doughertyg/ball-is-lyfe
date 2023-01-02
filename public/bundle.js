@@ -6200,7 +6200,7 @@ var League = function League(_ref) {
   var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useMutation)(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
-        history.push('/');
+        location.reload();
       },
       onError: function onError(error) {
         console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
