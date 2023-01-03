@@ -16,6 +16,7 @@ import {
   ScrollableContainer
 } from '../../styled-components/common';
 import Button from '../../components/Button.jsx';
+import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 import styled from 'styled-components';
 
@@ -81,10 +82,11 @@ const CREATE_LEAGUE = gql`
  */
 export default function LeagueNewPage() {
   const [errors, setErrors] = useState({});
-  const [players, setPlayers] = useState({});
   const history = useHistory();
 
   const {inputs, setters, validate} = useNewLeagueFormHook();
+  const { players } = inputs;
+  const { setPlayers } = setters;
 
   const [createLeague, { loading }] = useMutation(CREATE_LEAGUE, {
     onCompleted: (res) => {
@@ -103,7 +105,7 @@ export default function LeagueNewPage() {
       description: inputs.description,
       location: inputs.location,
       sport: inputs.sport,
-      players: inputs.players ?? [],
+      players: Object.keys(players) ?? [],
       profilePicture: inputs.profilePicture ?? '',
       bannerPicture: inputs.bannerPicture ?? '',
     }
@@ -121,61 +123,38 @@ export default function LeagueNewPage() {
   }
 
   const onSelectPlayer = (player) => {
-    const idxOfPlayer = inputs.players.indexOf(player.id);
-    console.log('selected player: ', player);
-
-    if (idxOfPlayer === -1) {
-      // set values in input and in obj map
-      const newPlayersArray = [...inputs.players];
-      newPlayersArray.push(player.id);
+    if (!players[player.id]) {
       const newPlayersMap = {...players};
       newPlayersMap[player.id] = player;
-      console.log('new stuff: ', newPlayersArray, ' map: ', newPlayersMap);
       setPlayers(newPlayersMap);
-      setters.setPlayers(newPlayersArray);
     } else {
-      const newPlayersArray = [...inputs.players];
-      newPlayersArray.splice(idxOfPlayer, 1);
       const newPlayersMap = {...players};
-      delete newPlayersMap[player.id];
-      
+      delete newPlayersMap[player.id];      
       setPlayers(newPlayersMap);
-      setters.setPlayers(newPlayersArray);
     }
   }
   
   return (
-    <FlexContainer alignItems="center" direction="column" height="100%" justify="flex-start" width="100%">
-      <PageHeader>New League</PageHeader>
+    <FlexContainer direction="column" height="100%" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px" width="100%">
+      <PageHeader margin="20px auto">New League</PageHeader>
       <Divider />
       <FlexContainer direction="column" height="100%" justify="flex-start">
-        <SectionHeadingText margin="8px 0">Name</SectionHeadingText>
-        <InputField errors={errors.name ?? null} onChange={setters.setName} width="700px" value={inputs.name} />
-        <SectionHeadingText margin="8px 0">Description</SectionHeadingText>
-        <InputField errors={errors.description ?? null} onChange={setters.setDescription} width="700px" value={inputs.description} />
-        <SectionHeadingText margin="8px 0">Sport</SectionHeadingText>
-        <InputField errors={errors.sport ?? null} onChange={setters.setSport} width="700px" value={inputs.sport} />
-        <SectionHeadingText margin="8px 0">Location</SectionHeadingText>
-        <InputField errors={errors.location ?? null} onChange={setters.setLocation} width="700px" value={inputs.location} />
-        <SectionHeadingText margin="8px 0">Players</SectionHeadingText>
-        <PlayerSearchField onClick={onSelectPlayer} />
-        {Object.keys(players).length > 0 && (
-            <ScrollableContainer>
-              {Object.values(players).map((player, idx) => (
-                <div key={player.id}>
-                  {idx !== 0 && <Divider marginTop="0" />}
-                  <RowWrapper >
-                    <FlexContainer alignItems="center" justify="space-between">
-                      <BodyText>
-                        {player.username}
-                      </BodyText>
-                        <DetailsText onClick={() => onSelectPlayer(player)}>remove</DetailsText>
-                    </FlexContainer>
-                  </RowWrapper>
-                </div>
-              ))}
-            </ScrollableContainer>)}
-        <FlexContainer marginTop="16px">
+        <SectionHeadingText margin="24px 0 8px 0">Name</SectionHeadingText>
+        <InputField errors={errors.name ?? null} onChange={setters.setName} width="100%" value={inputs.name} />
+        <SectionHeadingText margin="24px 0 8px 0">Description</SectionHeadingText>
+        <InputField errors={errors.description ?? null} onChange={setters.setDescription} width="100%" value={inputs.description} />
+        <SectionHeadingText margin="24px 0 8px 0">Sport</SectionHeadingText>
+        <InputField errors={errors.sport ?? null} onChange={setters.setSport} width="100%" value={inputs.sport} />
+        <SectionHeadingText margin="24px 0 8px 0">Location</SectionHeadingText>
+        <InputField errors={errors.location ?? null} onChange={setters.setLocation} width="100%" value={inputs.location} />
+        <SectionHeadingText margin="24px 0 8px 0">Players</SectionHeadingText>
+        <AddPlayerSection
+          isSubmitting={loading}
+          onClose={() => setPlayers({})}
+          onSelectPlayer={onSelectPlayer}
+          selectedPlayers={players}/>
+        <Divider marginTop="32px" width="100%" />
+        <FlexContainer marginTop="32px">
           <Button label="Cancel" onClick={() => {history.goBack()}} />
           <Button label="Create League" onClick={onSubmit} />
         </FlexContainer>

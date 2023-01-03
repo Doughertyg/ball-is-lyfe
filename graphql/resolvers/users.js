@@ -153,7 +153,14 @@ module.exports = {
     }
   },
   Query: {
+    async getAllPlayers() {
+      return await User.find();
+    },
     async getPlayersInLeague(_, {leagueID}) {
+      if (leagueID == null) {
+        return [];
+      }
+
       try {
         // querying all players
         if (leagueID == null) {
@@ -172,6 +179,10 @@ module.exports = {
       }
     },
     async getPlayersNotInLeague(_, {leagueID}) {
+      if (leagueID == null) {
+        return [];
+      }
+
       try {
         const league = await League.findById(leagueID).exec();
 

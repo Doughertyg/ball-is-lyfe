@@ -20,6 +20,13 @@ const ContentWrapper = styled.div`
 
 const FETCH_LEAGUE_PLAYERS_QUERY = gql`
   query($leagueID: ID) {
+    getAllPlayers {
+      email
+      id
+      name
+      profilePicture
+      username
+    }
     getPlayersInLeague(leagueID: $leagueID) {
       email
       id
@@ -53,14 +60,14 @@ const FETCH_LEAGUE_PLAYERS_QUERY = gql`
 export default function PlayerSearchField({
   excludeLeague = false,
   height,
-  leagueID,
+  leagueID, // if no leagueID is passed query for all players
   onClick,
   selected = {},
   width
 }) {
   const [input, setInput] = useState('');
   const [resultsOpen, setResultsOpen] = useState(false);
-  const { loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
+  const { _loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
     variables: {leagueID: leagueID}
   });
 
@@ -69,9 +76,10 @@ export default function PlayerSearchField({
     console.log('error querying for players in the PlayerSearchField. Error: ', error);
   }
 
-  const source = excludeLeague ?
-    data?.getPlayersNotInLeague
-    : data?.getPlayersInLeague;
+  const source = leagueID == null ? data?.getAllPlayers :
+    excludeLeague ?
+      data?.getPlayersNotInLeague
+      : data?.getPlayersInLeague;
   const results = useMemo(() => {
     return input != '' ? source?.filter(player => {
       return player?.username?.includes(input) ||

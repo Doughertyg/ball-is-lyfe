@@ -134,7 +134,6 @@ const SeasonNewPage = ({ match }) => {
     }
   }
 
-  console.log('start: ', inputs, '   map:  ', players);
 
   return (
       <FlexContainer direction="column" height="100%" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px 0 12px" width="100%">
