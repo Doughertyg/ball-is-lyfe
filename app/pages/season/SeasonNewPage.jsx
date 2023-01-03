@@ -10,13 +10,17 @@ import {
   Divider,
   FlexContainer,
   PageHeader,
+  ProfilePictureThumb,
   SectionHeadingText,
   ScrollableContainer
 } from '../../styled-components/common';
+import Icon from '../../components/Icon.jsx';
 import Button from '../../components/Button.jsx';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
+import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import useNewSeasonFormHook from '../../hooks/useNewSeasonFormHook';
 import styled from 'styled-components';
+import { CardWrapper } from '../../styled-components/card.js';
 
 const Wrapper = styled.div`
   height: auto;
@@ -78,18 +82,19 @@ const CREATE_SEASON = gql`
  */
 const SeasonNewPage = ({ match }) => {
   const [errors, setErrors] = useState({});
-  const [players, setPlayers] = useState({});
   const { user } = useContext(AuthContext);
   const history = useHistory();
   const leagueID = match.params?.leagueID;
 
   const {inputs, setters, validate} = useNewSeasonFormHook();
+  const { players } = inputs;
+  const { setPlayers } = setters;
 
   if (user == null) {
     history.push('/login');
   }
 
-  const [createSeason, { loading }] = useMutation(CREATE_SEASON, {
+  const [createSeason, { isSubmitting }] = useMutation(CREATE_SEASON, {
     onCompleted: (res) => {
       console.log('create season mutation complete. res: ', res);
       history.push(`/league/${leagueID}`);
@@ -102,7 +107,7 @@ const SeasonNewPage = ({ match }) => {
       description: inputs.description ?? '',
       league: leagueID,
       end: inputs.end,
-      players: inputs.players ?? [],
+      players: Object.keys(inputs.players) ?? [],
       start: inputs.start
     }
   })
@@ -118,26 +123,14 @@ const SeasonNewPage = ({ match }) => {
   }
 
   const onSelectPlayer = (player) => {
-    const idxOfPlayer = inputs.players.indexOf(player.id);
-    console.log('selected player: ', player);
-
-    if (idxOfPlayer === -1) {
-      // set values in input and in obj map
-      const newPlayersArray = [...inputs.players];
-      newPlayersArray.push(player.id);
+    if (!players[player.id]) {
       const newPlayersMap = {...players};
       newPlayersMap[player.id] = player;
-      console.log('new stuff: ', newPlayersArray, ' map: ', newPlayersMap);
       setPlayers(newPlayersMap);
-      setters.setPlayers(newPlayersArray);
     } else {
-      const newPlayersArray = [...inputs.players];
-      newPlayersArray.splice(idxOfPlayer, 1);
       const newPlayersMap = {...players};
-      delete newPlayersMap[player.id];
-      
+      delete newPlayersMap[player.id];      
       setPlayers(newPlayersMap);
-      setters.setPlayers(newPlayersArray);
     }
   }
 
@@ -159,23 +152,12 @@ const SeasonNewPage = ({ match }) => {
           <SectionHeadingText margin="8px 0">End date</SectionHeadingText>
           <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="700px" value={inputs.location} type="date" />
           <SectionHeadingText margin="8px 0">Players</SectionHeadingText>
-          <PlayerSearchField leagueID={leagueID} onClick={onSelectPlayer} selected={players} />
-          {Object.keys(players).length > 0 && (
-          <ScrollableContainer>
-            {Object.values(players).map((player, idx) => (
-              <div key={player.id}>
-                {idx !== 0 && <Divider marginTop="0" />}
-                <RowWrapper >
-                  <FlexContainer alignItems="center" justify="space-between">
-                    <BodyText>
-                      {player.username}
-                    </BodyText>
-                      <DetailsText onClick={() => onSelectPlayer(player)}>remove</DetailsText>
-                  </FlexContainer>
-                </RowWrapper>
-              </div>
-            ))}
-          </ScrollableContainer>)}
+          <AddPlayerSection
+            isSubmitting={isSubmitting}
+            leagueID={leagueID}
+            onClose={() => setPlayers({})}
+            onSelectPlayer={onSelectPlayer}
+            selectedPlayers={players}/>
           <FlexContainer marginTop="12px">
             <Button label="Cancel" onClick={() => {history.goBack()}} />
             <Button label="Create season" onClick={onSubmit} />

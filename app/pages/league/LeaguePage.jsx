@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import styled from 'styled-components';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
+import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
 
 const SearchWrapper = styled.div`
@@ -112,7 +113,7 @@ const League = ({match}) => {
   const leagueID = match.params?.leagueID;
   const history = useHistory();
   const [searchExpanded, setSearchExpanded] = useState(false);
-  const [players, setPlayers] = useState({});
+  const [selectedPlayers, setSelectedPlayers] = useState({});
   console.log('league page. id: ', leagueID);
 
   if (leagueID == null) {
@@ -130,7 +131,7 @@ const League = ({match}) => {
     },
     variables: {
       leagueID,
-      playersToAdd: Object.keys(players)
+      playersToAdd: Object.keys(selectedPlayers)
     }
   })
 
@@ -140,14 +141,14 @@ const League = ({match}) => {
   const isLeagueAdmin = leagueData?.getLeagueByID?.isAdmin;
 
   const onSelectPlayer = (player) => {
-    if (!players[player.id]) {
-      const newPlayersMap = {...players};
+    if (!selectedPlayers[player.id]) {
+      const newPlayersMap = {...selectedPlayers};
       newPlayersMap[player.id] = player;
-      setPlayers(newPlayersMap);
+      setSelectedPlayers(newPlayersMap);
     } else {
-      const newPlayersMap = {...players};
+      const newPlayersMap = {...selectedPlayers};
       delete newPlayersMap[player.id];      
-      setPlayers(newPlayersMap);
+      setSelectedPlayers(newPlayersMap);
     }
   }
 
@@ -199,45 +200,17 @@ const League = ({match}) => {
           </FlexContainer>
           )}
           </FlexContainer>
-          <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
-            <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
-            <SearchWrapper width={searchExpanded ? '400px' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
-              <PlayerSearchField excludeLeague leagueID={leagueID} onClick={onSelectPlayer} selected={players} width={searchExpanded ? '400px' : '0'} />
-            </SearchWrapper>
-            {isLeagueAdmin && <Icon borderRadius="50%" icon={searchExpanded ? "close" : "plus"} onClick={() => setSearchExpanded(!searchExpanded)} />}
-          </FlexContainer>
-          {Object.keys(players).length > 0 && (
-            <>
-              <FlexContainer flexWrap="wrap" justify="start">
-                {Object.values(players).map((player, idx) => (
-                    <CardWrapper
-                      boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
-                      key={player.id ?? idx}
-                      margin='4px 4px 0 0'>
-                      <FlexContainer alignItems="center" justify="space-between">
-                        {player.profilePicture && (
-                          <ProfilePictureThumb
-                            height="32px"
-                            referrerPolicy="no-referrer"
-                            src={player.profilePicture}
-                            width="32px" />
-                        )}
-                        <FlexContainer direction="column">
-                          <BodyText marginBottom="4px">
-                            {player.name ?? player.username}
-                          </BodyText>
-                          <DetailsText>{player.email}</DetailsText>
-                        </FlexContainer>
-                        <Icon icon="close" onClick={() => onSelectPlayer(player)} />
-                      </FlexContainer>
-                    </CardWrapper>
-                ))}
-              </FlexContainer>
-              <FlexContainer marginTop="12px">
-                <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setPlayers({})} />
-                <Button isLoading={isSubmitting} label="Add players to league" onClick={() => addPlayersToLeague()} />
-              </FlexContainer>
-            </>)}
+          <AddPlayerSection
+            excludeLeague
+            isCollapsible
+            isSubmitting={isSubmitting}
+            label="Players"
+            leagueID={leagueID}
+            onClose={() => setSelectedPlayers({})}
+            onSubmit={addPlayersToLeague}
+            onSelectPlayer={onSelectPlayer}
+            selectedPlayers={selectedPlayers}
+            submitLabel="Add players to league"/>
           <FlexContainer justify="flex-start" flexWrap="wrap">
           {leagueData?.getPlayersInLeague?.length > 0 ?
             leagueData.getPlayersInLeague.map((player, idx) => {

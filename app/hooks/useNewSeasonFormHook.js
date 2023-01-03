@@ -5,7 +5,7 @@ const MISSING_INPUT_ERROR = 'must be filled in';
 export default function useNewSeasonFormHook() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState({});
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
 
