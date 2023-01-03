@@ -5,7 +5,7 @@ import { Button as ButtonWrapper } from '../styled-components/interactive';
 function Button({
   border,
   children,
-  height,
+  height = "40px",
   isDisabled,
   isLoading,
   label,

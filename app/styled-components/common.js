@@ -59,6 +59,7 @@ export const FlexContainer = styled.div`
 align-content: ${props => props.alignContent ?? 'center'};
 align-items: ${props => props.alignItems ?? "initial"};
 background-color: ${props => props.backgroundColor ?? 'initial'};
+box-sizing: border-box;
 display: flex;
 flex-wrap: ${props => props.flexWrap ?? 'initial'};
 height: ${props => props.height ?? 'auto'};
@@ -69,6 +70,7 @@ max-width: ${props => props.maxWidth ?? 'initial'};
 min-width: ${props => props.minWidth ?? 'initial'};
 flex-direction: ${props => props.direction ?? 'row'};
 justify-content: ${props => props.justify ?? 'center'};
+padding: ${props => props.padding ?? '0px'};
 padding-top: ${props => props.paddingTop ?? '0px'};
 width: ${props => props.width ?? 'auto'};
 overflow: ${props => props.overflow ?? 'auto'};

@@ -7,13 +7,14 @@ const InputWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 function InputField({

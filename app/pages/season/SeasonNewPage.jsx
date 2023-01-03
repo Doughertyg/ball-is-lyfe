@@ -137,35 +137,34 @@ const SeasonNewPage = ({ match }) => {
   console.log('start: ', inputs, '   map:  ', players);
 
   return (
-    <Wrapper>
-      <FlexContainer alignItems="center" direction="column" justify="start" width="100%">
-        <PageHeader>New Season</PageHeader>
-        <Divider />
-        <ScrollableContainer border="none" borderRadius="0" maxHeight="none">
-        <FlexContainer direction="column" justify="flex-start">
-          <SectionHeadingText margin="8px 0">Name</SectionHeadingText>
-          <InputField errors={errors.name ?? null} name="name" onChange={setters.setName} width="700px" value={inputs.name} />
-          <SectionHeadingText margin="8px 0">Description</SectionHeadingText>
-          <InputField errors={errors.description ?? null} name="description" onChange={setters.setDescription} width="700px" value={inputs.description} />
-          <SectionHeadingText margin="8px 0">Start date</SectionHeadingText>
-          <InputField errors={errors.start ?? null} onChange={setters.setStart} width="700px" value={inputs.sport} type="date" />
-          <SectionHeadingText margin="8px 0">End date</SectionHeadingText>
-          <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="700px" value={inputs.location} type="date" />
-          <SectionHeadingText margin="8px 0">Players</SectionHeadingText>
-          <AddPlayerSection
-            isSubmitting={isSubmitting}
-            leagueID={leagueID}
-            onClose={() => setPlayers({})}
-            onSelectPlayer={onSelectPlayer}
-            selectedPlayers={players}/>
-          <FlexContainer marginTop="12px">
-            <Button label="Cancel" onClick={() => {history.goBack()}} />
-            <Button label="Create season" onClick={onSubmit} />
+      <FlexContainer direction="column" height="100%" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px 0 12px" width="100%">
+        <PageHeader margin="20px auto">New Season</PageHeader>
+        <Divider width="100%" />
+        <ScrollableContainer border="none" borderRadius="0" height="100%" maxHeight="none">
+          <FlexContainer direction="column" height="100%" justify="flex-start" width="100%">
+            <SectionHeadingText margin="24px 0 8px 0">Name</SectionHeadingText>
+            <InputField errors={errors.name ?? null} name="name" onChange={setters.setName} width="100%" value={inputs.name} />
+            <SectionHeadingText margin="24px 0 8px 0">Description</SectionHeadingText>
+            <InputField errors={errors.description ?? null} name="description" onChange={setters.setDescription} width="100%" value={inputs.description} />
+            <SectionHeadingText margin="24px 0 8px 0">Start date</SectionHeadingText>
+            <InputField errors={errors.start ?? null} onChange={setters.setStart} width="100%" value={inputs.sport} type="date" />
+            <SectionHeadingText margin="24px 0 8px 0">End date</SectionHeadingText>
+            <InputField errors={errors.end ?? null} onChange={setters.setEnd} width="100%" value={inputs.location} type="date" />
+            <SectionHeadingText margin="24px 0 8px 0">Players</SectionHeadingText>
+            <AddPlayerSection
+              isSubmitting={isSubmitting}
+              leagueID={leagueID}
+              onClose={() => setPlayers({})}
+              onSelectPlayer={onSelectPlayer}
+              selectedPlayers={players}/>
+            <Divider marginTop="32px" width="100%" />
+            <FlexContainer marginTop="32px">
+              <Button label="Cancel" onClick={() => {history.goBack()}} />
+              <Button label="Create season" onClick={onSubmit} />
+            </FlexContainer>
           </FlexContainer>
-        </FlexContainer>
         </ScrollableContainer>
       </FlexContainer>
-    </Wrapper>
   )
 }
 

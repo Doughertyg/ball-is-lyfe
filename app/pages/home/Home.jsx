@@ -140,7 +140,7 @@ function Home(props) {
   }
   
   return (
-    <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start" maxWidth="800px" width="100%">
+    <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" width="100%" padding="0 12px">
       <PageHeader>Active seasons</PageHeader>
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingSeasons ? 

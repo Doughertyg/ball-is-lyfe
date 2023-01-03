@@ -4113,7 +4113,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_16__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  height: 100%;\n  width: 100vw;\n"])));
-var ScrollContainer = styled_components__WEBPACK_IMPORTED_MODULE_16__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  height: calc(100vh - 44px);\n  max-width: 1000px;\n  overflow: scroll;\n  ::-webkit-scrollbar {\n    display: none;\n  }\n"])));
+var ScrollContainer = styled_components__WEBPACK_IMPORTED_MODULE_16__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  height: calc(100vh - 44px);\n  max-width: 1000px;\n  overflow: scroll;\n  width: ", ";\n  ::-webkit-scrollbar {\n    display: none;\n  }\n"])), function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
+});
 function App() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var initClient = function initClient() {
@@ -4124,7 +4127,9 @@ function App() {
     };
     gapi_script__WEBPACK_IMPORTED_MODULE_1__.gapi.load('client:auth2', initClient);
   }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthProvider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_14__.CommonPageLayout, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MenuBar_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_14__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ScrollContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_18__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_ProtectedRoute_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthProvider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_14__.CommonPageLayout, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MenuBar_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_14__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ScrollContainer, {
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_18__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_ProtectedRoute_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     exact: true,
     path: "/home",
     component: _pages_home_Home_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]
@@ -4247,6 +4252,9 @@ var AddPlayerSection = function AddPlayerSection(_ref) {
       setSearchExpanded(true);
     }
   };
+  var getExpandedWidth = function getExpandedWidth() {
+    return searchExpanded ? '400px' : '0';
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     alignItems: "center",
     justify: "flex-start",
@@ -4261,7 +4269,7 @@ var AddPlayerSection = function AddPlayerSection(_ref) {
     leagueID: leagueID,
     onClick: onSelectPlayer,
     selected: selectedPlayers,
-    width: searchExpanded ? '400px' : '0'
+    width: isCollapsible ? getExpandedWidth() : '100%'
   })), isCollapsible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     borderRadius: "50%",
     icon: searchExpanded ? "close" : "plus",
@@ -4331,7 +4339,8 @@ __webpack_require__.r(__webpack_exports__);
 function Button(_ref) {
   var border = _ref.border,
     children = _ref.children,
-    height = _ref.height,
+    _ref$height = _ref.height,
+    height = _ref$height === void 0 ? "40px" : _ref$height,
     isDisabled = _ref.isDisabled,
     isLoading = _ref.isLoading,
     label = _ref.label,
@@ -4671,8 +4680,8 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var InputWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  width: 100%;\n"])));
-var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  display: flex;\n  flex-direction: column;\n"])));
+var InputWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  width: 100%;\n"])));
+var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n"])));
 function InputField(_ref) {
   var _ref$autoComplete = _ref.autoComplete,
     autoComplete = _ref$autoComplete === void 0 ? true : _ref$autoComplete,
@@ -5850,8 +5859,10 @@ function Home(props) {
     alignItems: "start",
     direction: "column",
     justify: "flex-start",
+    margin: "0 auto",
     maxWidth: "800px",
-    width: "100%"
+    width: "100%",
+    padding: "0 12px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "Active seasons"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
     flexWrap: "wrap",
@@ -6377,7 +6388,9 @@ var League = function League(_ref) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
     justify: "flex-start",
-    maxWidth: "800px"
+    margin: "0 auto",
+    maxWidth: "800px",
+    padding: "0 12px"
   }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     width: "800px"
@@ -7085,52 +7098,62 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
     }
   };
   console.log('start: ', inputs, '   map:  ', players);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    alignItems: "center",
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
-    justify: "start",
+    height: "100%",
+    justify: "flex-start",
+    margin: "0 auto",
+    maxWidth: "800px",
+    padding: "0 12px 0 12px",
     width: "100%"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, null, "New Season"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.ScrollableContainer, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
+    margin: "20px auto"
+  }, "New Season"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
+    width: "100%"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.ScrollableContainer, {
     border: "none",
     borderRadius: "0",
+    height: "100%",
     maxHeight: "none"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
-    justify: "flex-start"
+    height: "100%",
+    justify: "flex-start",
+    width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "8px 0"
+    margin: "24px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     errors: (_errors$name = errors.name) !== null && _errors$name !== void 0 ? _errors$name : null,
     name: "name",
     onChange: setters.setName,
-    width: "700px",
+    width: "100%",
     value: inputs.name
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "8px 0"
+    margin: "24px 0 8px 0"
   }, "Description"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     errors: (_errors$description = errors.description) !== null && _errors$description !== void 0 ? _errors$description : null,
     name: "description",
     onChange: setters.setDescription,
-    width: "700px",
+    width: "100%",
     value: inputs.description
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "8px 0"
+    margin: "24px 0 8px 0"
   }, "Start date"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     errors: (_errors$start = errors.start) !== null && _errors$start !== void 0 ? _errors$start : null,
     onChange: setters.setStart,
-    width: "700px",
+    width: "100%",
     value: inputs.sport,
     type: "date"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "8px 0"
+    margin: "24px 0 8px 0"
   }, "End date"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     errors: (_errors$end = errors.end) !== null && _errors$end !== void 0 ? _errors$end : null,
     onChange: setters.setEnd,
-    width: "700px",
+    width: "100%",
     value: inputs.location,
     type: "date"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "8px 0"
+    margin: "24px 0 8px 0"
   }, "Players"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddPlayerSection_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     isSubmitting: isSubmitting,
     leagueID: leagueID,
@@ -7139,8 +7162,11 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
     },
     onSelectPlayer: onSelectPlayer,
     selectedPlayers: players
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
+    marginTop: "32px",
+    width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    marginTop: "12px"
+    marginTop: "32px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     label: "Cancel",
     onClick: function onClick() {
@@ -7149,7 +7175,7 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     label: "Create season",
     onClick: onSubmit
-  }))))));
+  })))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonNewPage);
 
@@ -7334,7 +7360,7 @@ var VerticalDivider = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   var _props$margin2;
   return (_props$margin2 = props.margin) !== null && _props$margin2 !== void 0 ? _props$margin2 : '0 10px';
 });
-var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\ndisplay: flex;\nflex-wrap: ", ";\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nmax-width: ", ";\nmin-width: ", ";\nflex-direction: ", ";\njustify-content: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
+var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\nbox-sizing: border-box;\ndisplay: flex;\nflex-wrap: ", ";\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nmax-width: ", ";\nmin-width: ", ";\nflex-direction: ", ";\njustify-content: ", ";\npadding: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
   var _props$alignContent;
   return (_props$alignContent = props.alignContent) !== null && _props$alignContent !== void 0 ? _props$alignContent : 'center';
 }, function (props) {
@@ -7370,6 +7396,9 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
 }, function (props) {
   var _props$justify;
   return (_props$justify = props.justify) !== null && _props$justify !== void 0 ? _props$justify : 'center';
+}, function (props) {
+  var _props$padding2;
+  return (_props$padding2 = props.padding) !== null && _props$padding2 !== void 0 ? _props$padding2 : '0px';
 }, function (props) {
   var _props$paddingTop;
   return (_props$paddingTop = props.paddingTop) !== null && _props$paddingTop !== void 0 ? _props$paddingTop : '0px';

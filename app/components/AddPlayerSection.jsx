@@ -45,12 +45,16 @@ const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, l
     }
   }
 
+  const getExpandedWidth = () => {
+    return searchExpanded ? '400px' : '0';
+  }
+
   return (
     <>
       <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
         {label && (<SectionHeadingText margin="20px 12px 20px 0">{label}</SectionHeadingText>)}
         <SearchWrapper width={searchExpanded ? '400px' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
-          <PlayerSearchField excludeLeague={excludeLeague} leagueID={leagueID} onClick={onSelectPlayer} selected={selectedPlayers} width={searchExpanded ? '400px' : '0'} />
+          <PlayerSearchField excludeLeague={excludeLeague} leagueID={leagueID} onClick={onSelectPlayer} selected={selectedPlayers} width={isCollapsible ? getExpandedWidth() : '100%'} />
         </SearchWrapper>
         {isCollapsible && <Icon borderRadius="50%" icon={searchExpanded ? "close" : "plus"} onClick={toggleSearchBar} />}
       </FlexContainer>

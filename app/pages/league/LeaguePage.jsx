@@ -153,7 +153,7 @@ const League = ({match}) => {
   }
 
   return (
-    <FlexContainer direction="column" justify="flex-start" maxWidth="800px">
+    <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
         <FlexContainer justify="flex-start" width="800px">
           <h1>Loading...</h1>

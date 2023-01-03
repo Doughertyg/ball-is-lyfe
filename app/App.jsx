@@ -31,6 +31,7 @@ const ScrollContainer = styled.div`
   height: calc(100vh - 44px);
   max-width: 1000px;
   overflow: scroll;
+  width: ${props => props.width ?? 'auto'};
   ::-webkit-scrollbar {
     display: none;
   }
@@ -54,7 +55,7 @@ function App() {
           <CommonPageLayout>
             <MenuBar />
             <FlexContainer>
-              <ScrollContainer>
+              <ScrollContainer width="100%">
                 <Switch>
                   <ProtectedRoute exact path='/home' component={Home} />
                   <AuthRoute exact path='/login' component={Login} />
