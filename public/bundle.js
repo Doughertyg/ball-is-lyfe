@@ -7166,6 +7166,7 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
     marginTop: "32px",
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    shrink: "0",
     marginTop: "32px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     label: "Cancel",

@@ -157,7 +157,7 @@ const SeasonNewPage = ({ match }) => {
               onSelectPlayer={onSelectPlayer}
               selectedPlayers={players}/>
             <Divider marginTop="32px" width="100%" />
-            <FlexContainer marginTop="32px">
+            <FlexContainer shrink="0" marginTop="32px">
               <Button label="Cancel" onClick={() => {history.goBack()}} />
               <Button label="Create season" onClick={onSubmit} />
             </FlexContainer>
