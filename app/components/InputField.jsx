@@ -26,6 +26,7 @@ function InputField({
   minLength,
   maxLength,
   onChange,
+  onClick,
   type,
   placeholder,
   width,
@@ -45,6 +46,7 @@ function InputField({
           minLength={minLength ?? "8"}
           maxLength={maxLength ?? "36"}
           onChange={(e) => onChange(e.target.value)}
+          onClick={onClick}
           placeholder={placeholder ? placeholder : name ? `Type a ${name}...` : ''}
           width={width ?? 'auto'}
           value={value}

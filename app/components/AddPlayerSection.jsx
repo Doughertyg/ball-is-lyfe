@@ -60,7 +60,7 @@ const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, l
       </FlexContainer>
       {Object.keys(selectedPlayers).length > 0 && (
         <>
-          <FlexContainer flexWrap="wrap" justify="start">
+          <FlexContainer flexWrap="wrap" justify="start" shrink="0">
             {Object.values(selectedPlayers).map((player, idx) => (
                 <CardWrapper
                   boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"

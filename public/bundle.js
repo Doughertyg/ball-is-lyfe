@@ -4276,7 +4276,8 @@ var AddPlayerSection = function AddPlayerSection(_ref) {
     onClick: toggleSearchBar
   })), Object.keys(selectedPlayers).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     flexWrap: "wrap",
-    justify: "start"
+    justify: "start",
+    shrink: "0"
   }, Object.values(selectedPlayers).map(function (player, idx) {
     var _player$id, _player$name;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_5__.CardWrapper, {
@@ -4692,6 +4693,7 @@ function InputField(_ref) {
     minLength = _ref.minLength,
     maxLength = _ref.maxLength,
     _onChange = _ref.onChange,
+    onClick = _ref.onClick,
     type = _ref.type,
     placeholder = _ref.placeholder,
     width = _ref.width,
@@ -4708,6 +4710,7 @@ function InputField(_ref) {
     onChange: function onChange(e) {
       return _onChange(e.target.value);
     },
+    onClick: onClick,
     placeholder: placeholder ? placeholder : name ? "Type a ".concat(name, "...") : '',
     width: width !== null && width !== void 0 ? width : 'auto',
     value: value
@@ -4958,7 +4961,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common.js */ "./app/styled-components/common.js");
 /* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
-var _templateObject, _templateObject2, _templateObject3;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -4973,9 +4976,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: relative;\n  margin: 8px;\n  margin-top: 4px;\n  z-index: 1000;\n"])));
-var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
-var FETCH_LEAGUE_PLAYERS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($leagueID: ID) {\n    getAllPlayers {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersNotInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
+var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: relative;\n  margin: 8px;\n  margin-top: 4px;\n  z-index: 1000;\n"])));
+var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
+var FETCH_LEAGUE_PLAYERS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($leagueID: ID) {\n    getAllPlayers {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersNotInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
 
 /**
  * Component for searching for players in a given league
@@ -5029,7 +5033,6 @@ function PlayerSearchField(_ref) {
   }, [data, input]);
   var onRowClick = function onRowClick(player) {
     onClick(player);
-    setResultsOpen(false);
   };
   var inputChange = function inputChange(input) {
     if (!resultsOpen) {
@@ -5037,14 +5040,24 @@ function PlayerSearchField(_ref) {
     }
     setInput(input);
   };
+  var onInputClick = function onInputClick() {
+    if (!resultsOpen) {
+      setResultsOpen(true);
+    }
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     autoComplete: false,
     height: height,
     onChange: inputChange,
+    onClick: onInputClick,
     placeholder: "Search for players to add...",
     value: input,
     width: width !== null && width !== void 0 ? width : "700px"
-  }), results.length > 0 && resultsOpen && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, results === null || results === void 0 ? void 0 : results.map(function (player, idx) {
+  }), results.length > 0 && resultsOpen && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalContainer, {
+    onClick: function onClick() {
+      return setResultsOpen(false);
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, results === null || results === void 0 ? void 0 : results.map(function (player, idx) {
     var _player$name2;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       key: idx,
@@ -6200,14 +6213,17 @@ function LeagueNewPage() {
     marginTop: "32px",
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    shrink: "0",
     marginTop: "32px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     label: "Cancel",
+    marginTop: "4px",
     onClick: function onClick() {
       history.goBack();
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     label: "Create League",
+    marginTop: "4px",
     onClick: onSubmit
   }))));
 }
@@ -7344,7 +7360,7 @@ var VerticalDivider = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   var _props$margin2;
   return (_props$margin2 = props.margin) !== null && _props$margin2 !== void 0 ? _props$margin2 : '0 10px';
 });
-var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\nbox-sizing: border-box;\ndisplay: flex;\nflex-wrap: ", ";\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nmax-width: ", ";\nmin-width: ", ";\nflex-direction: ", ";\njustify-content: ", ";\npadding: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
+var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\nbox-sizing: border-box;\ndisplay: flex;\nflex-wrap: ", ";\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nmax-width: ", ";\nmin-height: ", ";\nmin-width: ", ";\nflex-direction: ", ";\nflex-shrink: ", ";\njustify-content: ", ";\npadding: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
   var _props$alignContent;
   return (_props$alignContent = props.alignContent) !== null && _props$alignContent !== void 0 ? _props$alignContent : 'center';
 }, function (props) {
@@ -7372,11 +7388,17 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
   var _props$maxWidth;
   return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : 'initial';
 }, function (props) {
+  var _props$minHeight;
+  return (_props$minHeight = props.minHeight) !== null && _props$minHeight !== void 0 ? _props$minHeight : 'auto';
+}, function (props) {
   var _props$minWidth;
   return (_props$minWidth = props.minWidth) !== null && _props$minWidth !== void 0 ? _props$minWidth : 'initial';
 }, function (props) {
   var _props$direction;
   return (_props$direction = props.direction) !== null && _props$direction !== void 0 ? _props$direction : 'row';
+}, function (props) {
+  var _props$shrink;
+  return (_props$shrink = props.shrink) !== null && _props$shrink !== void 0 ? _props$shrink : '1';
 }, function (props) {
   var _props$justify;
   return (_props$justify = props.justify) !== null && _props$justify !== void 0 ? _props$justify : 'center';

@@ -154,9 +154,9 @@ export default function LeagueNewPage() {
           onSelectPlayer={onSelectPlayer}
           selectedPlayers={players}/>
         <Divider marginTop="32px" width="100%" />
-        <FlexContainer marginTop="32px">
-          <Button label="Cancel" onClick={() => {history.goBack()}} />
-          <Button label="Create League" onClick={onSubmit} />
+        <FlexContainer shrink="0" marginTop="32px">
+          <Button label="Cancel" marginTop="4px" onClick={() => {history.goBack()}} />
+          <Button label="Create League" marginTop="4px" onClick={onSubmit} />
         </FlexContainer>
       </FlexContainer>
     </FlexContainer>

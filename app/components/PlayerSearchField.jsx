@@ -6,6 +6,15 @@ import styled from 'styled-components';
 import { BodyText, DetailsText, Divider, FlexContainer, ModalStyle, ProfilePictureThumb } from '../styled-components/common.js';
 import Icon from './Icon.jsx';
 
+const ModalContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10:
+`;
+
 const ModalWrapper = styled.div`
   position: relative;
   margin: 8px;
@@ -90,7 +99,6 @@ export default function PlayerSearchField({
 
   const onRowClick = (player) => {
     onClick(player);
-    setResultsOpen(false);
   }
 
   const inputChange = (input) => {
@@ -101,18 +109,26 @@ export default function PlayerSearchField({
     setInput(input);
   }
 
+  const onInputClick = () => {
+    if (!resultsOpen) {
+      setResultsOpen(true);
+    }
+  }
+
   return (
     <>
       <InputField
         autoComplete={false}
         height={height}
         onChange={inputChange}
+        onClick={onInputClick}
         placeholder="Search for players to add..."
         value={input}
         width={width ?? "700px"}
       />
       {results.length > 0 && resultsOpen && (
         <ModalWrapper>
+          <ModalContainer onClick={() => setResultsOpen(false)} />
           <ModalStyle>
             <ContentWrapper>
             {results?.map((player, idx) => {
