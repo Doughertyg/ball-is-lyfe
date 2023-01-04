@@ -11,6 +11,7 @@ import { AuthContext } from '../../context/auth';
 import {ButtonContainer, Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styled-components/common';
 import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components/card';
 import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
+import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 
 const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
 
@@ -159,7 +160,11 @@ function Register({ oldRegisterFlow }) {
   
   return (
     <CenteredContainer>
-        {registeringGoogleUser ? <h1>Registering user...</h1> : (
+        {registeringGoogleUser ? (
+          <FlexContainer  height="45px" justify="flex-start" marginTop="20px" width="800px">
+            <h1>Registering user...</h1>
+            <LoadingSpinnerBack />
+          </FlexContainer>) : (
           <>
             <PageHeader>
               REGISTER

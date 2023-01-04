@@ -6,10 +6,13 @@ import { useHistory } from 'react-router';
 import PostCard from '../../components/PostCard.jsx';
 import Card from '../../components/Card.jsx';
 import { AuthContext } from '../../context/auth';
-import {DetailsText, FlexContainer, PageHeader} from '../../styled-components/common';
+import {DetailsText, Divider, FlexContainer, PageHeader} from '../../styled-components/common';
 import Icon from '../../components/Icon.jsx';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
+import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
+import LoadingSpinnerBounce from '../../components/LoadingSpinnerBounce.jsx';
 dayjs.extend(isBetween);
 
 const FETCH_LEAGUES_QUERY = gql`
@@ -145,8 +148,8 @@ function Home(props) {
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingSeasons ? 
           (
-            <FlexContainer justify="flex-start" width="800px">
-              <h1>LOADING...</h1>
+            <FlexContainer height="45px" justify="flex-start" width="800px">
+              <LoadingSpinnerBack />
             </FlexContainer>
           ) :
           activeSeasons?.length > 0 ?
@@ -176,8 +179,8 @@ function Home(props) {
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingLeagues ? 
           (
-            <FlexContainer justify="flex-start" width="800px">
-              <h1>LOADING...</h1>
+            <FlexContainer height="45px" justify="flex-start" width="800px">
+              <LoadingSpinnerSpin />
             </FlexContainer>
           ) :
           leagueData?.getLeaguesByUser?.length > 0 ?
@@ -202,8 +205,8 @@ function Home(props) {
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingSeasons ? 
           (
-            <FlexContainer justify="flex-start" width="800px">
-              <h1>LOADING...</h1>
+            <FlexContainer height="45px" justify="flex-start" width="800px">
+              <LoadingSpinnerBounce />
             </FlexContainer>
           ) :
           pastSeasons?.length > 0 ?
@@ -230,8 +233,8 @@ function Home(props) {
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingSeasons ? 
           (
-            <FlexContainer justify="flex-start" width="800px">
-              <h1>LOADING...</h1>
+            <FlexContainer height="45px" justify="flex-start" width="800px">
+              <LoadingSpinnerSpin />
             </FlexContainer>
           ) :
           futureSeasons?.length > 0 ?
@@ -261,8 +264,8 @@ function Home(props) {
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingTeams ? 
           (
-            <FlexContainer justify="flex-start" width="800px">
-              <h1>LOADING...</h1>
+            <FlexContainer height="45px" justify="flex-start" width="800px">
+              <LoadingSpinnerSpin />
             </FlexContainer>
           ) :
           teamData?.getTeamsByUser?.length > 0 ?

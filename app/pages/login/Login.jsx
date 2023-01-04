@@ -11,6 +11,7 @@ import {Divider, FlexContainer, PageHeader, SectionHeadingText} from '../../styl
 import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components/card';
 import {Button, ErrorList, ErrorListWrapper} from '../../styled-components/interactive';
 import { AuthContext } from '../../context/auth.js';
+import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
 
 const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
 
@@ -130,7 +131,10 @@ function Login({ oldLoginPageFlag }) {
   
   return (
     <CenteredContainer>
-        {loading ? <h1>Logging in...</h1> : (
+        {loading ? (
+          <FlexContainer height="45px" justify="flex-start" marginTop="20px" width="800px">
+            <LoadingSpinnerSpin />
+          </FlexContainer>) : (
         <>
           <PageHeader>
             LOGIN

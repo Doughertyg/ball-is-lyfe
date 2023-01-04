@@ -5,6 +5,7 @@ import InputField from './InputField.jsx';
 import styled from 'styled-components';
 import { BodyText, DetailsText, Divider, FlexContainer, ModalStyle, ProfilePictureThumb } from '../styled-components/common.js';
 import Icon from './Icon.jsx';
+import LoadingSpinnerSpin from './LoadingSpinnerSpin.jsx';
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -76,7 +77,7 @@ export default function PlayerSearchField({
 }) {
   const [input, setInput] = useState('');
   const [resultsOpen, setResultsOpen] = useState(false);
-  const { _loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
+  const { loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
     variables: {leagueID: leagueID}
   });
 
@@ -120,6 +121,7 @@ export default function PlayerSearchField({
       <InputField
         autoComplete={false}
         height={height}
+        loading={loading}
         onChange={inputChange}
         onClick={onInputClick}
         placeholder="Search for players to add..."

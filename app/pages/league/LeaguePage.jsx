@@ -22,6 +22,7 @@ import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
+import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
 
 const SearchWrapper = styled.div`
   height: 100%;
@@ -155,8 +156,8 @@ const League = ({match}) => {
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
-        <FlexContainer justify="flex-start" width="800px">
-          <h1>Loading...</h1>
+        <FlexContainer height="45px" justify="flex-start" width="800px">
+          <LoadingSpinnerSpin />
         </FlexContainer>
       ) : (
         <>

@@ -158,8 +158,8 @@ const SeasonNewPage = ({ match }) => {
               selectedPlayers={players}/>
             <Divider marginTop="32px" width="100%" />
             <FlexContainer shrink="0" marginTop="32px">
-              <Button label="Cancel" onClick={() => {history.goBack()}} />
-              <Button label="Create season" onClick={onSubmit} />
+              <Button isDisabled={isSubmitting} isLoading={isSubmitting} label="Cancel" onClick={() => {history.goBack()}} />
+              <Button isDisabled={isSubmitting} isLoading={isSubmitting}  label="Create season" onClick={onSubmit} />
             </FlexContainer>
           </FlexContainer>
         </ScrollableContainer>

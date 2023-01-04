@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlexContainer } from '../styled-components/common';
 import { Button as ButtonWrapper } from '../styled-components/interactive';
+import LoadingSpinnerSpin from './LoadingSpinnerSpin.jsx';
 
 function Button({
   border,
@@ -18,7 +19,7 @@ function Button({
   return (
     <ButtonWrapper border={border} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} width={width}>
       <FlexContainer>
-        {isLoading ? 'Loading...' : (<>{children}{label}</>)}
+        {isLoading ? <LoadingSpinnerSpin /> : (<>{children}{label}</>)}
       </FlexContainer>
     </ButtonWrapper>
   )

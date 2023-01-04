@@ -806,6 +806,36 @@ var unitlessKeys = {
 
 /***/ }),
 
+/***/ "./app/icons/basketball-filled.svg":
+/*!*****************************************!*\
+  !*** ./app/icons/basketball-filled.svg ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var _path;
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function SvgBasketballFilled(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    width: 24,
+    height: 24,
+    xmlns: "http://www.w3.org/2000/svg",
+    fillRule: "evenodd",
+    clipRule: "evenodd"
+  }, props), _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M10.361.125a11.949 11.949 0 00-6.523 3.099c3.332.159 5.773 1.521 8.351 1.836-.618-2.186-1.2-3.643-1.828-4.935m2.85 9.88c-4.936.474-9.392 2.043-12.988 4.279a11.975 11.975 0 003.295 6.201c3.802-2.97 5.168-8.005 9.853-9.176-.045-.437-.1-.871-.16-1.304m-.509-2.925C8.845 6.869 5.452 4.63 2.26 5.012A11.922 11.922 0 000 12l.007.158C3.354 9.899 8.547 8.4 12.875 7.974c-.056-.298-.108-.598-.173-.894m11.236 3.703a32.04 32.04 0 00-8.716-.909c.055.412.096.826.137 1.241 3.412.228 6.002 3.617 7.084 6.78a11.933 11.933 0 001.495-7.112M20.399 3.44c-2.114.799-2.941 2.915-5.667 3.509l.16.889c2.507-.099 5.161.065 8.607.746a11.994 11.994 0 00-3.1-5.144m-6.893 9.864c-3.361 1.011-5.057 5.821-8.444 8.473A11.925 11.925 0 0012 24l.554-.028c.756-3.443 1.132-6.819.952-10.668m2-.124c.169 3.603-.16 7.068-.856 10.516a11.996 11.996 0 006.594-4.05c-1.005-2.781-2.837-5.958-5.738-6.466m3.161-11.154c-2.243 1.588-2.462 2.536-4.417 2.965A32.746 32.746 0 0012.51.026c2.271.096 4.382.811 6.157 2"
+  })));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgBasketballFilled);
+
+/***/ }),
+
 /***/ "./app/icons/checkcircle.svg":
 /*!***********************************!*\
   !*** ./app/icons/checkcircle.svg ***!
@@ -4334,6 +4364,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
+/* harmony import */ var _LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
+
 
 
 
@@ -4357,7 +4389,7 @@ function Button(_ref) {
     marginTop: marginTop,
     onClick: onClick,
     width: width
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, null, isLoading ? 'Loading...' : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, children, label)));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, null, isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, children, label)));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Button);
 
@@ -4674,15 +4706,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-/* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
-var _templateObject, _templateObject2;
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
+/* harmony import */ var _LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
+var _templateObject, _templateObject2, _templateObject3;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
-var InputWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  width: 100%;\n"])));
-var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n"])));
+
+
+var InputWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  width: 100%;\n"])));
+var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  align-items: flex-start;\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n"])));
+var SpinnerWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  margin-left: 8px;\n"])));
 function InputField(_ref) {
   var _ref$autoComplete = _ref.autoComplete,
     autoComplete = _ref$autoComplete === void 0 ? true : _ref$autoComplete,
@@ -4690,6 +4727,7 @@ function InputField(_ref) {
     disabled = _ref.disabled,
     height = _ref.height,
     name = _ref.name,
+    loading = _ref.loading,
     minLength = _ref.minLength,
     maxLength = _ref.maxLength,
     _onChange = _ref.onChange,
@@ -4698,7 +4736,11 @@ function InputField(_ref) {
     placeholder = _ref.placeholder,
     width = _ref.width,
     value = _ref.value;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(InputWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_1__.Input, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(InputWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    justify: "flex-start",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Input, {
     autoComplete: autoComplete ? 'on' : 'off',
     type: type !== null && type !== void 0 ? type : "text",
     id: name !== null && name !== void 0 ? name : "username",
@@ -4714,10 +4756,127 @@ function InputField(_ref) {
     placeholder: placeholder ? placeholder : name ? "Type a ".concat(name, "...") : '',
     width: width !== null && width !== void 0 ? width : 'auto',
     value: value
-  }), errors != null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_1__.InputError, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, errors)) : null));
+  }), loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SpinnerWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null))), errors != null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.InputError, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, errors)) : null));
 }
 ;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InputField);
+
+/***/ }),
+
+/***/ "./app/components/LoadingSpinnerBack.jsx":
+/*!***********************************************!*\
+  !*** ./app/components/LoadingSpinnerBack.jsx ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _icons_basketball_filled_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../icons/basketball-filled.svg */ "./app/icons/basketball-filled.svg");
+var _templateObject, _templateObject2;
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+var rotate = (0,styled_components__WEBPACK_IMPORTED_MODULE_2__.keyframes)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  0% {\n    transform: translateY(20px) translateX(0px) rotate(0deg);\n  }\n\n  15% {\n    transform: translateY(0) translateX(10px) rotate(90deg);\n  }\n\n  21% {\n    transform: translateY(20px) translateX(15px) rotate(135deg);\n  }\n\n  29% {\n    transform: translateY(10px) translateX(20px) rotate(180deg);\n  }\n\n  35% {\n    transform: translateY(20px) translateX(25px) rotate(225deg);\n  }\n\n  42% {\n    transform: translateY(15px) translateX(30px) rotate(270deg);\n  }\n\n  56% {\n    transform: translateY(20px) translateX(40px) rotate(360deg);\n  }\n\n  75% {\n    transform: translateY(20px) translateX(60px) rotate(490deg);\n  }\n\n  100% {\n    transform: translateY(20px) translateX(0) rotate(0deg);\n  }\n"])));
+var Spinner = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  animation: ", " 1s ease infinite;\n  width: ", ";\n  height: ", ";\n  border-radius: 50%;\n"])), rotate, function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : '24px';
+}, function (props) {
+  var _props$height;
+  return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : '24px';
+});
+var LoadingSpinnerBack = function LoadingSpinnerBack(_ref) {
+  var height = _ref.height,
+    width = _ref.width;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Spinner, {
+    height: height,
+    width: width
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_icons_basketball_filled_svg__WEBPACK_IMPORTED_MODULE_1__["default"], null));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingSpinnerBack);
+
+/***/ }),
+
+/***/ "./app/components/LoadingSpinnerBounce.jsx":
+/*!*************************************************!*\
+  !*** ./app/components/LoadingSpinnerBounce.jsx ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _icons_basketball_filled_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../icons/basketball-filled.svg */ "./app/icons/basketball-filled.svg");
+var _templateObject, _templateObject2;
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+var rotate = (0,styled_components__WEBPACK_IMPORTED_MODULE_2__.keyframes)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  0% {\n    transform: translateY(20px) rotate(0deg);\n  }\n\n  25% {\n    transform: translateY(0) rotate(90deg);\n  }\n\n  37% {\n    transform: translateY(20px) rotate(135deg);\n  }\n\n  50% {\n    transform: translateY(10px) rotate(180deg);\n  }\n\n  62% {\n    transform: translateY(20px) rotate(225deg);\n  }\n\n  75% {\n    transform: translateY(15px) rotate(270deg);\n  }\n\n  100% {\n    transform: translateY(20px) rotate(360deg);\n  }\n"])));
+var Spinner = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  animation: ", " 1s ease infinite;\n  width: ", ";\n  height: ", ";\n  border-radius: 50%;\n"])), rotate, function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : '24px';
+}, function (props) {
+  var _props$height;
+  return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : '24px';
+});
+var LoadingSpinnerBounce = function LoadingSpinnerBounce(_ref) {
+  var height = _ref.height,
+    width = _ref.width;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Spinner, {
+    height: height,
+    width: width
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_icons_basketball_filled_svg__WEBPACK_IMPORTED_MODULE_1__["default"], null));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingSpinnerBounce);
+
+/***/ }),
+
+/***/ "./app/components/LoadingSpinnerSpin.jsx":
+/*!***********************************************!*\
+  !*** ./app/components/LoadingSpinnerSpin.jsx ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _icons_basketball_filled_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../icons/basketball-filled.svg */ "./app/icons/basketball-filled.svg");
+var _templateObject, _templateObject2;
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+var rotate = (0,styled_components__WEBPACK_IMPORTED_MODULE_2__.keyframes)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  0% {\n    transform: rotate(0deg);\n  }\n\n  100% {\n    transform: rotate(360deg);\n  }\n"])));
+var Spinner = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  animation: ", " 1s ease infinite;\n  width: ", ";\n  height: ", ";\n  border-radius: 50%;\n"])), rotate, function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : '24px';
+}, function (props) {
+  var _props$height;
+  return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : '24px';
+});
+var LoadingSpinnerSpin = function LoadingSpinnerSpin(_ref) {
+  var height = _ref.height,
+    width = _ref.width;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Spinner, {
+    height: height,
+    width: width
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_icons_basketball_filled_svg__WEBPACK_IMPORTED_MODULE_1__["default"], null));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingSpinnerSpin);
 
 /***/ }),
 
@@ -4954,13 +5113,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ PlayerSearchField)
 /* harmony export */ });
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common.js */ "./app/styled-components/common.js");
 /* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
+/* harmony import */ var _LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4976,10 +5136,11 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
-var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: relative;\n  margin: 8px;\n  margin-top: 4px;\n  z-index: 1000;\n"])));
-var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
-var FETCH_LEAGUE_PLAYERS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($leagueID: ID) {\n    getAllPlayers {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersNotInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
+
+var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: relative;\n  margin: 8px;\n  margin-top: 4px;\n  z-index: 1000;\n"])));
+var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
+var FETCH_LEAGUE_PLAYERS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($leagueID: ID) {\n    getAllPlayers {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersNotInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
 
 /**
  * Component for searching for players in a given league
@@ -5011,12 +5172,12 @@ function PlayerSearchField(_ref) {
     _useState4 = _slicedToArray(_useState3, 2),
     resultsOpen = _useState4[0],
     setResultsOpen = _useState4[1];
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_6__.useQuery)(FETCH_LEAGUE_PLAYERS_QUERY, {
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__.useQuery)(FETCH_LEAGUE_PLAYERS_QUERY, {
       variables: {
         leagueID: leagueID
       }
     }),
-    _loading = _useQuery._loading,
+    loading = _useQuery.loading,
     data = _useQuery.data,
     error = _useQuery.error;
   if (error) {
@@ -5048,6 +5209,7 @@ function PlayerSearchField(_ref) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     autoComplete: false,
     height: height,
+    loading: loading,
     onChange: inputChange,
     onClick: onInputClick,
     placeholder: "Search for players to add...",
@@ -5758,9 +5920,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var _components_PostCard_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/PostCard.jsx */ "./app/components/PostCard.jsx");
 /* harmony import */ var _components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Card.jsx */ "./app/components/Card.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
@@ -5770,6 +5932,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! dayjs/plugin/isBetween */ "./node_modules/dayjs/plugin/isBetween.js");
 /* harmony import */ var dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/LoadingSpinnerBack.jsx */ "./app/components/LoadingSpinnerBack.jsx");
+/* harmony import */ var _components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
+/* harmony import */ var _components_LoadingSpinnerBounce_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/LoadingSpinnerBounce.jsx */ "./app/components/LoadingSpinnerBounce.jsx");
 var _templateObject, _templateObject2, _templateObject3;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -5783,10 +5948,13 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
+
+
 dayjs__WEBPACK_IMPORTED_MODULE_6___default().extend((dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7___default()));
-var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
-var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      description\n      id\n      league {\n        name\n        sport\n      }\n      name\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
-var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getTeamsByUser(userID: $userID) {\n      id\n      name\n      description\n      profilePicture\n      bannerPicture\n      sport\n      players {\n        name\n        profilePicture\n      }\n    }\n  }\n"])));
+var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
+var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      description\n      id\n      league {\n        name\n        sport\n      }\n      name\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
+var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getTeamsByUser(userID: $userID) {\n      id\n      name\n      description\n      profilePicture\n      bannerPicture\n      sport\n      players {\n        name\n        profilePicture\n      }\n    }\n  }\n"])));
 
 /**
  * 
@@ -5826,8 +5994,8 @@ function Home(props) {
   var _leagueData$getLeague, _leagueData$getLeague2, _teamData$getTeamsByU;
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_3__.AuthContext),
     user = _useContext.user;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_9__.useHistory)();
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(FETCH_LEAGUES_QUERY, {
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_12__.useHistory)();
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(FETCH_LEAGUES_QUERY, {
       variables: {
         userID: user === null || user === void 0 ? void 0 : user.id
       }
@@ -5835,7 +6003,7 @@ function Home(props) {
     loadingLeagues = _useQuery.loading,
     leagueData = _useQuery.data,
     leagueQueryError = _useQuery.error;
-  var _useQuery2 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(FETCH_SEASONS_QUERY, {
+  var _useQuery2 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(FETCH_SEASONS_QUERY, {
       variables: {
         userID: user === null || user === void 0 ? void 0 : user.id
       }
@@ -5861,7 +6029,7 @@ function Home(props) {
       return !dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBetween(season.seasonStart, season.seasonEnd) && dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBefore(season.seasonStart);
     })) !== null && _seasonData$getSeason5 !== void 0 ? _seasonData$getSeason5 : [];
   }, [seasonData]);
-  var _useQuery3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(FETCH_TEAMS_QUERY),
+  var _useQuery3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(FETCH_TEAMS_QUERY),
     loadingTeams = _useQuery3.loading,
     teamData = _useQuery3.data;
   if (seasonQueryError) {
@@ -5881,9 +6049,10 @@ function Home(props) {
     flexWrap: "wrap",
     width: "100%"
   }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.length) > 0 ? activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.map(function (season, idx) {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], null)) : (activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.length) > 0 ? activeSeasons === null || activeSeasons === void 0 ? void 0 : activeSeasons.map(function (season, idx) {
     var _season$league, _season$league$name, _season$league2, _season$id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
@@ -5915,9 +6084,10 @@ function Home(props) {
     flexWrap: "wrap",
     width: "100%"
   }, loadingLeagues ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league, idx) {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], null)) : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league, idx) {
     var _league$description, _league$_id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: (_league$description = league.description) !== null && _league$description !== void 0 ? _league$description : '',
@@ -5937,9 +6107,10 @@ function Home(props) {
     flexWrap: "wrap",
     width: "100%"
   }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.length) > 0 ? pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.map(function (season, idx) {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerBounce_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], null)) : (pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.length) > 0 ? pastSeasons === null || pastSeasons === void 0 ? void 0 : pastSeasons.map(function (season, idx) {
     var _season$league3, _season$league3$name, _season$league4, _season$id2;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
@@ -5961,9 +6132,10 @@ function Home(props) {
     flexWrap: "wrap",
     width: "100%"
   }, loadingSeasons ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.length) > 0 ? futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.map(function (season, idx) {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], null)) : (futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.length) > 0 ? futureSeasons === null || futureSeasons === void 0 ? void 0 : futureSeasons.map(function (season, idx) {
     var _season$league5, _season$league5$name, _season$league6, _season$id3;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       body: season.description,
@@ -5995,9 +6167,10 @@ function Home(props) {
     flexWrap: "wrap",
     width: "100%"
   }, loadingTeams ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "LOADING...")) : (teamData === null || teamData === void 0 ? void 0 : (_teamData$getTeamsByU = teamData.getTeamsByUser) === null || _teamData$getTeamsByU === void 0 ? void 0 : _teamData$getTeamsByU.length) > 0 ? teamData === null || teamData === void 0 ? void 0 : teamData.getTeamsByUser.map(function (post, idx) {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], null)) : (teamData === null || teamData === void 0 ? void 0 : (_teamData$getTeamsByU = teamData.getTeamsByUser) === null || _teamData$getTeamsByU === void 0 ? void 0 : _teamData$getTeamsByU.length) > 0 ? teamData === null || teamData === void 0 ? void 0 : teamData.getTeamsByUser.map(function (post, idx) {
     var _post$id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_PostCard_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
       key: (_post$id = post.id) !== null && _post$id !== void 0 ? _post$id : idx,
@@ -6245,19 +6418,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Icon.jsx */ "./app/components/Icon.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../styled-components/common */ "./app/styled-components/common.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
 /* harmony import */ var _components_Card_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Card.jsx */ "./app/components/Card.jsx");
 /* harmony import */ var _components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Button.jsx */ "./app/components/Button.jsx");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _components_PlayerSearchField_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/PlayerSearchField.jsx */ "./app/components/PlayerSearchField.jsx");
 /* harmony import */ var _components_PlayerCard_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/PlayerCard.jsx */ "./app/components/PlayerCard.jsx");
 /* harmony import */ var _components_AddPlayerSection_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/AddPlayerSection.jsx */ "./app/components/AddPlayerSection.jsx");
 /* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../styled-components/card.js */ "./app/styled-components/card.js");
+/* harmony import */ var _components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -6287,15 +6461,16 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_11__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: 100%;\n  width: ", ";\n  overflow: ", ";\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
+
+var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_12__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: 100%;\n  width: ", ";\n  overflow: ", ";\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 0;
 }, function (props) {
   var _props$overflow;
   return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : 'hidden';
 });
-var FETCH_LEAGUE_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($leagueID: ID!, $userID: ID!) {\n    getLeagueByID(leagueID: $leagueID, userID: $userID) {\n      isAdmin\n      league {\n        _id\n        name\n        description\n        profilePicture\n        seasons {\n          id\n          name\n          description\n          seasonEnd\n          seasonStart\n        }\n        sport\n        location\n      }\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
-var ADD_PLAYERS_TO_LEAGUE_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addPlayersToLeague(\n    $leagueID: ID!,\n    $playersToAdd: [ID!]\n  ) {\n    addPlayersToLeague(\n      leagueID: $leagueID,\n      playersToAdd: $playersToAdd\n    ) {\n      name\n      _id\n    }\n  }\n"])));
+var FETCH_LEAGUE_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($leagueID: ID!, $userID: ID!) {\n    getLeagueByID(leagueID: $leagueID, userID: $userID) {\n      isAdmin\n      league {\n        _id\n        name\n        description\n        profilePicture\n        seasons {\n          id\n          name\n          description\n          seasonEnd\n          seasonStart\n        }\n        sport\n        location\n      }\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
+var ADD_PLAYERS_TO_LEAGUE_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addPlayersToLeague(\n    $leagueID: ID!,\n    $playersToAdd: [ID!]\n  ) {\n    addPlayersToLeague(\n      leagueID: $leagueID,\n      playersToAdd: $playersToAdd\n    ) {\n      name\n      _id\n    }\n  }\n"])));
 
 /**
  * Home page for league. Logged in user sees stats, games, standings
@@ -6335,7 +6510,7 @@ var League = function League(_ref) {
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
   var leagueID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.leagueID;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_13__.useHistory)();
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_14__.useHistory)();
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     searchExpanded = _useState2[0],
@@ -6349,7 +6524,7 @@ var League = function League(_ref) {
     console.log('leagueID null, redirecting home');
     history.push('/');
   }
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_14__.useMutation)(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useMutation)(ADD_PLAYERS_TO_LEAGUE_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         location.reload();
@@ -6365,7 +6540,7 @@ var League = function League(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     addPlayersToLeague = _useMutation2[0],
     isSubmitting = _useMutation2[1].isSubmitting;
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useQuery)(FETCH_LEAGUE_QUERY, {
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_16__.useQuery)(FETCH_LEAGUE_QUERY, {
       variables: {
         leagueID: leagueID,
         userID: user.id
@@ -6393,9 +6568,10 @@ var League = function League(_ref) {
     maxWidth: "800px",
     padding: "0 12px"
   }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Loading...")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
     margin: "20px 0 0 0"
   }, (_leagueData$getLeague2 = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague3 = leagueData.getLeagueByID) === null || _leagueData$getLeague3 === void 0 ? void 0 : (_leagueData$getLeague4 = _leagueData$getLeague3.league) === null || _leagueData$getLeague4 === void 0 ? void 0 : _leagueData$getLeague4.name) !== null && _leagueData$getLeague2 !== void 0 ? _leagueData$getLeague2 : 'League name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
@@ -6485,10 +6661,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var react_google_login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-google-login */ "./node_modules/react-google-login/dist/google-login.js");
 /* harmony import */ var react_google_login__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_google_login__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/InputField.jsx */ "./app/components/InputField.jsx");
@@ -6496,6 +6672,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styled_components_card__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../styled-components/card */ "./app/styled-components/card.js");
 /* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../styled-components/interactive */ "./app/styled-components/interactive.js");
 /* harmony import */ var _context_auth_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../context/auth.js */ "./app/context/auth.js");
+/* harmony import */ var _components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -6522,11 +6699,12 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
 var CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
-var CenteredContainer = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin: 0 auto;\n  text-align: center;\n  vertical-align: middle;\n"])));
-var ErrorWrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  margin-top: 8px;\n"])));
-var LOGIN_USER = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation login(\n    $username: String!\n    $password: String!\n  ) {\n    login(\n        username: $username\n        password: $password\n    ) {\n      id\n      email\n      username\n      createdAt\n      token\n    }\n  }\n"])));
-var LOGIN = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation loginUser(\n    $token: String!\n  ) {\n    loginUser(\n      token: $token\n    ) {\n      email\n      id\n      username\n      token\n    }\n  }\n"])));
+var CenteredContainer = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin: 0 auto;\n  text-align: center;\n  vertical-align: middle;\n"])));
+var ErrorWrapper = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  margin-top: 8px;\n"])));
+var LOGIN_USER = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation login(\n    $username: String!\n    $password: String!\n  ) {\n    login(\n        username: $username\n        password: $password\n    ) {\n      id\n      email\n      username\n      createdAt\n      token\n    }\n  }\n"])));
+var LOGIN = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation loginUser(\n    $token: String!\n  ) {\n    loginUser(\n      token: $token\n    ) {\n      email\n      id\n      username\n      token\n    }\n  }\n"])));
 function Login(_ref) {
   var oldLoginPageFlag = _ref.oldLoginPageFlag;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
@@ -6541,7 +6719,7 @@ function Login(_ref) {
     _useState6 = _slicedToArray(_useState5, 2),
     username = _useState6[0],
     setUsername = _useState6[1];
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_9__.useHistory)();
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_10__.useHistory)();
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth_js__WEBPACK_IMPORTED_MODULE_6__.AuthContext),
     login = _useContext.login,
     logout = _useContext.logout;
@@ -6554,7 +6732,7 @@ function Login(_ref) {
     };
     setErrors(_objectSpread(_objectSpread({}, errors), graphQLErrors));
   };
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useMutation)(LOGIN, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(LOGIN, {
       onCompleted: function onCompleted(res) {
         history.push('/home');
       },
@@ -6567,7 +6745,7 @@ function Login(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     loginWithGoogleToken = _useMutation2[0],
     loading = _useMutation2[1].loading;
-  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useMutation)(LOGIN_USER, {
+  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(LOGIN_USER, {
       onCompleted: function onCompleted(res) {
         history.push('/');
       },
@@ -6613,7 +6791,12 @@ function Login(_ref) {
       }
     });
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Logging in...") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, null, "LOGIN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    height: "45px",
+    justify: "flex-start",
+    marginTop: "20px",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, null, "LOGIN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
     clientId: CLIENT_ID,
     onSuccess: onGoogleAuthSuccess,
     onFailure: onGoogleAuthError,
@@ -6663,10 +6846,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var react_google_login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-google-login */ "./node_modules/react-google-login/dist/google-login.js");
 /* harmony import */ var react_google_login__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_google_login__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/InputField.jsx */ "./app/components/InputField.jsx");
@@ -6674,6 +6857,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _styled_components_card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../styled-components/card */ "./app/styled-components/card.js");
 /* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../styled-components/interactive */ "./app/styled-components/interactive.js");
+/* harmony import */ var _components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/LoadingSpinnerBack.jsx */ "./app/components/LoadingSpinnerBack.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -6700,11 +6884,12 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
 var CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
-var CenteredContainer = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin: 0 auto;\n  text-align: center;\n  vertical-align: middle;\n"])));
-var ErrorWrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  margin-top: 8px;\n"])));
-var REGISTER_USER = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation register(\n    $username: String!\n    $email: String!\n    $password: String!\n    $confirmPassword: String!\n  ) {\n    register(\n      registerInput: {\n        username: $username\n        email: $email\n        password: $password\n        confirmPassword: $confirmPassword\n      }\n    ) {\n      id\n      email\n      username\n      createdAt\n      token\n    }\n  }\n"])));
-var REGISTER_GOOGLE_USER = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation registerUser(\n    $token: String!\n  ) {\n    registerUser(\n      token: $token\n    ) {\n      id\n      email\n      createdAt\n      profilePicture\n      username\n      name\n      token\n    }\n  }\n"])));
+var CenteredContainer = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin: 0 auto;\n  text-align: center;\n  vertical-align: middle;\n"])));
+var ErrorWrapper = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  margin-top: 8px;\n"])));
+var REGISTER_USER = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation register(\n    $username: String!\n    $email: String!\n    $password: String!\n    $confirmPassword: String!\n  ) {\n    register(\n      registerInput: {\n        username: $username\n        email: $email\n        password: $password\n        confirmPassword: $confirmPassword\n      }\n    ) {\n      id\n      email\n      username\n      createdAt\n      token\n    }\n  }\n"])));
+var REGISTER_GOOGLE_USER = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation registerUser(\n    $token: String!\n  ) {\n    registerUser(\n      token: $token\n    ) {\n      id\n      email\n      createdAt\n      profilePicture\n      username\n      name\n      token\n    }\n  }\n"])));
 function Register(_ref) {
   var oldRegisterFlow = _ref.oldRegisterFlow;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
@@ -6727,10 +6912,10 @@ function Register(_ref) {
     _useState10 = _slicedToArray(_useState9, 2),
     errors = _useState10[0],
     setErrors = _useState10[1];
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_9__.useHistory)();
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_10__.useHistory)();
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_3__.AuthContext),
     login = _useContext.login;
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useMutation)(REGISTER_USER, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(REGISTER_USER, {
       onCompleted: function onCompleted(res) {
         console.log('completed! res: ', res);
         history.push('/');
@@ -6755,7 +6940,7 @@ function Register(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     addUser = _useMutation2[0],
     loading = _useMutation2[1].loading;
-  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useMutation)(REGISTER_GOOGLE_USER, {
+  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(REGISTER_GOOGLE_USER, {
       onCompleted: function onCompleted(res) {
         console.log('completed new registration!');
         history.push('/');
@@ -6818,7 +7003,12 @@ function Register(_ref) {
     };
     setErrors(_objectSpread(_objectSpread({}, errors), graphQLErrors));
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, registeringGoogleUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Registering user...") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "REGISTER"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CenteredContainer, null, registeringGoogleUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
+    height: "45px",
+    justify: "flex-start",
+    marginTop: "20px",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Registering user..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, null, "REGISTER"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_google_login__WEBPACK_IMPORTED_MODULE_1__.GoogleLogin, {
     clientId: CLIENT_ID,
     onSuccess: onGoogleAuthSuccess,
     onFailure: onGoogleAuthError,
@@ -7169,11 +7359,15 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
     shrink: "0",
     marginTop: "32px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    isDisabled: isSubmitting,
+    isLoading: isSubmitting,
     label: "Cancel",
     onClick: function onClick() {
       history.goBack();
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    isDisabled: isSubmitting,
+    isLoading: isSubmitting,
     label: "Create season",
     onClick: onSubmit
   })))));
