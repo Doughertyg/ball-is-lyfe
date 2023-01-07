@@ -6,6 +6,7 @@ export const Button = styled.button`
   border-radius: ${props => props.borderRadius ?? "4px"};
   height: ${props => props.height ?? 'auto'};
   padding: 8px 20px;
+  cursor: ${props => props.cursor ?? 'pointer'};
   margin: ${props => props.margin ?? '4px'};
   margin-top: ${props => props.marginTop ?? 0};
   width: ${props => props.width ?? 'auto'};
@@ -29,7 +30,7 @@ cursor: pointer;
 `;
 
 export const Input = styled.input`
-  border-radius: 8px;
+  border-radius: ${props => props.borderRadius ?? "8px"};
   box-sizing: border-box;
   border: ${props => props.errors != null ? "1px solid red" : "1px solid rgba(0, 0, 0, 0.1)"};
   height: ${props => props.height ?? 'auto'};

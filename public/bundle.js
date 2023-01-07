@@ -4371,6 +4371,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function Button(_ref) {
   var border = _ref.border,
+    borderRadius = _ref.borderRadius,
+    boxShadow = _ref.boxShadow,
     children = _ref.children,
     _ref$height = _ref.height,
     height = _ref$height === void 0 ? "40px" : _ref$height,
@@ -4383,6 +4385,8 @@ function Button(_ref) {
     width = _ref.width;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Button, {
     border: border,
+    borderRadius: borderRadius,
+    boxShadow: boxShadow,
     height: height,
     disabled: isDisabled,
     margin: margin,
@@ -4435,6 +4439,108 @@ function Card(_ref) {
   }, bodySubTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, subTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, null, body)))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Card);
+
+/***/ }),
+
+/***/ "./app/components/CollapsibleSearchField.jsx":
+/*!***************************************************!*\
+  !*** ./app/components/CollapsibleSearchField.jsx ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
+/* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
+var _templateObject, _templateObject2;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  display: flex;\n  height: 100%;\n  width: ", ";\n  overflow: ", ";\n  position: relative;\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 0;
+}, function (props) {
+  var _props$overflow;
+  return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : 'hidden';
+});
+var RightButton = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  flex-shrink: 0;\n"])));
+
+/**
+ * Component for a collapsible search field
+ *   Accepts a source which is searched against
+ *   results are rendered as a list/modal 
+ * 
+ *   ,-----------------------------------------,
+ *   |  Search...                              | (X)
+ *   '-----------------------------------------'
+ *   |          results                        |
+ *   |-----------------------------------------|
+ *   |          results                        |
+ *    '---------------------------------------'
+ */
+var CollapsibleSearchField = function CollapsibleSearchField(_ref) {
+  var filterResults = _ref.filterResults,
+    getResultComponent = _ref.getResultComponent,
+    getRightButton = _ref.getRightButton,
+    height = _ref.height,
+    label = _ref.label,
+    loading = _ref.loading,
+    onClick = _ref.onClick,
+    onClose = _ref.onClose,
+    selected = _ref.selected,
+    source = _ref.source;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    expanded = _useState2[0],
+    setExpanded = _useState2[1];
+  var toggleExpanded = function toggleExpanded() {
+    if (expanded) {
+      setExpanded(false);
+      onClose === null || onClose === void 0 ? void 0 : onClose();
+    } else {
+      setExpanded(true);
+    }
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    justify: "flex-start",
+    overflow: "initial"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SearchWrapper, {
+    width: expanded ? '400px' : '0',
+    overflow: expanded ? 'initial' : 'hidden'
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    borderRadius: getRightButton != null ? "8px 0 0 8px" : null,
+    filterResults: filterResults,
+    getResultComponent: getResultComponent,
+    height: height,
+    label: label,
+    loading: loading,
+    onClick: onClick,
+    selected: selected,
+    source: source,
+    width: "100%"
+  }), getRightButton && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RightButton, null, getRightButton === null || getRightButton === void 0 ? void 0 : getRightButton())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    borderRadius: "50%",
+    icon: expanded ? "close" : "plus",
+    onClick: toggleExpanded
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CollapsibleSearchField);
 
 /***/ }),
 
@@ -4723,6 +4829,7 @@ var SpinnerWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].d
 function InputField(_ref) {
   var _ref$autoComplete = _ref.autoComplete,
     autoComplete = _ref$autoComplete === void 0 ? true : _ref$autoComplete,
+    borderRadius = _ref.borderRadius,
     errors = _ref.errors,
     disabled = _ref.disabled,
     height = _ref.height,
@@ -4742,6 +4849,7 @@ function InputField(_ref) {
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Input, {
     autoComplete: autoComplete ? 'on' : 'off',
+    borderRadius: borderRadius,
     type: type !== null && type !== void 0 ? type : "text",
     id: name !== null && name !== void 0 ? name : "username",
     errors: errors,
@@ -5138,7 +5246,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
-var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: relative;\n  margin: 8px;\n  margin-top: 4px;\n  z-index: 1000;\n"])));
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: relative;\n  z-index: 1000;\n"])));
 var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
 var FETCH_LEAGUE_PLAYERS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($leagueID: ID) {\n    getAllPlayers {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n    getPlayersNotInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
 
@@ -5461,6 +5569,139 @@ function ProtectedRoute(_ref) {
   }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProtectedRoute);
+
+/***/ }),
+
+/***/ "./app/components/SearchField.jsx":
+/*!****************************************!*\
+  !*** ./app/components/SearchField.jsx ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ModalStyle": () => (/* binding */ ModalStyle),
+/* harmony export */   "default": () => (/* binding */ SearchField)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common.js */ "./app/styled-components/common.js");
+/* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
+var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: absolute;\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: 100%;\n  z-index: 10000;\n"])));
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  position: relative;\n  z-index: 1000;\n"])));
+var Clickable = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  cursor: ", ";\n"])), function (props) {
+  return props.onClick != null ? 'pointer' : 'initial';
+});
+var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
+
+/**
+ * Component for searching a list of items
+ * with dropdown filtered and selectable results
+ * 
+ *  ,.................................................,
+ * |  Search...                                        |
+ *  `'''''''''''''''''''''''''''''''''''''''''''''''''`
+ *  |  Steph Curry #30                                |
+ *  | ``````````````````````````````````````````````` |
+ *  '._______________________________________________.'
+ * 
+ * 
+ */
+function SearchField(_ref) {
+  var borderRadius = _ref.borderRadius,
+    filterResults = _ref.filterResults,
+    getResultComponent = _ref.getResultComponent,
+    height = _ref.height,
+    label = _ref.label,
+    loading = _ref.loading,
+    _onClick = _ref.onClick,
+    selected = _ref.selected,
+    source = _ref.source,
+    width = _ref.width;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState2 = _slicedToArray(_useState, 2),
+    input = _useState2[0],
+    setInput = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    resultsOpen = _useState4[0],
+    setResultsOpen = _useState4[1];
+  var results = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    var _source$filter;
+    return input != '' ? (_source$filter = source === null || source === void 0 ? void 0 : source.filter(function (entry) {
+      return filterResults(entry, input);
+    })) !== null && _source$filter !== void 0 ? _source$filter : [] : [];
+  }, [source, input, filterResults]);
+  var onInputClick = function onInputClick() {
+    if (!resultsOpen) {
+      setResultsOpen(true);
+    }
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    direction: "column",
+    grow: "1",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    autoComplete: false,
+    borderRadius: borderRadius,
+    height: height,
+    loading: loading,
+    onChange: function onChange(input) {
+      return setInput(input);
+    },
+    onClick: onInputClick,
+    placeholder: label !== null && label !== void 0 ? label : "Search...",
+    value: input,
+    width: width !== null && width !== void 0 ? width : "700px"
+  }), results.length > 0 && resultsOpen && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalContainer, {
+    onClick: function onClick() {
+      return setResultsOpen(false);
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, results === null || results === void 0 ? void 0 : results.map(function (entry, idx) {
+    var _entry$name, _entry$id;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Clickable, {
+      key: idx,
+      onClick: function onClick() {
+        return _onClick(entry);
+      }
+    }, idx !== 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.Divider, {
+      marginBottom: "10px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+      alignItems: "center",
+      justify: "space-between"
+    }, getResultComponent ? getResultComponent(entry, idx) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, entry.profilePicture && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.ProfilePictureThumb, {
+      height: "32px",
+      referrerPolicy: "no-referrer",
+      src: entry.profilePicture,
+      width: "32px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.BodyText, {
+      width: "fit-content"
+    }, (_entry$name = entry.name) !== null && _entry$name !== void 0 ? _entry$name : 'Name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
+      flexGrow: "1",
+      margin: "0 0 0 4px"
+    }, entry.description)), selected != null && (selected[(_entry$id = entry.id) !== null && _entry$id !== void 0 ? _entry$id : entry] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      icon: "checkFilled"
+    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      icon: "circle"
+    }))));
+  })))), (source === null || source === void 0 ? void 0 : source.length) === 0 || source == null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.DetailsText, null, "Nothin to search.")))) : null);
+}
 
 /***/ }),
 
@@ -5920,9 +6161,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var _components_PostCard_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/PostCard.jsx */ "./app/components/PostCard.jsx");
 /* harmony import */ var _components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Card.jsx */ "./app/components/Card.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
@@ -5935,6 +6176,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/LoadingSpinnerBack.jsx */ "./app/components/LoadingSpinnerBack.jsx");
 /* harmony import */ var _components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
 /* harmony import */ var _components_LoadingSpinnerBounce_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/LoadingSpinnerBounce.jsx */ "./app/components/LoadingSpinnerBounce.jsx");
+/* harmony import */ var _components_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/CollapsibleSearchField.jsx */ "./app/components/CollapsibleSearchField.jsx");
+/* harmony import */ var _components_Button_jsx__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/Button.jsx */ "./app/components/Button.jsx");
 var _templateObject, _templateObject2, _templateObject3;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -5951,10 +6194,12 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
+
 dayjs__WEBPACK_IMPORTED_MODULE_6___default().extend((dayjs_plugin_isBetween__WEBPACK_IMPORTED_MODULE_7___default()));
-var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
-var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      description\n      id\n      league {\n        name\n        sport\n      }\n      name\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
-var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getTeamsByUser(userID: $userID) {\n      id\n      name\n      description\n      profilePicture\n      bannerPicture\n      sport\n      players {\n        name\n        profilePicture\n      }\n    }\n  }\n"])));
+var FETCH_LEAGUES_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getLeagues {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n    getLeaguesByUser(userID: $userID) {\n      _id\n      name\n      description\n      profilePicture\n      sport\n      location\n    }\n  }\n"])));
+var FETCH_SEASONS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getSeasonsByUser(userID: $userID) {\n      description\n      id\n      league {\n        name\n        sport\n      }\n      name\n      seasonStart\n      seasonEnd\n    }\n  }\n"])));
+var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($userID: ID!) {\n    getTeamsByUser(userID: $userID) {\n      id\n      name\n      description\n      profilePicture\n      bannerPicture\n      sport\n      players {\n        name\n        profilePicture\n      }\n    }\n  }\n"])));
 
 /**
  * 
@@ -5991,11 +6236,11 @@ var FETCH_TEAMS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])
  *      `-----------------------------------"
  */
 function Home(props) {
-  var _leagueData$getLeague, _leagueData$getLeague2, _teamData$getTeamsByU;
+  var _leagueData$getLeague, _leagueData$getLeague2, _leagueData$getLeague3, _teamData$getTeamsByU;
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_3__.AuthContext),
     user = _useContext.user;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_12__.useHistory)();
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(FETCH_LEAGUES_QUERY, {
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_14__.useHistory)();
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useQuery)(FETCH_LEAGUES_QUERY, {
       variables: {
         userID: user === null || user === void 0 ? void 0 : user.id
       }
@@ -6003,7 +6248,7 @@ function Home(props) {
     loadingLeagues = _useQuery.loading,
     leagueData = _useQuery.data,
     leagueQueryError = _useQuery.error;
-  var _useQuery2 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(FETCH_SEASONS_QUERY, {
+  var _useQuery2 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useQuery)(FETCH_SEASONS_QUERY, {
       variables: {
         userID: user === null || user === void 0 ? void 0 : user.id
       }
@@ -6029,12 +6274,47 @@ function Home(props) {
       return !dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBetween(season.seasonStart, season.seasonEnd) && dayjs__WEBPACK_IMPORTED_MODULE_6___default()().isBefore(season.seasonStart);
     })) !== null && _seasonData$getSeason5 !== void 0 ? _seasonData$getSeason5 : [];
   }, [seasonData]);
-  var _useQuery3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(FETCH_TEAMS_QUERY),
+  var _useQuery3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useQuery)(FETCH_TEAMS_QUERY),
     loadingTeams = _useQuery3.loading,
     teamData = _useQuery3.data;
   if (seasonQueryError) {
     console.log('error:  ', JSON.stringify(seasonQueryError, null, 2));
   }
+  var filterLeagueSearchResults = function filterLeagueSearchResults(league, searchString) {
+    var _league$name, _league$description, _league$location, _league$sport;
+    return (league === null || league === void 0 ? void 0 : (_league$name = league.name) === null || _league$name === void 0 ? void 0 : _league$name.includes(searchString)) || (league === null || league === void 0 ? void 0 : (_league$description = league.description) === null || _league$description === void 0 ? void 0 : _league$description.includes(searchString)) || (league === null || league === void 0 ? void 0 : (_league$location = league.location) === null || _league$location === void 0 ? void 0 : _league$location.includes(searchString)) || (league === null || league === void 0 ? void 0 : (_league$sport = league.sport) === null || _league$sport === void 0 ? void 0 : _league$sport.includes(searchString));
+  };
+  var onClickLeagueEntry = function onClickLeagueEntry(league) {
+    history.push("/league/".concat(league._id));
+  };
+  var getLeagueResultsComponent = function getLeagueResultsComponent(league) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, league.profilePicture && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.ProfilePictureThumb, {
+      height: "32px",
+      referrerPolicy: "no-referrer",
+      src: league.profilePicture,
+      width: "32px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.BodyText, {
+      width: "fit-content"
+    }, league.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, {
+      flexGrow: "1",
+      margin: "0 0 0 4px",
+      onClick: function onClick() {
+        return onClickLeagueEntry(league);
+      }
+    }, "".concat(league.location, " - ").concat(league.sport)));
+  };
+  var getRightButton = function getRightButton() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      borderRadius: "0 8px 8px 0",
+      boxShadow: "none",
+      height: "46px",
+      label: "Create League",
+      margin: "0",
+      onClick: function onClick() {
+        return history.push('/league/new');
+      }
+    });
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     alignContent: "start",
     alignItems: "start",
@@ -6070,15 +6350,18 @@ function Home(props) {
     justify: "flex-start",
     width: "800px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.DetailsText, null, "No active seasons"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
-    alignItems: "center"
+    alignItems: "center",
+    overflow: "visible"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.PageHeader, {
     margin: "20px 12px 20px 0"
-  }, "Leagues"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    borderRadius: "50%",
-    icon: "plus",
-    onClick: function onClick() {
-      return history.push('/league/new');
-    }
+  }, "Leagues"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    filterResults: filterLeagueSearchResults,
+    getResultComponent: getLeagueResultsComponent,
+    getRightButton: getRightButton,
+    label: "Search leagues...",
+    loading: loadingLeagues,
+    onClick: onClickLeagueEntry,
+    source: (_leagueData$getLeague = leagueData === null || leagueData === void 0 ? void 0 : leagueData.getLeagues) !== null && _leagueData$getLeague !== void 0 ? _leagueData$getLeague : []
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_4__.FlexContainer, {
     justify: "start",
     flexWrap: "wrap",
@@ -6087,10 +6370,10 @@ function Home(props) {
     height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], null)) : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeaguesByUser) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.map(function (league, idx) {
-    var _league$description, _league$_id;
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], null)) : (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague3 = leagueData.getLeaguesByUser) === null || _leagueData$getLeague3 === void 0 ? void 0 : _leagueData$getLeague3.map(function (league, idx) {
+    var _league$description2, _league$_id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      body: (_league$description = league.description) !== null && _league$description !== void 0 ? _league$description : '',
+      body: (_league$description2 = league.description) !== null && _league$description2 !== void 0 ? _league$description2 : '',
       onClick: function onClick() {
         return history.push("/league/".concat(league._id));
       },
@@ -7555,7 +7838,7 @@ var VerticalDivider = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
   var _props$margin2;
   return (_props$margin2 = props.margin) !== null && _props$margin2 !== void 0 ? _props$margin2 : '0 10px';
 });
-var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\nbox-sizing: border-box;\ndisplay: flex;\nflex-wrap: ", ";\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nmax-width: ", ";\nmin-height: ", ";\nmin-width: ", ";\nflex-direction: ", ";\nflex-shrink: ", ";\njustify-content: ", ";\npadding: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
+var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\nalign-content: ", ";\nalign-items: ", ";\nbackground-color: ", ";\nbox-sizing: border-box;\ndisplay: flex;\nflex-grow: ", ";\nflex-wrap: ", ";\nheight: ", ";\nmargin: ", ";\nmargin-bottom: ", ";\nmargin-top: ", ";\nmax-width: ", ";\nmin-height: ", ";\nmin-width: ", ";\nflex-direction: ", ";\nflex-shrink: ", ";\njustify-content: ", ";\npadding: ", ";\npadding-top: ", ";\nwidth: ", ";\noverflow: ", ";\n"])), function (props) {
   var _props$alignContent;
   return (_props$alignContent = props.alignContent) !== null && _props$alignContent !== void 0 ? _props$alignContent : 'center';
 }, function (props) {
@@ -7564,6 +7847,9 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
 }, function (props) {
   var _props$backgroundColo;
   return (_props$backgroundColo = props.backgroundColor) !== null && _props$backgroundColo !== void 0 ? _props$backgroundColo : 'initial';
+}, function (props) {
+  var _props$grow;
+  return (_props$grow = props.grow) !== null && _props$grow !== void 0 ? _props$grow : 'initial';
 }, function (props) {
   var _props$flexWrap;
   return (_props$flexWrap = props.flexWrap) !== null && _props$flexWrap !== void 0 ? _props$flexWrap : 'initial';
@@ -7730,7 +8016,7 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border: ", ";\n  border-radius: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  &:hover {\n    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);\n  }\n  &:active {\n    background-color: teal;\n    color: white;\n  }\n"])), function (props) {
+var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border: ", ";\n  border-radius: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  cursor: ", ";\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  &:hover {\n    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);\n  }\n  &:active {\n    background-color: teal;\n    color: white;\n  }\n"])), function (props) {
   var _props$border;
   return (_props$border = props.border) !== null && _props$border !== void 0 ? _props$border : '1px solid rgba(0, 0, 0, 0.1)';
 }, function (props) {
@@ -7739,6 +8025,9 @@ var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_t
 }, function (props) {
   var _props$height;
   return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : 'auto';
+}, function (props) {
+  var _props$cursor;
+  return (_props$cursor = props.cursor) !== null && _props$cursor !== void 0 ? _props$cursor : 'pointer';
 }, function (props) {
   var _props$margin;
   return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '4px';
@@ -7756,7 +8045,10 @@ var Clickable = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_t
   var _props$borderRadius2;
   return (_props$borderRadius2 = props.borderRadius) !== null && _props$borderRadius2 !== void 0 ? _props$borderRadius2 : "0";
 });
-var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  box-sizing: border-box;\n  border: ", ";\n  height: ", ";\n  width: ", ";\n  max-width: ", ";\n  line-height: 20px;\n  padding: 12px;\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
+var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  border-radius: ", ";\n  box-sizing: border-box;\n  border: ", ";\n  height: ", ";\n  width: ", ";\n  max-width: ", ";\n  line-height: 20px;\n  padding: 12px;\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
+  var _props$borderRadius3;
+  return (_props$borderRadius3 = props.borderRadius) !== null && _props$borderRadius3 !== void 0 ? _props$borderRadius3 : "8px";
+}, function (props) {
   return props.errors != null ? "1px solid red" : "1px solid rgba(0, 0, 0, 0.1)";
 }, function (props) {
   var _props$height2;

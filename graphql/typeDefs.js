@@ -5,6 +5,7 @@ module.exports = gql`
     getAllPlayers: [User]
     getPosts: [Post]
     getPost(postId: ID!): Post
+    getLeagues: [League]
     getLeaguesByUser(userID: ID!): [League]
     getLeagueByID(leagueID: ID!, userID: ID!): GetLeagueByIDReturnType
     getPlayersInLeague(leagueID: ID): [User]

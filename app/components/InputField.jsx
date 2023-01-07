@@ -26,6 +26,7 @@ const SpinnerWrapper = styled.div`
 
 function InputField({
   autoComplete = true,
+  borderRadius,
   errors,
   disabled,
   height,
@@ -47,6 +48,7 @@ function InputField({
         <FlexContainer alignItems="center" justify="flex-start" width="100%">
           <Input 
             autoComplete={autoComplete ? 'on' : 'off'}
+            borderRadius={borderRadius}
             type={type ?? "text"}
             id={name ?? "username"}
             errors={errors}

@@ -5,6 +5,8 @@ import LoadingSpinnerSpin from './LoadingSpinnerSpin.jsx';
 
 function Button({
   border,
+  borderRadius,
+  boxShadow,
   children,
   height = "40px",
   isDisabled,
@@ -17,7 +19,7 @@ function Button({
 }) {
 
   return (
-    <ButtonWrapper border={border} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} width={width}>
+    <ButtonWrapper border={border} borderRadius={borderRadius} boxShadow={boxShadow} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} width={width}>
       <FlexContainer>
         {isLoading ? <LoadingSpinnerSpin /> : (<>{children}{label}</>)}
       </FlexContainer>

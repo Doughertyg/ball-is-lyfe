@@ -6,17 +6,27 @@ import { useHistory } from 'react-router';
 import PostCard from '../../components/PostCard.jsx';
 import Card from '../../components/Card.jsx';
 import { AuthContext } from '../../context/auth';
-import {DetailsText, Divider, FlexContainer, PageHeader} from '../../styled-components/common';
+import {BodyText, DetailsText, Divider, FlexContainer, PageHeader, ProfilePictureThumb} from '../../styled-components/common';
 import Icon from '../../components/Icon.jsx';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
 import LoadingSpinnerBounce from '../../components/LoadingSpinnerBounce.jsx';
+import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
+import Button from '../../components/Button.jsx';
 dayjs.extend(isBetween);
 
 const FETCH_LEAGUES_QUERY = gql`
   query($userID: ID!) {
+    getLeagues {
+      _id
+      name
+      description
+      profilePicture
+      sport
+      location
+    }
     getLeaguesByUser(userID: $userID) {
       _id
       name
@@ -141,6 +151,46 @@ function Home(props) {
   if (seasonQueryError) {
     console.log('error:  ', JSON.stringify(seasonQueryError, null, 2))
   }
+
+  const filterLeagueSearchResults = (league, searchString) => {
+    return league?.name?.includes(searchString) ||
+      league?.description?.includes(searchString) ||
+      league?.location?.includes(searchString) ||
+      league?.sport?.includes(searchString);
+  }
+
+  const onClickLeagueEntry = (league) => {
+    history.push(`/league/${league._id}`);
+  }
+
+  const getLeagueResultsComponent = (league) => (
+    <>
+      {league.profilePicture && (
+        <ProfilePictureThumb
+          height="32px"
+          referrerPolicy="no-referrer"
+          src={league.profilePicture}
+          width="32px" />
+      )}
+      <BodyText width="fit-content">
+        {league.name}
+      </BodyText>
+      <DetailsText flexGrow="1" margin="0 0 0 4px" onClick={() => onClickLeagueEntry(league)}>
+        {`${league.location} - ${league.sport}`}
+      </DetailsText>
+    </>
+  );
+
+  const getRightButton = () => (
+    <Button
+      borderRadius="0 8px 8px 0"
+      boxShadow="none"
+      height='46px'
+      label="Create League"
+      margin="0"
+      onClick={() => history.push('/league/new')}
+    />
+  )
   
   return (
     <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" width="100%" padding="0 12px">
@@ -172,9 +222,17 @@ function Home(props) {
           </FlexContainer>
         }
       </FlexContainer>
-      <FlexContainer alignItems="center">
+      <FlexContainer alignItems="center" overflow="visible">
         <PageHeader margin="20px 12px 20px 0">Leagues</PageHeader>
-        <Icon borderRadius="50%" icon="plus" onClick={() => history.push('/league/new')} />
+        <CollapsibleSearchField
+          filterResults={filterLeagueSearchResults}
+          getResultComponent={getLeagueResultsComponent}
+          getRightButton={getRightButton}
+          label="Search leagues..."
+          loading={loadingLeagues}
+          onClick={onClickLeagueEntry}
+          source={leagueData?.getLeagues ?? []}
+        />
       </FlexContainer>
       <FlexContainer justify="start" flexWrap="wrap" width="100%">
         {loadingLeagues ? 

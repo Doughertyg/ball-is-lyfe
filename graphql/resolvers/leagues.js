@@ -6,6 +6,9 @@ const userResolvers = require('./users');
 
 module.exports = {
   Query: {
+    async getLeagues() {
+      return await League.find();
+    },
     async getLeaguesByUser(_, { userID }) {
       try {
         const leagues = await League.find({

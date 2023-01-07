@@ -61,6 +61,7 @@ align-items: ${props => props.alignItems ?? "initial"};
 background-color: ${props => props.backgroundColor ?? 'initial'};
 box-sizing: border-box;
 display: flex;
+flex-grow: ${props => props.grow ?? 'initial'};
 flex-wrap: ${props => props.flexWrap ?? 'initial'};
 height: ${props => props.height ?? 'auto'};
 margin: ${props => props.margin ?? 'initial'};

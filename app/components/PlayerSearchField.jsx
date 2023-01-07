@@ -18,8 +18,6 @@ const ModalContainer = styled.div`
 
 const ModalWrapper = styled.div`
   position: relative;
-  margin: 8px;
-  margin-top: 4px;
   z-index: 1000;
 `;
 
