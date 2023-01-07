@@ -17,6 +17,7 @@ module.exports = gql`
   type GetLeagueByIDReturnType {
     league: League
     isAdmin: Boolean
+    isLeagueMember: Boolean
   }
   type Post {
     id: ID!

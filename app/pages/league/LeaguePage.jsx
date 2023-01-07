@@ -36,6 +36,7 @@ const FETCH_LEAGUE_QUERY = gql`
   query($leagueID: ID!, $userID: ID!) {
     getLeagueByID(leagueID: $leagueID, userID: $userID) {
       isAdmin
+      isLeagueMember
       league {
         _id
         name
@@ -140,6 +141,7 @@ const League = ({match}) => {
     variables: {leagueID: leagueID, userID: user.id}
   });
   const isLeagueAdmin = leagueData?.getLeagueByID?.isAdmin;
+  const isLeagueMemeber = leagueData?.getLeagueByID?.isLeagueMember;
 
   const onSelectPlayer = (player) => {
     if (!selectedPlayers[player.id]) {
@@ -161,15 +163,20 @@ const League = ({match}) => {
         </FlexContainer>
       ) : (
         <>
-          <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}</PageHeader>
-          <FlexContainer alignItems="center" justify="start">
-            <DetailsText>{
-              (leagueData?.getLeagueByID?.league?.location ?? 'League location missing') + ' - ' + (leagueData?.getLeagueByID?.league?.sport ?? 'League sport missing')
-            }</DetailsText>
-            <Icon
-              icon="info"
-              onClick={() => {console.log('league info open!'/* Open league info panel */);}}
-            />
+          <FlexContainer direction="row" justify="space-between">
+            <FlexContainer direction="column">
+              <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}</PageHeader>
+              <FlexContainer alignItems="center" justify="start">
+                <DetailsText>{
+                  (leagueData?.getLeagueByID?.league?.location ?? 'League location missing') + ' - ' + (leagueData?.getLeagueByID?.league?.sport ?? 'League sport missing')
+                }</DetailsText>
+                <Icon
+                  icon="info"
+                  onClick={() => {console.log('league info open!'/* Open league info panel */);}}
+                />
+              </FlexContainer>
+            </FlexContainer>
+            {!isLeagueMemeber && <Button label="Join league" marginTop="8px" onClick={() => {console.log('join league click')}} />}
           </FlexContainer>
           <br />
           <BodyText>
@@ -201,17 +208,20 @@ const League = ({match}) => {
           </FlexContainer>
           )}
           </FlexContainer>
-          <AddPlayerSection
-            excludeLeague
-            isCollapsible
-            isSubmitting={isSubmitting}
-            label="Players"
-            leagueID={leagueID}
-            onClose={() => setSelectedPlayers({})}
-            onSubmit={addPlayersToLeague}
-            onSelectPlayer={onSelectPlayer}
-            selectedPlayers={selectedPlayers}
-            submitLabel="Add players to league"/>
+          <FlexContainer alignItems="center" justify="flex-start" overflow="visible">
+            <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
+            {isLeagueAdmin && (
+              <AddPlayerSection
+                excludeLeague
+                isCollapsible
+                isSubmitting={isSubmitting}
+                leagueID={leagueID}
+                onClose={() => setSelectedPlayers({})}
+                onSubmit={addPlayersToLeague}
+                onSelectPlayer={onSelectPlayer}
+                selectedPlayers={selectedPlayers}
+                submitLabel="Add players to league"/>)}
+          </FlexContainer>
           <FlexContainer justify="flex-start" flexWrap="wrap">
           {leagueData?.getPlayersInLeague?.length > 0 ?
             leagueData.getPlayersInLeague.map((player, idx) => {

@@ -6752,7 +6752,7 @@ var SearchWrapper = styled_components__WEBPACK_IMPORTED_MODULE_12__["default"].d
   var _props$overflow;
   return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : 'hidden';
 });
-var FETCH_LEAGUE_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($leagueID: ID!, $userID: ID!) {\n    getLeagueByID(leagueID: $leagueID, userID: $userID) {\n      isAdmin\n      league {\n        _id\n        name\n        description\n        profilePicture\n        seasons {\n          id\n          name\n          description\n          seasonEnd\n          seasonStart\n        }\n        sport\n        location\n      }\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
+var FETCH_LEAGUE_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($leagueID: ID!, $userID: ID!) {\n    getLeagueByID(leagueID: $leagueID, userID: $userID) {\n      isAdmin\n      isLeagueMember\n      league {\n        _id\n        name\n        description\n        profilePicture\n        seasons {\n          id\n          name\n          description\n          seasonEnd\n          seasonStart\n        }\n        sport\n        location\n      }\n    }\n    getPlayersInLeague(leagueID: $leagueID) {\n      email\n      id\n      name\n      profilePicture\n      username\n    }\n  }\n"])));
 var ADD_PLAYERS_TO_LEAGUE_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addPlayersToLeague(\n    $leagueID: ID!,\n    $playersToAdd: [ID!]\n  ) {\n    addPlayersToLeague(\n      leagueID: $leagueID,\n      playersToAdd: $playersToAdd\n    ) {\n      name\n      _id\n    }\n  }\n"])));
 
 /**
@@ -6788,7 +6788,7 @@ var ADD_PLAYERS_TO_LEAGUE_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_13_
  * 
  */
 var League = function League(_ref) {
-  var _match$params, _leagueData$getLeague, _leagueData$getLeague2, _leagueData$getLeague3, _leagueData$getLeague4, _leagueData$getLeague5, _leagueData$getLeague6, _leagueData$getLeague7, _leagueData$getLeague8, _leagueData$getLeague9, _leagueData$getLeague10, _leagueData$getLeague11, _leagueData$getLeague12, _leagueData$getLeague13, _leagueData$getLeague14, _leagueData$getLeague15, _leagueData$getLeague16, _leagueData$getLeague17, _leagueData$getPlayer;
+  var _match$params, _leagueData$getLeague, _leagueData$getLeague2, _leagueData$getLeague3, _leagueData$getLeague4, _leagueData$getLeague5, _leagueData$getLeague6, _leagueData$getLeague7, _leagueData$getLeague8, _leagueData$getLeague9, _leagueData$getLeague10, _leagueData$getLeague11, _leagueData$getLeague12, _leagueData$getLeague13, _leagueData$getLeague14, _leagueData$getLeague15, _leagueData$getLeague16, _leagueData$getLeague17, _leagueData$getLeague18, _leagueData$getPlayer;
   var match = _ref.match;
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
@@ -6833,6 +6833,7 @@ var League = function League(_ref) {
     leagueData = _useQuery.data,
     error = _useQuery.error;
   var isLeagueAdmin = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague = leagueData.getLeagueByID) === null || _leagueData$getLeague === void 0 ? void 0 : _leagueData$getLeague.isAdmin;
+  var isLeagueMemeber = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague2 = leagueData.getLeagueByID) === null || _leagueData$getLeague2 === void 0 ? void 0 : _leagueData$getLeague2.isLeagueMember;
   var onSelectPlayer = function onSelectPlayer(player) {
     if (!selectedPlayers[player.id]) {
       var newPlayersMap = _objectSpread({}, selectedPlayers);
@@ -6854,17 +6855,28 @@ var League = function League(_ref) {
     height: "45px",
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    direction: "row",
+    justify: "space-between"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    direction: "column"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
     margin: "20px 0 0 0"
-  }, (_leagueData$getLeague2 = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague3 = leagueData.getLeagueByID) === null || _leagueData$getLeague3 === void 0 ? void 0 : (_leagueData$getLeague4 = _leagueData$getLeague3.league) === null || _leagueData$getLeague4 === void 0 ? void 0 : _leagueData$getLeague4.name) !== null && _leagueData$getLeague2 !== void 0 ? _leagueData$getLeague2 : 'League name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+  }, (_leagueData$getLeague3 = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague4 = leagueData.getLeagueByID) === null || _leagueData$getLeague4 === void 0 ? void 0 : (_leagueData$getLeague5 = _leagueData$getLeague4.league) === null || _leagueData$getLeague5 === void 0 ? void 0 : _leagueData$getLeague5.name) !== null && _leagueData$getLeague3 !== void 0 ? _leagueData$getLeague3 : 'League name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
     justify: "start"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, ((_leagueData$getLeague5 = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague6 = leagueData.getLeagueByID) === null || _leagueData$getLeague6 === void 0 ? void 0 : (_leagueData$getLeague7 = _leagueData$getLeague6.league) === null || _leagueData$getLeague7 === void 0 ? void 0 : _leagueData$getLeague7.location) !== null && _leagueData$getLeague5 !== void 0 ? _leagueData$getLeague5 : 'League location missing') + ' - ' + ((_leagueData$getLeague8 = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague9 = leagueData.getLeagueByID) === null || _leagueData$getLeague9 === void 0 ? void 0 : (_leagueData$getLeague10 = _leagueData$getLeague9.league) === null || _leagueData$getLeague10 === void 0 ? void 0 : _leagueData$getLeague10.sport) !== null && _leagueData$getLeague8 !== void 0 ? _leagueData$getLeague8 : 'League sport missing')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, ((_leagueData$getLeague6 = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague7 = leagueData.getLeagueByID) === null || _leagueData$getLeague7 === void 0 ? void 0 : (_leagueData$getLeague8 = _leagueData$getLeague7.league) === null || _leagueData$getLeague8 === void 0 ? void 0 : _leagueData$getLeague8.location) !== null && _leagueData$getLeague6 !== void 0 ? _leagueData$getLeague6 : 'League location missing') + ' - ' + ((_leagueData$getLeague9 = leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague10 = leagueData.getLeagueByID) === null || _leagueData$getLeague10 === void 0 ? void 0 : (_leagueData$getLeague11 = _leagueData$getLeague10.league) === null || _leagueData$getLeague11 === void 0 ? void 0 : _leagueData$getLeague11.sport) !== null && _leagueData$getLeague9 !== void 0 ? _leagueData$getLeague9 : 'League sport missing')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     icon: "info",
     onClick: function onClick() {
       console.log('league info open!' /* Open league info panel */);
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, null, leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague11 = leagueData.getLeagueByID) === null || _leagueData$getLeague11 === void 0 ? void 0 : (_leagueData$getLeague12 = _leagueData$getLeague11.league) === null || _leagueData$getLeague12 === void 0 ? void 0 : _leagueData$getLeague12.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
+  }))), !isLeagueMemeber && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    label: "Join league",
+    marginTop: "8px",
+    onClick: function onClick() {
+      console.log('join league click');
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, null, leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague12 = leagueData.getLeagueByID) === null || _leagueData$getLeague12 === void 0 ? void 0 : (_leagueData$getLeague13 = _leagueData$getLeague12.league) === null || _leagueData$getLeague13 === void 0 ? void 0 : _leagueData$getLeague13.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
     marginBottom: "12px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
@@ -6881,7 +6893,7 @@ var League = function League(_ref) {
     justify: "flex-start",
     overFlow: "scroll",
     width: "100%"
-  }, (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague13 = leagueData.getLeagueByID) === null || _leagueData$getLeague13 === void 0 ? void 0 : (_leagueData$getLeague14 = _leagueData$getLeague13.league) === null || _leagueData$getLeague14 === void 0 ? void 0 : _leagueData$getLeague14.seasons.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague15 = leagueData.getLeagueByID) === null || _leagueData$getLeague15 === void 0 ? void 0 : (_leagueData$getLeague16 = _leagueData$getLeague15.league) === null || _leagueData$getLeague16 === void 0 ? void 0 : (_leagueData$getLeague17 = _leagueData$getLeague16.seasons) === null || _leagueData$getLeague17 === void 0 ? void 0 : _leagueData$getLeague17.map(function (season, idx) {
+  }, (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague14 = leagueData.getLeagueByID) === null || _leagueData$getLeague14 === void 0 ? void 0 : (_leagueData$getLeague15 = _leagueData$getLeague14.league) === null || _leagueData$getLeague15 === void 0 ? void 0 : _leagueData$getLeague15.seasons.length) > 0 ? leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getLeague16 = leagueData.getLeagueByID) === null || _leagueData$getLeague16 === void 0 ? void 0 : (_leagueData$getLeague17 = _leagueData$getLeague16.league) === null || _leagueData$getLeague17 === void 0 ? void 0 : (_leagueData$getLeague18 = _leagueData$getLeague17.seasons) === null || _leagueData$getLeague18 === void 0 ? void 0 : _leagueData$getLeague18.map(function (season, idx) {
     var start = dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season === null || season === void 0 ? void 0 : season.seasonStart).format('MMM YYYY');
     var end = dayjs__WEBPACK_IMPORTED_MODULE_6___default()(season === null || season === void 0 ? void 0 : season.seasonEnd).format('MMM YYYY');
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Card_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -6897,11 +6909,16 @@ var League = function League(_ref) {
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No Seasons"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddPlayerSection_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No Seasons"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    alignItems: "center",
+    justify: "flex-start",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
+    margin: "20px 12px 20px 0"
+  }, "Players"), isLeagueAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddPlayerSection_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
     excludeLeague: true,
     isCollapsible: true,
     isSubmitting: isSubmitting,
-    label: "Players",
     leagueID: leagueID,
     onClose: function onClose() {
       return setSelectedPlayers({});
@@ -6910,7 +6927,7 @@ var League = function League(_ref) {
     onSelectPlayer: onSelectPlayer,
     selectedPlayers: selectedPlayers,
     submitLabel: "Add players to league"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     flexWrap: "wrap"
   }, (leagueData === null || leagueData === void 0 ? void 0 : (_leagueData$getPlayer = leagueData.getPlayersInLeague) === null || _leagueData$getPlayer === void 0 ? void 0 : _leagueData$getPlayer.length) > 0 ? leagueData.getPlayersInLeague.map(function (player, idx) {
