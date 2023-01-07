@@ -5157,7 +5157,7 @@ var NameWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(
   return (_props$lineClamp = props.lineClamp) !== null && _props$lineClamp !== void 0 ? _props$lineClamp : '2';
 });
 var PictureWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  display: flex;\n  justify-content: center;\n  width: 100%;\n"])));
-var PositionWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  position: relative;\n  width: 165px;\n"])));
+var PositionWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  height: 200px;\n  position: relative;\n  width: 165px;\n"])));
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  width: 165px;\n  &:hover {\n    z-index: 1000;\n    position: absolute;\n    width: auto;\n  }\n"])));
 function PlayerCard(_ref) {
   var email = _ref.email,

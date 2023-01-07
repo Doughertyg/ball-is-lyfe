@@ -25,6 +25,7 @@ const PictureWrapper = styled.div`
 `;
 
 const PositionWrapper = styled.div`
+  height: 200px;
   position: relative;
   width: 165px;
 `;
