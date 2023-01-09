@@ -23,11 +23,13 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getSeasonByID(_, { seasonID }) {
+    async getSeasonByID(_, { seasonID, userID }) {
+      console.log('in getSeasonByID query!!!!!!!!!');
       try {
-        const season = Season.findById(seasonID);
+        const season = await Season.findById(seasonID).populate('league');
+        const isLeagueAdmin = season?.league?.admins?.includes(userID) ?? false;
         if (season) {
-          return season;
+          return { season, isLeagueAdmin };
         } else {
           throw new Error('Season not found');
         }

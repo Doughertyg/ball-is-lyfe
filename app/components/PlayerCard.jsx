@@ -60,7 +60,7 @@ function PlayerCard({email, margin, onClick, name, picture, username}) {
             <CardContentWrapper height="100%">
               {picture != null ? (
                 <PictureWrapper>
-                  <ProfilePictureThumb borderRadius="4px" height="65px" src={picture} width="65px" />
+                  <ProfilePictureThumb borderRadius="4px" height="65px" referrerPolicy='no-referrer' src={picture} width="65px" />
                 </PictureWrapper>) :
                 (
                   <PictureWrapper>

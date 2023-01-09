@@ -130,6 +130,7 @@ export const ProfilePictureThumb = styled.img`
   height: ${props => props.height ?? "32px"};
   margin: ${props => props.margin ?? "4px"};
   width: ${props => props.width ?? "32px"};
+  referrerPolicy: no-referrer;
 `;
 
 export const EmptyProfilePicture = styled.div`

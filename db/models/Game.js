@@ -4,18 +4,18 @@ const gameSchema = new Schema({
   date: String,
   homeTeam: {
     type: Schema.Types.ObjectId,
-    ref: 'teamInstance'
+    ref: 'TeamInstance'
   },
   homeScore: Number,
   awayScore: Number,
   awayTeam: {
     type: Schema.Types.ObjectId,
-    ref: 'teamInstance'
+    ref: 'TeamInstance'
   },
   createdAt: String,
   season: {
     type: Schema.Types.ObjectId,
-    ref: 'season'
+    ref: 'Season'
   },
 });
 

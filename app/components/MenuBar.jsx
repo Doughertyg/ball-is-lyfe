@@ -49,7 +49,7 @@ function MenuBar({ match }) {
                   <>
                     <Offset />
                     <NavLink to="/">
-                      <img height={310} src="./logo.jpeg" />
+                      <img referrerPolicy="no-referrer" height={310} src="./logo.jpeg" />
                     </NavLink>
                   </>)}
               </FlexContainer>
@@ -81,7 +81,7 @@ function MenuBar({ match }) {
                 <FlexContainer alignItems="center" height="43px" overFlow="hidden">
                   <Offset />
                   <NavLink to="/">
-                    <img height={310} src="./logo.jpeg" />
+                    <img referrerPolicy="no-referrer" height={310} src="./logo.jpeg" />
                   </NavLink>
                 </FlexContainer>
               </FlexComponent>

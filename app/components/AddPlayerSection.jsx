@@ -69,8 +69,8 @@ const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, l
                   <FlexContainer alignItems="center" justify="space-between">
                     {player.profilePicture && (
                       <ProfilePictureThumb
-                        height="32px"
                         referrerPolicy="no-referrer"
+                        height="32px"
                         src={player.profilePicture}
                         width="32px" />
                     )}

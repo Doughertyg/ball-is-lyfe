@@ -9,11 +9,11 @@ const teamSchema = new Schema({
   sport: String,
   admins: [{
       type: Schema.Types.ObjectId,
-      ref: 'users'
+      ref: 'User'
   }],
   players: [{
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: 'User'
   }]
 });
 
