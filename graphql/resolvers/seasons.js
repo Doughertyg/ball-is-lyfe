@@ -3,6 +3,7 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 const Season = require('../../db/models/Season');
 const League = require('../../db/models/League');
 const authenticate = require('../../util/authenticate');
+const userResolvers = require('./users');
 
 module.exports = {
   Query: {
@@ -40,8 +41,16 @@ module.exports = {
   },
   Mutation: {
     async createSeason(_, { seasonInput }, context) {
-      console.log('season input:::::::::::: ', seasonInput);
-      const user = authenticate(context);
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
 
       const newSeason = new Season({
         ...seasonInput,
