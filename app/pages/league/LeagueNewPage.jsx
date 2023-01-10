@@ -141,7 +141,7 @@ export default function LeagueNewPage() {
     <FlexContainer direction="column" height="100%" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px" width="100%">
       <PageHeader margin="20px auto">New League</PageHeader>
       <Divider />
-      <FlexContainer direction="column" height="100%" justify="flex-start">
+      <FlexContainer direction="column" height="100%" justify="flex-start" padding="0 8px">
         <SectionHeadingText margin="24px 0 8px 0">Name</SectionHeadingText>
         <InputField errors={errors.name ?? null} onChange={setters.setName} width="100%" value={inputs.name} />
         <SectionHeadingText margin="24px 0 8px 0">Description</SectionHeadingText>

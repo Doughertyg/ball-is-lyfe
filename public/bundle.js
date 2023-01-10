@@ -6726,7 +6726,8 @@ function LeagueNewPage() {
   }, "New League"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
     height: "100%",
-    justify: "flex-start"
+    justify: "flex-start",
+    padding: "0 8px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
     margin: "24px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -7831,6 +7832,7 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
     direction: "column",
     height: "100%",
     justify: "flex-start",
+    padding: "0 8px",
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
     margin: "24px 0 8px 0"

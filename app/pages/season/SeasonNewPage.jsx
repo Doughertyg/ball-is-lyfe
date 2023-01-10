@@ -140,7 +140,7 @@ const SeasonNewPage = ({ match }) => {
         <PageHeader margin="20px auto">New Season</PageHeader>
         <Divider width="100%" />
         <ScrollableContainer border="none" borderRadius="0" height="100%" maxHeight="none">
-          <FlexContainer direction="column" height="100%" justify="flex-start" width="100%">
+          <FlexContainer direction="column" height="100%" justify="flex-start" padding="0 8px" width="100%">
             <SectionHeadingText margin="24px 0 8px 0">Name</SectionHeadingText>
             <InputField errors={errors.name ?? null} name="name" onChange={setters.setName} width="100%" value={inputs.name} />
             <SectionHeadingText margin="24px 0 8px 0">Description</SectionHeadingText>
