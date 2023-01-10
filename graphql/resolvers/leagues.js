@@ -69,9 +69,10 @@ module.exports = {
 
           if (league.players != null) {
             league.players.push(playerID);
-            league.save();
           }
-        })
+        });
+
+        await league.save();
       } catch (err) {
         throw new Error(err);
       }
