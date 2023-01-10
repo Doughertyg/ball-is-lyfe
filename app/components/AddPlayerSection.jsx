@@ -60,7 +60,7 @@ const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, l
       </FlexContainer>
       {Object.keys(selectedPlayers).length > 0 && (
         <>
-          <FlexContainer flexWrap="wrap" justify="start" shrink="0">
+          <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
             {Object.values(selectedPlayers).map((player, idx) => (
                 <CardWrapper
                   boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
@@ -85,7 +85,7 @@ const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, l
                 </CardWrapper>
             ))}
           </FlexContainer>
-          {onSubmit && onClose && (<FlexContainer marginTop="12px">
+          {onSubmit && onClose && (<FlexContainer marginTop="12px" width="100%">
             <Button isDisabled={isSubmitting} label="Cancel" onClick={toggleSearchBar} />
             <Button isLoading={isSubmitting} label={submitLabel} onClick={() => onSubmit()} />
           </FlexContainer>)}

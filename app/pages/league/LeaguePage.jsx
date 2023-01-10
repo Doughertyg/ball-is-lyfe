@@ -208,7 +208,7 @@ const League = ({match}) => {
           </FlexContainer>
           )}
           </FlexContainer>
-          <FlexContainer alignItems="center" justify="flex-start" overflow="visible">
+          <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
             {isLeagueAdmin && (
               <AddPlayerSection

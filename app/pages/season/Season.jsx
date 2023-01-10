@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import Icon from '../../components/Icon.jsx';
 import { AuthContext } from '../../context/auth';
 import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../../styled-components/common';
@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import dayjs from 'dayjs';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
-import { formatApolloErrors } from 'apollo-server-errors';
+import AddGamesComponent from '../../components/AddGamesComponent.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -56,6 +56,7 @@ const FETCH_SEASON_QUERY = gql`
  * 
  */
 const Season = ({match}) => {
+  const [addGamesExpanded, setAddGamesExpanded] = useState(false);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -132,9 +133,10 @@ const Season = ({match}) => {
             </FlexContainer>
             )}
           </FlexContainer>
-          <FlexContainer alignItems="center" justify="start">
+          <FlexContainer alignItems="center" justify="start" overFlow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Upcoming Games</SectionHeadingText>
-            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => console.log('add games click!!')} />}
+            {addGamesExpanded && <AddGamesComponent />}
+            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setAddGamesExpanded(!addGamesExpanded)} />}
           </FlexContainer>
           <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
             {upcomingGames.length > 0 ?
