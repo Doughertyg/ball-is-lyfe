@@ -91,11 +91,17 @@ module.exports = {
         throw new AuthenticationError('User not authenticated');
       }
 
+      const players = leagueInput?.players ?? [];
+
+      if (!players.includes((user.id).toString())) {
+        players.push(user.id);
+      }
+
       const newLeague = new League({
         ...leagueInput,
         createdAt: new Date().toDateString(),
         admins: [user.id],
-        players: [user.id],
+        players,
         seasons: []
       });
 

@@ -6036,7 +6036,7 @@ function useNewLeagueFormHook() {
     _useState12 = _slicedToArray(_useState11, 2),
     bannerPicture = _useState12[0],
     setBannerPicture = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
     _useState14 = _slicedToArray(_useState13, 2),
     players = _useState14[0],
     setPlayers = _useState14[1];
@@ -6618,7 +6618,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 var RowWrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  padding: 8px;\n"])));
-var CREATE_LEAGUE = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createLeague(\n    $name: String!\n    $description: String!\n    $location: String!\n    $sport: String!\n    $profilePicture: String!\n    $bannerPicture: String!\n  ) {\n    createLeague(\n      leagueInput: {\n        name: $name\n        description: $description\n        location: $location\n        sport: $sport\n        profilePicture: $profilePicture\n        bannerPicture: $bannerPicture\n      }\n    ) {\n      _id\n      name\n      description\n      sport\n      createdAt\n    }\n  }\n"])));
+var CREATE_LEAGUE = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createLeague(\n    $name: String!\n    $description: String!\n    $location: String!\n    $sport: String!\n    $profilePicture: String!\n    $players: [ID]\n    $bannerPicture: String!\n  ) {\n    createLeague(\n      leagueInput: {\n        name: $name\n        description: $description\n        location: $location\n        sport: $sport\n        players: $players\n        profilePicture: $profilePicture\n        bannerPicture: $bannerPicture\n      }\n    ) {\n      _id\n      name\n      description\n      sport\n      createdAt\n    }\n  }\n"])));
 
 /**
  * Create league page for creating a new league
@@ -6649,7 +6649,7 @@ var CREATE_LEAGUE = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_tem
  *      `-----------------------------------"
  */
 function LeagueNewPage() {
-  var _Object$keys, _inputs$profilePictur, _inputs$bannerPicture, _errors$name, _errors$description, _errors$sport, _errors$location;
+  var _errors$name, _errors$description, _errors$sport, _errors$location;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
     _useState2 = _slicedToArray(_useState, 2),
     errors = _useState2[0],
@@ -6678,15 +6678,6 @@ function LeagueNewPage() {
       update: function update(proxy, _ref) {
         var userData = _ref.data.newLeague;
         console.log('results: ', userData);
-      },
-      variables: {
-        name: inputs.name,
-        description: inputs.description,
-        location: inputs.location,
-        sport: inputs.sport,
-        players: (_Object$keys = Object.keys(players)) !== null && _Object$keys !== void 0 ? _Object$keys : [],
-        profilePicture: (_inputs$profilePictur = inputs.profilePicture) !== null && _inputs$profilePictur !== void 0 ? _inputs$profilePictur : '',
-        bannerPicture: (_inputs$bannerPicture = inputs.bannerPicture) !== null && _inputs$bannerPicture !== void 0 ? _inputs$bannerPicture : ''
       }
     }),
     _useMutation2 = _slicedToArray(_useMutation, 2),
@@ -6696,8 +6687,19 @@ function LeagueNewPage() {
     var errors = validate();
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      console.log('no errors! mutation submitted');
-      createLeague();
+      var _Object$keys, _inputs$profilePictur, _inputs$bannerPicture;
+      var input = {
+        variables: {
+          name: inputs.name,
+          description: inputs.description,
+          location: inputs.location,
+          sport: inputs.sport,
+          players: (_Object$keys = Object.keys(players)) !== null && _Object$keys !== void 0 ? _Object$keys : [],
+          profilePicture: (_inputs$profilePictur = inputs.profilePicture) !== null && _inputs$profilePictur !== void 0 ? _inputs$profilePictur : '',
+          bannerPicture: (_inputs$bannerPicture = inputs.bannerPicture) !== null && _inputs$bannerPicture !== void 0 ? _inputs$bannerPicture : ''
+        }
+      };
+      createLeague(input);
     }
   };
   var onSelectPlayer = function onSelectPlayer(player) {

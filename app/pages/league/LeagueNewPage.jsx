@@ -31,6 +31,7 @@ const CREATE_LEAGUE = gql`
     $location: String!
     $sport: String!
     $profilePicture: String!
+    $players: [ID]
     $bannerPicture: String!
   ) {
     createLeague(
@@ -39,6 +40,7 @@ const CREATE_LEAGUE = gql`
         description: $description
         location: $location
         sport: $sport
+        players: $players
         profilePicture: $profilePicture
         bannerPicture: $bannerPicture
       }
@@ -99,15 +101,6 @@ export default function LeagueNewPage() {
     },
     update(proxy, { data: { newLeague: userData }}) {
       console.log('results: ', userData);
-    },
-    variables: {
-      name: inputs.name,
-      description: inputs.description,
-      location: inputs.location,
-      sport: inputs.sport,
-      players: Object.keys(players) ?? [],
-      profilePicture: inputs.profilePicture ?? '',
-      bannerPicture: inputs.bannerPicture ?? '',
     }
   })
 
@@ -117,8 +110,18 @@ export default function LeagueNewPage() {
     
 
     if (Object.keys(errors).length === 0) {
-      console.log('no errors! mutation submitted');
-      createLeague();
+      const input = {
+        variables: {
+          name: inputs.name,
+          description: inputs.description,
+          location: inputs.location,
+          sport: inputs.sport,
+          players: Object.keys(players) ?? [],
+          profilePicture: inputs.profilePicture ?? '',
+          bannerPicture: inputs.bannerPicture ?? '',
+        }
+      };
+      createLeague(input);
     }
   }
 

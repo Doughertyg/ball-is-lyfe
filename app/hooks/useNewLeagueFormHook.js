@@ -9,7 +9,7 @@ export default function useNewLeagueFormHook() {
   const [sport, setSport] = useState(''); // consider changing this to a db-backed object
   const [profilePicture, setProfilePicture] = useState('');
   const [bannerPicture, setBannerPicture] = useState('');
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState({});
 
   const validate = () => {
     // validate inputs here
