@@ -56,7 +56,7 @@ const CollapsibleSearchField = ({
 
   return (
     <>
-      <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
+      <FlexContainer alignItems="center" justify="flex-start" overflow="visible">
         <SearchWrapper width={expanded ? '400px' : '0'} overflow={expanded ? 'initial' : 'hidden'}>
           <SearchField
             borderRadius={getRightButton != null ? "8px 0 0 8px" : null}

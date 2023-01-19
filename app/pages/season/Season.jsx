@@ -1,13 +1,15 @@
 import React, {useContext, useMemo, useState} from 'react';
 import Icon from '../../components/Icon.jsx';
 import { AuthContext } from '../../context/auth';
-import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../../styled-components/common';
+import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, ProfilePictureThumb, SectionHeadingText } from '../../styled-components/common';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import dayjs from 'dayjs';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';
+import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
+import Button from '../../components/Button.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -22,6 +24,18 @@ const FETCH_SEASON_QUERY = gql`
         seasonEnd
       }
       isLeagueAdmin
+    }
+  }
+`;
+
+const FETCH_TEAMS_QUERY = gql`
+  query {
+    getTeams {
+      name
+      captaim {
+        name
+      }
+      profilePicture
     }
   }
 `;
@@ -57,6 +71,7 @@ const FETCH_SEASON_QUERY = gql`
  */
 const Season = ({match}) => {
   const [addGamesExpanded, setAddGamesExpanded] = useState(false);
+  const [teamsToAdd, setTeamsToAdd] = useState({});
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -73,6 +88,8 @@ const Season = ({match}) => {
   });
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
 
+  const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
+
   const recentGames = useMemo(() => {
     return seasonData?.getSeasonByID?.season?.games?.filter(game => {
       return dayjs().isSame(game.date) || (dayjs().isAfter(game.date) && dayjs().subtract(1, 'week').isBefore(game.date));
@@ -84,6 +101,57 @@ const Season = ({match}) => {
       return dayjs().isBefore(game.date) && dayjs().add(1, 'week').isAfter(game.date);
     }) ?? [];
   }, [seasonData?.getSeasonByID?.season?.games]);
+
+  const filterTeamSearchResults = (team, searchString) => {
+    return team?.name?.includes(searchString);
+  }
+
+  const onClickTeamEntry = (team) => {
+    const teamsToAddMap = {...teamsToAdd};
+
+    if (teamsToAddMap[team.id]) {
+      delete teamsToAddMap[team.id];
+    } else {
+      teamsToAddMap[team.id] = team;
+    }
+    
+    setTeamsToAdd(teamsToAddMap);
+  }
+
+  const getTeamResultsComponent = (team) => (
+    <>
+      {team.profilePicture && (
+        <ProfilePictureThumb
+          height="32px"
+          referrerPolicy="no-referrer"
+          src={team.profilePicture}
+          width="32px" />
+      )}
+      <BodyText width="fit-content">
+        {team.name}
+      </BodyText>
+      <DetailsText flexGrow="1" margin="0 0 0 4px" onClick={() => onClickTeamEntry(team)}>
+        {`Captain: ${team?.captain?.name}`}
+      </DetailsText>
+      {teamsToAdd[team.id] ? (
+        <Icon icon="checkFilled" />
+      ) :
+      (
+        <Icon icon="circle" />
+      )}
+    </>
+  );
+
+  const getCreateTeamButton = () => (
+    <Button
+      borderRadius="0 8px 8px 0"
+      boxShadow="none"
+      height='46px'
+      label="Create League"
+      margin="0"
+      onClick={() => history.push('/team/new')}
+    />
+  );
 
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
@@ -158,11 +226,22 @@ const Season = ({match}) => {
             )}
           </FlexContainer>
           <Divider />
+          <FlexContainer alignItems="center" justify="start" overflow="visible">
+            <SectionHeadingText margin="20px 12px 20px 0">Teams</SectionHeadingText>
+            <CollapsibleSearchField
+              filterResults={filterTeamSearchResults}
+              getResultComponent={getTeamResultsComponent}
+              getRightButton={getCreateTeamButton}
+              label="Search teams..."
+              loading={loadingTeams}
+              onClick={onClickTeamEntry}
+              source={teamData?.getTeams ?? []}
+            />
+          </FlexContainer>
+          <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Stat Leaders</SectionHeadingText>
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Standings</SectionHeadingText>
-          <Divider />
-          <SectionHeadingText margin="20px 12px 20px 0">Teams</SectionHeadingText>
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
         </>

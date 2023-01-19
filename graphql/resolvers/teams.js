@@ -25,6 +25,14 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+    async getTeams() {
+      try {
+        const teams = await Team.find().populate('captain').exec();
+        return teams ?? [];
+      } catch (err) {
+        throw new Error(err);
+      }
     }
   },
   Mutation: {
