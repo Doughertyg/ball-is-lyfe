@@ -3,6 +3,7 @@ const { gql } = require('graphql-tag');
 module.exports = gql`
   type Query {
     getAllPlayers: [User]
+    getCaptains(seasonID: ID!): [User]
     getPosts: [Post]
     getPost(postId: ID!): Post
     getLeagues: [League]
@@ -55,6 +56,7 @@ module.exports = gql`
   type Season {
     id: ID!
     admin: [User]!
+    captains: [User]!
     createdAt: String!
     games: [Game]
     name: String!

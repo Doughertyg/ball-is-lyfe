@@ -109,7 +109,7 @@ export default function SearchField({
                             width="32px" />
                         )}
                         <BodyText width="fit-content">
-                          {entry.name ?? 'Name missing'}
+                          {entry.name ?? entry.username ?? 'Name missing'}
                         </BodyText>
                         <DetailsText flexGrow="1" margin="0 0 0 4px">
                           {entry.description}

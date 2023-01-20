@@ -21,6 +21,7 @@ import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import useNewSeasonFormHook from '../../hooks/useNewSeasonFormHook';
 import styled from 'styled-components';
 import { CardWrapper } from '../../styled-components/card.js';
+import SearchField from '../../components/SearchField.jsx';
 
 const Wrapper = styled.div`
   height: auto;
@@ -82,6 +83,7 @@ const CREATE_SEASON = gql`
  */
 const SeasonNewPage = ({ match }) => {
   const [errors, setErrors] = useState({});
+  const [captains, setCaptains] = useState({});
   const { user } = useContext(AuthContext);
   const history = useHistory();
   const leagueID = match.params?.leagueID;
@@ -131,9 +133,30 @@ const SeasonNewPage = ({ match }) => {
       const newPlayersMap = {...players};
       delete newPlayersMap[player.id];      
       setPlayers(newPlayersMap);
+      
+      if (captains[player.id]) {
+        const newCaptains = {...captains};
+        delete newCaptains[player.id];
+        setCaptains(newCaptains);
+      }
     }
   }
 
+  const onSelectCaptains = (player) => {
+    if (!captains[player.id]) {
+      const newCaptainsMap = {...captains};
+      newCaptainsMap[player.id] = player;
+      setCaptains(newCaptainsMap);
+    } else {
+      const newCaptainsMap = {...captains};
+      delete newCaptainsMap[player.id];
+      setCaptains(newCaptainsMap);
+    }
+  }
+
+  const filterCaptainResults = (player, input) => {
+    return player?.name?.includes(input) || player?.email?.includes(input) || player?.username?.includes(input);
+  }
 
   return (
       <FlexContainer direction="column" height="100%" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px 0 12px" width="100%">
@@ -156,6 +179,34 @@ const SeasonNewPage = ({ match }) => {
               onClose={() => setPlayers({})}
               onSelectPlayer={onSelectPlayer}
               selectedPlayers={players}/>
+            <SectionHeadingText margin="24px 0 8px 0">Captains</SectionHeadingText>
+            <DetailsText>Select players to be team captains</DetailsText>
+            <SearchField filterResults={filterCaptainResults} label="Select a captain..." onClick={onSelectCaptains} selected={captains} source={Object.values(players) ?? []} />
+            <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
+              {Object.values(captains).map((player, idx) => (
+                  <CardWrapper
+                    boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
+                    key={player.id ?? idx}
+                    margin='4px 4px 0 0'>
+                    <FlexContainer alignItems="center" justify="space-between">
+                      {player.profilePicture && (
+                        <ProfilePictureThumb
+                          referrerPolicy="no-referrer"
+                          height="32px"
+                          src={player.profilePicture}
+                          width="32px" />
+                      )}
+                      <FlexContainer direction="column">
+                        <BodyText marginBottom="4px">
+                          {player.name ?? player.username}
+                        </BodyText>
+                        <DetailsText>{player.email}</DetailsText>
+                      </FlexContainer>
+                      <Icon icon="close" onClick={() => onSelectCaptains(player)} />
+                    </FlexContainer>
+                  </CardWrapper>
+              ))}
+            </FlexContainer>
             <Divider marginTop="32px" width="100%" />
             <FlexContainer shrink="0" marginTop="32px">
               <Button isDisabled={isSubmitting} isLoading={isSubmitting} label="Cancel" onClick={() => {history.goBack()}} />

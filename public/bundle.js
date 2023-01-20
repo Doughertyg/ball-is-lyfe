@@ -4704,13 +4704,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-var _templateObject;
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+/* harmony import */ var _PlayerSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PlayerSearchField.jsx */ "./app/components/PlayerSearchField.jsx");
+/* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
+var _templateObject, _templateObject2;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(155, 140, 140, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+
+
+
+
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+var PLAYER_CAPTAIN_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getCaptains(seasonID: $seasonID) {\n      name\n      profilePicture\n      id\n    }\n  }\n"])));
 
 /**
  * Component for creating a team
@@ -4734,8 +4753,67 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div(_tem
  *  `---------------------------------------------------------`
  * 
  */
-var CreatetTeamComponent = function CreatetTeamComponent() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, "Create Team component");
+var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
+  var seasonID = _ref.seasonID;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState2 = _slicedToArray(_useState, 2),
+    name = _useState2[0],
+    setName = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState4 = _slicedToArray(_useState3, 2),
+    players = _useState4[0],
+    setPlayers = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState6 = _slicedToArray(_useState5, 2),
+    captain = _useState6[0],
+    setCaptain = _useState6[1];
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__.useQuery)(PLAYER_CAPTAIN_QUERY, {
+      variables: {
+        seasonID: seasonID
+      }
+    }),
+    loadingCaptains = _useQuery.loading,
+    captains = _useQuery.data,
+    error = _useQuery.error;
+  console.log(loadingCaptains, captains, error);
+  var filterCaptainResults = function filterCaptainResults(entry, input) {
+    var _entry$name;
+    return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.includes(input);
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    height: "100%",
+    justify: "flex-start",
+    padding: "0 8px",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
+    margin: "0px"
+  }, "Create team"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+    width: "100%"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    errors: name == null ? 'Name cannot be blank.' : null,
+    name: "name",
+    onChange: function onChange(input) {
+      return setName(input);
+    },
+    placeholder: "Create sick team name...",
+    width: "100%",
+    value: name
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Captain"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    marginBottom: "4px"
+  }, "Please select a captain (they will also be added as a player) "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    filterResults: filterCaptainResults,
+    label: "Select a captain...",
+    loading: loadingCaptains,
+    onClick: function onClick(player) {
+      return setCaptain(player);
+    },
+    source: captains !== null && captains !== void 0 ? captains : []
+  })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreatetTeamComponent);
 
@@ -5819,7 +5897,7 @@ function SearchField(_ref) {
       return setResultsOpen(false);
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, results === null || results === void 0 ? void 0 : results.map(function (entry, idx) {
-    var _entry$name, _entry$id;
+    var _ref2, _entry$name, _entry$id;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Clickable, {
       key: idx,
       onClick: function onClick() {
@@ -5837,7 +5915,7 @@ function SearchField(_ref) {
       width: "32px"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.BodyText, {
       width: "fit-content"
-    }, (_entry$name = entry.name) !== null && _entry$name !== void 0 ? _entry$name : 'Name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
+    }, (_ref2 = (_entry$name = entry.name) !== null && _entry$name !== void 0 ? _entry$name : entry.username) !== null && _ref2 !== void 0 ? _ref2 : 'Name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
       flexGrow: "1",
       margin: "0 0 0 4px"
     }, entry.description)), selected != null && (selected[(_entry$id = entry.id) !== null && _entry$id !== void 0 ? _entry$id : entry] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -7796,7 +7874,9 @@ var Season = function Season(_ref) {
       return setCreateTeamExpanded(false);
     },
     source: (_teamData$getTeams = teamData === null || teamData === void 0 ? void 0 : teamData.getTeams) !== null && _teamData$getTeams !== void 0 ? _teamData$getTeams : []
-  })), createTeamExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CreateTeamComponent_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], null), Object.keys(teamsToAdd).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+  })), createTeamExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CreateTeamComponent_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    seasonID: seasonID
+  }), Object.keys(teamsToAdd).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     flexWrap: "wrap",
     justify: "start",
     overflow: "initial",
@@ -7866,18 +7946,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _components_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/InputField.jsx */ "./app/components/InputField.jsx");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @apollo/client */ "./node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @apollo/client */ "./node_modules/@apollo/client/react/hooks/useMutation.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _components_Icon_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Icon.jsx */ "./app/components/Icon.jsx");
 /* harmony import */ var _components_Button_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Button.jsx */ "./app/components/Button.jsx");
 /* harmony import */ var _components_PlayerSearchField_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/PlayerSearchField.jsx */ "./app/components/PlayerSearchField.jsx");
 /* harmony import */ var _components_AddPlayerSection_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/AddPlayerSection.jsx */ "./app/components/AddPlayerSection.jsx");
 /* harmony import */ var _hooks_useNewSeasonFormHook__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hooks/useNewSeasonFormHook */ "./app/hooks/useNewSeasonFormHook.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../styled-components/card.js */ "./app/styled-components/card.js");
+/* harmony import */ var _components_SearchField_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/SearchField.jsx */ "./app/components/SearchField.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -7906,9 +7987,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_10__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: auto;\n"])));
-var RowWrapper = styled_components__WEBPACK_IMPORTED_MODULE_10__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  padding: 8px;\n"])));
-var CREATE_SEASON = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createSeason(\n    $name: String!\n    $description: String!\n    $end: String!\n    $league: ID!\n    $players: [ID]!\n    $start: String!\n  ) {\n    createSeason(\n      seasonInput: {\n        name: $name\n        description: $description\n        seasonEnd: $end\n        league: $league\n        players: $players\n        seasonStart: $start\n      }\n    ) {\n      name\n    }\n  }\n"])));
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_11__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  height: auto;\n"])));
+var RowWrapper = styled_components__WEBPACK_IMPORTED_MODULE_11__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  padding: 8px;\n"])));
+var CREATE_SEASON = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createSeason(\n    $name: String!\n    $description: String!\n    $end: String!\n    $league: ID!\n    $players: [ID]!\n    $start: String!\n  ) {\n    createSeason(\n      seasonInput: {\n        name: $name\n        description: $description\n        seasonEnd: $end\n        league: $league\n        players: $players\n        seasonStart: $start\n      }\n    ) {\n      name\n    }\n  }\n"])));
 
 /**
  * Page for creating a new season
@@ -7937,15 +8019,19 @@ var CREATE_SEASON = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_te
  * 
  */
 var SeasonNewPage = function SeasonNewPage(_ref) {
-  var _match$params, _inputs$description, _Object$keys, _errors$name, _errors$description, _errors$start, _errors$end;
+  var _match$params, _inputs$description, _Object$keys, _errors$name, _errors$description, _errors$start, _errors$end, _Object$values;
   var match = _ref.match;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
     _useState2 = _slicedToArray(_useState, 2),
     errors = _useState2[0],
     setErrors = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+    _useState4 = _slicedToArray(_useState3, 2),
+    captains = _useState4[0],
+    setCaptains = _useState4[1];
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_12__.useHistory)();
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_13__.useHistory)();
   var leagueID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.leagueID;
   var _useNewSeasonFormHook = (0,_hooks_useNewSeasonFormHook__WEBPACK_IMPORTED_MODULE_8__["default"])(),
     inputs = _useNewSeasonFormHook.inputs,
@@ -7956,7 +8042,7 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
   if (user == null) {
     history.push('/login');
   }
-  var _useMutation = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_13__.useMutation)(CREATE_SEASON, {
+  var _useMutation = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_14__.useMutation)(CREATE_SEASON, {
       onCompleted: function onCompleted(res) {
         console.log('create season mutation complete. res: ', res);
         history.push("/league/".concat(leagueID));
@@ -7993,7 +8079,27 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
       var _newPlayersMap = _objectSpread({}, players);
       delete _newPlayersMap[player.id];
       setPlayers(_newPlayersMap);
+      if (captains[player.id]) {
+        var newCaptains = _objectSpread({}, captains);
+        delete newCaptains[player.id];
+        setCaptains(newCaptains);
+      }
     }
+  };
+  var onSelectCaptains = function onSelectCaptains(player) {
+    if (!captains[player.id]) {
+      var newCaptainsMap = _objectSpread({}, captains);
+      newCaptainsMap[player.id] = player;
+      setCaptains(newCaptainsMap);
+    } else {
+      var _newCaptainsMap = _objectSpread({}, captains);
+      delete _newCaptainsMap[player.id];
+      setCaptains(_newCaptainsMap);
+    }
+  };
+  var filterCaptainResults = function filterCaptainResults(player, input) {
+    var _player$name, _player$email, _player$username;
+    return (player === null || player === void 0 ? void 0 : (_player$name = player.name) === null || _player$name === void 0 ? void 0 : _player$name.includes(input)) || (player === null || player === void 0 ? void 0 : (_player$email = player.email) === null || _player$email === void 0 ? void 0 : _player$email.includes(input)) || (player === null || player === void 0 ? void 0 : (_player$username = player.username) === null || _player$username === void 0 ? void 0 : _player$username.includes(input));
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
@@ -8060,7 +8166,45 @@ var SeasonNewPage = function SeasonNewPage(_ref) {
     },
     onSelectPlayer: onSelectPlayer,
     selectedPlayers: players
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
+    margin: "24px 0 8px 0"
+  }, "Captains"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "Select players to be team captains"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SearchField_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    filterResults: filterCaptainResults,
+    label: "Select a captain...",
+    onClick: onSelectCaptains,
+    selected: captains,
+    source: (_Object$values = Object.values(players)) !== null && _Object$values !== void 0 ? _Object$values : []
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    flexWrap: "wrap",
+    justify: "start",
+    overflow: "initial",
+    shrink: "0",
+    width: "100%"
+  }, Object.values(captains).map(function (player, idx) {
+    var _player$id, _player$name2;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_9__.CardWrapper, {
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
+      key: (_player$id = player.id) !== null && _player$id !== void 0 ? _player$id : idx,
+      margin: "4px 4px 0 0"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+      alignItems: "center",
+      justify: "space-between"
+    }, player.profilePicture && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.ProfilePictureThumb, {
+      referrerPolicy: "no-referrer",
+      height: "32px",
+      src: player.profilePicture,
+      width: "32px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+      direction: "column"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, {
+      marginBottom: "4px"
+    }, (_player$name2 = player.name) !== null && _player$name2 !== void 0 ? _player$name2 : player.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, player.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      icon: "close",
+      onClick: function onClick() {
+        return onSelectCaptains(player);
+      }
+    })));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
     marginTop: "32px",
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
