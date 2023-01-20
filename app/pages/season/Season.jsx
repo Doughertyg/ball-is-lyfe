@@ -11,6 +11,8 @@ import AddGamesComponent from '../../components/AddGamesComponent.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
 import Button from '../../components/Button.jsx';
 import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
+import AddPlayerSection from '../../components/AddPlayerSection.jsx';
+import PlayerCard from '../../components/PlayerCard.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -19,7 +21,14 @@ const FETCH_SEASON_QUERY = gql`
         name
         description
         league {
+          _id
           name
+        }
+        players {
+          name
+          email
+          profilePicture
+          username
         }
         seasonStart 
         seasonEnd
@@ -73,12 +82,14 @@ const FETCH_TEAMS_QUERY = gql`
 const Season = ({match}) => {
   const [addGamesExpanded, setAddGamesExpanded] = useState(false);
   const [teamsToAdd, setTeamsToAdd] = useState({});
+  const [playersToAdd, setPlayersToAdd] = useState({});
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
 
-  console.log('seasonID:  ', seasonID);
+  // TODO: erase
+  const isSubmitting = false;
 
   if (seasonID == null) {
     console.log('season ID null, redirecting home.');
@@ -89,6 +100,7 @@ const Season = ({match}) => {
     variables: {seasonID, userID: user.id }
   });
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
+  const leagueID = seasonData?.getSeasonByID?.season?.league?._id;
 
   const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
 
@@ -106,6 +118,22 @@ const Season = ({match}) => {
 
   const filterTeamSearchResults = (team, searchString) => {
     return team?.name?.includes(searchString);
+  }
+
+  const addPlayersToSeason = () => {
+    // commit mutation here
+  }
+
+  const onSelectPlayers = (player) => {
+    if (!playersToAdd[player.id]) {
+      const newPlayersToAddMap = {...playersToAdd};
+      newPlayersToAddMap[player.id] = player;
+      setPlayersToAdd(newPlayersToAddMap);
+    } else {
+      const newPlayersToAddMap = {...playersToAdd};
+      delete newPlayersToAddMap[player.id];
+      setPlayersToAdd(newPlayersToAddMap);
+    }
   }
 
   const onClickTeamEntry = (team) => {
@@ -283,11 +311,44 @@ const Season = ({match}) => {
             </>
           )}
           <Divider />
+          <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
+            <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
+            {isLeagueAdmin && leagueID && (
+              <AddPlayerSection
+                isCollapsible
+                isSubmitting={isSubmitting}
+                leagueID={leagueID}
+                onClose={() => setPlayersToAdd({})}
+                onSubmit={addPlayersToSeason}
+                onSelectPlayer={onSelectPlayers}
+                selectedPlayers={playersToAdd}
+                submitLabel="Add players to season"/>)}
+          </FlexContainer>
+          <FlexContainer justify="flex-start" flexWrap="wrap">
+          {seasonData?.getSeasonByID?.season?.players?.length > 0 ?
+            seasonData.getSeasonByID?.season?.players.map((player, idx) => {
+              return (
+                <PlayerCard
+                  email={player.email}
+                  key={player.id ?? idx}
+                  margin="0 8px 8px 0"
+                  name={player.name}
+                  picture={player.profilePicture}
+                  username={player.username}
+                />
+              )
+            }) : (
+              <FlexContainer justify="flex-start" width="800px">
+                <DetailsText>No players in league</DetailsText>
+              </FlexContainer>
+            )
+          }
+          </FlexContainer>
+          <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Stat Leaders</SectionHeadingText>
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Standings</SectionHeadingText>
-          <Divider />
-          <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
+          
         </>
       )}
     </FlexContainer>

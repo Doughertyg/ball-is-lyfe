@@ -70,7 +70,7 @@ const CreatetTeamComponent = ({ seasonID }) => {
         <InputField errors={name == null ? 'Name cannot be blank.' : null} name="name" onChange={(input) => setName(input)} placeholder="Create sick team name..." width="100%" value={name} />
         <SectionHeadingText margin="8px 0 8px 0">Captain</SectionHeadingText>
         <DetailsText marginBottom="4px">Please select a captain (they will also be added as a player) </DetailsText>
-        <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loadingCaptains} onClick={(player) => setCaptain(player)} source={captains ?? []} />
+        <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loadingCaptains} onClick={(player) => setCaptain(player)} source={captains?.getCaptains ?? []} />
       </FlexContainer>
     </Wrapper>
   )
