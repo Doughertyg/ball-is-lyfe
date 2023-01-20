@@ -129,13 +129,14 @@ export default function SearchField({
           </ModalStyle>
         </ModalWrapper>
       )}
-      {source?.length === 0 || source == null ? (
+      {(source?.length === 0 || source == null) && resultsOpen ? (
         <ModalWrapper>
-          <ModalStyle>
-            <ContentWrapper>
-              <DetailsText>Nothin to search.</DetailsText>
-            </ContentWrapper> 
-          </ModalStyle>
+          <ModalContainer onClick={() => setResultsOpen(false)} />
+            <ModalStyle>
+              <ContentWrapper>
+                <DetailsText>Nothin to search.</DetailsText>
+              </ContentWrapper> 
+            </ModalStyle>
         </ModalWrapper>
       ) : null}
     </FlexContainer>

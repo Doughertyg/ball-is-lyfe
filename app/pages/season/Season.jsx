@@ -10,6 +10,7 @@ import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
 import Button from '../../components/Button.jsx';
+import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -72,6 +73,7 @@ const FETCH_TEAMS_QUERY = gql`
 const Season = ({match}) => {
   const [addGamesExpanded, setAddGamesExpanded] = useState(false);
   const [teamsToAdd, setTeamsToAdd] = useState({});
+  const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -147,9 +149,9 @@ const Season = ({match}) => {
       borderRadius="0 8px 8px 0"
       boxShadow="none"
       height='46px'
-      label="Create League"
+      label="Create Team"
       margin="0"
-      onClick={() => history.push('/team/new')}
+      onClick={() => setCreateTeamExpanded(true)}
     />
   );
 
@@ -225,7 +227,7 @@ const Season = ({match}) => {
             </FlexContainer>
             )}
           </FlexContainer>
-          <Divider />
+          <Divider marginBottom="10px" />
           <FlexContainer alignItems="center" justify="start" overflow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Teams</SectionHeadingText>
             <CollapsibleSearchField
@@ -235,9 +237,51 @@ const Season = ({match}) => {
               label="Search teams..."
               loading={loadingTeams}
               onClick={onClickTeamEntry}
+              onClose={() => setCreateTeamExpanded(false)}
               source={teamData?.getTeams ?? []}
             />
           </FlexContainer>
+          {createTeamExpanded && (
+            <CreatetTeamComponent />
+          )}
+          {Object.keys(teamsToAdd).length > 0 && (
+            <>
+              <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
+                {Object.values(teamsToAdd).map((team, idx) => (
+                    <CardWrapper
+                      boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
+                      key={team.id ?? idx}
+                      margin='4px 4px 0 0'>
+                      <FlexContainer alignItems="center" justify="space-between">
+                        {teamsToAddMap.profilePicture && (
+                          <ProfilePictureThumb
+                            referrerPolicy="no-referrer"
+                            height="32px"
+                            src={team.profilePicture}
+                            width="32px" />
+                        )}
+                        <FlexContainer direction="column">
+                          <BodyText marginBottom="4px">
+                            {team.name ?? 'Team name missing'}
+                          </BodyText>
+                          <DetailsText>{team.captain.name}</DetailsText>
+                          {team.players > 0 && team.players.map(player => {
+                            return (
+                              <DetailsText>{player.name}</DetailsText>
+                            )
+                          })}
+                        </FlexContainer>
+                        <Icon icon="close" onClick={() => onSelectPlayer(team)} />
+                      </FlexContainer>
+                    </CardWrapper>
+                ))}
+              </FlexContainer>
+              {onSubmit && onClose && (<FlexContainer marginTop="12px" width="100%">
+                <Button isDisabled={isSubmitting} label="Cancel" onClick={toggleSearchBar} />
+                <Button isLoading={isSubmitting} label={submitLabel} onClick={() => onSubmit()} />
+              </FlexContainer>)}
+            </>
+          )}
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Stat Leaders</SectionHeadingText>
           <Divider />
