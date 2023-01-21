@@ -205,6 +205,8 @@ module.exports = gql`
   }
   type Mutation {
     addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
+    addCaptainsToSeason(seasonID: ID!, captains: [ID!]): Season!
+    addPlayersToSeason(seasonID: ID!, players: [ID!]): Season!
     register(registerInput: RegisterInput): User!
     registerUser(token: String!): User!
     login(username: String!, password: String!): User!

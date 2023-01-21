@@ -50,6 +50,47 @@ module.exports = {
     },
   },
   Mutation: {
+    async addCaptainsToSeason(_, { seasonID, captains }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+      
+      const season = await Season.findById(seasonID);
+      const players = [...season.players];
+      const newCaptains = season.captains.concat(captains.filter(player => !season.captains.includes(player)));
+      captains.forEach(captain => {
+        if (!players.includes(captain)) {
+          players.push(captain);
+        }
+      });
+      season.captains = newCaptains;
+      season.players = players;
+      return await season.save();
+    },
+    async addPlayersToSeason(_, { seasonID, players }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const season = await Season.findById(seasonID);
+      const newPlayers = season.players.concat(players.filter(player => !season.players.includes(player)));
+      season.players = newPlayers;
+      return await season.save();
+    },
     async createSeason(_, { seasonInput }, context) {
       const authHeader = context.req.headers.authorization;
       if (authHeader == null) {

@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/auth';
 import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, ProfilePictureThumb, SectionHeadingText } from '../../styled-components/common';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import dayjs from 'dayjs';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';
@@ -59,6 +59,34 @@ const FETCH_TEAMS_QUERY = gql`
   }
 `;
 
+const ADD_PLAYERS_MUTATION = gql`
+  mutation addPlayersToSeason(
+    $seasonID: ID!,
+    $players: [ID!]
+  ) {
+    addPlayersToSeason(
+      seasonID: $seasonID,
+      players: $players
+    ) {
+      name
+    }
+  }
+`;
+
+const ADD_CAPTAINS_MUTATION = gql`
+  mutation addCaptainsToSeason(
+    $seasonID: ID!,
+    $captains: [ID!]
+  ) {
+    addCaptainsToSeason(
+      seasonID: $seasonID,
+      captains: $captains
+    ) {
+      name
+    }
+  }
+`;
+
 /**
  * Home page for season. Logged in user sees stats, games, standings
  * 
@@ -98,9 +126,6 @@ const Season = ({match}) => {
   const seasonID = match.params?.seasonID;
   const history = useHistory();
 
-  // TODO: erase
-  const isSubmitting = false;
-
   if (seasonID == null) {
     console.log('season ID null, redirecting home.');
     history.push('/');
@@ -130,7 +155,35 @@ const Season = ({match}) => {
     return team?.name?.includes(searchString);
   }
 
-  const addPlayersToSeason = () => {
+  const [addPlayersToSeason, {isSubmitting}] = useMutation(ADD_PLAYERS_MUTATION, {
+    onCompleted: (res) => {
+      console.log('mutation completed!!! res: ', res);
+      location.reload();
+    },
+    onError: (error) => {
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+    },
+    variables: {
+      seasonID,
+      players: Object.keys(playersToAdd)
+    }
+  });
+
+  const [addCaptainsToSeason, {isSubmitting: isSubmittingCaptains}] = useMutation(ADD_CAPTAINS_MUTATION, {
+    onCompleted: (res) => {
+      console.log('mutation completed!!! res: ', res);
+      location.reload();
+    },
+    onError: (error) => {
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+    },
+    variables: {
+      seasonID,
+      captains: Object.keys(captainsToAdd)
+    }
+  });
+
+  const addTeamsToSeason = () => {
     // commit mutation here
   }
 
@@ -336,9 +389,9 @@ const Season = ({match}) => {
                     </CardWrapper>
                 ))}
               </FlexContainer>
-              {onSubmit && onClose && (<FlexContainer marginTop="12px" width="100%">
+              {Object.keys(teamsToAdd).length > 0 && (<FlexContainer marginTop="12px" width="100%">
                 <Button isDisabled={isSubmitting} label="Cancel" onClick={toggleSearchBar} />
-                <Button isLoading={isSubmitting} label={submitLabel} onClick={() => onSubmit()} />
+                <Button isLoading={isSubmitting} label={submitLabel} onClick={() => addTeamsToSeason()} />
               </FlexContainer>)}
             </>
           )}
@@ -415,10 +468,14 @@ const Season = ({match}) => {
                 </CardWrapper>
             ))}
           </FlexContainer>
-          {Object.keys(captainsToAdd).length > 0 && (<FlexContainer marginBottom="12px" marginTop="12px" width="100%">
-            <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setCaptainsToAdd({})} />
-            <Button isLoading={isSubmitting} label="Assign captains" onClick={() => onSubmit()} />
-          </FlexContainer>)}
+          {Object.keys(captainsToAdd).length > 0 && (
+            <FlexContainer alignItems="center" direction="column" marginTop="8px">
+              <DetailsText>Adding a captain that has not already been added as a player will add them as a player.</DetailsText>
+              <FlexContainer marginBottom="12px" marginTop="12px" width="100%">
+                <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setCaptainsToAdd({})} />
+                <Button isLoading={isSubmitting} label="Assign captains" onClick={() => addCaptainsToSeason()} />
+              </FlexContainer>
+            </FlexContainer>)}
           <FlexContainer justify="flex-start" flexWrap="wrap">
             {seasonData?.getSeasonByID?.season?.captains?.length > 0 ?
               seasonData.getSeasonByID?.season?.captains.map((player, idx) => {
