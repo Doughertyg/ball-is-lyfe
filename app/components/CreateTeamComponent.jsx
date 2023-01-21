@@ -1,11 +1,14 @@
 import gql from 'graphql-tag';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
 import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import InputField from './InputField.jsx';
 import PlayerSearchField from './PlayerSearchField.jsx';
 import SearchField from './SearchField.jsx';
+import CompactPlayerCard from './CompactPlayerCard.jsx';
+import { AuthContext } from '../context/auth';
+import Button from './Button.jsx';
 
 const Wrapper = styled.div`
   border-radius: 8px;
@@ -16,11 +19,22 @@ const Wrapper = styled.div`
 `;
 
 const PLAYER_CAPTAIN_QUERY = gql`
-  query($seasonID: ID!) {
+  query($seasonID: ID!, $userID: ID!) {
     getCaptains(seasonID: $seasonID) {
       name
       profilePicture
       id
+    }
+    getSeasonByID(seasonID: $seasonID, userID: $userID) {
+      season {
+        players {
+          email
+          id
+          name
+          username
+          profilePicture
+        }
+      }
     }
   }
 `;
@@ -47,30 +61,75 @@ const PLAYER_CAPTAIN_QUERY = gql`
  *  `---------------------------------------------------------`
  * 
  */
-const CreatetTeamComponent = ({ seasonID }) => {
+const CreatetTeamComponent = ({ onCancel, seasonID }) => {
   const [name, setName] = useState("");
-  const [players, setPlayers] = useState([]);
-  const [captain, setCaptain] = useState("");
+  const [players, setPlayers] = useState({});
+  const [captain, setCaptain] = useState(null);
+  const { user } = useContext(AuthContext);
 
-  const { loading: loadingCaptains, data: captains, error } = useQuery(PLAYER_CAPTAIN_QUERY, {
-    variables: {seasonID}
+  const { loading, data, error } = useQuery(PLAYER_CAPTAIN_QUERY, {
+    variables: {seasonID, userID: user.id}
   });
-  console.log(loadingCaptains, captains, error);
 
   const filterCaptainResults = (entry, input) => {
     return entry?.name?.includes(input);
   };
 
+  const filterPlayerResults = (entry, input) => {
+    return entry?.name?.includes(input)
+      || entry?.username?.includes(input)
+      || entry?.email?.includes(input);
+  }
+
+  const addRemovePlayers = (player) => {
+    const newPlayers = {...players};
+    if (!newPlayers[player.id]) {
+      newPlayers[player.id] = player;
+    } else {
+      delete newPlayers[player.id];
+    }
+    setPlayers(newPlayers);
+  }
+
+  const onSubmit = () => {
+    // commit mutation
+  }
+
   return (
     <Wrapper>
-      <FlexContainer direction="column" height="100%" justify="flex-start" padding="0 8px" width="100%">
+      <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
         <PageHeader margin="0px">Create team</PageHeader>
         <Divider width="100%" />
         <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
-        <InputField errors={name == null ? 'Name cannot be blank.' : null} name="name" onChange={(input) => setName(input)} placeholder="Create sick team name..." width="100%" value={name} />
+        <InputField errors={name === "" ? 'Name cannot be blank.' : null} name="name" onChange={(input) => setName(input)} placeholder="Create sick team name..." width="100%" value={name} />
         <SectionHeadingText margin="8px 0 8px 0">Captain</SectionHeadingText>
         <DetailsText marginBottom="4px">Please select a captain (they will also be added as a player) </DetailsText>
-        <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loadingCaptains} onClick={(player) => setCaptain(player)} source={captains?.getCaptains ?? []} />
+        <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loading} onClick={(player) => setCaptain(player)} source={data?.getCaptains ?? []} />
+        {captain != null && (
+          <CompactPlayerCard
+            name={captain.name}
+            onClick={() => setCaptain(null)}
+            picture={captain.profilePicture}
+            subLabel={captain.email}
+          />
+        )}
+        <SectionHeadingText margin="8px 0 8px 0">Players</SectionHeadingText>
+        <SearchField filterResults={filterPlayerResults} label="Search players..." loading={loading} onClick={addRemovePlayers} selected={players} source={data?.getSeasonByID?.season?.players ?? []} />
+        <FlexContainer flexWrap="wrap" justify="flex-start">
+          {Object.values(players).map((player, idx) => (
+            <CompactPlayerCard
+              key={`players-${player.id}-${idx}`}
+              name={player?.name ?? player?.username}
+              onClick={addRemovePlayers}
+              picture={player.profilePicture}
+              subLabel={player.email}
+            />
+          ))}
+        </FlexContainer>
+        <FlexContainer justify="center" marginTop="12px">
+          <Button isDisabled={false} label="Cancel" onClick={onCancel} />
+          <Button isLoading={false} label="Create Team" onClick={onSubmit} />
+        </FlexContainer>
       </FlexContainer>
     </Wrapper>
   )

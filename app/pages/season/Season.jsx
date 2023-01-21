@@ -361,7 +361,7 @@ const Season = ({match}) => {
             />
           </FlexContainer>
           {createTeamExpanded && (
-            <CreatetTeamComponent seasonID={seasonID} />
+            <CreatetTeamComponent onCancel={() => setCreateTeamExpanded(false)} seasonID={seasonID} />
           )}
           {Object.keys(teamsToAdd).length > 0 && (
             <>

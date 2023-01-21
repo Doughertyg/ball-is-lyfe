@@ -4640,6 +4640,55 @@ var CollapsibleSearchField = function CollapsibleSearchField(_ref) {
 
 /***/ }),
 
+/***/ "./app/components/CompactPlayerCard.jsx":
+/*!**********************************************!*\
+  !*** ./app/components/CompactPlayerCard.jsx ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _styled_components_card__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/card */ "./app/styled-components/card.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
+
+
+
+
+var CompactPlayerCard = function CompactPlayerCard(_ref) {
+  var picture = _ref.picture,
+    name = _ref.name,
+    onClick = _ref.onClick,
+    subLabel = _ref.subLabel;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_1__.CardWrapper, {
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
+    margin: "4px 4px 0 0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    alignItems: "center",
+    justify: "start"
+  }, picture && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.ProfilePictureThumb, {
+    referrerPolicy: "no-referrer",
+    height: "32px",
+    src: picture,
+    width: "32px"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    direction: "column",
+    grow: "1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.BodyText, {
+    marginBottom: "4px"
+  }, name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, null, subLabel)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    icon: "close",
+    onClick: onClick
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompactPlayerCard);
+
+/***/ }),
+
 /***/ "./app/components/ConfirmationModal.jsx":
 /*!**********************************************!*\
   !*** ./app/components/ConfirmationModal.jsx ***!
@@ -4706,15 +4755,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
 /* harmony import */ var _PlayerSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PlayerSearchField.jsx */ "./app/components/PlayerSearchField.jsx");
 /* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
+/* harmony import */ var _CompactPlayerCard_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CompactPlayerCard.jsx */ "./app/components/CompactPlayerCard.jsx");
+/* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../context/auth */ "./app/context/auth.js");
+/* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2;
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -4730,8 +4788,11 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
-var PLAYER_CAPTAIN_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getCaptains(seasonID: $seasonID) {\n      name\n      profilePicture\n      id\n    }\n  }\n"])));
+
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+var PLAYER_CAPTAIN_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getCaptains(seasonID: $seasonID) {\n      name\n      profilePicture\n      id\n    }\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        players {\n          email\n          id\n          name\n          username\n          profilePicture\n        }\n      }\n    }\n  }\n"])));
 
 /**
  * Component for creating a team
@@ -4756,37 +4817,57 @@ var PLAYER_CAPTAIN_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"
  * 
  */
 var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
-  var _captains$getCaptains;
-  var seasonID = _ref.seasonID;
+  var _data$getCaptains, _data$getSeasonByID$s, _data$getSeasonByID, _data$getSeasonByID$s2;
+  var onCancel = _ref.onCancel,
+    seasonID = _ref.seasonID;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState2 = _slicedToArray(_useState, 2),
     name = _useState2[0],
     setName = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
     _useState4 = _slicedToArray(_useState3, 2),
     players = _useState4[0],
     setPlayers = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState6 = _slicedToArray(_useState5, 2),
     captain = _useState6[0],
     setCaptain = _useState6[1];
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__.useQuery)(PLAYER_CAPTAIN_QUERY, {
+  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_6__.AuthContext),
+    user = _useContext.user;
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(PLAYER_CAPTAIN_QUERY, {
       variables: {
-        seasonID: seasonID
+        seasonID: seasonID,
+        userID: user.id
       }
     }),
-    loadingCaptains = _useQuery.loading,
-    captains = _useQuery.data,
+    loading = _useQuery.loading,
+    data = _useQuery.data,
     error = _useQuery.error;
-  console.log(loadingCaptains, captains, error);
   var filterCaptainResults = function filterCaptainResults(entry, input) {
     var _entry$name;
     return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.includes(input);
+  };
+  var filterPlayerResults = function filterPlayerResults(entry, input) {
+    var _entry$name2, _entry$username, _entry$email;
+    return (entry === null || entry === void 0 ? void 0 : (_entry$name2 = entry.name) === null || _entry$name2 === void 0 ? void 0 : _entry$name2.includes(input)) || (entry === null || entry === void 0 ? void 0 : (_entry$username = entry.username) === null || _entry$username === void 0 ? void 0 : _entry$username.includes(input)) || (entry === null || entry === void 0 ? void 0 : (_entry$email = entry.email) === null || _entry$email === void 0 ? void 0 : _entry$email.includes(input));
+  };
+  var addRemovePlayers = function addRemovePlayers(player) {
+    var newPlayers = _objectSpread({}, players);
+    if (!newPlayers[player.id]) {
+      newPlayers[player.id] = player;
+    } else {
+      delete newPlayers[player.id];
+    }
+    setPlayers(newPlayers);
+  };
+  var onSubmit = function onSubmit() {
+    // commit mutation
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     direction: "column",
     height: "100%",
     justify: "flex-start",
+    overflow: "visible",
     padding: "0 8px",
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
@@ -4796,7 +4877,7 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "8px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    errors: name == null ? 'Name cannot be blank.' : null,
+    errors: name === "" ? 'Name cannot be blank.' : null,
     name: "name",
     onChange: function onChange(input) {
       return setName(input);
@@ -4811,12 +4892,51 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
   }, "Please select a captain (they will also be added as a player) "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     filterResults: filterCaptainResults,
     label: "Select a captain...",
-    loading: loadingCaptains,
+    loading: loading,
     onClick: function onClick(player) {
       return setCaptain(player);
     },
-    source: (_captains$getCaptains = captains === null || captains === void 0 ? void 0 : captains.getCaptains) !== null && _captains$getCaptains !== void 0 ? _captains$getCaptains : []
-  })));
+    source: (_data$getCaptains = data === null || data === void 0 ? void 0 : data.getCaptains) !== null && _data$getCaptains !== void 0 ? _data$getCaptains : []
+  }), captain != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactPlayerCard_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    name: captain.name,
+    onClick: function onClick() {
+      return setCaptain(null);
+    },
+    picture: captain.profilePicture,
+    subLabel: captain.email
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Players"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    filterResults: filterPlayerResults,
+    label: "Search players...",
+    loading: loading,
+    onClick: addRemovePlayers,
+    selected: players,
+    source: (_data$getSeasonByID$s = data === null || data === void 0 ? void 0 : (_data$getSeasonByID = data.getSeasonByID) === null || _data$getSeasonByID === void 0 ? void 0 : (_data$getSeasonByID$s2 = _data$getSeasonByID.season) === null || _data$getSeasonByID$s2 === void 0 ? void 0 : _data$getSeasonByID$s2.players) !== null && _data$getSeasonByID$s !== void 0 ? _data$getSeasonByID$s : []
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    flexWrap: "wrap",
+    justify: "flex-start"
+  }, Object.values(players).map(function (player, idx) {
+    var _player$name;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactPlayerCard_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      key: "players-".concat(player.id, "-").concat(idx),
+      name: (_player$name = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name !== void 0 ? _player$name : player === null || player === void 0 ? void 0 : player.username,
+      onClick: addRemovePlayers,
+      picture: player.profilePicture,
+      subLabel: player.email
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    justify: "center",
+    marginTop: "12px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    isDisabled: false,
+    label: "Cancel",
+    onClick: onCancel
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    isLoading: false,
+    label: "Create Team",
+    onClick: onSubmit
+  }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreatetTeamComponent);
 
@@ -7973,6 +8093,9 @@ var Season = function Season(_ref) {
     },
     source: (_teamData$getTeams = teamData === null || teamData === void 0 ? void 0 : teamData.getTeams) !== null && _teamData$getTeams !== void 0 ? _teamData$getTeams : []
   })), createTeamExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CreateTeamComponent_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    onCancel: function onCancel() {
+      return setCreateTeamExpanded(false);
+    },
     seasonID: seasonID
   }), Object.keys(teamsToAdd).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     flexWrap: "wrap",
