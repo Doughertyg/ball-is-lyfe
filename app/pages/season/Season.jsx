@@ -268,6 +268,12 @@ const Season = ({match}) => {
     }
   }
 
+  const nonCaptainPlayers = useMemo(() => {
+    return seasonData?.getSeasonByID?.season?.players?.filter(player => {
+      return !seasonData?.getSeasonByID?.season?.captains?.map(player => player.id).includes(player.id);
+    }) ?? [];
+  }, [seasonData?.getSeasonByID?.season?.captains, seasonData?.getSeasonByID?.season?.players]);
+
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
@@ -303,7 +309,7 @@ const Season = ({match}) => {
                 const date = dayjs(game?.date).format('MMM YYYY');
                 return (
                   <Card
-                    key={idx}
+                    key={`recent-games-${game.id}-${idx}`}
                     subTitle={date}
                     title={`${game?.awayTeam?.name ?? 'away team'} at ${game?.homeTeam?.name ?? 'home team'}`}
                     margin="0 8px 0 0"
@@ -327,7 +333,7 @@ const Season = ({match}) => {
                 const date = dayjs(game?.date).format('MMM YYYY');
                 return (
                   <Card
-                    key={idx}
+                    key={`upcoming-games-${game.id}-${idx}`}
                     subTitle={date}
                     title={`${game?.awayTeam?.name ?? 'away team'} at ${game?.homeTeam?.name ?? 'home team'}`}
                     margin="0 8px 0 0"
@@ -363,7 +369,7 @@ const Season = ({match}) => {
                 {Object.values(teamsToAdd).map((team, idx) => (
                     <CardWrapper
                       boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
-                      key={team.id ?? idx}
+                      key={`teamsToAdd-${team.id}-${idx}`}
                       margin='4px 4px 0 0'>
                       <FlexContainer alignItems="center" justify="space-between">
                         {teamsToAddMap.profilePicture && (
@@ -378,9 +384,9 @@ const Season = ({match}) => {
                             {team.name ?? 'Team name missing'}
                           </BodyText>
                           <DetailsText>{team.captain.name}</DetailsText>
-                          {team.players > 0 && team.players.map(player => {
+                          {team.players > 0 && team.players.map((player, idx) => {
                             return (
-                              <DetailsText>{player.name}</DetailsText>
+                              <DetailsText key={idx}>{player.name}</DetailsText>
                             )
                           })}
                         </FlexContainer>
@@ -416,7 +422,7 @@ const Season = ({match}) => {
               return (
                 <PlayerCard
                   email={player.email}
-                  key={player.id ?? idx}
+                  key={`players-${player.id}-${idx}`}
                   margin="0 8px 8px 0"
                   name={player.name}
                   picture={player.profilePicture}
@@ -440,14 +446,14 @@ const Season = ({match}) => {
                 onClick={onSelectCaptains}
                 onClose={() => setCaptainsToAdd({})}
                 selected={captainsToAdd}
-                source={Object.values(playersToAdd).concat(seasonData?.getSeasonByID?.season?.players ?? []) ?? []}
+                source={Object.values(playersToAdd).concat(nonCaptainPlayers) ?? []}
               />)}
           </FlexContainer>
           <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
             {Object.values(captainsToAdd).map((player, idx) => (
                 <CardWrapper
                   boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
-                  key={player.id ?? idx}
+                  key={`captains-${player.id}-${idx}`}
                   margin='4px 4px 0 0'>
                   <FlexContainer alignItems="center" justify="space-between">
                     {player.profilePicture && (
@@ -482,7 +488,7 @@ const Season = ({match}) => {
                 return (
                   <PlayerCard
                     email={player.email}
-                    key={player.id ?? idx}
+                    key={`captains-added-${player.id}-${idx}`}
                     margin="0 8px 8px 0"
                     name={player.name}
                     picture={player.profilePicture}
