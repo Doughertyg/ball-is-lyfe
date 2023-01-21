@@ -9,7 +9,7 @@ module.exports = gql`
     getLeagues: [League]
     getLeaguesByUser(userID: ID!): [League]
     getLeagueByID(leagueID: ID!, userID: ID!): GetLeagueByIDReturnType
-    getPlayersInLeague(leagueID: ID): [User]
+    getPlayersInLeague(leagueID: ID, seasonID: ID): [User]
     getPlayersNotInLeague(leagueID: ID): [User]
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!, userID: ID!): GetSeasonByIDReturnType

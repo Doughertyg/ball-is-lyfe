@@ -37,7 +37,7 @@ module.exports = {
     },
     async getSeasonByID(_, { seasonID, userID }) {
       try {
-        const season = await Season.findById(seasonID).populate('league').populate('players');
+        const season = await Season.findById(seasonID).populate('league').populate('players').populate('captains');
         const isLeagueAdmin = season?.league?.admins?.includes(userID) ?? false;
         if (season) {
           return { season, isLeagueAdmin };

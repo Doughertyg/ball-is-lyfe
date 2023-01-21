@@ -33,7 +33,7 @@ const SearchWrapper = styled.div`
  *  :  User2   (X) :
  *  `--------------`
  */
-const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, leagueID, onClose, onSelectPlayer, onSubmit, selectedPlayers, submitLabel }) => {
+const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, leagueID, onClose, onSelectPlayer, onSubmit, seasonID, selectedPlayers, submitLabel }) => {
   const [searchExpanded, setSearchExpanded] = useState(!isCollapsible);
 
   const toggleSearchBar = () => {
@@ -54,7 +54,7 @@ const AddPlayerSection = ({ excludeLeague, isCollapsible, isSubmitting, label, l
       <FlexContainer alignItems="center" justify="flex-start" overflow="initial">
         {label && (<SectionHeadingText margin="20px 12px 20px 0">{label}</SectionHeadingText>)}
         <SearchWrapper width={searchExpanded ? '400px' : '0'} overflow={searchExpanded ? 'initial' : 'hidden'}>
-          <PlayerSearchField excludeLeague={excludeLeague} leagueID={leagueID} onClick={onSelectPlayer} selected={selectedPlayers} width={isCollapsible ? getExpandedWidth() : '100%'} />
+          <PlayerSearchField excludeLeague={excludeLeague} leagueID={leagueID} onClick={onSelectPlayer} seasonID={seasonID} selected={selectedPlayers} width={isCollapsible ? getExpandedWidth() : '100%'} />
         </SearchWrapper>
         {isCollapsible && <Icon borderRadius="50%" icon={searchExpanded ? "close" : "plus"} onClick={toggleSearchBar} />}
       </FlexContainer>

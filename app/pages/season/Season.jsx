@@ -13,11 +13,19 @@ import Button from '../../components/Button.jsx';
 import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
+import { CardWrapper } from '../../styled-components/card.js';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
     getSeasonByID(seasonID: $seasonID, userID: $userID) {
       season {
+        captains {
+          id
+          name
+          email
+          profilePicture
+          username
+        }
         name
         description
         league {
@@ -25,6 +33,7 @@ const FETCH_SEASON_QUERY = gql`
           name
         }
         players {
+          id
           name
           email
           profilePicture
@@ -83,6 +92,7 @@ const Season = ({match}) => {
   const [addGamesExpanded, setAddGamesExpanded] = useState(false);
   const [teamsToAdd, setTeamsToAdd] = useState({});
   const [playersToAdd, setPlayersToAdd] = useState({});
+  const [captainsToAdd, setCaptainsToAdd] = useState({});
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
@@ -133,6 +143,11 @@ const Season = ({match}) => {
       const newPlayersToAddMap = {...playersToAdd};
       delete newPlayersToAddMap[player.id];
       setPlayersToAdd(newPlayersToAddMap);
+      if (captainsToAdd[player.id]) {
+        const newCaptainsToAdd = {...captainsToAdd};
+        delete newCaptainsToAdd[player.id];
+        setCaptainsToAdd(newCaptainsToAdd);
+      }
     }
   }
 
@@ -182,6 +197,23 @@ const Season = ({match}) => {
       onClick={() => setCreateTeamExpanded(true)}
     />
   );
+
+  const filterCaptainResults = (player, input) => {
+    return player?.name?.includes(input) || player?.email?.includes(input) || player?.username?.includes(input);
+  }
+
+  const onSelectCaptains = (player) => {
+    console.log('onSelectCaptains player: ', player);
+    if (!captainsToAdd[player.id]) {
+      const newCaptainsToAddMap = {...captainsToAdd};
+      newCaptainsToAddMap[player.id] = player;
+      setCaptainsToAdd(newCaptainsToAddMap);
+    } else {
+      const newCaptainsToAddMap = {...captainsToAdd};
+      delete newCaptainsToAddMap[player.id];
+      setCaptainsToAdd(newCaptainsToAddMap);
+    }
+  }
 
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
@@ -321,6 +353,7 @@ const Season = ({match}) => {
                 onClose={() => setPlayersToAdd({})}
                 onSubmit={addPlayersToSeason}
                 onSelectPlayer={onSelectPlayers}
+                seasonID={seasonID}
                 selectedPlayers={playersToAdd}
                 submitLabel="Add players to season"/>)}
           </FlexContainer>
@@ -339,12 +372,73 @@ const Season = ({match}) => {
               )
             }) : (
               <FlexContainer justify="flex-start" width="800px">
-                <DetailsText>No players in league</DetailsText>
+                <DetailsText>No players in season</DetailsText>
               </FlexContainer>
             )
           }
           </FlexContainer>
           <Divider />
+          <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
+            <SectionHeadingText margin="20px 12px 20px 0">Captains</SectionHeadingText>
+            {isLeagueAdmin && leagueID && (
+              <CollapsibleSearchField
+                filterResults={filterCaptainResults}
+                label="Search for players..."
+                onClick={onSelectCaptains}
+                onClose={() => setCaptainsToAdd({})}
+                selected={captainsToAdd}
+                source={Object.values(playersToAdd).concat(seasonData?.getSeasonByID?.season?.players ?? []) ?? []}
+              />)}
+          </FlexContainer>
+          <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
+            {Object.values(captainsToAdd).map((player, idx) => (
+                <CardWrapper
+                  boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
+                  key={player.id ?? idx}
+                  margin='4px 4px 0 0'>
+                  <FlexContainer alignItems="center" justify="space-between">
+                    {player.profilePicture && (
+                      <ProfilePictureThumb
+                        referrerPolicy="no-referrer"
+                        height="32px"
+                        src={player.profilePicture}
+                        width="32px" />
+                    )}
+                    <FlexContainer direction="column">
+                      <BodyText marginBottom="4px">
+                        {player.name ?? player.username}
+                      </BodyText>
+                      <DetailsText>{player.email}</DetailsText>
+                    </FlexContainer>
+                    <Icon icon="close" onClick={() => onSelectCaptains(player)} />
+                  </FlexContainer>
+                </CardWrapper>
+            ))}
+          </FlexContainer>
+          {Object.keys(captainsToAdd).length > 0 && (<FlexContainer marginBottom="12px" marginTop="12px" width="100%">
+            <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setCaptainsToAdd({})} />
+            <Button isLoading={isSubmitting} label="Assign captains" onClick={() => onSubmit()} />
+          </FlexContainer>)}
+          <FlexContainer justify="flex-start" flexWrap="wrap">
+            {seasonData?.getSeasonByID?.season?.captains?.length > 0 ?
+              seasonData.getSeasonByID?.season?.captains.map((player, idx) => {
+                return (
+                  <PlayerCard
+                    email={player.email}
+                    key={player.id ?? idx}
+                    margin="0 8px 8px 0"
+                    name={player.name}
+                    picture={player.profilePicture}
+                    username={player.username}
+                  />
+                )
+              }) : (
+                <FlexContainer justify="flex-start" width="800px">
+                  <DetailsText>No captains assigned</DetailsText>
+                </FlexContainer>
+              )
+            }
+          </FlexContainer>
           <SectionHeadingText margin="20px 12px 20px 0">Stat Leaders</SectionHeadingText>
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Standings</SectionHeadingText>

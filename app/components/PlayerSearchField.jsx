@@ -27,7 +27,7 @@ const ContentWrapper = styled.div`
 `;
 
 const FETCH_LEAGUE_PLAYERS_QUERY = gql`
-  query($leagueID: ID) {
+  query($leagueID: ID, $seasonID: ID) {
     getAllPlayers {
       email
       id
@@ -35,7 +35,7 @@ const FETCH_LEAGUE_PLAYERS_QUERY = gql`
       profilePicture
       username
     }
-    getPlayersInLeague(leagueID: $leagueID) {
+    getPlayersInLeague(leagueID: $leagueID, seasonID: $seasonID) {
       email
       id
       name
@@ -70,13 +70,14 @@ export default function PlayerSearchField({
   height,
   leagueID, // if no leagueID is passed query for all players
   onClick,
+  seasonID, // if seasonID is not null, will fetch players in league but NOT season
   selected = {},
   width
 }) {
   const [input, setInput] = useState('');
   const [resultsOpen, setResultsOpen] = useState(false);
   const { loading, data, error } = useQuery(FETCH_LEAGUE_PLAYERS_QUERY, {
-    variables: {leagueID: leagueID}
+    variables: {leagueID: leagueID, seasonID}
   });
 
   if (error) {

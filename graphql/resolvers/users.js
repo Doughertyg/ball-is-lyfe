@@ -1,5 +1,6 @@
 const User = require('../../db/models/User');
 const League = require('../../db/models/League');
+const Season = require('../../db/models/Season');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError} = require('apollo-server');
@@ -156,7 +157,7 @@ module.exports = {
     async getAllPlayers() {
       return await User.find();
     },
-    async getPlayersInLeague(_, {leagueID}) {
+    async getPlayersInLeague(_, {leagueID, seasonID}) {
       if (leagueID == null) {
         return [];
       }
@@ -172,6 +173,11 @@ module.exports = {
 
         if (league == null) {
           throw new Error('League unexpectedly null');
+        }
+
+        if (seasonID != null) {
+          const season = await Season.findById(seasonID);
+          return league.players.filter(player => !season.players.includes(player.id));
         }
         return league.players || [];
       } catch (err) {
