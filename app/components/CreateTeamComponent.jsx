@@ -39,6 +39,49 @@ const PLAYER_CAPTAIN_QUERY = gql`
   }
 `;
 
+const CREATE_TEAM_MUTATION = gql`
+  mutation createTeam(
+    $bannerPicture: String,
+    $captain: ID!,
+    $description: String,
+    $name: String!,
+    $players: [ID]!,
+    $profilePicture: String,
+    $seasonID: ID,
+    $sport: String
+  ) {
+    createTeam(
+      bannerPicture: $bannerPicture,
+      captain: $captain,
+      description: $description,
+      name: $name,
+      players: $players,
+      profilePicture: $profilePicture,
+      seasonID: $seasonID,
+      sport: $sport
+    ) {
+      teamInstance {
+        id
+        captain {
+          email
+          name
+          profilePicture
+          username
+        }
+        players {
+          email
+          name
+          profilePicture
+          username
+        }
+        team {
+          name
+        }
+      }
+    }
+  }
+`;
+
 /**
  * Component for creating a team
  * Can create a team attached to a season
@@ -61,11 +104,20 @@ const PLAYER_CAPTAIN_QUERY = gql`
  *  `---------------------------------------------------------`
  * 
  */
-const CreatetTeamComponent = ({ onCancel, seasonID }) => {
+const CreatetTeamComponent = ({ onCancel, onComplete, seasonID }) => {
   const [name, setName] = useState("");
   const [players, setPlayers] = useState({});
   const [captain, setCaptain] = useState(null);
   const { user } = useContext(AuthContext);
+
+  const [createTeam, { isSubmitting }] = useMutation(CREATE_TEAM_MUTATION, {
+    onCompleted: (res) => {
+      onComplete?.(res);
+    },
+    onError: (error) => {
+      console.log('error creating team: ', JSON.stringify(error, null, 2));
+    },
+  })
 
   const { loading, data, error } = useQuery(PLAYER_CAPTAIN_QUERY, {
     variables: {seasonID, userID: user.id}
@@ -92,7 +144,14 @@ const CreatetTeamComponent = ({ onCancel, seasonID }) => {
   }
 
   const onSubmit = () => {
-    // commit mutation
+    createTeam({
+      variables: {
+        name,
+        players: Object.keys(players) ?? [],
+        captain: captain?.id,
+        seasonID
+      }
+    });
   }
 
   return (
@@ -128,7 +187,7 @@ const CreatetTeamComponent = ({ onCancel, seasonID }) => {
         </FlexContainer>
         <FlexContainer justify="center" marginTop="12px">
           <Button isDisabled={false} label="Cancel" onClick={onCancel} />
-          <Button isLoading={false} label="Create Team" onClick={onSubmit} />
+          <Button isLoading={false} label="Create Team" loading={isSubmitting} onClick={onSubmit} />
         </FlexContainer>
       </FlexContainer>
     </Wrapper>

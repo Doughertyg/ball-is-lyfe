@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import Icon from '../../components/Icon.jsx';
 import { AuthContext } from '../../context/auth';
 import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, ProfilePictureThumb, SectionHeadingText } from '../../styled-components/common';
@@ -14,6 +14,7 @@ import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
+import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -41,18 +42,33 @@ const FETCH_SEASON_QUERY = gql`
         }
         seasonStart 
         seasonEnd
+        teams {
+          captain {
+            email
+            name
+            profilePicture
+            username
+          }
+          players {
+            email
+            name
+            profilePicture
+            username
+          }
+          team {
+            name
+          }
+        }
       }
       isLeagueAdmin
     }
-  }
-`;
-
-const FETCH_TEAMS_QUERY = gql`
-  query {
     getTeams {
       name
-      captaim {
+      players {
+        email
         name
+        profilePicture
+        username
       }
       profilePicture
     }
@@ -122,14 +138,10 @@ const Season = ({match}) => {
   const [playersToAdd, setPlayersToAdd] = useState({});
   const [captainsToAdd, setCaptainsToAdd] = useState({});
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
+  const [seasonTeams, setSeasonTeams] = useState([]);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
-
-  if (seasonID == null) {
-    console.log('season ID null, redirecting home.');
-    history.push('/');
-  }
 
   const { loading, data: seasonData, error } = useQuery(FETCH_SEASON_QUERY, {
     variables: {seasonID, userID: user.id }
@@ -137,7 +149,16 @@ const Season = ({match}) => {
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
   const leagueID = seasonData?.getSeasonByID?.season?.league?._id;
 
-  const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
+  useEffect(() => {
+    if (seasonData != null && seasonData?.getSeasonByID?.season?.teams != null) {
+      setSeasonTeams(seasonData.getSeasonByID.season.teams);
+    }
+  }, [seasonData]);
+
+  if (seasonID == null) {
+    console.log('season ID null, redirecting home.');
+    history.push('/');
+  }
 
   const recentGames = useMemo(() => {
     return seasonData?.getSeasonByID?.season?.games?.filter(game => {
@@ -268,6 +289,15 @@ const Season = ({match}) => {
     }
   }
 
+  const onCompleteCreateTeam = (res) => {
+    // update cache to update view
+    if (res?.createTeam?.teamInstance != null) {
+      setSeasonTeams([...seasonTeams, {...res.createTeam.teamInstance}]);
+    }
+    // close create team modal
+    setCreateTeamExpanded(false);
+  }
+
   const nonCaptainPlayers = useMemo(() => {
     return seasonData?.getSeasonByID?.season?.players?.filter(player => {
       return !seasonData?.getSeasonByID?.season?.captains?.map(player => player.id).includes(player.id);
@@ -354,14 +384,14 @@ const Season = ({match}) => {
               getResultComponent={getTeamResultsComponent}
               getRightButton={getCreateTeamButton}
               label="Search teams..."
-              loading={loadingTeams}
+              loading={loading}
               onClick={onClickTeamEntry}
               onClose={() => setCreateTeamExpanded(false)}
-              source={teamData?.getTeams ?? []}
+              source={seasonData?.getTeams ?? []}
             />
           </FlexContainer>
           {createTeamExpanded && (
-            <CreatetTeamComponent onCancel={() => setCreateTeamExpanded(false)} seasonID={seasonID} />
+            <CreatetTeamComponent onCancel={() => setCreateTeamExpanded(false)} onComplete={onCompleteCreateTeam} seasonID={seasonID} />
           )}
           {Object.keys(teamsToAdd).length > 0 && (
             <>
@@ -372,7 +402,7 @@ const Season = ({match}) => {
                       key={`teamsToAdd-${team.id}-${idx}`}
                       margin='4px 4px 0 0'>
                       <FlexContainer alignItems="center" justify="space-between">
-                        {teamsToAddMap.profilePicture && (
+                        {team.profilePicture && (
                           <ProfilePictureThumb
                             referrerPolicy="no-referrer"
                             height="32px"
@@ -383,8 +413,8 @@ const Season = ({match}) => {
                           <BodyText marginBottom="4px">
                             {team.name ?? 'Team name missing'}
                           </BodyText>
-                          <DetailsText>{team.captain.name}</DetailsText>
-                          {team.players > 0 && team.players.map((player, idx) => {
+                          <DetailsText>{team?.captain?.name}</DetailsText>
+                          {team?.players > 0 && team?.players?.map((player, idx) => {
                             return (
                               <DetailsText key={idx}>{player.name}</DetailsText>
                             )
@@ -396,11 +426,26 @@ const Season = ({match}) => {
                 ))}
               </FlexContainer>
               {Object.keys(teamsToAdd).length > 0 && (<FlexContainer marginTop="12px" width="100%">
-                <Button isDisabled={isSubmitting} label="Cancel" onClick={toggleSearchBar} />
-                <Button isLoading={isSubmitting} label={submitLabel} onClick={() => addTeamsToSeason()} />
+                <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setTeamsToAdd({})} />
+                <Button isLoading={isSubmitting} label="Add teams to season" onClick={() => addTeamsToSeason()} />
               </FlexContainer>)}
             </>
           )}
+          <FlexContainer justify="flex-start" flexWrap="wrap">
+            {seasonTeams.length > 0 && (
+              seasonTeams.map((team, idx) => {
+                return (
+                  <CompactDetailsCard
+                    key={`season-teams-${team.id}-${idx}`}
+                    title={team?.team?.name ?? 'team name missing'}
+                    subTitle={team?.captain?.name ? `Captain: ${team?.captain?.name }` : 'captain missing'}
+                    details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
+                    picture={team?.team?.profilePicture}
+                  />
+                )
+              })
+            )}
+          </FlexContainer>
           <Divider />
           <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>

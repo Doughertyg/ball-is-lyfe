@@ -14,6 +14,9 @@ module.exports = gql`
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!, userID: ID!): GetSeasonByIDReturnType
     getUserContext(token: String!): User
+    getTeam(teamID: ID!): Team
+    getTeams: [Team]
+    getTeamsByUser(userID: ID!): [Team]
   }
   type GetLeagueByIDReturnType {
     league: League
@@ -69,14 +72,14 @@ module.exports = gql`
   }
   type Team {
     id: ID!
-    bannerPicture: String!
+    bannerPicture: String
     createdAt: String!
-    description: String!
+    description: String
     admin: [User]!
     players: [User]!
-    profilePicture: String!
+    profilePicture: String
     name: String!
-    sport: String!
+    sport: String
   }
   type TeamInstance {
     id: ID!
@@ -180,6 +183,10 @@ module.exports = gql`
     username: String
     createdAt: String!
   }
+  type CreateTeamMutationReturnType {
+    team: Team,
+    teamInstance: TeamInstance
+  }
   input RegisterInput {
     username: String!
     password: String!
@@ -216,6 +223,16 @@ module.exports = gql`
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
     createSeason(seasonInput: CreateSeasonInput): Season!
+    createTeam(
+      bannerPicture: String,
+      captain: ID!,
+      description: String,
+      name: String!,
+      players: [ID]!,
+      profilePicture: String,
+      seasonID: ID,
+      sport: String
+    ): CreateTeamMutationReturnType
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }

@@ -8,10 +8,8 @@ const userResolvers = require('./users');
 module.exports = {
   Query: {
     async getCaptains(_, {seasonID}) {
-      console.log('in getCaptains query');
       try {
         const season = await Season.findById(seasonID).populate('captains');
-        console.log('season: ', season);
         return season.captains ?? [];
       } catch (err) {
         console.log(err);
@@ -37,7 +35,20 @@ module.exports = {
     },
     async getSeasonByID(_, { seasonID, userID }) {
       try {
-        const season = await Season.findById(seasonID).populate('league').populate('players').populate('captains');
+        const season = await Season.findById(seasonID)
+          .populate('league')
+          .populate('players')
+          .populate('captains')
+          .populate({
+            path: 'teams',
+            populate: [{
+              path: 'captain'
+            }, {
+              path: 'players'
+            }, {
+              path: 'team'
+            }]
+          });
         const isLeagueAdmin = season?.league?.admins?.includes(userID) ?? false;
         if (season) {
           return { season, isLeagueAdmin };

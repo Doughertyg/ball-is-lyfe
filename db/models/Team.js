@@ -4,6 +4,10 @@ const teamSchema = new Schema({
   name: String,
   description: String,
   createdAt: String,
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   profilePicture: String,
   bannerPicture: String,
   sport: String,

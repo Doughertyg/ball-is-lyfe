@@ -1,7 +1,10 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
+const Season = require('../../db/models/Season');
 
 const Team = require('../../db/models/Team');
+const TeamInstance = require('../../db/models/TeamInstance');
 const authenticate = require('../../util/authenticate');
+const userResolvers = require('./users');
 
 module.exports = {
   Query: {
@@ -28,7 +31,7 @@ module.exports = {
     },
     async getTeams() {
       try {
-        const teams = await Team.find().populate('captain').exec();
+        const teams = await Team.find().populate('captain').populate('players').exec();
         return teams ?? [];
       } catch (err) {
         throw new Error(err);
@@ -36,21 +39,59 @@ module.exports = {
     }
   },
   Mutation: {
-    async createTeam(_, { data }, context) {
-      const user = authenticate(context);
+    async createTeam(_, { bannerPicture, captain, description, name, players, profilePicture, seasonID, sport }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
 
       const newTeam = new Team({
-        ...data,
+        bannerPicture,
+        description,
+        name,
+        players,
+        profilePicture,
+        sport,
         createdAt: new Date().toISOString(),
         createdBy: user.id,
-        admins: [user.id]
+        admins: [captain]
       });
 
       const team = await newTeam.save();
-      context.pubSub.publish('NEW_TEAM', {
-        newTeam: team
-      });
-      return team;
+      let teamInstance = null;
+
+      if (seasonID != null) {
+        const newTeamInstance = new TeamInstance({
+          captain,
+          players,
+          season: seasonID,
+          team: team.id
+        });
+        teamInstance = await newTeamInstance.save();
+        if (teamInstance == null) {
+          throw new Error('Team instance failed to save.');
+        }
+
+        await teamInstance.populate(['captain', 'players', 'team']).execPopulate();
+
+        const season = await Season.findById(seasonID);
+        if (season == null) {
+          throw new Error('season is unexpectedly null.');
+        }
+
+        const newSeasonTeams = [...season.teams];
+        newSeasonTeams.push(teamInstance);
+        season.teams = newSeasonTeams;
+        await season.save();
+      }
+
+      return {team, teamInstance};
     }
   },
   Subscription: {

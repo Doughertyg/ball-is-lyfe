@@ -1,10 +1,6 @@
 const {model, Schema} = require('mongoose');
 
 const teamInstanceSchema = new Schema({
-  admins: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
   createdAt: String,
   season: {
     type: Schema.Types.ObjectId,
