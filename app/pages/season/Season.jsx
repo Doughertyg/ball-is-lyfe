@@ -50,6 +50,7 @@ const FETCH_SEASON_QUERY = gql`
             username
           }
           players {
+            id
             email
             name
             profilePicture
@@ -63,8 +64,10 @@ const FETCH_SEASON_QUERY = gql`
       isLeagueAdmin
     }
     getTeams {
+      id
       name
       players {
+        id
         email
         name
         profilePicture
@@ -227,11 +230,16 @@ const Season = ({match}) => {
 
   const onClickTeamEntry = (team) => {
     const teamsToAddMap = {...teamsToAdd};
+    const teamToAdd = {...team};
+    // only include the players that are in the season
+    teamToAdd.players = teamToAdd.players.filter(player => {
+      return seasonData.getSeasonByID?.season?.players?.map(seasonPlayer => seasonPlayer.id).includes(player.id);
+    });
 
     if (teamsToAddMap[team.id]) {
       delete teamsToAddMap[team.id];
     } else {
-      teamsToAddMap[team.id] = team;
+      teamsToAddMap[team.id] = teamToAdd;
     }
     
     setTeamsToAdd(teamsToAddMap);
@@ -277,7 +285,6 @@ const Season = ({match}) => {
   }
 
   const onSelectCaptains = (player) => {
-    console.log('onSelectCaptains player: ', player);
     if (!captainsToAdd[player.id]) {
       const newCaptainsToAddMap = {...captainsToAdd};
       newCaptainsToAddMap[player.id] = player;
@@ -397,32 +404,12 @@ const Season = ({match}) => {
             <>
               <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
                 {Object.values(teamsToAdd).map((team, idx) => (
-                    <CardWrapper
-                      boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
-                      key={`teamsToAdd-${team.id}-${idx}`}
-                      margin='4px 4px 0 0'>
-                      <FlexContainer alignItems="center" justify="space-between">
-                        {team.profilePicture && (
-                          <ProfilePictureThumb
-                            referrerPolicy="no-referrer"
-                            height="32px"
-                            src={team.profilePicture}
-                            width="32px" />
-                        )}
-                        <FlexContainer direction="column">
-                          <BodyText marginBottom="4px">
-                            {team.name ?? 'Team name missing'}
-                          </BodyText>
-                          <DetailsText>{team?.captain?.name}</DetailsText>
-                          {team?.players > 0 && team?.players?.map((player, idx) => {
-                            return (
-                              <DetailsText key={idx}>{player.name}</DetailsText>
-                            )
-                          })}
-                        </FlexContainer>
-                        <Icon icon="close" onClick={() => onSelectPlayer(team)} />
-                      </FlexContainer>
-                    </CardWrapper>
+                  <CompactDetailsCard
+                    key={idx}
+                    title={team.name ?? 'Team name missing'}
+                    details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
+                    picture={team?.team?.profilePicture} 
+                    onClose={() => onClickTeamEntry(team)} />
                 ))}
               </FlexContainer>
               {Object.keys(teamsToAdd).length > 0 && (<FlexContainer marginTop="12px" width="100%">

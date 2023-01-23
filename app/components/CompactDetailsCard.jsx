@@ -28,6 +28,7 @@ const CompactDetailsCard = ({
   title,
   subTitle,
   details, // Array of strings
+  onClose,
 }) => {
   return (
     <CardWrapper
@@ -60,6 +61,7 @@ const CompactDetailsCard = ({
             </FlexContainer>
           )}
         </FlexContainer>
+        {onClose && <Icon icon="close" margin="4px 4px 4px 32px" onClick={onClose} />}
       </FlexContainer>
     </CardWrapper>
   )
