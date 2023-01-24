@@ -74,6 +74,13 @@ const FETCH_SEASON_QUERY = gql`
         username
       }
       profilePicture
+      seasonPlayers {
+        id
+        email
+        name
+        profilePicture
+        username
+      }
     }
   }
 `;
@@ -179,7 +186,10 @@ const Season = ({match}) => {
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
   const leagueID = seasonData?.getSeasonByID?.season?.league?._id;
 
-  console.log('error: ', JSON.stringify(error, null, 2));
+  if (error != null) {
+    // TODO: display user friendly error to user
+    console.log('error: ', JSON.stringify(error, null, 2));
+  }  
 
   useEffect(() => {
     if (seasonData != null && seasonData?.getSeasonByID?.season?.teams != null) {
@@ -288,7 +298,7 @@ const Season = ({match}) => {
   }
 
   const getTeamResultsComponent = (team) => (
-    <>
+    <FlexContainer justify="space-between" alignItems="center" width="100%">
       {team.profilePicture && (
         <ProfilePictureThumb
           height="32px"
@@ -296,19 +306,23 @@ const Season = ({match}) => {
           src={team.profilePicture}
           width="32px" />
       )}
-      <BodyText width="fit-content">
-        {team.name}
-      </BodyText>
-      <DetailsText flexGrow="1" margin="0 0 0 4px" onClick={() => onClickTeamEntry(team)}>
-        {`Captain: ${team?.captain?.name}`}
-      </DetailsText>
+      <FlexContainer direction="column">
+        <BodyText width="fit-content">
+          {team.name}
+        </BodyText>
+        {team?.seasonPlayers?.map((player, idx) => (
+          <DetailsText flexGrow="1" key={idx} margin="0 0 0 4px">
+            {player.name ?? player.username ?? player.email}
+          </DetailsText>)
+        )}
+      </FlexContainer>
       {teamsToAdd[team.id] ? (
         <Icon icon="checkFilled" />
       ) :
       (
         <Icon icon="circle" />
       )}
-    </>
+    </FlexContainer>
   );
 
   const getCreateTeamButton = () => (
@@ -454,10 +468,13 @@ const Season = ({match}) => {
                     onClose={() => onClickTeamEntry(team)} />
                 ))}
               </FlexContainer>
-              {Object.keys(teamsToAdd).length > 0 && (<FlexContainer marginTop="12px" width="100%">
-                <Button isDisabled={isAddingTeamsToSeason} label="Cancel" onClick={() => setTeamsToAdd({})} />
-                <Button isLoading={isAddingTeamsToSeason} label="Add teams to season" onClick={() => addTeamsToSeason()} />
-              </FlexContainer>)}
+              <FlexContainer alignItems="center" direction="column" marginTop="8px">
+                <DetailsText>A team added to this season will only include players already in the season.</DetailsText>
+                <FlexContainer marginTop="12px" width="100%">
+                  <Button isDisabled={isAddingTeamsToSeason} label="Cancel" onClick={() => setTeamsToAdd({})} />
+                  <Button isLoading={isAddingTeamsToSeason} label="Add teams to season" onClick={() => addTeamsToSeason()} />
+                </FlexContainer>
+              </FlexContainer>
             </>
           )}
           <FlexContainer justify="flex-start" flexWrap="wrap">

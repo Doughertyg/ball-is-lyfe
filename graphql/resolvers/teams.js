@@ -35,7 +35,11 @@ module.exports = {
         if (seasonIDToExclude != null) {
           const season = await Season.findById(seasonIDToExclude).populate('teams');
           const seasonTeams = season.teams.map(seasonTeam => seasonTeam.team);
-          return teams.filter(team => !seasonTeams.includes(team.id));
+          const filtered = teams.filter(team => !seasonTeams.includes(team.id));
+          return filtered.map(team => {
+            team.seasonPlayers = team?.players?.filter(player => season?.players?.includes(player.id));
+            return team;
+          })
         }
         return teams ?? [];
       } catch (err) {

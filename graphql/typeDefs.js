@@ -80,6 +80,7 @@ module.exports = gql`
     profilePicture: String
     name: String!
     sport: String
+    seasonPlayers: [User]
   }
   type TeamInstance {
     id: ID!

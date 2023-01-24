@@ -4081,6 +4081,24 @@ var authLink = (0,apollo_link_context__WEBPACK_IMPORTED_MODULE_3__.setContext)(f
     }
   };
 });
+
+// const cache = new InMemoryCache({
+//   typePolicies: {
+//     Team: {
+//       fields: {
+//         seasonPlayers: {
+//           read(_, { args, readField }) {
+//             const players = readField('players');
+//             if (args && args.seasonID != null) {
+//               return players.filter(player => )
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// });
+
 var client = new _apollo_client__WEBPACK_IMPORTED_MODULE_4__.ApolloClient({
   link: authLink.concat(httpLink),
   cache: new _apollo_client__WEBPACK_IMPORTED_MODULE_5__.InMemoryCache()
@@ -7886,7 +7904,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        teams {\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            name\n          }\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n    }\n  }\n"])));
+var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        teams {\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            name\n          }\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
 var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
@@ -7962,7 +7980,10 @@ var Season = function Season(_ref) {
     error = _useQuery.error;
   var isLeagueAdmin = (_seasonData$getSeason = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason2 = seasonData.getSeasonByID) === null || _seasonData$getSeason2 === void 0 ? void 0 : _seasonData$getSeason2.isLeagueAdmin) !== null && _seasonData$getSeason !== void 0 ? _seasonData$getSeason : false;
   var leagueID = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason3 = seasonData.getSeasonByID) === null || _seasonData$getSeason3 === void 0 ? void 0 : (_seasonData$getSeason4 = _seasonData$getSeason3.season) === null || _seasonData$getSeason4 === void 0 ? void 0 : (_seasonData$getSeason5 = _seasonData$getSeason4.league) === null || _seasonData$getSeason5 === void 0 ? void 0 : _seasonData$getSeason5._id;
-  console.log('error: ', JSON.stringify(error, null, 2));
+  if (error != null) {
+    // TODO: display user friendly error to user
+    console.log('error: ', JSON.stringify(error, null, 2));
+  }
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var _seasonData$getSeason6, _seasonData$getSeason7;
     if (seasonData != null && (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason6 = seasonData.getSeasonByID) === null || _seasonData$getSeason6 === void 0 ? void 0 : (_seasonData$getSeason7 = _seasonData$getSeason6.season) === null || _seasonData$getSeason7 === void 0 ? void 0 : _seasonData$getSeason7.teams) != null) {
@@ -8074,21 +8095,28 @@ var Season = function Season(_ref) {
     setTeamsToAdd(teamsToAddMap);
   };
   var getTeamResultsComponent = function getTeamResultsComponent(team) {
-    var _team$captain;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, team.profilePicture && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.ProfilePictureThumb, {
+    var _team$seasonPlayers;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+      justify: "space-between",
+      alignItems: "center",
+      width: "100%"
+    }, team.profilePicture && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.ProfilePictureThumb, {
       height: "32px",
       referrerPolicy: "no-referrer",
       src: team.profilePicture,
       width: "32px"
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, {
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+      direction: "column"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, {
       width: "fit-content"
-    }, team.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, {
-      flexGrow: "1",
-      margin: "0 0 0 4px",
-      onClick: function onClick() {
-        return onClickTeamEntry(team);
-      }
-    }, "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain = team.captain) === null || _team$captain === void 0 ? void 0 : _team$captain.name)), teamsToAdd[team.id] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    }, team.name), team === null || team === void 0 ? void 0 : (_team$seasonPlayers = team.seasonPlayers) === null || _team$seasonPlayers === void 0 ? void 0 : _team$seasonPlayers.map(function (player, idx) {
+      var _ref2, _player$name;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, {
+        flexGrow: "1",
+        key: idx,
+        margin: "0 0 0 4px"
+      }, (_ref2 = (_player$name = player.name) !== null && _player$name !== void 0 ? _player$name : player.username) !== null && _ref2 !== void 0 ? _ref2 : player.email);
+    })), teamsToAdd[team.id] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
       icon: "checkFilled"
     }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
       icon: "circle"
@@ -8107,8 +8135,8 @@ var Season = function Season(_ref) {
     });
   };
   var filterCaptainResults = function filterCaptainResults(player, input) {
-    var _player$name, _player$email, _player$username;
-    return (player === null || player === void 0 ? void 0 : (_player$name = player.name) === null || _player$name === void 0 ? void 0 : _player$name.includes(input)) || (player === null || player === void 0 ? void 0 : (_player$email = player.email) === null || _player$email === void 0 ? void 0 : _player$email.includes(input)) || (player === null || player === void 0 ? void 0 : (_player$username = player.username) === null || _player$username === void 0 ? void 0 : _player$username.includes(input));
+    var _player$name2, _player$email, _player$username;
+    return (player === null || player === void 0 ? void 0 : (_player$name2 = player.name) === null || _player$name2 === void 0 ? void 0 : _player$name2.includes(input)) || (player === null || player === void 0 ? void 0 : (_player$email = player.email) === null || _player$email === void 0 ? void 0 : _player$email.includes(input)) || (player === null || player === void 0 ? void 0 : (_player$username = player.username) === null || _player$username === void 0 ? void 0 : _player$username.includes(input));
   };
   var onSelectCaptains = function onSelectCaptains(player) {
     if (!captainsToAdd[player.id]) {
@@ -8255,15 +8283,19 @@ var Season = function Season(_ref) {
       key: idx,
       title: (_team$name2 = team.name) !== null && _team$name2 !== void 0 ? _team$name2 : 'Team name missing',
       details: team === null || team === void 0 ? void 0 : (_team$players = team.players) === null || _team$players === void 0 ? void 0 : _team$players.map(function (player) {
-        var _ref2, _player$name2;
-        return (_ref2 = (_player$name2 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name2 !== void 0 ? _player$name2 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref2 !== void 0 ? _ref2 : player === null || player === void 0 ? void 0 : player.email;
+        var _ref3, _player$name3;
+        return (_ref3 = (_player$name3 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name3 !== void 0 ? _player$name3 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref3 !== void 0 ? _ref3 : player === null || player === void 0 ? void 0 : player.email;
       }),
       picture: team === null || team === void 0 ? void 0 : (_team$team = team.team) === null || _team$team === void 0 ? void 0 : _team$team.profilePicture,
       onClose: function onClose() {
         return onClickTeamEntry(team);
       }
     });
-  })), Object.keys(teamsToAdd).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    alignItems: "center",
+    direction: "column",
+    marginTop: "8px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "A team added to this season will only include players already in the season."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     marginTop: "12px",
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -8278,18 +8310,18 @@ var Season = function Season(_ref) {
     onClick: function onClick() {
       return addTeamsToSeason();
     }
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     flexWrap: "wrap"
   }, seasonTeams.length > 0 && seasonTeams.map(function (team, idx) {
-    var _team$team$name, _team$team2, _team$captain2, _team$captain3, _team$players2, _team$team3;
+    var _team$team$name, _team$team2, _team$captain, _team$captain2, _team$players2, _team$team3;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_13__["default"], {
       key: "season-teams-".concat(team.id, "-").concat(idx),
       title: (_team$team$name = team === null || team === void 0 ? void 0 : (_team$team2 = team.team) === null || _team$team2 === void 0 ? void 0 : _team$team2.name) !== null && _team$team$name !== void 0 ? _team$team$name : 'team name missing',
-      subTitle: team !== null && team !== void 0 && (_team$captain2 = team.captain) !== null && _team$captain2 !== void 0 && _team$captain2.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain3 = team.captain) === null || _team$captain3 === void 0 ? void 0 : _team$captain3.name) : 'No captain assigned',
+      subTitle: team !== null && team !== void 0 && (_team$captain = team.captain) !== null && _team$captain !== void 0 && _team$captain.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain2 = team.captain) === null || _team$captain2 === void 0 ? void 0 : _team$captain2.name) : 'No captain assigned',
       details: team === null || team === void 0 ? void 0 : (_team$players2 = team.players) === null || _team$players2 === void 0 ? void 0 : _team$players2.map(function (player) {
-        var _ref3, _player$name3;
-        return (_ref3 = (_player$name3 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name3 !== void 0 ? _player$name3 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref3 !== void 0 ? _ref3 : player === null || player === void 0 ? void 0 : player.email;
+        var _ref4, _player$name4;
+        return (_ref4 = (_player$name4 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name4 !== void 0 ? _player$name4 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref4 !== void 0 ? _ref4 : player === null || player === void 0 ? void 0 : player.email;
       }),
       picture: team === null || team === void 0 ? void 0 : (_team$team3 = team.team) === null || _team$team3 === void 0 ? void 0 : _team$team3.profilePicture
     });
@@ -8350,7 +8382,7 @@ var Season = function Season(_ref) {
     shrink: "0",
     width: "100%"
   }, Object.values(captainsToAdd).map(function (player, idx) {
-    var _player$name4;
+    var _player$name5;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_12__.CardWrapper, {
       boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
       key: "captains-".concat(player.id, "-").concat(idx),
@@ -8367,7 +8399,7 @@ var Season = function Season(_ref) {
       direction: "column"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, {
       marginBottom: "4px"
-    }, (_player$name4 = player.name) !== null && _player$name4 !== void 0 ? _player$name4 : player.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, player.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    }, (_player$name5 = player.name) !== null && _player$name5 !== void 0 ? _player$name5 : player.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, player.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
       icon: "close",
       onClick: function onClick() {
         return onSelectCaptains(player);
