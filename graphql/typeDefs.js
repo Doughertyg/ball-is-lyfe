@@ -15,7 +15,7 @@ module.exports = gql`
     getSeasonByID(seasonID: ID!, userID: ID!): GetSeasonByIDReturnType
     getUserContext(token: String!): User
     getTeam(teamID: ID!): Team
-    getTeams: [Team]
+    getTeams(seasonIDToExclude: ID): [Team]
     getTeamsByUser(userID: ID!): [Team]
   }
   type GetLeagueByIDReturnType {

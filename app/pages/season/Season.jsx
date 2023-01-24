@@ -63,7 +63,7 @@ const FETCH_SEASON_QUERY = gql`
       }
       isLeagueAdmin
     }
-    getTeams {
+    getTeams(seasonIDToExclude: $seasonID) {
       id
       name
       players {

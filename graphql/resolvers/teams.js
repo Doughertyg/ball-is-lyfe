@@ -29,9 +29,14 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getTeams() {
+    async getTeams(_, { seasonIDToExclude }) {
       try {
         const teams = await Team.find().populate('captain').populate('players').exec();
+        if (seasonIDToExclude != null) {
+          const season = await Season.findById(seasonIDToExclude).populate('teams');
+          const seasonTeams = season.teams.map(seasonTeam => seasonTeam.team);
+          return teams.filter(team => !seasonTeams.includes(team.id));
+        }
         return teams ?? [];
       } catch (err) {
         throw new Error(err);
