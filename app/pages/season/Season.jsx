@@ -106,6 +106,33 @@ const ADD_CAPTAINS_MUTATION = gql`
   }
 `;
 
+const ADD_TEAMS_TO_SEASON_MUTATION = gql`
+  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {
+    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {
+      id
+      name
+      teams {
+        captain {
+          email
+          name
+          profilePicture
+          username
+        }
+        players {
+          id
+          email
+          name
+          profilePicture
+          username
+        }
+        team {
+          name
+        }
+      }
+    }
+  }
+`;
+
 /**
  * Home page for season. Logged in user sees stats, games, standings
  * 
@@ -151,6 +178,8 @@ const Season = ({match}) => {
   });
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
   const leagueID = seasonData?.getSeasonByID?.season?.league?._id;
+
+  console.log('error: ', JSON.stringify(error, null, 2));
 
   useEffect(() => {
     if (seasonData != null && seasonData?.getSeasonByID?.season?.teams != null) {
@@ -207,9 +236,22 @@ const Season = ({match}) => {
     }
   });
 
-  const addTeamsToSeason = () => {
-    // commit mutation here
-  }
+  const [addTeamsToSeason, {isSubmitting: isAddingTeamsToSeason}] = useMutation(ADD_TEAMS_TO_SEASON_MUTATION, {
+    onCompleted: (res) => {
+      console.log('Added teams to season. res: ', res);
+      if (res.addTeamsToSeason != null) {
+        setSeasonTeams(res.addTeamsToSeason.teams);
+      }
+      setTeamsToAdd({});
+    },
+    onError: (error) => {
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+    },
+    variables: {
+      seasonID,
+      teamIDs: Object.keys(teamsToAdd)
+    }
+  });
 
   const onSelectPlayers = (player) => {
     if (!playersToAdd[player.id]) {
@@ -413,8 +455,8 @@ const Season = ({match}) => {
                 ))}
               </FlexContainer>
               {Object.keys(teamsToAdd).length > 0 && (<FlexContainer marginTop="12px" width="100%">
-                <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setTeamsToAdd({})} />
-                <Button isLoading={isSubmitting} label="Add teams to season" onClick={() => addTeamsToSeason()} />
+                <Button isDisabled={isAddingTeamsToSeason} label="Cancel" onClick={() => setTeamsToAdd({})} />
+                <Button isLoading={isAddingTeamsToSeason} label="Add teams to season" onClick={() => addTeamsToSeason()} />
               </FlexContainer>)}
             </>
           )}
@@ -425,7 +467,7 @@ const Season = ({match}) => {
                   <CompactDetailsCard
                     key={`season-teams-${team.id}-${idx}`}
                     title={team?.team?.name ?? 'team name missing'}
-                    subTitle={team?.captain?.name ? `Captain: ${team?.captain?.name }` : 'captain missing'}
+                    subTitle={team?.captain?.name ? `Captain: ${team?.captain?.name }` : 'No captain assigned'}
                     details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
                     picture={team?.team?.profilePicture}
                   />

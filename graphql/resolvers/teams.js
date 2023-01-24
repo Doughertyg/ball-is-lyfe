@@ -39,6 +39,46 @@ module.exports = {
     }
   },
   Mutation: {
+    async addTeamsToSeason(_, { teamIDs, seasonID }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const season = await Season.findById(seasonID);
+
+      teamIDs.forEach(async (teamID) => {
+        const team = await Team.findById(teamID);
+        const players = team.players.filter(player => season.players.includes(player));
+        const newTeamInstance = new TeamInstance({
+          captain: null,
+          players,
+          season: season.id,
+          team: team.id
+        });
+        await newTeamInstance.save();
+        season.teams.push(newTeamInstance); // add new team instance to the season
+        await season.save();
+      });
+
+      return await Season.findById(seasonID)
+        .populate({
+          path: 'teams',
+          populate: [{
+            path: 'captain'
+          }, {
+            path: 'players'
+          }, {
+            path: 'team'
+          }]
+        });
+    },
     async createTeam(_, { bannerPicture, captain, description, name, players, profilePicture, seasonID, sport }, context) {
       const authHeader = context.req.headers.authorization;
       if (authHeader == null) {

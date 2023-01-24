@@ -4656,15 +4656,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-var _templateObject, _templateObject2;
+var _templateObject;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
 
 
-var List = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].ul(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin-top: 4px;\n  list-style-type: circle;\n"])));
-var ListItem = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].li(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  margin-left: 4px;\n"])));
+var List = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].ul(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin-left: 1em;\n  margin-top: 4px;\n  list-style-type: circle;\n"])));
 
 /**
  * Component for showing a compact display card of details
@@ -4696,9 +4695,11 @@ var CompactDetailsCard = function CompactDetailsCard(_ref) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
     direction: "column"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.SectionHeadingText, {
-    marginBottom: "4px"
-  }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, null, subTitle), (details === null || details === void 0 ? void 0 : details.length) > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(List, null, details === null || details === void 0 ? void 0 : details.map(function (detail, idx) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ListItem, {
+    margin: "0 0 4px 0"
+  }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, null, subTitle), (details === null || details === void 0 ? void 0 : details.length) > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    justify: "flex-start"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(List, null, details === null || details === void 0 ? void 0 : details.map(function (detail, idx) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
       key: idx
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
       key: idx
@@ -4973,6 +4974,7 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     margin: "8px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     errors: name === "" ? 'Name cannot be blank.' : null,
+    loading: isSubmitting,
     name: "name",
     onChange: function onChange(input) {
       return setName(input);
@@ -4987,7 +4989,7 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
   }, "Please select a captain (they will also be added as a player) "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     filterResults: filterCaptainResults,
     label: "Select a captain...",
-    loading: loading,
+    loading: loading || isSubmitting,
     onClick: function onClick(player) {
       return setCaptain(player);
     },
@@ -5004,7 +5006,7 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
   }, "Players"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     filterResults: filterPlayerResults,
     label: "Search players...",
-    loading: loading,
+    loading: loading || isSubmitting,
     onClick: addRemovePlayers,
     selected: players,
     source: (_data$getSeasonByID$s = data === null || data === void 0 ? void 0 : (_data$getSeasonByID = data.getSeasonByID) === null || _data$getSeasonByID === void 0 ? void 0 : (_data$getSeasonByID$s2 = _data$getSeasonByID.season) === null || _data$getSeasonByID$s2 === void 0 ? void 0 : _data$getSeasonByID$s2.players) !== null && _data$getSeasonByID$s !== void 0 ? _data$getSeasonByID$s : []
@@ -5026,6 +5028,7 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     isDisabled: false,
     label: "Cancel",
+    loading: isSubmitting,
     onClick: onCancel
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     isLoading: false,
@@ -7849,7 +7852,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../styled-components/card.js */ "./app/styled-components/card.js");
 /* harmony import */ var _components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var _templateObject, _templateObject2, _templateObject3;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
@@ -7886,6 +7889,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        teams {\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            name\n          }\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n    }\n  }\n"])));
 var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
+var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
 
 /**
  * Home page for season. Logged in user sees stats, games, standings
@@ -7958,6 +7962,7 @@ var Season = function Season(_ref) {
     error = _useQuery.error;
   var isLeagueAdmin = (_seasonData$getSeason = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason2 = seasonData.getSeasonByID) === null || _seasonData$getSeason2 === void 0 ? void 0 : _seasonData$getSeason2.isLeagueAdmin) !== null && _seasonData$getSeason !== void 0 ? _seasonData$getSeason : false;
   var leagueID = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason3 = seasonData.getSeasonByID) === null || _seasonData$getSeason3 === void 0 ? void 0 : (_seasonData$getSeason4 = _seasonData$getSeason3.season) === null || _seasonData$getSeason4 === void 0 ? void 0 : (_seasonData$getSeason5 = _seasonData$getSeason4.league) === null || _seasonData$getSeason5 === void 0 ? void 0 : _seasonData$getSeason5._id;
+  console.log('error: ', JSON.stringify(error, null, 2));
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var _seasonData$getSeason6, _seasonData$getSeason7;
     if (seasonData != null && (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason6 = seasonData.getSeasonByID) === null || _seasonData$getSeason6 === void 0 ? void 0 : (_seasonData$getSeason7 = _seasonData$getSeason6.season) === null || _seasonData$getSeason7 === void 0 ? void 0 : _seasonData$getSeason7.teams) != null) {
@@ -8016,9 +8021,25 @@ var Season = function Season(_ref) {
     _useMutation4 = _slicedToArray(_useMutation3, 2),
     addCaptainsToSeason = _useMutation4[0],
     isSubmittingCaptains = _useMutation4[1].isSubmitting;
-  var addTeamsToSeason = function addTeamsToSeason() {
-    // commit mutation here
-  };
+  var _useMutation5 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_17__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
+      onCompleted: function onCompleted(res) {
+        console.log('Added teams to season. res: ', res);
+        if (res.addTeamsToSeason != null) {
+          setSeasonTeams(res.addTeamsToSeason.teams);
+        }
+        setTeamsToAdd({});
+      },
+      onError: function onError(error) {
+        console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
+      },
+      variables: {
+        seasonID: seasonID,
+        teamIDs: Object.keys(teamsToAdd)
+      }
+    }),
+    _useMutation6 = _slicedToArray(_useMutation5, 2),
+    addTeamsToSeason = _useMutation6[0],
+    isAddingTeamsToSeason = _useMutation6[1].isSubmitting;
   var onSelectPlayers = function onSelectPlayers(player) {
     if (!playersToAdd[player.id]) {
       var newPlayersToAddMap = _objectSpread({}, playersToAdd);
@@ -8246,13 +8267,13 @@ var Season = function Season(_ref) {
     marginTop: "12px",
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    isDisabled: isSubmitting,
+    isDisabled: isAddingTeamsToSeason,
     label: "Cancel",
     onClick: function onClick() {
       return setTeamsToAdd({});
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    isLoading: isSubmitting,
+    isLoading: isAddingTeamsToSeason,
     label: "Add teams to season",
     onClick: function onClick() {
       return addTeamsToSeason();
@@ -8265,7 +8286,7 @@ var Season = function Season(_ref) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_13__["default"], {
       key: "season-teams-".concat(team.id, "-").concat(idx),
       title: (_team$team$name = team === null || team === void 0 ? void 0 : (_team$team2 = team.team) === null || _team$team2 === void 0 ? void 0 : _team$team2.name) !== null && _team$team$name !== void 0 ? _team$team$name : 'team name missing',
-      subTitle: team !== null && team !== void 0 && (_team$captain2 = team.captain) !== null && _team$captain2 !== void 0 && _team$captain2.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain3 = team.captain) === null || _team$captain3 === void 0 ? void 0 : _team$captain3.name) : 'captain missing',
+      subTitle: team !== null && team !== void 0 && (_team$captain2 = team.captain) !== null && _team$captain2 !== void 0 && _team$captain2.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain3 = team.captain) === null || _team$captain3 === void 0 ? void 0 : _team$captain3.name) : 'No captain assigned',
       details: team === null || team === void 0 ? void 0 : (_team$players2 = team.players) === null || _team$players2 === void 0 ? void 0 : _team$players2.map(function (player) {
         var _ref3, _player$name3;
         return (_ref3 = (_player$name3 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name3 !== void 0 ? _player$name3 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref3 !== void 0 ? _ref3 : player === null || player === void 0 ? void 0 : player.email;

@@ -160,10 +160,10 @@ const CreatetTeamComponent = ({ onCancel, onComplete, seasonID }) => {
         <PageHeader margin="0px">Create team</PageHeader>
         <Divider width="100%" />
         <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
-        <InputField errors={name === "" ? 'Name cannot be blank.' : null} name="name" onChange={(input) => setName(input)} placeholder="Create sick team name..." width="100%" value={name} />
+        <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={isSubmitting} name="name" onChange={(input) => setName(input)} placeholder="Create sick team name..." width="100%" value={name} />
         <SectionHeadingText margin="8px 0 8px 0">Captain</SectionHeadingText>
         <DetailsText marginBottom="4px">Please select a captain (they will also be added as a player) </DetailsText>
-        <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loading} onClick={(player) => setCaptain(player)} source={data?.getCaptains ?? []} />
+        <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loading || isSubmitting} onClick={(player) => setCaptain(player)} source={data?.getCaptains ?? []} />
         {captain != null && (
           <CompactPlayerCard
             name={captain.name}
@@ -173,7 +173,7 @@ const CreatetTeamComponent = ({ onCancel, onComplete, seasonID }) => {
           />
         )}
         <SectionHeadingText margin="8px 0 8px 0">Players</SectionHeadingText>
-        <SearchField filterResults={filterPlayerResults} label="Search players..." loading={loading} onClick={addRemovePlayers} selected={players} source={data?.getSeasonByID?.season?.players ?? []} />
+        <SearchField filterResults={filterPlayerResults} label="Search players..." loading={loading || isSubmitting} onClick={addRemovePlayers} selected={players} source={data?.getSeasonByID?.season?.players ?? []} />
         <FlexContainer flexWrap="wrap" justify="flex-start">
           {Object.values(players).map((player, idx) => (
             <CompactPlayerCard
@@ -186,7 +186,7 @@ const CreatetTeamComponent = ({ onCancel, onComplete, seasonID }) => {
           ))}
         </FlexContainer>
         <FlexContainer justify="center" marginTop="12px">
-          <Button isDisabled={false} label="Cancel" onClick={onCancel} />
+          <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
           <Button isLoading={false} label="Create Team" loading={isSubmitting} onClick={onSubmit} />
         </FlexContainer>
       </FlexContainer>

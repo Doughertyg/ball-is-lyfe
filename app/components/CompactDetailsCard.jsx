@@ -5,12 +5,9 @@ import Icon from './Icon.jsx';
 import styled from 'styled-components';
 
 const List = styled.ul`
+  margin-left: 1em;
   margin-top: 4px;
   list-style-type: circle;
-`;
-
-const ListItem = styled.li`
-  margin-left: 4px;
 `;
 
 /**
@@ -44,17 +41,17 @@ const CompactDetailsCard = ({
         )}
         <FlexContainer direction="column">
           <DetailsText>
-            <SectionHeadingText marginBottom="4px">
+            <SectionHeadingText margin="0 0 4px 0">
               {title}
             </SectionHeadingText>
           </DetailsText>
           <DetailsText>{subTitle}</DetailsText>
           {details?.length > 0 && (
-            <FlexContainer>
+            <FlexContainer justify="flex-start">
               <List>
                 {details?.map((detail, idx) => {
                   return (
-                    <ListItem key={idx}><DetailsText key={idx}>{detail}</DetailsText></ListItem>
+                    <li key={idx}><DetailsText key={idx}>{detail}</DetailsText></li>
                   )
                 })}
               </List>

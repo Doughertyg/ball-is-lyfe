@@ -85,7 +85,7 @@ module.exports = gql`
     id: ID!
     createdAt: String!
     players: [User]!
-    captain: User!
+    captain: User
     team: Team!
     season: Season!
   }
@@ -203,7 +203,6 @@ module.exports = gql`
     players: [ID]
   }
   input CreateSeasonInput {
-    name: String!
     description: String!
     seasonEnd: String!
     league: ID!
@@ -214,6 +213,7 @@ module.exports = gql`
     addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
     addCaptainsToSeason(seasonID: ID!, captains: [ID!]): Season!
     addPlayersToSeason(seasonID: ID!, players: [ID!]): Season!
+    addTeamsToSeason(teamIDs: [ID], seasonID: ID!): Season!
     register(registerInput: RegisterInput): User!
     registerUser(token: String!): User!
     login(username: String!, password: String!): User!
