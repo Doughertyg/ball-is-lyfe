@@ -57,6 +57,7 @@ const FETCH_SEASON_QUERY = gql`
             username
           }
           team {
+            id
             name
           }
         }
@@ -417,9 +418,14 @@ const Season = ({match}) => {
           </FlexContainer>
           <FlexContainer alignItems="center" justify="start" overFlow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Upcoming Games</SectionHeadingText>
-            {addGamesExpanded && <AddGamesComponent />}
             {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setAddGamesExpanded(!addGamesExpanded)} />}
           </FlexContainer>
+          {addGamesExpanded && (
+            <AddGamesComponent
+              onCancel={() => setAddGamesExpanded(false)}
+              seasonID={seasonID}
+              teamsSource={seasonTeams.map(teamInstance => teamInstance.team)}
+            />)}
           <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
             {upcomingGames.length > 0 ?
               upcomingGames.map((game, idx) => {

@@ -4238,80 +4238,161 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
-/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
-/* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
+/* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
+/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+/* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
+var _templateObject;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
 
 
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
 
 /**
- * collapsible omponent for adding games to a season
+ * collapsible component for adding games to a season
+ * Multiple can be created and added at the same time.
  * 
- * ,---------------,    ,-----------------,     ,------,
- * :   teamA       : vs :     teamB       : at: : :_:v :
- * `---------------`    `-----------------`     `------`
- *     ,--------,   ,--------------,
- *     : Cancel :   :   Add game   ;
- *     `--------`   `--------------`
+ * ___________________________________________________________
+ *  ,---------------------------------------------------------,
+ *  |  ,---------------,    ,-----------------,     ,------,  |
+ *  |  :   teamA       : vs :     teamB       : at: : :_:v :  |
+ *  |  `---------------`    `-----------------`     `------`  |
+ *  |                                                         |
+ *  |             ,--------,   ,--------------,               |
+ *  |             | Cancel |   |   Add game   |               |
+ *  |             `--------`   `--------------`               |
+ *  `---------------------------------------------------------`
+ * 
  */
 var AddGamesComponent = function AddGamesComponent(_ref) {
-  var isExpanded = _ref.isExpanded,
-    onCancel = _ref.onCancel,
-    seasonID = _ref.seasonID;
+  var _homeTeam$name, _awayTeam$name;
+  var onCancel = _ref.onCancel,
+    seasonID = _ref.seasonID,
+    teamsSource = _ref.teamsSource;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     gamesToAdd = _useState2[0],
     setGamesToAdd = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
     _useState4 = _slicedToArray(_useState3, 2),
-    teamA = _useState4[0],
-    setTeamA = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    homeTeam = _useState4[0],
+    setHomeTeam = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
     _useState6 = _slicedToArray(_useState5, 2),
-    teamB = _useState6[0],
-    setTeamB = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    awayTeam = _useState6[0],
+    setAwayTeam = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
     _useState8 = _slicedToArray(_useState7, 2),
     date = _useState8[0],
     setDate = _useState8[1];
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
-    alignItems: "center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    filterResults: function filterResults() {},
+  var isSubmitting = false;
+  var onSubmit = function onSubmit() {
+    // submit mutation here
+  };
+  var filterTeamResults = function filterTeamResults(team, input) {
+    var _team$name;
+    return team === null || team === void 0 ? void 0 : (_team$name = team.name) === null || _team$name === void 0 ? void 0 : _team$name.includes(input);
+  };
+  var homeTeamSource = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return teamsSource === null || teamsSource === void 0 ? void 0 : teamsSource.filter(function (team) {
+      return (team === null || team === void 0 ? void 0 : team.id) !== (awayTeam === null || awayTeam === void 0 ? void 0 : awayTeam.id);
+    });
+  }, [teamsSource, awayTeam]);
+  var awayTeamSource = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return teamsSource === null || teamsSource === void 0 ? void 0 : teamsSource.filter(function (team) {
+      return (team === null || team === void 0 ? void 0 : team.id) !== (homeTeam === null || homeTeam === void 0 ? void 0 : homeTeam.id);
+    });
+  }, [teamsSource, homeTeam]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    height: "100%",
+    justify: "flex-start",
+    overflow: "visible",
+    padding: "0 8px",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
+    margin: "0px"
+  }, "Add game"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+    width: "100%"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "flex-end",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    overflow: "clip visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Home Team"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    filterResults: filterTeamResults,
     label: "Search teams...",
-    onClick: function onClick() {},
-    source: [],
-    width: "auto"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "0 8px"
-  }, "vs."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    filterResults: function filterResults() {},
+    onClick: function onClick(team) {
+      return setHomeTeam(team);
+    },
+    source: homeTeamSource
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 24px"
+  }, "Vs."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    overflow: "clip visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Away Team"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    filterResults: filterTeamResults,
     label: "Search teams...",
-    onClick: function onClick() {},
-    source: [],
-    width: "auto"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "0 8px"
-  }, "on"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    onClick: function onClick(team) {
+      return setAwayTeam(team);
+    },
+    source: awayTeamSource
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    justify: "space-between"
+  }, homeTeam != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    title: (_homeTeam$name = homeTeam === null || homeTeam === void 0 ? void 0 : homeTeam.name) !== null && _homeTeam$name !== void 0 ? _homeTeam$name : 'Team name missing',
+    onClose: function onClose() {
+      return setHomeTeam(null);
+    }
+  }), awayTeam != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    title: (_awayTeam$name = awayTeam === null || awayTeam === void 0 ? void 0 : awayTeam.name) !== null && _awayTeam$name !== void 0 ? _awayTeam$name : 'Team name missing',
+    onClose: function onClose() {
+      return setAwayTeam(null);
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    marginTop: "20px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 12px 8px 0"
+  }, "At"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     onChange: setDate,
     width: "100%",
     value: date,
     type: "datetime-local"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    justify: "center",
+    marginTop: "12px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    isDisabled: isSubmitting,
+    label: "Cancel",
+    loading: isSubmitting,
+    onClick: onCancel
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    label: "Add",
-    marginTop: "4px",
-    onClick: function onClick() {}
-  }));
+    isLoading: isSubmitting,
+    label: "Add Game",
+    loading: isSubmitting,
+    onClick: onSubmit
+  }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddGamesComponent);
 
@@ -7904,7 +7985,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        teams {\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            name\n          }\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
+var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        teams {\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
 var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
@@ -8221,13 +8302,21 @@ var Season = function Season(_ref) {
     overFlow: "visible"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
     margin: "20px 12px 20px 0"
-  }, "Upcoming Games"), addGamesExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], null), isLeagueAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }, "Upcoming Games"), isLeagueAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     borderRadius: "50%",
     icon: "plus",
     onClick: function onClick() {
       return setAddGamesExpanded(!addGamesExpanded);
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+  })), addGamesExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    onCancel: function onCancel() {
+      return setAddGamesExpanded(false);
+    },
+    seasonID: seasonID,
+    teamsSource: seasonTeams.map(function (teamInstance) {
+      return teamInstance.team;
+    })
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     overFlow: "scroll",
     width: "100%"
