@@ -2,6 +2,7 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Season = require('../../db/models/Season');
 const League = require('../../db/models/League');
+const Game = require('../../db/models/Game');
 const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 
@@ -39,6 +40,16 @@ module.exports = {
           .populate('league')
           .populate('players')
           .populate('captains')
+          .populate({
+            path: 'games',
+            populate: [{
+              path: 'awayTeam',
+              populate: 'team'
+            }, {
+              path: 'homeTeam',
+              populate: 'team'
+            }]
+          })
           .populate({
             path: 'teams',
             populate: [{
@@ -84,6 +95,63 @@ module.exports = {
       season.captains = newCaptains;
       season.players = players;
       return await season.save();
+    },
+    async addGamesToSeason(_, { seasonID, gamesToAdd }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const season = await Season.findById(seasonID);
+      if (season == null) {
+        throw new Error('Season unexpectedly null.');
+      }
+
+      const games = [...season.games];
+      const newGames = gamesToAdd.map(async ({
+        awayScore,
+        awayTeam,
+        date,
+        homeTeam,
+        homeScore
+      }) => {
+        const game = new Game({
+          awayScore,
+          awayTeam,
+          date,
+          homeScore,
+          homeTeam,
+          season: season.id,
+        });
+
+        return await game.save();
+      });
+
+      for await (let game of newGames) {
+        games.push(game);
+      }
+
+      season.games = games;
+      await season.save();
+
+      const szn = await Season.findById(seasonID)
+        .populate({
+          path: 'games',
+          populate: [{
+            path: 'awayTeam',
+            populate: 'team'
+          }, {
+            path: 'homeTeam',
+            populate: 'team'
+          }]
+        });
+      return szn;
     },
     async addPlayersToSeason(_, { seasonID, players }, context) {
       const authHeader = context.req.headers.authorization;

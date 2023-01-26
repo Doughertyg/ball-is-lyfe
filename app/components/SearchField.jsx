@@ -76,6 +76,14 @@ export default function SearchField({
     }
   }
 
+  const onResultClick = (entry) => {
+    onClick?.(entry);
+    if (selected == null) {
+      // not multiselect, close results
+      setResultsOpen(false);
+    }
+  }
+
   return (
     <FlexContainer direction="column" grow="1" overflow="visible">
       <InputField
@@ -96,7 +104,7 @@ export default function SearchField({
             <ContentWrapper>
             {results?.map((entry, idx) => {
               return (
-                <Clickable key={idx} onClick={() => onClick(entry)}> 
+                <Clickable key={idx} onClick={() => onResultClick(entry)}> 
                   {idx !== 0 && <Divider marginBottom="10px" />}
                   <FlexContainer alignItems="center" justify="space-between">
                     {getResultComponent ? getResultComponent(entry, idx) : (

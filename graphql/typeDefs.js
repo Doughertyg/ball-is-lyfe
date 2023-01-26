@@ -102,9 +102,9 @@ module.exports = gql`
     season: Season!
     date: String!
     awayTeam: TeamInstance!
-    awayScore: Int!
-    homeTime: TeamInstance!
-    homeScore: Int!
+    awayScore: Int
+    homeTeam: TeamInstance!
+    homeScore: Int
   }
   type StatUnit {
     name: String!
@@ -210,7 +210,15 @@ module.exports = gql`
     players: [ID]!
     seasonStart: String!
   }
+  input GamesToAddInput {
+    awayScore: Int
+    awayTeam: ID!
+    date: String!
+    homeScore: Int
+    homeTeam: ID!
+  }
   type Mutation {
+    addGamesToSeason(seasonID: ID!, gamesToAdd: [GamesToAddInput!]): Season!
     addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
     addCaptainsToSeason(seasonID: ID!, captains: [ID!]): Season!
     addPlayersToSeason(seasonID: ID!, players: [ID!]): Season!

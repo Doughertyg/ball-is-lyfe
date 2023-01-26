@@ -4237,6 +4237,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
@@ -4244,7 +4246,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
 /* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
-var _templateObject;
+var _templateObject, _templateObject2;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -4259,7 +4261,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
+
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+var ADD_GAMES_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_7__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addGamesToSeason(\n    $seasonID: ID!,\n    $gamesToAdd: [GamesToAddInput!]\n  ) {\n    addGamesToSeason(\n      seasonID: $seasonID,\n      gamesToAdd: $gamesToAdd\n    ) {\n      name\n      games {\n        awayTeam {\n          team {\n            name\n          }\n        }\n        awayScore\n        date\n        homeTeam {\n          team {\n            name\n          }\n        }\n        homeScore\n      }\n    }\n  }\n"])));
 
 /**
  * collapsible component for adding games to a season
@@ -4278,33 +4283,46 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div(_tem
  * 
  */
 var AddGamesComponent = function AddGamesComponent(_ref) {
-  var _homeTeam$name, _awayTeam$name;
+  var _homeTeam$team$name, _homeTeam$team, _awayTeam$team$name, _awayTeam$team;
   var onCancel = _ref.onCancel,
+    onComplete = _ref.onComplete,
     seasonID = _ref.seasonID,
     teamsSource = _ref.teamsSource;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
     _useState2 = _slicedToArray(_useState, 2),
-    gamesToAdd = _useState2[0],
-    setGamesToAdd = _useState2[1];
+    homeTeam = _useState2[0],
+    setHomeTeam = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
     _useState4 = _slicedToArray(_useState3, 2),
-    homeTeam = _useState4[0],
-    setHomeTeam = _useState4[1];
+    awayTeam = _useState4[0],
+    setAwayTeam = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
     _useState6 = _slicedToArray(_useState5, 2),
-    awayTeam = _useState6[0],
-    setAwayTeam = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
-    _useState8 = _slicedToArray(_useState7, 2),
-    date = _useState8[0],
-    setDate = _useState8[1];
-  var isSubmitting = false;
-  var onSubmit = function onSubmit() {
-    // submit mutation here
-  };
-  var filterTeamResults = function filterTeamResults(team, input) {
-    var _team$name;
-    return team === null || team === void 0 ? void 0 : (_team$name = team.name) === null || _team$name === void 0 ? void 0 : _team$name.includes(input);
+    date = _useState6[0],
+    setDate = _useState6[1];
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useMutation)(ADD_GAMES_TO_SEASON_MUTATION, {
+      onCompleted: function onCompleted(res) {
+        console.log('successfully added game to season');
+        onComplete === null || onComplete === void 0 ? void 0 : onComplete(res);
+      },
+      onError: function onError(error) {
+        console.log('Stringified error on mutation: ', JSON.stringify(error, null, 2));
+      },
+      variables: {
+        seasonID: seasonID,
+        gamesToAdd: [{
+          awayTeam: awayTeam === null || awayTeam === void 0 ? void 0 : awayTeam.id,
+          date: date,
+          homeTeam: homeTeam === null || homeTeam === void 0 ? void 0 : homeTeam.id
+        }]
+      }
+    }),
+    _useMutation2 = _slicedToArray(_useMutation, 2),
+    addGamesToSeason = _useMutation2[0],
+    isSubmitting = _useMutation2[1].isSubmitting;
+  var filterTeamResults = function filterTeamResults(teamInstance, input) {
+    var _teamInstance$team, _teamInstance$team$na;
+    return teamInstance === null || teamInstance === void 0 ? void 0 : (_teamInstance$team = teamInstance.team) === null || _teamInstance$team === void 0 ? void 0 : (_teamInstance$team$na = _teamInstance$team.name) === null || _teamInstance$team$na === void 0 ? void 0 : _teamInstance$team$na.includes(input);
   };
   var homeTeamSource = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     return teamsSource === null || teamsSource === void 0 ? void 0 : teamsSource.filter(function (team) {
@@ -4316,6 +4334,17 @@ var AddGamesComponent = function AddGamesComponent(_ref) {
       return (team === null || team === void 0 ? void 0 : team.id) !== (homeTeam === null || homeTeam === void 0 ? void 0 : homeTeam.id);
     });
   }, [teamsSource, homeTeam]);
+  var getTeamResultsComponent = function getTeamResultsComponent(teamInstance) {
+    var _teamInstance$team2, _teamInstance$tea, _teamInstance$team$na2, _teamInstance$team3;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (teamInstance === null || teamInstance === void 0 ? void 0 : (_teamInstance$team2 = teamInstance.team) === null || _teamInstance$team2 === void 0 ? void 0 : _teamInstance$team2.profilePicture) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ProfilePictureThumb, {
+      height: "32px",
+      referrerPolicy: "no-referrer",
+      src: teamInstance === null || teamInstance === void 0 ? void 0 : (_teamInstance$tea = teamInstance.tea) === null || _teamInstance$tea === void 0 ? void 0 : _teamInstance$tea.profilePicture,
+      width: "32px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
+      width: "fit-content"
+    }, (_teamInstance$team$na2 = teamInstance === null || teamInstance === void 0 ? void 0 : (_teamInstance$team3 = teamInstance.team) === null || _teamInstance$team3 === void 0 ? void 0 : _teamInstance$team3.name) !== null && _teamInstance$team$na2 !== void 0 ? _teamInstance$team$na2 : 'Name missing'));
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     direction: "column",
     height: "100%",
@@ -4337,7 +4366,9 @@ var AddGamesComponent = function AddGamesComponent(_ref) {
     margin: "8px 0 8px 0"
   }, "Home Team"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     filterResults: filterTeamResults,
+    getResultComponent: getTeamResultsComponent,
     label: "Search teams...",
+    loading: isSubmitting,
     onClick: function onClick(team) {
       return setHomeTeam(team);
     },
@@ -4351,7 +4382,9 @@ var AddGamesComponent = function AddGamesComponent(_ref) {
     margin: "8px 0 8px 0"
   }, "Away Team"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     filterResults: filterTeamResults,
+    getResultComponent: getTeamResultsComponent,
     label: "Search teams...",
+    loading: isSubmitting,
     onClick: function onClick(team) {
       return setAwayTeam(team);
     },
@@ -4360,12 +4393,12 @@ var AddGamesComponent = function AddGamesComponent(_ref) {
     alignItems: "center",
     justify: "space-between"
   }, homeTeam != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    title: (_homeTeam$name = homeTeam === null || homeTeam === void 0 ? void 0 : homeTeam.name) !== null && _homeTeam$name !== void 0 ? _homeTeam$name : 'Team name missing',
+    title: (_homeTeam$team$name = homeTeam === null || homeTeam === void 0 ? void 0 : (_homeTeam$team = homeTeam.team) === null || _homeTeam$team === void 0 ? void 0 : _homeTeam$team.name) !== null && _homeTeam$team$name !== void 0 ? _homeTeam$team$name : 'Team name missing',
     onClose: function onClose() {
       return setHomeTeam(null);
     }
   }), awayTeam != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    title: (_awayTeam$name = awayTeam === null || awayTeam === void 0 ? void 0 : awayTeam.name) !== null && _awayTeam$name !== void 0 ? _awayTeam$name : 'Team name missing',
+    title: (_awayTeam$team$name = awayTeam === null || awayTeam === void 0 ? void 0 : (_awayTeam$team = awayTeam.team) === null || _awayTeam$team === void 0 ? void 0 : _awayTeam$team.name) !== null && _awayTeam$team$name !== void 0 ? _awayTeam$team$name : 'Team name missing',
     onClose: function onClose() {
       return setAwayTeam(null);
     }
@@ -4376,6 +4409,7 @@ var AddGamesComponent = function AddGamesComponent(_ref) {
     margin: "8px 12px 8px 0"
   }, "At"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     onChange: setDate,
+    loading: isSubmitting,
     width: "100%",
     value: date,
     type: "datetime-local"
@@ -4391,7 +4425,7 @@ var AddGamesComponent = function AddGamesComponent(_ref) {
     isLoading: isSubmitting,
     label: "Add Game",
     loading: isSubmitting,
-    onClick: onSubmit
+    onClick: addGamesToSeason
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddGamesComponent);
@@ -6176,7 +6210,7 @@ function SearchField(_ref) {
     height = _ref.height,
     label = _ref.label,
     loading = _ref.loading,
-    _onClick = _ref.onClick,
+    onClick = _ref.onClick,
     selected = _ref.selected,
     source = _ref.source,
     width = _ref.width;
@@ -6197,6 +6231,13 @@ function SearchField(_ref) {
   var onInputClick = function onInputClick() {
     if (!resultsOpen) {
       setResultsOpen(true);
+    }
+  };
+  var onResultClick = function onResultClick(entry) {
+    onClick === null || onClick === void 0 ? void 0 : onClick(entry);
+    if (selected == null) {
+      // not multiselect, close results
+      setResultsOpen(false);
     }
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
@@ -6224,7 +6265,7 @@ function SearchField(_ref) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Clickable, {
       key: idx,
       onClick: function onClick() {
-        return _onClick(entry);
+        return onResultClick(entry);
       }
     }, idx !== 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common_js__WEBPACK_IMPORTED_MODULE_2__.Divider, {
       marginBottom: "10px"
@@ -7935,10 +7976,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Icon.jsx */ "./app/components/Icon.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../styled-components/common */ "./app/styled-components/common.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/LoadingSpinnerBack.jsx */ "./app/components/LoadingSpinnerBack.jsx");
@@ -7948,8 +7989,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CreateTeamComponent_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/CreateTeamComponent.jsx */ "./app/components/CreateTeamComponent.jsx");
 /* harmony import */ var _components_AddPlayerSection_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/AddPlayerSection.jsx */ "./app/components/AddPlayerSection.jsx");
 /* harmony import */ var _components_PlayerCard_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/PlayerCard.jsx */ "./app/components/PlayerCard.jsx");
-/* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../styled-components/card.js */ "./app/styled-components/card.js");
-/* harmony import */ var _components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
+/* harmony import */ var _components_Card_jsx__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/Card.jsx */ "./app/components/Card.jsx");
+/* harmony import */ var _styled_components_card_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../styled-components/card.js */ "./app/styled-components/card.js");
+/* harmony import */ var _components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../components/CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -7985,10 +8027,11 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        teams {\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
-var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
-var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
-var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_14__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
+
+var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_15__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
+var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_15__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
+var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_15__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
+var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_15__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
 
 /**
  * Home page for season. Logged in user sees stats, games, standings
@@ -8049,8 +8092,8 @@ var Season = function Season(_ref) {
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
   var seasonID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.seasonID;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_15__.useHistory)();
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_16__.useQuery)(FETCH_SEASON_QUERY, {
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_16__.useHistory)();
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_17__.useQuery)(FETCH_SEASON_QUERY, {
       variables: {
         seasonID: seasonID,
         userID: user.id
@@ -8084,14 +8127,14 @@ var Season = function Season(_ref) {
   var upcomingGames = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var _seasonData$getSeason14, _seasonData$getSeason15, _seasonData$getSeason16, _seasonData$getSeason17;
     return (_seasonData$getSeason14 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason15 = seasonData.getSeasonByID) === null || _seasonData$getSeason15 === void 0 ? void 0 : (_seasonData$getSeason16 = _seasonData$getSeason15.season) === null || _seasonData$getSeason16 === void 0 ? void 0 : (_seasonData$getSeason17 = _seasonData$getSeason16.games) === null || _seasonData$getSeason17 === void 0 ? void 0 : _seasonData$getSeason17.filter(function (game) {
-      return dayjs__WEBPACK_IMPORTED_MODULE_4___default()().isBefore(game.date) && dayjs__WEBPACK_IMPORTED_MODULE_4___default()().add(1, 'week').isAfter(game.date);
+      return dayjs__WEBPACK_IMPORTED_MODULE_4___default()().isBefore(game.date); // when you only want to see this week's games: && dayjs().add(1, 'week').isAfter(game.date);
     })) !== null && _seasonData$getSeason14 !== void 0 ? _seasonData$getSeason14 : [];
   }, [seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason18 = seasonData.getSeasonByID) === null || _seasonData$getSeason18 === void 0 ? void 0 : (_seasonData$getSeason19 = _seasonData$getSeason18.season) === null || _seasonData$getSeason19 === void 0 ? void 0 : _seasonData$getSeason19.games]);
   var filterTeamSearchResults = function filterTeamSearchResults(team, searchString) {
     var _team$name;
     return team === null || team === void 0 ? void 0 : (_team$name = team.name) === null || _team$name === void 0 ? void 0 : _team$name.includes(searchString);
   };
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_17__.useMutation)(ADD_PLAYERS_MUTATION, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_18__.useMutation)(ADD_PLAYERS_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         location.reload();
@@ -8107,7 +8150,7 @@ var Season = function Season(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     addPlayersToSeason = _useMutation2[0],
     isSubmitting = _useMutation2[1].isSubmitting;
-  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_17__.useMutation)(ADD_CAPTAINS_MUTATION, {
+  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_18__.useMutation)(ADD_CAPTAINS_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         location.reload();
@@ -8123,7 +8166,7 @@ var Season = function Season(_ref) {
     _useMutation4 = _slicedToArray(_useMutation3, 2),
     addCaptainsToSeason = _useMutation4[0],
     isSubmittingCaptains = _useMutation4[1].isSubmitting;
-  var _useMutation5 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_17__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
+  var _useMutation5 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_18__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('Added teams to season. res: ', res);
         if (res.addTeamsToSeason != null) {
@@ -8282,16 +8325,14 @@ var Season = function Season(_ref) {
     overFlow: "scroll",
     width: "100%"
   }, recentGames.length > 0 ? recentGames.map(function (game, idx) {
-    var _game$awayTeam$name, _game$awayTeam, _game$homeTeam$name, _game$homeTeam;
+    var _game$homeTeam, _game$homeTeam$team, _game$awayTeam, _game$awayTeam$team, _game$homeTeam2, _game$homeTeam2$team;
     var date = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('MMM YYYY');
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Card, {
-      key: "recent-games-".concat(game.id, "-").concat(idx),
-      subTitle: date,
-      title: "".concat((_game$awayTeam$name = game === null || game === void 0 ? void 0 : (_game$awayTeam = game.awayTeam) === null || _game$awayTeam === void 0 ? void 0 : _game$awayTeam.name) !== null && _game$awayTeam$name !== void 0 ? _game$awayTeam$name : 'away team', " at ").concat((_game$homeTeam$name = game === null || game === void 0 ? void 0 : (_game$homeTeam = game.homeTeam) === null || _game$homeTeam === void 0 ? void 0 : _game$homeTeam.name) !== null && _game$homeTeam$name !== void 0 ? _game$homeTeam$name : 'home team'),
-      margin: "0 8px 0 0",
-      onClick: function onClick() {
-        history.push("/game/".concat(game.id));
-      }
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      details: [game === null || game === void 0 ? void 0 : (_game$homeTeam = game.homeTeam) === null || _game$homeTeam === void 0 ? void 0 : (_game$homeTeam$team = _game$homeTeam.team) === null || _game$homeTeam$team === void 0 ? void 0 : _game$homeTeam$team.name, game === null || game === void 0 ? void 0 : (_game$awayTeam = game.awayTeam) === null || _game$awayTeam === void 0 ? void 0 : (_game$awayTeam$team = _game$awayTeam.team) === null || _game$awayTeam$team === void 0 ? void 0 : _game$awayTeam$team.name],
+      picture: game === null || game === void 0 ? void 0 : (_game$homeTeam2 = game.homeTeam) === null || _game$homeTeam2 === void 0 ? void 0 : (_game$homeTeam2$team = _game$homeTeam2.team) === null || _game$homeTeam2$team === void 0 ? void 0 : _game$homeTeam2$team.profilePicture,
+      key: idx,
+      title: date,
+      onclose: function onclose() {/* delete game */}
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
@@ -8312,25 +8353,24 @@ var Season = function Season(_ref) {
     onCancel: function onCancel() {
       return setAddGamesExpanded(false);
     },
+    onComplete: function onComplete() {
+      return setAddGamesExpanded(false);
+    },
     seasonID: seasonID,
-    teamsSource: seasonTeams.map(function (teamInstance) {
-      return teamInstance.team;
-    })
+    teamsSource: seasonTeams
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     overFlow: "scroll",
     width: "100%"
   }, upcomingGames.length > 0 ? upcomingGames.map(function (game, idx) {
-    var _game$awayTeam$name2, _game$awayTeam2, _game$homeTeam$name2, _game$homeTeam2;
-    var date = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('MMM YYYY');
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Card, {
-      key: "upcoming-games-".concat(game.id, "-").concat(idx),
-      subTitle: date,
-      title: "".concat((_game$awayTeam$name2 = game === null || game === void 0 ? void 0 : (_game$awayTeam2 = game.awayTeam) === null || _game$awayTeam2 === void 0 ? void 0 : _game$awayTeam2.name) !== null && _game$awayTeam$name2 !== void 0 ? _game$awayTeam$name2 : 'away team', " at ").concat((_game$homeTeam$name2 = game === null || game === void 0 ? void 0 : (_game$homeTeam2 = game.homeTeam) === null || _game$homeTeam2 === void 0 ? void 0 : _game$homeTeam2.name) !== null && _game$homeTeam$name2 !== void 0 ? _game$homeTeam$name2 : 'home team'),
-      margin: "0 8px 0 0",
-      onClick: function onClick() {
-        history.push("/game/".concat(game.id));
-      }
+    var _game$homeTeam3, _game$homeTeam3$team, _game$awayTeam2, _game$awayTeam2$team, _game$homeTeam4, _game$homeTeam4$team;
+    var date = "".concat(dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('MMM DD'), " at ").concat(dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('h:MM'));
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      details: [game === null || game === void 0 ? void 0 : (_game$homeTeam3 = game.homeTeam) === null || _game$homeTeam3 === void 0 ? void 0 : (_game$homeTeam3$team = _game$homeTeam3.team) === null || _game$homeTeam3$team === void 0 ? void 0 : _game$homeTeam3$team.name, game === null || game === void 0 ? void 0 : (_game$awayTeam2 = game.awayTeam) === null || _game$awayTeam2 === void 0 ? void 0 : (_game$awayTeam2$team = _game$awayTeam2.team) === null || _game$awayTeam2$team === void 0 ? void 0 : _game$awayTeam2$team.name],
+      picture: game === null || game === void 0 ? void 0 : (_game$homeTeam4 = game.homeTeam) === null || _game$homeTeam4 === void 0 ? void 0 : (_game$homeTeam4$team = _game$homeTeam4.team) === null || _game$homeTeam4$team === void 0 ? void 0 : _game$homeTeam4$team.profilePicture,
+      key: idx,
+      title: date,
+      onclose: function onclose() {/* delete game */}
     });
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
@@ -8368,7 +8408,7 @@ var Season = function Season(_ref) {
     width: "100%"
   }, Object.values(teamsToAdd).map(function (team, idx) {
     var _team$name2, _team$players, _team$team;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_14__["default"], {
       key: idx,
       title: (_team$name2 = team.name) !== null && _team$name2 !== void 0 ? _team$name2 : 'Team name missing',
       details: team === null || team === void 0 ? void 0 : (_team$players = team.players) === null || _team$players === void 0 ? void 0 : _team$players.map(function (player) {
@@ -8404,7 +8444,7 @@ var Season = function Season(_ref) {
     flexWrap: "wrap"
   }, seasonTeams.length > 0 && seasonTeams.map(function (team, idx) {
     var _team$team$name, _team$team2, _team$captain, _team$captain2, _team$players2, _team$team3;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_14__["default"], {
       key: "season-teams-".concat(team.id, "-").concat(idx),
       title: (_team$team$name = team === null || team === void 0 ? void 0 : (_team$team2 = team.team) === null || _team$team2 === void 0 ? void 0 : _team$team2.name) !== null && _team$team$name !== void 0 ? _team$team$name : 'team name missing',
       subTitle: team !== null && team !== void 0 && (_team$captain = team.captain) !== null && _team$captain !== void 0 && _team$captain.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain2 = team.captain) === null || _team$captain2 === void 0 ? void 0 : _team$captain2.name) : 'No captain assigned',
@@ -8472,7 +8512,7 @@ var Season = function Season(_ref) {
     width: "100%"
   }, Object.values(captainsToAdd).map(function (player, idx) {
     var _player$name5;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_12__.CardWrapper, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_13__.CardWrapper, {
       boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
       key: "captains-".concat(player.id, "-").concat(idx),
       margin: "4px 4px 0 0"

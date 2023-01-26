@@ -1,6 +1,8 @@
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import React, {useMemo, useState} from 'react';
 import styled from 'styled-components';
-import { Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
+import { BodyText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
 import InputField from './InputField.jsx';
@@ -12,6 +14,35 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   padding: 20px;
   width: 100%;
+`;
+
+const ADD_GAMES_TO_SEASON_MUTATION = gql`
+  mutation addGamesToSeason(
+    $seasonID: ID!,
+    $gamesToAdd: [GamesToAddInput!]
+  ) {
+    addGamesToSeason(
+      seasonID: $seasonID,
+      gamesToAdd: $gamesToAdd
+    ) {
+      name
+      games {
+        awayTeam {
+          team {
+            name
+          }
+        }
+        awayScore
+        date
+        homeTeam {
+          team {
+            name
+          }
+        }
+        homeScore
+      }
+    }
+  }
 `;
 
 /**
@@ -30,19 +61,31 @@ const Wrapper = styled.div`
  *  `---------------------------------------------------------`
  * 
  */
-const AddGamesComponent = ({ onCancel, seasonID, teamsSource }) => {
-  const [gamesToAdd, setGamesToAdd] = useState([]);
+const AddGamesComponent = ({ onCancel, onComplete, seasonID, teamsSource }) => {
   const [homeTeam, setHomeTeam] = useState();
   const [awayTeam, setAwayTeam] = useState();
   const [date, setDate] = useState();
-  const isSubmitting = false;
 
-  const onSubmit = () => {
-    // submit mutation here
-  }
+  const [addGamesToSeason, { isSubmitting }] = useMutation(ADD_GAMES_TO_SEASON_MUTATION, {
+    onCompleted: (res) => {
+      console.log('successfully added game to season');
+      onComplete?.(res);
+    },
+    onError: (error) => {
+      console.log('Stringified error on mutation: ', JSON.stringify(error, null, 2));
+    },
+    variables: {
+      seasonID,
+      gamesToAdd: [{
+        awayTeam: awayTeam?.id,
+        date,
+        homeTeam: homeTeam?.id
+      }]
+    }
+  });
 
-  const filterTeamResults = (team, input) => {
-    return team?.name?.includes(input);
+  const filterTeamResults = (teamInstance, input) => {
+    return teamInstance?.team?.name?.includes(input);
   }
 
   const homeTeamSource = useMemo(() => {
@@ -52,6 +95,23 @@ const AddGamesComponent = ({ onCancel, seasonID, teamsSource }) => {
   const awayTeamSource = useMemo(() => {
     return teamsSource?.filter(team => team?.id !== homeTeam?.id);
   }, [teamsSource, homeTeam]);
+
+  const getTeamResultsComponent = (teamInstance) => {
+    return (
+      <>
+        {teamInstance?.team?.profilePicture && (
+          <ProfilePictureThumb
+            height="32px"
+            referrerPolicy="no-referrer"
+            src={teamInstance?.tea?.profilePicture}
+            width="32px" />
+        )}
+        <BodyText width="fit-content">
+          {teamInstance?.team?.name ?? 'Name missing'}
+        </BodyText>
+      </>
+    )
+  }
 
   return (
     <Wrapper>
@@ -63,7 +123,9 @@ const AddGamesComponent = ({ onCancel, seasonID, teamsSource }) => {
             <SectionHeadingText margin="8px 0 8px 0">Home Team</SectionHeadingText>
             <SearchField
               filterResults={filterTeamResults}
+              getResultComponent={getTeamResultsComponent}
               label="Search teams..."
+              loading={isSubmitting}
               onClick={(team) => setHomeTeam(team)}
               source={homeTeamSource}
             />
@@ -73,7 +135,9 @@ const AddGamesComponent = ({ onCancel, seasonID, teamsSource }) => {
             <SectionHeadingText margin="8px 0 8px 0">Away Team</SectionHeadingText>
             <SearchField
               filterResults={filterTeamResults}
+              getResultComponent={getTeamResultsComponent}
               label="Search teams..."
+              loading={isSubmitting}
               onClick={(team) => setAwayTeam(team)}
               source={awayTeamSource}
             />
@@ -82,12 +146,12 @@ const AddGamesComponent = ({ onCancel, seasonID, teamsSource }) => {
         <FlexContainer alignItems="center" justify="space-between">
           {homeTeam != null && (
             <CompactDetailsCard
-              title={homeTeam?.name ?? 'Team name missing'}
+              title={homeTeam?.team?.name ?? 'Team name missing'}
               onClose={() => setHomeTeam(null)} />
           )}
           {awayTeam != null && (
             <CompactDetailsCard
-              title={awayTeam?.name ?? 'Team name missing'}
+              title={awayTeam?.team?.name ?? 'Team name missing'}
               onClose={() => setAwayTeam(null)} />
           )}
         </FlexContainer>
@@ -95,6 +159,7 @@ const AddGamesComponent = ({ onCancel, seasonID, teamsSource }) => {
           <SectionHeadingText margin="8px 12px 8px 0">At</SectionHeadingText>
           <InputField
             onChange={setDate}
+            loading={isSubmitting}
             width="100%"
             value={date}
             type="datetime-local"
@@ -102,7 +167,7 @@ const AddGamesComponent = ({ onCancel, seasonID, teamsSource }) => {
         </FlexContainer>
         <FlexContainer justify="center" marginTop="12px">
           <Button isDisabled={isSubmitting} label="Cancel" loading={isSubmitting} onClick={onCancel} />
-          <Button isLoading={isSubmitting} label="Add Game" loading={isSubmitting} onClick={onSubmit} />
+          <Button isLoading={isSubmitting} label="Add Game" loading={isSubmitting} onClick={addGamesToSeason} />
         </FlexContainer>
       </FlexContainer>
     </Wrapper>

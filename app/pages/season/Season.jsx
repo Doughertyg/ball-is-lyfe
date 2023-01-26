@@ -13,6 +13,7 @@ import Button from '../../components/Button.jsx';
 import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
+import Card from '../../components/Card.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
 import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 
@@ -43,6 +44,7 @@ const FETCH_SEASON_QUERY = gql`
         seasonStart 
         seasonEnd
         teams {
+          id
           captain {
             email
             name
@@ -59,6 +61,21 @@ const FETCH_SEASON_QUERY = gql`
           team {
             id
             name
+          }
+        }
+        games {
+          awayScore
+          awayTeam {
+            team {
+              name
+            }
+          }
+          date
+          homeScore
+          homeTeam {
+            team {
+              name
+            }
           }
         }
       }
@@ -211,7 +228,7 @@ const Season = ({match}) => {
 
   const upcomingGames = useMemo(() => {
     return seasonData?.getSeasonByID?.season?.games?.filter(game => {
-      return dayjs().isBefore(game.date) && dayjs().add(1, 'week').isAfter(game.date);
+      return dayjs().isBefore(game.date); // when you only want to see this week's games: && dayjs().add(1, 'week').isAfter(game.date);
     }) ?? [];
   }, [seasonData?.getSeasonByID?.season?.games]);
 
@@ -402,12 +419,15 @@ const Season = ({match}) => {
               recentGames.map((game, idx) => {
                 const date = dayjs(game?.date).format('MMM YYYY');
                 return (
-                  <Card
-                    key={`recent-games-${game.id}-${idx}`}
-                    subTitle={date}
-                    title={`${game?.awayTeam?.name ?? 'away team'} at ${game?.homeTeam?.name ?? 'home team'}`}
-                    margin="0 8px 0 0"
-                    onClick={() => {history.push(`/game/${game.id}`)}}
+                  <CompactDetailsCard
+                    details={[
+                      game?.homeTeam?.team?.name,
+                      game?.awayTeam?.team?.name
+                    ]}
+                    picture={game?.homeTeam?.team?.profilePicture}
+                    key={idx}
+                    title={date}
+                    onclose={() => {/* delete game */}}
                   />
                 )
             }) : (
@@ -423,20 +443,24 @@ const Season = ({match}) => {
           {addGamesExpanded && (
             <AddGamesComponent
               onCancel={() => setAddGamesExpanded(false)}
+              onComplete={() => setAddGamesExpanded(false)}
               seasonID={seasonID}
-              teamsSource={seasonTeams.map(teamInstance => teamInstance.team)}
+              teamsSource={seasonTeams}
             />)}
           <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
             {upcomingGames.length > 0 ?
               upcomingGames.map((game, idx) => {
-                const date = dayjs(game?.date).format('MMM YYYY');
+                const date = `${dayjs(game?.date).format('MMM DD')} at ${dayjs(game?.date).format('h:MM')}`;
                 return (
-                  <Card
-                    key={`upcoming-games-${game.id}-${idx}`}
-                    subTitle={date}
-                    title={`${game?.awayTeam?.name ?? 'away team'} at ${game?.homeTeam?.name ?? 'home team'}`}
-                    margin="0 8px 0 0"
-                    onClick={() => {history.push(`/game/${game.id}`)}}
+                  <CompactDetailsCard
+                    details={[
+                      game?.homeTeam?.team?.name,
+                      game?.awayTeam?.team?.name
+                    ]}
+                    picture={game?.homeTeam?.team?.profilePicture}
+                    key={idx}
+                    title={date}
+                    onclose={() => {/* delete game */}}
                   />
                 )
             }) : (
