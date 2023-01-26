@@ -194,6 +194,7 @@ const Season = ({match}) => {
   const [captainsToAdd, setCaptainsToAdd] = useState({});
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const [seasonTeams, setSeasonTeams] = useState([]);
+  const [seasonGames, setSeasonGames] = useState([]);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -215,22 +216,28 @@ const Season = ({match}) => {
     }
   }, [seasonData]);
 
+  useEffect(() => {
+    if (seasonData != null && seasonData?.getSeasonByID?.season?.games != null) {
+      setSeasonGames(seasonData?.getSeasonByID?.season?.games);
+    }
+  }, [seasonData]);
+
   if (seasonID == null) {
     console.log('season ID null, redirecting home.');
     history.push('/');
   }
 
   const recentGames = useMemo(() => {
-    return seasonData?.getSeasonByID?.season?.games?.filter(game => {
+    return seasonGames?.filter(game => {
       return dayjs().isSame(game.date) || (dayjs().isAfter(game.date) && dayjs().subtract(1, 'week').isBefore(game.date));
     }) ?? [];
-  }, [seasonData?.getSeasonByID?.season?.games]);
+  }, [seasonGames]);
 
   const upcomingGames = useMemo(() => {
-    return seasonData?.getSeasonByID?.season?.games?.filter(game => {
+    return seasonGames?.filter(game => {
       return dayjs().isBefore(game.date); // when you only want to see this week's games: && dayjs().add(1, 'week').isAfter(game.date);
     }) ?? [];
-  }, [seasonData?.getSeasonByID?.season?.games]);
+  }, [seasonGames]);
 
   const filterTeamSearchResults = (team, searchString) => {
     return team?.name?.includes(searchString);
@@ -385,6 +392,13 @@ const Season = ({match}) => {
     }) ?? [];
   }, [seasonData?.getSeasonByID?.season?.captains, seasonData?.getSeasonByID?.season?.players]);
 
+  const onAddGamesToSeason = (season) => {
+    setAddGamesExpanded(false);
+    if (season?.addGamesToSeason?.games != null) {
+      setSeasonGames(season?.addGamesToSeason?.games);
+    }
+  }
+
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
@@ -414,7 +428,7 @@ const Season = ({match}) => {
           <FlexContainer alignItems="center" justify="start">
             <SectionHeadingText margin="20px 12px 20px 0">Recent Games</SectionHeadingText>
           </FlexContainer>
-          <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
+          <FlexContainer justify="flex-start" flexWrap="wrap" width="100%">
             {recentGames.length > 0 ?
               recentGames.map((game, idx) => {
                 const date = dayjs(game?.date).format('MMM YYYY');
@@ -443,11 +457,11 @@ const Season = ({match}) => {
           {addGamesExpanded && (
             <AddGamesComponent
               onCancel={() => setAddGamesExpanded(false)}
-              onComplete={() => setAddGamesExpanded(false)}
+              onComplete={onAddGamesToSeason}
               seasonID={seasonID}
               teamsSource={seasonTeams}
             />)}
-          <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
+          <FlexContainer justify="flex-start" flexWrap="wrap" width="100%">
             {upcomingGames.length > 0 ?
               upcomingGames.map((game, idx) => {
                 const date = `${dayjs(game?.date).format('MMM DD')} at ${dayjs(game?.date).format('h:MM')}`;
