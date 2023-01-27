@@ -638,7 +638,7 @@ const Season = ({match}) => {
               )
             }
           </FlexContainer>
-          <Divider />
+          <Divider marginBottom="10px" />
           <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Standings</SectionHeadingText>

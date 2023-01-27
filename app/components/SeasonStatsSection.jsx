@@ -2,8 +2,10 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
 import { FlexContainer, SectionHeadingText } from '../styled-components/common';
+import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
+import CreateStatComponent from './CreateStatComponent.jsx';
 
 const SEASON_STATS_QUERY = gql`
   query($seasonID: ID!) {
@@ -32,6 +34,7 @@ const SEASON_STATS_QUERY = gql`
 const SeasonStatsSection = ({ seasonID, isAdmin }) => {
   const [statsToAdd, setStatsToAdd] = useState({});
   const [stats, setStats] = useState([]);
+  const [createStatExpanded, setCreateStatExpanded] = useState(false);
   const { loading, data: seasonStats, error } = useQuery(SEASON_STATS_QUERY, {
     variables: { seasonID }
   });
@@ -55,6 +58,17 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
     // select stat
   }
 
+  const getCreateStatButton = () => (
+    <Button
+      borderRadius="0 8px 8px 0"
+      boxShadow="none"
+      height='46px'
+      label="Create Stat"
+      margin="0"
+      onClick={() => setCreateStatExpanded(true)}
+    />
+  );
+
   return (
     <>
       <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
@@ -62,6 +76,7 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
         {isAdmin && seasonID && (
           <CollapsibleSearchField
             filterResults={filterStatsResults}
+            getRightButton={getCreateStatButton}
             label="Search for stats..."
             loading={loading}
             onClick={onSelectStat}
@@ -70,6 +85,9 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
             source={seasonStats ?? []}
           />)}
       </FlexContainer>
+      {createStatExpanded && (
+        <CreateStatComponent />
+      )}
       <FlexContainer flexWrap="wrap" justify="flex-start">
         Season Stats Section Stub
         {stats != null && stats.length > 0 && (
