@@ -13,6 +13,7 @@ module.exports = gql`
     getPlayersNotInLeague(leagueID: ID): [User]
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!, userID: ID!): GetSeasonByIDReturnType
+    getSeasonStats(seasonID: ID!): [Stat]
     getUserContext(token: String!): User
     getTeam(teamID: ID!): Team
     getTeams(seasonIDToExclude: ID): [Team]
@@ -66,6 +67,8 @@ module.exports = gql`
     description: String!
     seasonStart: String!
     seasonEnd: String!
+    stats: [Stat]
+    sport: String
     league: League!
     players: [User]!
     teams: [TeamInstance]!
@@ -114,7 +117,6 @@ module.exports = gql`
     id: ID!
     name: String!
     operations: [String]!
-    statUnits: [StatUnit]!
   }
   type PlayerStatUnits {
     id: ID!

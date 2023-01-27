@@ -34,6 +34,7 @@ const seasonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "StatUnit"
   }],
+  sport: String,
   status: String, // A string that represents the season status ("Draft, preseason, etc")
 });
 

@@ -70,6 +70,14 @@ module.exports = {
         throw new Error(err);
       }
     },
+    async getSeasonStats(_, { seasonID }) {
+      try {
+        const season = await Season.findById(seasonID).populate('stats');
+        return season.stats;
+      } catch (e) {
+        throw new Error(e);
+      }
+    }
   },
   Mutation: {
     async addCaptainsToSeason(_, { seasonID, captains }, context) {

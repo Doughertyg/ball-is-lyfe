@@ -16,6 +16,7 @@ import PlayerCard from '../../components/PlayerCard.jsx';
 import Card from '../../components/Card.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
 import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
+import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -637,7 +638,8 @@ const Season = ({match}) => {
               )
             }
           </FlexContainer>
-          <SectionHeadingText margin="20px 12px 20px 0">Stat Leaders</SectionHeadingText>
+          <Divider />
+          <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Standings</SectionHeadingText>
           
