@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
+import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
@@ -65,6 +65,9 @@ const CreateStatComponent = ({ onCancel }) => {
     <Wrapper>
       <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
         <PageHeader margin="0px">Create Stat</PageHeader>
+        <DetailsText margin="4px 0">
+          Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)
+        </DetailsText>
         <Divider width="100%" />
         <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
         <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Stat name..." width="100%" value={name} />

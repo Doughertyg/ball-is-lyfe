@@ -4,6 +4,7 @@ const commentResolvers = require('./comments');
 const leagueResolvers = require('./leagues');
 const seasonResolvers = require('./seasons');
 const teamResolvers = require('./teams');
+const statUnitResolvers = require('./statUnits');
 
 module.exports = {
   Post: {
@@ -16,6 +17,7 @@ module.exports = {
     ...postResolvers.Query,
     ...leagueResolvers.Query,
     ...seasonResolvers.Query,
+    ...statUnitResolvers.Query,
     ...userResolvers.Query,
     ...teamResolvers.Query,
   },
@@ -25,6 +27,7 @@ module.exports = {
     ...commentResolvers.Mutation,
     ...leagueResolvers.Mutation,
     ...seasonResolvers.Mutation,
+    ...statUnitResolvers.Mutation,
     ...teamResolvers.Mutation,
   },
   Subscription: {

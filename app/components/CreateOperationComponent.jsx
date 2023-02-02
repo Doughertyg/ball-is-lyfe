@@ -1,7 +1,7 @@
 import { compact } from '@apollo/react-hooks/node_modules/@apollo/client/utilities';
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import { Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
+import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
@@ -109,10 +109,16 @@ const CreateOperationComponent = ({ onCancel }) => {
   <Wrapper>
     <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
       <PageHeader margin="0px">Create Operation</PageHeader>
+      <DetailsText margin="4px 0">
+        Operations create a mathematical result from two Stat Metrics or operations. The operation value dictates what mathematical operation should be completed. Operations can be nested to create more complicated results.
+      </DetailsText>
       <Divider width="100%" />
       <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
       <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Operation name..." width="100%" value={name} />
-      <SectionHeadingText margin="8px 0 8px 0">Operation term A</SectionHeadingText>
+      <SectionHeadingText margin="8px 0 8px 0">Term 1</SectionHeadingText>
+      <DetailsText marginBottom="4px">
+        A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
+      </DetailsText>
       <CollapsibleSearchField
         filterResults={(entry, input) => entry?.name?.includes(input)}
         forceExpanded
@@ -128,14 +134,17 @@ const CreateOperationComponent = ({ onCancel }) => {
           <SimpleSelector options={CREATE_TYPES} value={createMetricAType} onClick={(option) => setCreateMetricAType(option?.value)} />
           {createMetricAType != null ?
             createMetricAType === "metric" ?
-              <CreateStatMetricComponent onCancel={() => setCreateMetricAExpanded(false)} />
+              <CreateStatMetricComponent onCancel={() => setCreateMetricAExpanded(false)} onComplete={() => setCreateMetricAExpanded(false)} />
               : <CreateOperationComponent onCancel={() => setCreateMetricAExpanded(false)} />
             : null}
         </FlexContainer>
       )}
       <SectionHeadingText margin="8px 0 8px 0">Operation</SectionHeadingText>
       <DropdownSelector onClick={(entry) => setOperation(entry)} options={OPERATIONS} value={operation?.name} />
-      <SectionHeadingText margin="8px 0 8px 0">Operation term B</SectionHeadingText>
+      <SectionHeadingText margin="8px 0 8px 0">Term 2</SectionHeadingText>
+      <DetailsText marginBottom="4px">
+        A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
+      </DetailsText>
       <CollapsibleSearchField
         filterResults={(entry, input) => entry?.name?.includes(input)}
         forceExpanded
@@ -151,7 +160,7 @@ const CreateOperationComponent = ({ onCancel }) => {
           <SimpleSelector options={CREATE_TYPES} value={createMetricBType?.name} onClick={(option) => setCreateMetricBType(option?.value)} />
           {createMetricBType != null ?
             createMetricBType === "metric" ?
-              <CreateStatMetricComponent onCancel={() => setCreateMetricBExpanded(false)} />
+              <CreateStatMetricComponent onCancel={() => setCreateMetricBExpanded(false)} onComplete={() => setCreateMetricBExpanded(false)} />
               : <CreateOperationComponent onCancel={() => setCreateMetricBExpanded(false)} />
             : null}
         </FlexContainer>

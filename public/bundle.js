@@ -5100,7 +5100,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0px"
-  }, "Create Operation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+  }, "Create Operation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    margin: "4px 0"
+  }, "Operations create a mathematical result from two Stat Metrics or operations. The operation value dictates what mathematical operation should be completed. Operations can be nested to create more complicated results."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "8px 0 8px 0"
@@ -5116,7 +5118,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     value: name
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "8px 0 8px 0"
-  }, "Operation term A"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, "Term 1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    marginBottom: "4px"
+  }, "A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     filterResults: function filterResults(entry, input) {
       var _entry$name;
       return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.includes(input);
@@ -5147,6 +5151,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
   }), createMetricAType != null ? createMetricAType === "metric" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatMetricComponent_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
     onCancel: function onCancel() {
       return setCreateMetricAExpanded(false);
+    },
+    onComplete: function onComplete() {
+      return setCreateMetricAExpanded(false);
     }
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CreateOperationComponent, {
     onCancel: function onCancel() {
@@ -5162,7 +5169,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     value: operation === null || operation === void 0 ? void 0 : operation.name
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "8px 0 8px 0"
-  }, "Operation term B"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, "Term 2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    marginBottom: "4px"
+  }, "A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     filterResults: function filterResults(entry, input) {
       var _entry$name2;
       return entry === null || entry === void 0 ? void 0 : (_entry$name2 = entry.name) === null || _entry$name2 === void 0 ? void 0 : _entry$name2.includes(input);
@@ -5192,6 +5201,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     }
   }), createMetricBType != null ? createMetricBType === "metric" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatMetricComponent_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
     onCancel: function onCancel() {
+      return setCreateMetricBExpanded(false);
+    },
+    onComplete: function onComplete() {
       return setCreateMetricBExpanded(false);
     }
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CreateOperationComponent, {
@@ -5318,7 +5330,9 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0px"
-  }, "Create Stat"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+  }, "Create Stat"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    margin: "4px 0"
+  }, "Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "8px 0 8px 0"
@@ -5390,7 +5404,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
 /* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
-var _templateObject;
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+var _templateObject, _templateObject2;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5403,7 +5419,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
+
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: 8px 0;\n  padding: 20px;\n  width: 100%;\n"])));
+var CREATE_STAT_METRIC_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createStatUnit(\n    $name: String!,\n    $value: Int!,\n  ) {\n    createStatUnit(\n      name: $name,\n      value: $value\n    ) {\n      __typename\n    }\n  }\n"])));
 
 /**
  * Create Stat Metric Component
@@ -5425,7 +5444,8 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_tem
  *  `---------------------------------------------------------`
  */
 var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
-  var onCancel = _ref.onCancel;
+  var onCancel = _ref.onCancel,
+    onComplete = _ref.onComplete;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
     name = _useState2[0],
@@ -5434,10 +5454,22 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     _useState4 = _slicedToArray(_useState3, 2),
     value = _useState4[0],
     setValue = _useState4[1];
-  var isSubmitting = false;
-  var onSubmit = function onSubmit() {
-    // commit create stat metric mutation
-  };
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_6__.useMutation)(CREATE_STAT_METRIC_MUTATION, {
+      onCompleted: function onCompleted(res) {
+        console.log('mutation completed!!! res: ', res);
+        onComplete === null || onComplete === void 0 ? void 0 : onComplete(res);
+      },
+      onError: function onError(error) {
+        console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
+      },
+      variables: {
+        name: name,
+        value: Number(value)
+      }
+    }),
+    _useMutation2 = _slicedToArray(_useMutation, 2),
+    createStatMetric = _useMutation2[0],
+    isSubmitting = _useMutation2[1].isSubmitting;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     direction: "column",
     height: "100%",
@@ -5453,7 +5485,7 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     margin: "8px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     errors: name === "" ? 'Name cannot be blank.' : null,
-    loading: false /* isSubmitting */,
+    loading: isSubmitting,
     name: "name",
     onChange: function onChange(input) {
       return setName(input);
@@ -5465,12 +5497,13 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     margin: "8px 0 8px 0"
   }, "Value"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     errors: value === "" ? 'Value cannot be blank.' : null,
-    loading: false /* isSubmitting */,
+    loading: isSubmitting,
     name: "value",
     onChange: function onChange(input) {
       return setValue(input);
     },
     placeholder: "Stat Metric value...",
+    type: "number",
     width: "100%",
     value: value
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
@@ -5485,7 +5518,7 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     isLoading: false,
     label: "Create Metric",
     loading: isSubmitting,
-    onClick: onSubmit
+    onClick: createStatMetric
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateStatMetricComponent);
