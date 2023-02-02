@@ -10,6 +10,8 @@ import InputField from './InputField.jsx';
 import SearchField from './SearchField.jsx';
 import CreateStatMetricComponent from './CreateStatMetricComponent.jsx';
 import SimpleSelector from './SimpleSelector.jsx';
+import gql from 'graphql-tag';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 
 const Wrapper = styled.div`
   border-radius: 8px;
@@ -51,6 +53,91 @@ const CREATE_TYPES = [
   }
 ];
 
+const FETCH_STAT_METRICS_OPERATIONS = gql`
+  query($seasonID: ID) {
+    getStatOperations(seasonID: $seasonID) {
+      metricA {
+        ... on StatUnit {
+          name
+          value
+        }
+        ... on Operation {
+          metricA {
+            ... on StatUnit {
+              name
+            }
+            ... on Operation {
+              name
+            }
+          }
+          metricB {
+            ... on StatUnit {
+              name
+            }
+            ... on Operation {
+              name
+            }
+          }
+          name
+          operation
+        }
+      }
+      metricB {
+        ... on StatUnit {
+          name
+          value
+        }
+        ... on Operation {
+          metricA {
+            ... on StatUnit {
+              name
+            }
+            ... on Operation {
+              name
+            }
+          }
+          metricB {
+            ... on StatUnit {
+              name
+            }
+            ... on Operation {
+              name
+            }
+          }
+          name
+          operation
+        }
+      }
+      name
+      operation
+    }
+    getStatUnits(seasonID: $seasonID) {
+      name
+      value
+    }
+  }
+`;
+
+const CREATE_OPERATION_MUTATION = gql`
+  mutation createOperation(
+    $name: String!,
+    $term1: ID!,
+    $term2: ID!
+    $operation: String!
+    $seasonID: ID
+  ) {
+    createOperation(
+      name: $name,
+      term1: $term1,
+      term2: $term2,
+      operation: $operation,
+      seasonID: $seasonID
+    ) {
+      name
+    }
+  }
+`;
+
 /**
  * 
  * Create Operation Component for creating a stat operation.
@@ -77,7 +164,7 @@ const CREATE_TYPES = [
  *  |              '--------'    '------------------'         |
  *  `---------------------------------------------------------`
  */
-const CreateOperationComponent = ({ onCancel }) => {
+const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
   const [name, setName] = useState('');
   const [termA, setTermA] = useState(null);
   const [termB, setTermB] = useState(null);
@@ -87,12 +174,31 @@ const CreateOperationComponent = ({ onCancel }) => {
   const [createMetricBExpanded, setCreateMetricBExpanded] = useState(false);
   const [createMetricBType, setCreateMetricBType] = useState();
 
-  const loading = false;
-  const isSubmitting = false;
+  const { loading, data, error } = useQuery(FETCH_STAT_METRICS_OPERATIONS, {
+    variables: {seasonID}
+  });
 
-  const onSubmit = () => {
-    // submit mutation
+  if (error != null) {
+    // TODO: display user friendly error to user
+    console.log('error: ', JSON.stringify(error, null, 2));
   }
+
+  const [createOperation, {isSubmitting}] = useMutation(CREATE_OPERATION_MUTATION, {
+    onCompleted: (res) => {
+      console.log('mutation completed!!! res: ', res);
+      onCompleted?.(res);
+    },
+    onError: (error) => {
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+    },
+    variables: {
+      name,
+      seasonID,
+      term1: termA?.id,
+      term2: termB?.id,
+      operation
+    }
+  });
 
   const getCreateMetricButton = (onClick) => (
     <Button
@@ -120,14 +226,14 @@ const CreateOperationComponent = ({ onCancel }) => {
         A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
       </DetailsText>
       <CollapsibleSearchField
-        filterResults={(entry, input) => entry?.name?.includes(input)}
+        filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}
         forceExpanded
         getRightButton={() => getCreateMetricButton(() => setCreateMetricAExpanded(true))}
         label="Add metric or operation..."
         loading={loading}
         onClick={(operation) => setTermA(operation)}
         onClose={() => {}}
-        source={[]}
+        source={data?.getStatUnits ?? []}
       />
       {createMetricAExpanded && (
         <FlexContainer direction="column" marginTop="8px" overflow="visible">
@@ -135,9 +241,12 @@ const CreateOperationComponent = ({ onCancel }) => {
           {createMetricAType != null ?
             createMetricAType === "metric" ?
               <CreateStatMetricComponent onCancel={() => setCreateMetricAExpanded(false)} onComplete={() => setCreateMetricAExpanded(false)} />
-              : <CreateOperationComponent onCancel={() => setCreateMetricAExpanded(false)} />
+              : <CreateOperationComponent onCancel={() => setCreateMetricAExpanded(false)} seasonID={seasonID} />
             : null}
         </FlexContainer>
+      )}
+      {termA != null && (
+        <CompactDetailsCard subTitle={[termB?.value]} title={termA?.name ?? 'term 1 name missing'} onClose={() => setTermA(null)} />
       )}
       <SectionHeadingText margin="8px 0 8px 0">Operation</SectionHeadingText>
       <DropdownSelector onClick={(entry) => setOperation(entry)} options={OPERATIONS} value={operation?.name} />
@@ -146,14 +255,14 @@ const CreateOperationComponent = ({ onCancel }) => {
         A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
       </DetailsText>
       <CollapsibleSearchField
-        filterResults={(entry, input) => entry?.name?.includes(input)}
+        filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}
         forceExpanded
         getRightButton={() => getCreateMetricButton(() => setCreateMetricBExpanded(true))}
         label="Add metric or operation..."
         loading={loading}
         onClick={(operation) => setTermB(operation)}
         onClose={() => {}}
-        source={[]}
+        source={data?.getStatUnits ?? []}
       />
       {createMetricBExpanded && (
         <FlexContainer direction="column" marginTop="8px" overflow="visible">
@@ -161,13 +270,16 @@ const CreateOperationComponent = ({ onCancel }) => {
           {createMetricBType != null ?
             createMetricBType === "metric" ?
               <CreateStatMetricComponent onCancel={() => setCreateMetricBExpanded(false)} onComplete={() => setCreateMetricBExpanded(false)} />
-              : <CreateOperationComponent onCancel={() => setCreateMetricBExpanded(false)} />
+              : <CreateOperationComponent onCancel={() => setCreateMetricBExpanded(false)} seasonID={seasonID} />
             : null}
         </FlexContainer>
       )}
+      {termB != null && (
+        <CompactDetailsCard subTitle={[termB?.value]} title={termB?.name ?? 'term 2 name missing'} onClose={() => setTermB(null)} />
+      )}
       <FlexContainer justify="center" marginTop="12px">
         <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
-        <Button isLoading={false} label="Create Operation" loading={isSubmitting} onClick={onSubmit} />
+        <Button isLoading={false} label="Create Operation" loading={isSubmitting} onClick={createOperation} />
       </FlexContainer>
     </FlexContainer>
   </Wrapper>)

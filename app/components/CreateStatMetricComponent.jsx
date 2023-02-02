@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import { Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
+import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import InputField from './InputField.jsx';
 import Button from './Button.jsx';
 import gql from 'graphql-tag';
@@ -71,6 +71,7 @@ const CreateStatMetricComponent = ({ onCancel, onComplete }) => {
     <Wrapper>
       <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
       <PageHeader margin="0px">Create Stat Metric</PageHeader>
+      <DetailsText margin="4px 0">A Stat Metric is the most fundamental unit of a stat and meant purely for tracking/counting (FGA, Assists, etc.). All stats and operations will be built from your stat metrics.</DetailsText>
       <Divider width="100%" />
       <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
       <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={isSubmitting} name="name" onChange={(input) => setName(input)} placeholder="Stat Metric name..." width="100%" value={name} />

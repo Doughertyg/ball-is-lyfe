@@ -2,6 +2,7 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Season = require('../../db/models/Season');
 const StatUnit = require('../../db/models/StatUnit');
+const Operation = require('../../db/models/Operation');
 const League = require('../../db/models/League');
 const Game = require('../../db/models/Game');
 const authenticate = require('../../util/authenticate');
@@ -9,7 +10,7 @@ const userResolvers = require('./users');
 
 module.exports = {
   Mutation: {
-    async createStatUnit(_, { name, seasonID, value }, context) {
+    async createStatOperation(_, { name, operation, seasonID, term1, term2 }, context) {
       const authHeader = context.req.headers.authorization;
       if (authHeader == null) {
         throw new AuthenticationError('Authentication header not provided. User not authenticated.');
@@ -21,35 +22,18 @@ module.exports = {
         throw new AuthenticationError('User not authenticated');
       }
 
-      const newStatUnit = new StatUnit({
-        name,
-        value
-      });
-
-      return await newStatUnit.save();
-      // TODO: add statUnit to sport
-      // if (seasonID != null) {
-      //   const season = await Season.findById(seasonID).populate('league').populate('statUnits');
-      //   console.log('season: ', season);
-      //   const league = season.league;
-      //   console.log('league: ', league);
-      //   league.sport
-      // }
+      // create stat operation
+      // attach to season
     }
   },
   Query: {
-    async getStatUnits(_, {seasonID}) {
-      let statUnits = [];
+    async getStatOperations(_, {seasonID}) {
       if (seasonID != null) {
-        const season = await Season.findById(seasonID).populate('statUnits');
-        statUnits = season?.statUnits ?? [];
+        const season = await Season.findById(seasonID);
+        // query operations relating to statUnits or stats in season
       }
 
-      if (statUnits.length > 0) {
-        return statUnits;
-      }
-      // filter by sport?
-      return await StatUnit.find();
+      return await this.Operation.find() ?? [];
     }
   }
 }

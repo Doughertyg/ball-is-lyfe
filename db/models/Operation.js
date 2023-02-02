@@ -22,6 +22,7 @@ const operationSchema = new Schema({
     type: String,
     enum: ["Operation", "StatUnit"]
   },
+  name: String,
   operation: String
 });
 

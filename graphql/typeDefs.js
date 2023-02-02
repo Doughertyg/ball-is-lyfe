@@ -14,6 +14,7 @@ module.exports = gql`
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!, userID: ID!): GetSeasonByIDReturnType
     getSeasonStats(seasonID: ID!): [Stat]
+    getStatOperations(seasonID: ID): [Operation]
     getStatUnits(seasonID: ID): [StatUnit]
     getUserContext(token: String!): User
     getTeam(teamID: ID!): Team
@@ -111,14 +112,23 @@ module.exports = gql`
     homeScore: Int
   }
   type StatUnit {
+    id: ID!
     name: String!
     value: Int!
   }
   type Stat {
     id: ID!
     name: String!
-    operations: [String]!
+    operations: [Operation]!
   }
+  type Operation {
+    id: ID!
+    name: String!
+    metricA: OperationTermType!
+    metricB: OperationTermType!
+    operation: String!
+  }
+  union OperationTermType = StatUnit | Operation
   type PlayerStatUnits {
     id: ID!
     player: PlayerInstance!
@@ -220,6 +230,13 @@ module.exports = gql`
     homeScore: Int
     homeTeam: ID!
   }
+  input OperationInput {
+    name: String!,
+    operation: String!,
+    seasonID: ID,
+    term1: ID!,
+    term2: ID!
+  }
   type Mutation {
     addGamesToSeason(seasonID: ID!, gamesToAdd: [GamesToAddInput!]): Season!
     addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
@@ -235,6 +252,7 @@ module.exports = gql`
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
     createSeason(seasonInput: CreateSeasonInput): Season!
+    createStatOperation(input: OperationInput): Operation!
     createStatUnit(name: String!, seasonID: ID, value: Int!): StatUnit!
     createTeam(
       bannerPicture: String,
