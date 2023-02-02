@@ -33,6 +33,7 @@ const RightButton = styled.div`
  */
 const CollapsibleSearchField = ({
   filterResults,
+  forceExpanded,
   getResultComponent,
   getRightButton,
   height,
@@ -43,7 +44,7 @@ const CollapsibleSearchField = ({
   selected,
   source,
 }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(forceExpanded ?? false);
 
   const toggleExpanded = () => {
     if (expanded) {
@@ -76,7 +77,7 @@ const CollapsibleSearchField = ({
             </RightButton>
           )}
         </SearchWrapper>
-        <Icon borderRadius="50%" icon={expanded ? "close" : "plus"} onClick={toggleExpanded} />
+        {forceExpanded != true && <Icon borderRadius="50%" icon={expanded ? "close" : "plus"} onClick={toggleExpanded} />}
       </FlexContainer>
     </>
   )

@@ -86,7 +86,7 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
           />)}
       </FlexContainer>
       {createStatExpanded && (
-        <CreateStatComponent />
+        <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} />
       )}
       <FlexContainer flexWrap="wrap" justify="flex-start">
         Season Stats Section Stub

@@ -4724,6 +4724,7 @@ var RightButton = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(
  */
 var CollapsibleSearchField = function CollapsibleSearchField(_ref) {
   var filterResults = _ref.filterResults,
+    forceExpanded = _ref.forceExpanded,
     getResultComponent = _ref.getResultComponent,
     getRightButton = _ref.getRightButton,
     height = _ref.height,
@@ -4733,7 +4734,7 @@ var CollapsibleSearchField = function CollapsibleSearchField(_ref) {
     onClose = _ref.onClose,
     selected = _ref.selected,
     source = _ref.source;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(forceExpanded !== null && forceExpanded !== void 0 ? forceExpanded : false),
     _useState2 = _slicedToArray(_useState, 2),
     expanded = _useState2[0],
     setExpanded = _useState2[1];
@@ -4763,7 +4764,7 @@ var CollapsibleSearchField = function CollapsibleSearchField(_ref) {
     selected: selected,
     source: source,
     width: "100%"
-  }), getRightButton && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RightButton, null, getRightButton === null || getRightButton === void 0 ? void 0 : getRightButton())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }), getRightButton && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RightButton, null, getRightButton === null || getRightButton === void 0 ? void 0 : getRightButton())), forceExpanded != true && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     borderRadius: "50%",
     icon: expanded ? "close" : "plus",
     onClick: toggleExpanded
@@ -4951,10 +4952,10 @@ function ConfirmationModal(_ref) {
 
 /***/ }),
 
-/***/ "./app/components/CreateStatComponent.jsx":
-/*!************************************************!*\
-  !*** ./app/components/CreateStatComponent.jsx ***!
-  \************************************************/
+/***/ "./app/components/CreateOperationComponent.jsx":
+/*!*****************************************************!*\
+  !*** ./app/components/CreateOperationComponent.jsx ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -4963,9 +4964,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
-/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+/* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
+/* harmony import */ var _CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CollapsibleSearchField.jsx */ "./app/components/CollapsibleSearchField.jsx");
+/* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
+/* harmony import */ var _DropdownSelector_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DropdownSelector.jsx */ "./app/components/DropdownSelector.jsx");
+/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+/* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
+/* harmony import */ var _CreateStatMetricComponent_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./CreateStatMetricComponent.jsx */ "./app/components/CreateStatMetricComponent.jsx");
+/* harmony import */ var _SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./SimpleSelector.jsx */ "./app/components/SimpleSelector.jsx");
 var _templateObject;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4978,7 +4986,273 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+
+
+
+
+
+
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_10__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: 8px 0;\n  padding: 20px;\n  width: 100%;\n"])));
+var OPERATIONS = [{
+  name: 'Multiply by',
+  value: '*'
+}, {
+  name: 'Divide by',
+  value: '/'
+}, {
+  name: 'Add to',
+  value: '+'
+}, {
+  name: 'Subtract',
+  value: '-'
+}];
+var CREATE_TYPES = [{
+  name: "Stat Metric",
+  value: "metric"
+}, {
+  name: "Operation",
+  value: "operation"
+}];
+
+/**
+ * 
+ * Create Operation Component for creating a stat operation.
+ * User can choose from existing operations or statUnits and set an operation to perform (+, -, *, /)
+ * If the user chooses an operation as a metric, the inner operation is calculated first
+ * 
+ *  ___________________________________________________________
+ *  ,---------------------------------------------------------,
+ *  |   ,--------------------------.                          |
+ *  |  |     Name...                |                         |
+ *  |   `--------------------------`                          |
+ *  |   ,----------------------------------.                  |
+ *  |  |   Add MetricA...        | Create  |                  |
+ *  |   '----------------------------------'                  |
+ *  |   ,----------------------------------.                  |
+ *  |  |   Add MetricB...        | Create  |                  |
+ *  |   '----------------------------------'                  |
+ *  |   .------------------------,                            |
+ *  |  |  Set Operation...     X  |                           |
+ *  |   `------------------------`                            |
+ *  |                                                         |
+ *  |              .--------.    .------------------.         |
+ *  |              | Cancel |    | Create Operation |         |
+ *  |              '--------'    '------------------'         |
+ *  `---------------------------------------------------------`
+ */
+var CreateOperationComponent = function CreateOperationComponent(_ref) {
+  var onCancel = _ref.onCancel;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState2 = _slicedToArray(_useState, 2),
+    name = _useState2[0],
+    setName = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState4 = _slicedToArray(_useState3, 2),
+    termA = _useState4[0],
+    setTermA = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState6 = _slicedToArray(_useState5, 2),
+    termB = _useState6[0],
+    setTermB = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState8 = _slicedToArray(_useState7, 2),
+    operation = _useState8[0],
+    setOperation = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    createMetricAExpanded = _useState10[0],
+    setCreateMetricAExpanded = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState12 = _slicedToArray(_useState11, 2),
+    createMetricAType = _useState12[0],
+    setCreateMetricAType = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    createMetricBExpanded = _useState14[0],
+    setCreateMetricBExpanded = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState16 = _slicedToArray(_useState15, 2),
+    createMetricBType = _useState16[0],
+    setCreateMetricBType = _useState16[1];
+  var loading = false;
+  var isSubmitting = false;
+  var onSubmit = function onSubmit() {
+    // submit mutation
+  };
+  var getCreateMetricButton = function getCreateMetricButton(onClick) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      borderRadius: "0 8px 8px 0",
+      boxShadow: "none",
+      height: "46px",
+      label: "Create Metric / Operation",
+      margin: "0",
+      onClick: onClick
+    });
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    height: "100%",
+    justify: "flex-start",
+    overflow: "visible",
+    padding: "0 8px",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
+    margin: "0px"
+  }, "Create Operation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+    width: "100%"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    errors: name === "" ? 'Name cannot be blank.' : null,
+    loading: false /* isSubmitting */,
+    name: "name",
+    onChange: function onChange(input) {
+      return setName(input);
+    },
+    placeholder: "Operation name...",
+    width: "100%",
+    value: name
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Operation term A"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    filterResults: function filterResults(entry, input) {
+      var _entry$name;
+      return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.includes(input);
+    },
+    forceExpanded: true,
+    getRightButton: function getRightButton() {
+      return getCreateMetricButton(function () {
+        return setCreateMetricAExpanded(true);
+      });
+    },
+    label: "Add metric or operation...",
+    loading: loading,
+    onClick: function onClick(operation) {
+      return setTermA(operation);
+    },
+    onClose: function onClose() {},
+    source: []
+  }), createMetricAExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    marginTop: "8px",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    options: CREATE_TYPES,
+    value: createMetricAType,
+    onClick: function onClick(option) {
+      return setCreateMetricAType(option === null || option === void 0 ? void 0 : option.value);
+    }
+  }), createMetricAType != null ? createMetricAType === "metric" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatMetricComponent_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    onCancel: function onCancel() {
+      return setCreateMetricAExpanded(false);
+    }
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CreateOperationComponent, {
+    onCancel: function onCancel() {
+      return setCreateMetricAExpanded(false);
+    }
+  }) : null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Operation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_DropdownSelector_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    onClick: function onClick(entry) {
+      return setOperation(entry);
+    },
+    options: OPERATIONS,
+    value: operation === null || operation === void 0 ? void 0 : operation.name
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Operation term B"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    filterResults: function filterResults(entry, input) {
+      var _entry$name2;
+      return entry === null || entry === void 0 ? void 0 : (_entry$name2 = entry.name) === null || _entry$name2 === void 0 ? void 0 : _entry$name2.includes(input);
+    },
+    forceExpanded: true,
+    getRightButton: function getRightButton() {
+      return getCreateMetricButton(function () {
+        return setCreateMetricBExpanded(true);
+      });
+    },
+    label: "Add metric or operation...",
+    loading: loading,
+    onClick: function onClick(operation) {
+      return setTermB(operation);
+    },
+    onClose: function onClose() {},
+    source: []
+  }), createMetricBExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    marginTop: "8px",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    options: CREATE_TYPES,
+    value: createMetricBType === null || createMetricBType === void 0 ? void 0 : createMetricBType.name,
+    onClick: function onClick(option) {
+      return setCreateMetricBType(option === null || option === void 0 ? void 0 : option.value);
+    }
+  }), createMetricBType != null ? createMetricBType === "metric" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatMetricComponent_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    onCancel: function onCancel() {
+      return setCreateMetricBExpanded(false);
+    }
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CreateOperationComponent, {
+    onCancel: function onCancel() {
+      return setCreateMetricBExpanded(false);
+    }
+  }) : null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    justify: "center",
+    marginTop: "12px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    isDisabled: false,
+    label: "Cancel",
+    loading: isSubmitting,
+    onClick: onCancel
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    isLoading: false,
+    label: "Create Operation",
+    loading: isSubmitting,
+    onClick: onSubmit
+  }))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateOperationComponent);
+
+/***/ }),
+
+/***/ "./app/components/CreateStatComponent.jsx":
+/*!************************************************!*\
+  !*** ./app/components/CreateStatComponent.jsx ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
+/* harmony import */ var _CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CollapsibleSearchField.jsx */ "./app/components/CollapsibleSearchField.jsx");
+/* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
+/* harmony import */ var _CreateOperationComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateOperationComponent.jsx */ "./app/components/CreateOperationComponent.jsx");
+/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+var _templateObject;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
 
 /**
  * Create Stat component for creating stats
@@ -5002,16 +5276,39 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_tem
  *  |              '--------'    '-------------'              |
  *  `---------------------------------------------------------`
  */
-var CreateStatComponent = function CreateStatComponent() {
+var CreateStatComponent = function CreateStatComponent(_ref) {
+  var _operations$name, _operations$metricA, _operations$metricB;
+  var onCancel = _ref.onCancel;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState2 = _slicedToArray(_useState, 2),
     name = _useState2[0],
     setName = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState4 = _slicedToArray(_useState3, 2),
     operations = _useState4[0],
     setOperations = _useState4[1];
-  // create Stat Component
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    createOperationExpanded = _useState6[0],
+    setCreateOperationExpanded = _useState6[1];
+  var isSubmitting = false;
+  var loadingOperations = false;
+  var onSubmit = function onSubmit() {
+    // commit mutation
+    console.log('submit mutation!!');
+  };
+  var getCreateOperationButton = function getCreateOperationButton() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      borderRadius: "0 8px 8px 0",
+      boxShadow: "none",
+      height: "46px",
+      label: "Create Operation",
+      margin: "0",
+      onClick: function onClick() {
+        return setCreateOperationExpanded(true);
+      }
+    });
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     direction: "column",
     height: "100%",
@@ -5025,7 +5322,7 @@ var CreateStatComponent = function CreateStatComponent() {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "8px 0 8px 0"
-  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
     errors: name === "" ? 'Name cannot be blank.' : null,
     loading: false /* isSubmitting */,
     name: "name",
@@ -5035,9 +5332,163 @@ var CreateStatComponent = function CreateStatComponent() {
     placeholder: "Stat name...",
     width: "100%",
     value: name
-  })));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Operations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    filterResults: function filterResults(entry, input) {
+      var _entry$metricA, _entry$metricA$name, _entry$metricB, _entry$metricB$name;
+      return (entry === null || entry === void 0 ? void 0 : (_entry$metricA = entry.metricA) === null || _entry$metricA === void 0 ? void 0 : (_entry$metricA$name = _entry$metricA.name) === null || _entry$metricA$name === void 0 ? void 0 : _entry$metricA$name.includes(input)) || (entry === null || entry === void 0 ? void 0 : (_entry$metricB = entry.metricB) === null || _entry$metricB === void 0 ? void 0 : (_entry$metricB$name = _entry$metricB.name) === null || _entry$metricB$name === void 0 ? void 0 : _entry$metricB$name.includes(input));
+    },
+    forceExpanded: true,
+    getRightButton: getCreateOperationButton,
+    label: "Add Operations...",
+    loading: loadingOperations,
+    onClick: function onClick(operation) {
+      return setOperations(operation);
+    },
+    onClose: function onClose() {},
+    source: []
+  }), createOperationExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateOperationComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    onCancel: function onCancel() {
+      return setCreateOperationExpanded(false);
+    }
+  }), operations != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    title: (_operations$name = operations === null || operations === void 0 ? void 0 : operations.name) !== null && _operations$name !== void 0 ? _operations$name : 'Operation name missing',
+    details: [operations === null || operations === void 0 ? void 0 : (_operations$metricA = operations.metricA) === null || _operations$metricA === void 0 ? void 0 : _operations$metricA.name, operations === null || operations === void 0 ? void 0 : operations.operation, operations === null || operations === void 0 ? void 0 : (_operations$metricB = operations.metricB) === null || _operations$metricB === void 0 ? void 0 : _operations$metricB.name]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    justify: "center",
+    marginTop: "12px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    isDisabled: false,
+    label: "Cancel",
+    loading: isSubmitting,
+    onClick: onCancel
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    isLoading: false,
+    label: "Create Stat",
+    loading: isSubmitting,
+    onClick: onSubmit
+  }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateStatComponent);
+
+/***/ }),
+
+/***/ "./app/components/CreateStatMetricComponent.jsx":
+/*!******************************************************!*\
+  !*** ./app/components/CreateStatMetricComponent.jsx ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+/* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
+var _templateObject;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: 8px 0;\n  padding: 20px;\n  width: 100%;\n"])));
+
+/**
+ * Create Stat Metric Component
+ * Component for creating a stat metric that will be used
+ * to track a specific stat (e.x.: FGA)
+ * 
+ *  ___________________________________________________________
+ *  ,---------------------------------------------------------,
+ *  |   ,--------------------------.                          |
+ *  |  |     Name...                |                         |
+ *  |   `--------------------------`                          |
+ *  |   ,----------------------------------.                  |
+ *  |  |   Value...                        |
+ *  |   '----------------------------------'                  |
+ *  |                                                         |
+ *  |              .--------.    .------------------.         |
+ *  |              | Cancel |    | Create Metric    |         |
+ *  |              '--------'    '------------------'         |
+ *  `---------------------------------------------------------`
+ */
+var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
+  var onCancel = _ref.onCancel;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState2 = _slicedToArray(_useState, 2),
+    name = _useState2[0],
+    setName = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState4 = _slicedToArray(_useState3, 2),
+    value = _useState4[0],
+    setValue = _useState4[1];
+  var isSubmitting = false;
+  var onSubmit = function onSubmit() {
+    // commit create stat metric mutation
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    height: "100%",
+    justify: "flex-start",
+    overflow: "visible",
+    padding: "0 8px",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
+    margin: "0px"
+  }, "Create Stat Metric"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+    width: "100%"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    errors: name === "" ? 'Name cannot be blank.' : null,
+    loading: false /* isSubmitting */,
+    name: "name",
+    onChange: function onChange(input) {
+      return setName(input);
+    },
+    placeholder: "Stat Metric name...",
+    width: "100%",
+    value: name
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "8px 0 8px 0"
+  }, "Value"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    errors: value === "" ? 'Value cannot be blank.' : null,
+    loading: false /* isSubmitting */,
+    name: "value",
+    onChange: function onChange(input) {
+      return setValue(input);
+    },
+    placeholder: "Stat Metric value...",
+    width: "100%",
+    value: value
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    justify: "center",
+    marginTop: "12px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    isDisabled: false,
+    label: "Cancel",
+    loading: isSubmitting,
+    onClick: onCancel
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    isLoading: false,
+    label: "Create Metric",
+    loading: isSubmitting,
+    onClick: onSubmit
+  }))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateStatMetricComponent);
 
 /***/ }),
 
@@ -5361,6 +5812,115 @@ function DeleteButton(_ref) {
   }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DeleteButton);
+
+/***/ }),
+
+/***/ "./app/components/DropdownSelector.jsx":
+/*!*********************************************!*\
+  !*** ./app/components/DropdownSelector.jsx ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
+/* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border-radius: 8px;\n  box-sizing: border-box;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  height: auto;\n  width: 100%;\n  max-width: 400px;\n  line-height: 20px;\n  padding: 12px;\n"])));
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: relative;\n  z-index: 1000;\n"])));
+var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
+var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  position: absolute;\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: 100%;\n  z-index: 10000;\n"])));
+var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
+
+/**
+ * Dropdown selector component 
+ * options prop is an array of the selectable options
+ * Each option should have a name value to be displayed
+ * and a value value used for setting the selection
+ *  ,.................................................,
+ * |  Select                                          |
+ *  `'''''''''''''''''''''''''''''''''''''''''''''''''`
+ *  |  Steph Curry #30                                |
+ *  | ``````````````````````````````````````````````` |
+ *  '._______________________________________________.'
+ */
+var DropdownSelector = function DropdownSelector(_ref) {
+  var getCustomEntryComponent = _ref.getCustomEntryComponent,
+    onClick = _ref.onClick,
+    options = _ref.options,
+    selected = _ref.selected,
+    value = _ref.value;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    resultsOpen = _useState2[0],
+    setResultsOpen = _useState2[1];
+  var onEntryClick = function onEntryClick(entry) {
+    if (selected == null) {
+      // if not multiselect, close selector on click
+      setResultsOpen(false);
+    }
+    onClick === null || onClick === void 0 ? void 0 : onClick(entry);
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    grow: "1",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
+    onClick: function onClick() {
+      return setResultsOpen(true);
+    }
+  }, value != null ? value : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, "Select...")), (options === null || options === void 0 ? void 0 : options.length) > 0 && resultsOpen && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalContainer, {
+    onClick: function onClick() {
+      return setResultsOpen(false);
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, options === null || options === void 0 ? void 0 : options.map(function (entry, idx) {
+    var _entry$name, _entry$value;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Clickable, {
+      key: idx,
+      onClick: function onClick() {
+        return onEntryClick(entry);
+      }
+    }, idx !== 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+      marginBottom: "10px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      alignItems: "center",
+      justify: "space-between"
+    }, getCustomEntryComponent ? getCustomEntryComponent(entry, idx) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (entry === null || entry === void 0 ? void 0 : entry.profilePicture) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.ProfilePictureThumb, {
+      height: "32px",
+      referrerPolicy: "no-referrer",
+      src: entry.profilePicture,
+      width: "32px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
+      width: "fit-content"
+    }, (_entry$name = entry === null || entry === void 0 ? void 0 : entry.name) !== null && _entry$name !== void 0 ? _entry$name : 'Name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+      flexGrow: "1",
+      margin: "0 0 0 4px"
+    }, entry.description)), selected != null && (selected[(_entry$value = entry.value) !== null && _entry$value !== void 0 ? _entry$value : entry.id] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      icon: "checkFilled"
+    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      icon: "circle"
+    }))));
+  })))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DropdownSelector);
 
 /***/ }),
 
@@ -6508,7 +7068,11 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
     },
     selected: statsToAdd,
     source: seasonStats !== null && seasonStats !== void 0 ? seasonStats : []
-  })), createStatExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  })), createStatExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    onCancel: function onCancel() {
+      return setCreateStatExpanded(false);
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     flexWrap: "wrap",
     justify: "flex-start"
   }, "Season Stats Section Stub", stats != null && stats.length > 0 && stats.map(function (seasonStat, idx) {
@@ -6519,6 +7083,93 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
   })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonStatsSection);
+
+/***/ }),
+
+/***/ "./app/components/SimpleSelector.jsx":
+/*!*******************************************!*\
+  !*** ./app/components/SimpleSelector.jsx ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: relative;\n  z-index: 1000;\n"])));
+var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
+var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  position: absolute;\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: 100%;\n  z-index: 10000;\n"])));
+var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
+
+/**
+ * Simple Selector Component
+ * Show the selected option and a down arrow button
+ */
+var SimpleSelector = function SimpleSelector(_ref) {
+  var options = _ref.options,
+    value = _ref.value,
+    onClick = _ref.onClick;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    expanded = _useState2[0],
+    setExpanded = _useState2[1];
+  var onEntryClick = function onEntryClick(entry) {
+    onClick === null || onClick === void 0 ? void 0 : onClick(entry);
+    setExpanded(false);
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    justify: "flex-start"
+  }, value != null ? value : 'Select', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Clickable, {
+    onClick: function onClick() {
+      return setExpanded(true);
+    }
+  }, "  \u25BC")), (options === null || options === void 0 ? void 0 : options.length) > 0 && expanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalContainer, {
+    onClick: function onClick() {
+      return setExpanded(false);
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalStyle, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, options === null || options === void 0 ? void 0 : options.map(function (entry, idx) {
+    var _entry$name;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Clickable, {
+      key: idx,
+      onClick: function onClick() {
+        return onEntryClick(entry);
+      }
+    }, idx !== 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+      marginBottom: "10px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      alignItems: "center",
+      justify: "space-between"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (entry === null || entry === void 0 ? void 0 : entry.profilePicture) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ProfilePictureThumb, {
+      height: "32px",
+      referrerPolicy: "no-referrer",
+      src: entry.profilePicture,
+      width: "32px"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
+      width: "fit-content"
+    }, (_entry$name = entry === null || entry === void 0 ? void 0 : entry.name) !== null && _entry$name !== void 0 ? _entry$name : 'Name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+      flexGrow: "1",
+      margin: "0 0 0 4px"
+    }, entry.description))));
+  })))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SimpleSelector);
 
 /***/ }),
 
