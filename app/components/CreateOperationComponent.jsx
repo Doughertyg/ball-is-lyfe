@@ -1,5 +1,4 @@
-import { compact } from '@apollo/react-hooks/node_modules/@apollo/client/utilities';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import styled from 'styled-components';
 import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
@@ -7,7 +6,6 @@ import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
 import DropdownSelector from './DropdownSelector.jsx';
 import InputField from './InputField.jsx';
-import SearchField from './SearchField.jsx';
 import CreateStatMetricComponent from './CreateStatMetricComponent.jsx';
 import SimpleSelector from './SimpleSelector.jsx';
 import gql from 'graphql-tag';
@@ -56,62 +54,18 @@ const CREATE_TYPES = [
 const FETCH_STAT_METRICS_OPERATIONS = gql`
   query($seasonID: ID) {
     getStatOperations(seasonID: $seasonID) {
+      id
       metricA {
-        ... on StatUnit {
-          name
-          value
-        }
-        ... on Operation {
-          metricA {
-            ... on StatUnit {
-              name
-            }
-            ... on Operation {
-              name
-            }
-          }
-          metricB {
-            ... on StatUnit {
-              name
-            }
-            ... on Operation {
-              name
-            }
-          }
-          name
-          operation
-        }
+        __typename
       }
       metricB {
-        ... on StatUnit {
-          name
-          value
-        }
-        ... on Operation {
-          metricA {
-            ... on StatUnit {
-              name
-            }
-            ... on Operation {
-              name
-            }
-          }
-          metricB {
-            ... on StatUnit {
-              name
-            }
-            ... on Operation {
-              name
-            }
-          }
-          name
-          operation
-        }
+        __typename
       }
       name
       operation
     }
     getStatUnits(seasonID: $seasonID) {
+      id
       name
       value
     }
@@ -119,21 +73,41 @@ const FETCH_STAT_METRICS_OPERATIONS = gql`
 `;
 
 const CREATE_OPERATION_MUTATION = gql`
-  mutation createOperation(
+  mutation createStatOperation(
     $name: String!,
     $term1: ID!,
     $term2: ID!
     $operation: String!
     $seasonID: ID
   ) {
-    createOperation(
-      name: $name,
-      term1: $term1,
-      term2: $term2,
-      operation: $operation,
-      seasonID: $seasonID
+    createStatOperation(
+      input: {
+        name: $name,
+        term1: $term1,
+        term2: $term2,
+        operation: $operation,
+        seasonID: $seasonID
+      }
     ) {
+      id
+      metricA {
+        ... on StatUnit {
+          name
+        }
+        ... on Operation {
+          name
+        }
+      }
+      metricB {
+        ... on StatUnit {
+          name
+        }
+        ... on Operation {
+          name
+        }
+      }
       name
+      operation
     }
   }
 `;
@@ -196,7 +170,7 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
       seasonID,
       term1: termA?.id,
       term2: termB?.id,
-      operation
+      operation: operation?.value
     }
   });
 
@@ -210,6 +184,26 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
       onClick={onClick}
     />
   )
+
+  const createOperationCompleted = (setTerm, setExpanded) => (res) => {
+    if (res?.createStatOperation != null) {
+      setTerm(res.createStatOperation);
+      setExpanded(false);
+    }
+  }
+
+  const createStatUnitCompleted = (setTerm, setExpanded) => (res) => {
+    if (res?.createStatUnit != null) {
+      setTerm(res.createStatUnit);
+      setExpanded(false)
+    }
+  }
+
+  const statMetricsOperationsSource = useMemo(() => {
+    const statUnits = data?.getStatUnits ?? [];
+    const operations = data?.getStatOperations ?? [];
+    return statUnits.concat(operations);
+  }, [data?.getStatUnits, data?.getStatOperations]);
 
   return (
   <Wrapper>
@@ -233,15 +227,15 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
         loading={loading}
         onClick={(operation) => setTermA(operation)}
         onClose={() => {}}
-        source={data?.getStatUnits ?? []}
+        source={statMetricsOperationsSource}
       />
       {createMetricAExpanded && (
         <FlexContainer direction="column" marginTop="8px" overflow="visible">
           <SimpleSelector options={CREATE_TYPES} value={createMetricAType} onClick={(option) => setCreateMetricAType(option?.value)} />
           {createMetricAType != null ?
             createMetricAType === "metric" ?
-              <CreateStatMetricComponent onCancel={() => setCreateMetricAExpanded(false)} onComplete={() => setCreateMetricAExpanded(false)} />
-              : <CreateOperationComponent onCancel={() => setCreateMetricAExpanded(false)} seasonID={seasonID} />
+              <CreateStatMetricComponent onCancel={() => setCreateMetricAExpanded(false)} onComplete={createStatUnitCompleted(setTermA, setCreateMetricAExpanded)} />
+              : <CreateOperationComponent onCancel={() => setCreateMetricAExpanded(false)} onCompleted={createOperationCompleted(setTermA, setCreateMetricAExpanded)} seasonID={seasonID} />
             : null}
         </FlexContainer>
       )}
@@ -262,15 +256,15 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
         loading={loading}
         onClick={(operation) => setTermB(operation)}
         onClose={() => {}}
-        source={data?.getStatUnits ?? []}
+        source={statMetricsOperationsSource}
       />
       {createMetricBExpanded && (
         <FlexContainer direction="column" marginTop="8px" overflow="visible">
           <SimpleSelector options={CREATE_TYPES} value={createMetricBType?.name} onClick={(option) => setCreateMetricBType(option?.value)} />
           {createMetricBType != null ?
             createMetricBType === "metric" ?
-              <CreateStatMetricComponent onCancel={() => setCreateMetricBExpanded(false)} onComplete={() => setCreateMetricBExpanded(false)} />
-              : <CreateOperationComponent onCancel={() => setCreateMetricBExpanded(false)} seasonID={seasonID} />
+              <CreateStatMetricComponent onCancel={() => setCreateMetricBExpanded(false)} onComplete={createStatUnitCompleted(setTermB, setCreateMetricBExpanded)} />
+              : <CreateOperationComponent onCancel={() => setCreateMetricBExpanded(false)} onCompleted={createOperationCompleted(setTermB, setCreateMetricBExpanded)} seasonID={seasonID} />
             : null}
         </FlexContainer>
       )}

@@ -5,8 +5,20 @@ const leagueResolvers = require('./leagues');
 const seasonResolvers = require('./seasons');
 const teamResolvers = require('./teams');
 const statUnitResolvers = require('./statUnits');
+const statOperationsResolvers = require('./statOperations');
 
 module.exports = {
+  OperationTermUnion: {
+    __resolveType(obj, _contextValue, _info) {
+      if (obj.operation) {
+        return 'Operation';
+      }
+
+      if (obj.value) {
+        return 'StatUnit';
+      }
+    }
+  },
   Post: {
     likeCount (parent) {
       return parent.likes.length;
@@ -17,6 +29,7 @@ module.exports = {
     ...postResolvers.Query,
     ...leagueResolvers.Query,
     ...seasonResolvers.Query,
+    ...statOperationsResolvers.Query,
     ...statUnitResolvers.Query,
     ...userResolvers.Query,
     ...teamResolvers.Query,
@@ -27,6 +40,7 @@ module.exports = {
     ...commentResolvers.Mutation,
     ...leagueResolvers.Mutation,
     ...seasonResolvers.Mutation,
+    ...statOperationsResolvers.Mutation,
     ...statUnitResolvers.Mutation,
     ...teamResolvers.Mutation,
   },

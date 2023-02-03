@@ -124,11 +124,11 @@ module.exports = gql`
   type Operation {
     id: ID!
     name: String!
-    metricA: OperationTermType!
-    metricB: OperationTermType!
+    metricA: OperationTermUnion!
+    metricB: OperationTermUnion!
     operation: String!
   }
-  union OperationTermType = StatUnit | Operation
+  union OperationTermUnion = StatUnit | Operation
   type PlayerStatUnits {
     id: ID!
     player: PlayerInstance!
@@ -252,7 +252,7 @@ module.exports = gql`
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
     createSeason(seasonInput: CreateSeasonInput): Season!
-    createStatOperation(input: OperationInput): Operation!
+    createStatOperation(input: OperationInput): Operation
     createStatUnit(name: String!, seasonID: ID, value: Int!): StatUnit!
     createTeam(
       bannerPicture: String,

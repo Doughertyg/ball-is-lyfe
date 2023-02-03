@@ -1,5 +1,7 @@
+import gql from 'graphql-tag';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
@@ -13,6 +15,32 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   padding: 20px;
   width: 100%;
+`;
+
+const FETCH_STAT_OPERATIONS = gql`
+  query($seasonID: ID) {
+    getStatOperations(seasonID: $seasonID) {
+      id
+      metricA {
+        ... on StatUnit {
+          name
+        }
+        ... on Operation {
+          name
+        }
+      }
+      metricB {
+        ... on StatUnit {
+          name
+        }
+        ... on Operation {
+          name
+        }
+      }
+      name
+      operation
+    }
+  }
 `;
 
 /**
@@ -37,13 +65,21 @@ const Wrapper = styled.div`
  *  |              '--------'    '-------------'              |
  *  `---------------------------------------------------------`
  */
-const CreateStatComponent = ({ onCancel }) => {
+const CreateStatComponent = ({ onCancel, seasonID }) => {
   const [name, setName] = useState("");
   const [operations, setOperations] = useState(null);
   const [createOperationExpanded, setCreateOperationExpanded] = useState(false);
   
   const isSubmitting = false;
-  const loadingOperations = false;
+
+  const { loading: loadingOperations, data, error } = useQuery(FETCH_STAT_OPERATIONS, {
+    variables: {seasonID}
+  });
+
+  if (error != null) {
+    // TODO: display user friendly error to user
+    console.log('error: ', JSON.stringify(error, null, 2));
+  }
 
   const onSubmit = () => {
     // commit mutation
@@ -60,6 +96,14 @@ const CreateStatComponent = ({ onCancel }) => {
       onClick={() => setCreateOperationExpanded(true)}
     />
   );
+  
+  const onCreateOperationCompleted = (res) => {
+    if (res?.createStatOperation != null) {
+      setOperations(res.createStatOperation);
+    }
+
+    setCreateOperationExpanded(false);
+  }
 
   return (
     <Wrapper>
@@ -73,22 +117,22 @@ const CreateStatComponent = ({ onCancel }) => {
         <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Stat name..." width="100%" value={name} />
         <SectionHeadingText margin="8px 0 8px 0">Operations</SectionHeadingText>
         <CollapsibleSearchField
-          filterResults={(entry, input) => entry?.metricA?.name?.includes(input) || entry?.metricB?.name?.includes(input)}
+          filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}
           forceExpanded
           getRightButton={getCreateOperationButton}
           label="Add Operations..."
           loading={loadingOperations}
           onClick={(operation) => setOperations(operation)}
           onClose={() => {}}
-          source={[]}
+          source={data?.getStatOperations ?? []}
         />
         {createOperationExpanded && (
-          <CreateOperationComponent onCancel={() => setCreateOperationExpanded(false)} />
+          <CreateOperationComponent onCancel={() => setCreateOperationExpanded(false)} onCompleted={onCreateOperationCompleted} seasonID={seasonID} />
         )}
         {operations != null && (
           <CompactDetailsCard
             title={operations?.name ?? 'Operation name missing'}
-            details={[operations?.metricA?.name, operations?.operation, operations?.metricB?.name]}
+            subTitle={`${operations?.metricA?.name ?? 'term 1'} ${operations?.operation} ${operations?.metricB?.name ?? 'term 2'}`}
           />
         )}
         <FlexContainer justify="center" marginTop="12px">

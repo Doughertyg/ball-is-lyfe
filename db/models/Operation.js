@@ -12,13 +12,17 @@ const {model, Schema} = require('mongoose');
 const operationSchema = new Schema({
   metricA: {
     type: Schema.Types.ObjectId,
-    refPath: "metricModel"
+    refPath: "metricAModel"
   },
   metricB: {
     type: Schema.Types.ObjectId,
-    refPath: "metricModel"
+    refPath: "metricBModel"
   },
-  metricModel: {
+  metricAModel: {
+    type: String,
+    enum: ["Operation", "StatUnit"]
+  },
+  metricBModel: {
     type: String,
     enum: ["Operation", "StatUnit"]
   },
