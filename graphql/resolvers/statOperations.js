@@ -63,7 +63,8 @@ module.exports = {
         metricB: term2,
         metricBModel: term2StatUnit ? 'StatUnit' : 'Operation'
       });
-      return await newOperation.save().populate(['metricA', 'metricB']);
+      const createdOperation = await newOperation.save();
+      return await Operation.findById(createdOperation.id).populate(['metricA', 'metricB']);
     }
   },
   Query: {

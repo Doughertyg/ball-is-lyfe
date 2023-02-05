@@ -9,7 +9,7 @@ import CreateStatComponent from './CreateStatComponent.jsx';
 
 const SEASON_STATS_QUERY = gql`
   query($seasonID: ID!) {
-    getSeasonStats(seasonID: $seasonID) {
+    getStats(seasonID: $seasonID) {
       name
     }
   }
@@ -41,9 +41,9 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
 
   useEffect(() => {
     if (seasonStats != null) {
-      setStats(seasonStats);
+      setStats(seasonStats?.getStats ?? []);
     }
-  }, [])
+  }, [seasonStats])
 
   if (error != null) {
     // TODO: display user friendly error to user
@@ -69,6 +69,13 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
     />
   );
 
+  const onCreateStat = (stat) => {
+    setCreateStatExpanded(false);
+    const newStats = [...stats];
+    newStats.push(stat);
+    setStats(newStats);
+  }
+
   return (
     <>
       <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
@@ -86,7 +93,7 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
           />)}
       </FlexContainer>
       {createStatExpanded && (
-        <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} seasonID={seasonID} />
+        <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
       )}
       <FlexContainer flexWrap="wrap" justify="flex-start">
         {stats != null && stats.length > 0 && (

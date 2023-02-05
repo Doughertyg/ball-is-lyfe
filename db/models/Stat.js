@@ -27,10 +27,10 @@ const {model, Schema} = require('mongoose');
  */
 const statSchema = new Schema({
   name: String,
-  operations: [{
+  operation: {
     type: Schema.Types.ObjectId,
     ref: 'Operation'
-  }],
+  },
 });
 
 module.exports = model('Stat', statSchema);

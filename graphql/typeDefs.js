@@ -14,6 +14,7 @@ module.exports = gql`
     getSeasonsByUser(userID: ID!): [Season]
     getSeasonByID(seasonID: ID!, userID: ID!): GetSeasonByIDReturnType
     getSeasonStats(seasonID: ID!): [Stat]
+    getStats(seasonID: ID): [Stat]
     getStatOperations(seasonID: ID): [Operation]
     getStatUnits(seasonID: ID): [StatUnit]
     getUserContext(token: String!): User
@@ -119,7 +120,7 @@ module.exports = gql`
   type Stat {
     id: ID!
     name: String!
-    operations: [Operation]!
+    operation: Operation!
   }
   type Operation {
     id: ID!
@@ -252,6 +253,7 @@ module.exports = gql`
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
     createSeason(seasonInput: CreateSeasonInput): Season!
+    createStat(name: String!, operation: ID!, seasonID: ID!): Stat
     createStatOperation(input: OperationInput): Operation
     createStatUnit(name: String!, seasonID: ID, value: Int!): StatUnit!
     createTeam(

@@ -41,8 +41,10 @@ module.exports = {
     async getStatUnits(_, {seasonID}) {
       let statUnits = [];
       if (seasonID != null) {
-        const season = await Season.findById(seasonID).populate('statUnits');
-        statUnits = season?.statUnits ?? [];
+        const season = await Season.findById(seasonID).populate('league');
+        // statUnits = season?.statUnits ?? [];
+        // for now just return all statUnits. in the future, filter by sport
+        return await StatUnit.find();
       }
 
       if (statUnits.length > 0) {

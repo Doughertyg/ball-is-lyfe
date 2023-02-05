@@ -5017,7 +5017,7 @@ var CREATE_TYPES = [{
   name: "Operation",
   value: "operation"
 }];
-var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        __typename\n      }\n      metricB {\n        __typename\n      }\n      name\n      operation\n    }\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n    }\n  }\n"])));
+var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        __typename\n      }\n      metricB {\n        __typename\n      }\n      name\n      operation\n      __typename\n    }\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
 var CREATE_OPERATION_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createStatOperation(\n    $name: String!,\n    $term1: ID!,\n    $term2: ID!\n    $operation: String!\n    $seasonID: ID\n  ) {\n    createStatOperation(\n      input: {\n        name: $name,\n        term1: $term1,\n        term2: $term2,\n        operation: $operation,\n        seasonID: $seasonID\n      }\n    ) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
 
 /**
@@ -5215,7 +5215,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     onCompleted: createOperationCompleted(setTermA, setCreateMetricAExpanded),
     seasonID: seasonID
   }) : null), termA != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    subTitle: [termB === null || termB === void 0 ? void 0 : termB.value],
+    subTitle: [termA === null || termA === void 0 ? void 0 : termA.__typename],
     title: (_termA$name = termA === null || termA === void 0 ? void 0 : termA.name) !== null && _termA$name !== void 0 ? _termA$name : 'term 1 name missing',
     onClose: function onClose() {
       return setTermA(null);
@@ -5272,7 +5272,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     onCompleted: createOperationCompleted(setTermB, setCreateMetricBExpanded),
     seasonID: seasonID
   }) : null), termB != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    subTitle: [termB === null || termB === void 0 ? void 0 : termB.value],
+    subTitle: [termB === null || termB === void 0 ? void 0 : termB.__typename],
     title: (_termB$name = termB === null || termB === void 0 ? void 0 : termB.name) !== null && _termB$name !== void 0 ? _termB$name : 'term 2 name missing',
     onClose: function onClose() {
       return setTermB(null);
@@ -5311,13 +5311,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
 /* harmony import */ var _CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CollapsibleSearchField.jsx */ "./app/components/CollapsibleSearchField.jsx");
 /* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
 /* harmony import */ var _CreateOperationComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateOperationComponent.jsx */ "./app/components/CreateOperationComponent.jsx");
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
-var _templateObject, _templateObject2;
+var _templateObject, _templateObject2, _templateObject3;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5337,6 +5338,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
 var FETCH_STAT_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
+var CREATE_STAT_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createStat(\n    $name: String!,\n    $operation: ID!,\n    $seasonID: ID!\n  ) {\n    createStat(\n      name: $name,\n      operation: $operation,\n      seasonID: $seasonID\n    ) {\n      id\n      name\n    }\n  }\n"])));
 
 /**
  * Create Stat component for creating stats
@@ -5363,6 +5365,7 @@ var FETCH_STAT_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default
 var CreateStatComponent = function CreateStatComponent(_ref) {
   var _data$getStatOperatio, _operations$name, _operations$metricA$n, _operations$metricA, _operations$metricB$n, _operations$metricB;
   var onCancel = _ref.onCancel,
+    _onCompleted = _ref.onCompleted,
     seasonID = _ref.seasonID;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState2 = _slicedToArray(_useState, 2),
@@ -5376,7 +5379,6 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     _useState6 = _slicedToArray(_useState5, 2),
     createOperationExpanded = _useState6[0],
     setCreateOperationExpanded = _useState6[1];
-  var isSubmitting = false;
   var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__.useQuery)(FETCH_STAT_OPERATIONS, {
       variables: {
         seasonID: seasonID
@@ -5385,13 +5387,34 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     loadingOperations = _useQuery.loading,
     data = _useQuery.data,
     error = _useQuery.error;
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useMutation)(CREATE_STAT_MUTATION, {
+      onCompleted: function onCompleted(res) {
+        console.log('mutation completed!!! res: ', res);
+        _onCompleted === null || _onCompleted === void 0 ? void 0 : _onCompleted(res === null || res === void 0 ? void 0 : res.createStat);
+      },
+      onError: function onError(error) {
+        console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
+      },
+      variables: {
+        name: name,
+        operation: operations === null || operations === void 0 ? void 0 : operations.id,
+        seasonID: seasonID
+      }
+    }),
+    _useMutation2 = _slicedToArray(_useMutation, 2),
+    createStat = _useMutation2[0],
+    isSubmitting = _useMutation2[1].isSubmitting;
   if (error != null) {
     // TODO: display user friendly error to user
     console.log('error: ', JSON.stringify(error, null, 2));
   }
   var onSubmit = function onSubmit() {
-    // commit mutation
-    console.log('submit mutation!!');
+    if (name === '' || operations == null) {
+      // display error
+      return;
+    } else {
+      createStat();
+    }
   };
   var getCreateOperationButton = function getCreateOperationButton() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -5514,7 +5537,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: 8px 0;\n  padding: 20px;\n  width: 100%;\n"])));
-var CREATE_STAT_METRIC_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createStatUnit(\n    $name: String!,\n    $value: Int!,\n  ) {\n    createStatUnit(\n      name: $name,\n      value: $value\n    ) {\n      __typename\n    }\n  }\n"])));
+var CREATE_STAT_METRIC_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createStatUnit(\n    $name: String!,\n    $value: Int!,\n  ) {\n    createStatUnit(\n      name: $name,\n      value: $value\n    ) {\n      id\n      name\n      __typename\n    }\n  }\n"])));
 
 /**
  * Create Stat Metric Component
@@ -7093,6 +7116,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
 /* harmony import */ var _CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateStatComponent.jsx */ "./app/components/CreateStatComponent.jsx");
 var _templateObject;
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -7108,7 +7135,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getSeasonStats(seasonID: $seasonID) {\n      name\n    }\n  }\n"])));
+var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      name\n    }\n  }\n"])));
 
 /**
  * Component for rendering the stats section on the season page
@@ -7151,9 +7178,10 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
     error = _useQuery.error;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (seasonStats != null) {
-      setStats(seasonStats);
+      var _seasonStats$getStats;
+      setStats((_seasonStats$getStats = seasonStats === null || seasonStats === void 0 ? void 0 : seasonStats.getStats) !== null && _seasonStats$getStats !== void 0 ? _seasonStats$getStats : []);
     }
-  }, []);
+  }, [seasonStats]);
   if (error != null) {
     // TODO: display user friendly error to user
     console.log('error: ', JSON.stringify(error, null, 2));
@@ -7177,6 +7205,12 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
       }
     });
   };
+  var onCreateStat = function onCreateStat(stat) {
+    setCreateStatExpanded(false);
+    var newStats = _toConsumableArray(stats);
+    newStats.push(stat);
+    setStats(newStats);
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     alignItems: "center",
     flexWrap: "wrap",
@@ -7199,6 +7233,7 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
     onCancel: function onCancel() {
       return setCreateStatExpanded(false);
     },
+    onCompleted: onCreateStat,
     seasonID: seasonID
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     flexWrap: "wrap",

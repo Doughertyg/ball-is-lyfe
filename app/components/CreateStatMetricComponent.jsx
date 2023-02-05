@@ -25,6 +25,8 @@ const CREATE_STAT_METRIC_MUTATION = gql`
       name: $name,
       value: $value
     ) {
+      id
+      name
       __typename
     }
   }

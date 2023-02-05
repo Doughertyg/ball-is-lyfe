@@ -63,11 +63,13 @@ const FETCH_STAT_METRICS_OPERATIONS = gql`
       }
       name
       operation
+      __typename
     }
     getStatUnits(seasonID: $seasonID) {
       id
       name
       value
+      __typename
     }
   }
 `;
@@ -240,7 +242,7 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
         </FlexContainer>
       )}
       {termA != null && (
-        <CompactDetailsCard subTitle={[termB?.value]} title={termA?.name ?? 'term 1 name missing'} onClose={() => setTermA(null)} />
+        <CompactDetailsCard subTitle={[termA?.__typename]} title={termA?.name ?? 'term 1 name missing'} onClose={() => setTermA(null)} />
       )}
       <SectionHeadingText margin="8px 0 8px 0">Operation</SectionHeadingText>
       <DropdownSelector onClick={(entry) => setOperation(entry)} options={OPERATIONS} value={operation?.name} />
@@ -269,7 +271,7 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
         </FlexContainer>
       )}
       {termB != null && (
-        <CompactDetailsCard subTitle={[termB?.value]} title={termB?.name ?? 'term 2 name missing'} onClose={() => setTermB(null)} />
+        <CompactDetailsCard subTitle={[termB?.__typename]} title={termB?.name ?? 'term 2 name missing'} onClose={() => setTermB(null)} />
       )}
       <FlexContainer justify="center" marginTop="12px">
         <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />

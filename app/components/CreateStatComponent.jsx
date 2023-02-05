@@ -43,6 +43,23 @@ const FETCH_STAT_OPERATIONS = gql`
   }
 `;
 
+const CREATE_STAT_MUTATION = gql`
+  mutation createStat(
+    $name: String!,
+    $operation: ID!,
+    $seasonID: ID!
+  ) {
+    createStat(
+      name: $name,
+      operation: $operation,
+      seasonID: $seasonID
+    ) {
+      id
+      name
+    }
+  }
+`;
+
 /**
  * Create Stat component for creating stats
  * Modeled after the CreateTeamComponent
@@ -65,15 +82,28 @@ const FETCH_STAT_OPERATIONS = gql`
  *  |              '--------'    '-------------'              |
  *  `---------------------------------------------------------`
  */
-const CreateStatComponent = ({ onCancel, seasonID }) => {
+const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
   const [name, setName] = useState("");
   const [operations, setOperations] = useState(null);
   const [createOperationExpanded, setCreateOperationExpanded] = useState(false);
-  
-  const isSubmitting = false;
 
   const { loading: loadingOperations, data, error } = useQuery(FETCH_STAT_OPERATIONS, {
     variables: {seasonID}
+  });
+
+  const [createStat, {isSubmitting}] = useMutation(CREATE_STAT_MUTATION, {
+    onCompleted: (res) => {
+      console.log('mutation completed!!! res: ', res);
+      onCompleted?.(res?.createStat);
+    },
+    onError: (error) => {
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+    },
+    variables: {
+      name,
+      operation: operations?.id,
+      seasonID
+    }
   });
 
   if (error != null) {
@@ -82,8 +112,12 @@ const CreateStatComponent = ({ onCancel, seasonID }) => {
   }
 
   const onSubmit = () => {
-    // commit mutation
-    console.log('submit mutation!!');
+    if (name === '' || operations == null) {
+      // display error
+      return;
+    } else {
+      createStat();
+    }
   }
 
   const getCreateOperationButton = () => (
