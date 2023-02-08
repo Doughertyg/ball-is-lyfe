@@ -5167,7 +5167,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0px"
   }, "Create Operation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
-    margin: "4px 0"
+    padding: "4px 0"
   }, "Operations create a mathematical result from two Stat Metrics or operations. The operation value dictates what mathematical operation should be completed. Operations can be nested to create more complicated results."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
@@ -5183,9 +5183,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     width: "100%",
     value: name
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Term 1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
-    marginBottom: "4px"
+    padding: "0 0 4px 0"
   }, "A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     filterResults: function filterResults(entry, input) {
       var _entry$name;
@@ -5232,7 +5232,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
       return setTermA(null);
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Operation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_DropdownSelector_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     onClick: function onClick(entry) {
       return setOperation(entry);
@@ -5240,9 +5240,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     options: OPERATIONS,
     value: operation === null || operation === void 0 ? void 0 : operation.name
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Term 2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
-    marginBottom: "4px"
+    padding: "0 0 4px 0"
   }, "A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     filterResults: function filterResults(entry, input) {
       var _entry$name2;
@@ -5455,7 +5455,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0px"
   }, "Create Stat"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
-    margin: "4px 0"
+    padding: "4px 0"
   }, "Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
@@ -10089,7 +10089,7 @@ var ButtonContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
 });
 var CenteredContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\nmargin: 0 auto;\ntext-align: center;\nvertical-align: middle;\n"])));
 var CommonPageLayout = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  background-color: rgba(239, 239, 239, 0.25);\n  color: black !important;\n  font-family: Arial !important;\n  height: 100vh;\n  width: 100vw;\n  margin: 0 auto;\n"])));
-var DetailsText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  flex-grow: ", ";\n  font-size: 12px;\n  font-weight: 300;\n  color: DimGrey;\n  cursor: ", ";\n  line-break: ", ";\n  margin: ", ";\n  margin-bottom: ", ";\n  overflow: ", ";\n  width: ", ";\n  ", ";\n"])), function (props) {
+var DetailsText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  flex-grow: ", ";\n  font-size: 12px;\n  font-weight: 300;\n  color: DimGrey;\n  cursor: ", ";\n  line-break: ", ";\n  margin: ", ";\n  margin-bottom: ", ";\n  overflow: ", ";\n  padding: ", ";\n  width: ", ";\n  ", ";\n"])), function (props) {
   var _props$flexGrow;
   return (_props$flexGrow = props.flexGrow) !== null && _props$flexGrow !== void 0 ? _props$flexGrow : 'initial';
 }, function (props) {
@@ -10106,6 +10106,9 @@ var DetailsText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(
 }, function (props) {
   var _props$overflow;
   return (_props$overflow = props.overflow) !== null && _props$overflow !== void 0 ? _props$overflow : "auto";
+}, function (props) {
+  var _props$padding2;
+  return (_props$padding2 = props.padding) !== null && _props$padding2 !== void 0 ? _props$padding2 : '0';
 }, function (props) {
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
@@ -10172,8 +10175,8 @@ var FlexContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].di
   var _props$justify;
   return (_props$justify = props.justify) !== null && _props$justify !== void 0 ? _props$justify : 'center';
 }, function (props) {
-  var _props$padding2;
-  return (_props$padding2 = props.padding) !== null && _props$padding2 !== void 0 ? _props$padding2 : '0px';
+  var _props$padding3;
+  return (_props$padding3 = props.padding) !== null && _props$padding3 !== void 0 ? _props$padding3 : '0px';
 }, function (props) {
   var _props$paddingTop;
   return (_props$paddingTop = props.paddingTop) !== null && _props$paddingTop !== void 0 ? _props$paddingTop : '0px';

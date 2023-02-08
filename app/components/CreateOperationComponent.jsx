@@ -211,14 +211,14 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
   <Wrapper>
     <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
       <PageHeader margin="0px">Create Operation</PageHeader>
-      <DetailsText margin="4px 0">
+      <DetailsText padding="4px 0">
         Operations create a mathematical result from two Stat Metrics or operations. The operation value dictates what mathematical operation should be completed. Operations can be nested to create more complicated results.
       </DetailsText>
       <Divider width="100%" />
       <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
       <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Operation name..." width="100%" value={name} />
-      <SectionHeadingText margin="8px 0 8px 0">Term 1</SectionHeadingText>
-      <DetailsText marginBottom="4px">
+      <SectionHeadingText margin="20px 0 8px 0">Term 1</SectionHeadingText>
+      <DetailsText padding="0 0 4px 0">
         A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
       </DetailsText>
       <CollapsibleSearchField
@@ -244,10 +244,10 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
       {termA != null && (
         <CompactDetailsCard subTitle={[termA?.__typename]} title={termA?.name ?? 'term 1 name missing'} onClose={() => setTermA(null)} />
       )}
-      <SectionHeadingText margin="8px 0 8px 0">Operation</SectionHeadingText>
+      <SectionHeadingText margin="20px 0 8px 0">Operation</SectionHeadingText>
       <DropdownSelector onClick={(entry) => setOperation(entry)} options={OPERATIONS} value={operation?.name} />
-      <SectionHeadingText margin="8px 0 8px 0">Term 2</SectionHeadingText>
-      <DetailsText marginBottom="4px">
+      <SectionHeadingText margin="20px 0 8px 0">Term 2</SectionHeadingText>
+      <DetailsText padding="0 0 4px 0">
         A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
       </DetailsText>
       <CollapsibleSearchField

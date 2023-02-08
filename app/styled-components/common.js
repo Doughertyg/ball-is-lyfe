@@ -33,6 +33,7 @@ export const DetailsText = styled.div`
   margin: ${props => props.margin ?? 'initial'};
   margin-bottom: ${props => props.marginBottom ?? '0'};
   overflow: ${props => props.overflow ?? "auto"};
+  padding: ${props => props.padding ?? '0'};
   width: ${props => props.width ?? 'auto'};
   ${props => props.onClick ?
     '&:hover {color: teal}'

@@ -143,7 +143,7 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
     <Wrapper>
       <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
         <PageHeader margin="0px">Create Stat</PageHeader>
-        <DetailsText margin="4px 0">
+        <DetailsText padding="4px 0">
           Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)
         </DetailsText>
         <Divider width="100%" />
