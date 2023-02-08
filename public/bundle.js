@@ -10348,7 +10348,7 @@ var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_tem
   var _props$maxWidth;
   return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : "400px";
 });
-var InputError = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  border: 1px solid red;\n  border-top: none;\n  box-sizing: border-box;\n  background-color: rgba(250, 0, 0, 0.04);\n  font-size: 12px;\n  color: red;\n  padding: 4px;\n  max-width: ", ";\n"])), function (props) {
+var InputError = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  box-sizing: border-box;\n  font-size: 12px;\n  color: red;\n  padding: 4px;\n  max-width: ", ";\n"])), function (props) {
   var _props$maxWidth2;
   return (_props$maxWidth2 = props.maxWidth) !== null && _props$maxWidth2 !== void 0 ? _props$maxWidth2 : "400px";
 });

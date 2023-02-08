@@ -43,10 +43,7 @@ export const Input = styled.input`
 `;
 
 export const InputError = styled.div`
-  border: 1px solid red;
-  border-top: none;
   box-sizing: border-box;
-  background-color: rgba(250, 0, 0, 0.04);
   font-size: 12px;
   color: red;
   padding: 4px;
