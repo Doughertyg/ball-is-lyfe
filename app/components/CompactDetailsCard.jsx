@@ -40,18 +40,18 @@ const CompactDetailsCard = ({
             width="32px" />
         )}
         <FlexContainer direction="column">
-          <DetailsText>
+          <DetailsText overflow="hidden">
             <SectionHeadingText margin="0 0 4px 0">
               {title}
             </SectionHeadingText>
           </DetailsText>
-          <DetailsText>{subTitle}</DetailsText>
+          <DetailsText overflow="hidden">{subTitle}</DetailsText>
           {details?.length > 0 && (
-            <FlexContainer justify="flex-start">
+            <FlexContainer justify="flex-start" overflow="hidden">
               <List>
                 {details?.map((detail, idx) => {
                   return (
-                    <li key={idx}><DetailsText key={idx}>{detail}</DetailsText></li>
+                    <li key={idx}><DetailsText key={idx} overflow="hidden">{detail}</DetailsText></li>
                   )
                 })}
               </List>

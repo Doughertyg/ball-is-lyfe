@@ -4663,9 +4663,14 @@ function Card(_ref) {
     onClick: onClick
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0"
-  }, title), bodyTitle && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, null, bodyTitle)), bodySubTitle && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
-    marginBottom: "4px"
-  }, bodySubTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, subTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, null, body)))));
+  }, title), bodyTitle && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    overflow: "hidden"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, null, bodyTitle)), bodySubTitle && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    marginBottom: "4px",
+    overflow: "hidden"
+  }, bodySubTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    overflow: "hidden"
+  }, subTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_2__.CardBody, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, null, body)))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Card);
 
@@ -4828,15 +4833,21 @@ var CompactDetailsCard = function CompactDetailsCard(_ref) {
     width: "32px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
     direction: "column"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.SectionHeadingText, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
+    overflow: "hidden"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.SectionHeadingText, {
     margin: "0 0 4px 0"
-  }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, null, subTitle), (details === null || details === void 0 ? void 0 : details.length) > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
-    justify: "flex-start"
+  }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
+    overflow: "hidden"
+  }, subTitle), (details === null || details === void 0 ? void 0 : details.length) > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    justify: "flex-start",
+    overflow: "hidden"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(List, null, details === null || details === void 0 ? void 0 : details.map(function (detail, idx) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
       key: idx
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
-      key: idx
+      key: idx,
+      overflow: "hidden"
     }, detail));
   })))), onClose && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     icon: "close",
@@ -6435,7 +6446,7 @@ function MenuBar(_ref) {
   }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FlexComponent, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
     alignItems: "center",
     height: "43px",
-    overFlow: "hidden"
+    overflow: "hidden"
   }, innerWidth > 600 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Offset, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
     to: "/"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
@@ -6471,7 +6482,7 @@ function MenuBar(_ref) {
   }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FlexComponent, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
     alignItems: "center",
     height: "43px",
-    overFlow: "hidden"
+    overflow: "hidden"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Offset, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.NavLink, {
     to: "/"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {

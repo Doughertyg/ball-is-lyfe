@@ -44,7 +44,7 @@ function MenuBar({ match }) {
               </NavLink>
             </ButtonContainer>
             <FlexComponent>
-              <FlexContainer alignItems="center" height="43px" overFlow="hidden">
+              <FlexContainer alignItems="center" height="43px" overflow="hidden">
                 {innerWidth > 600 && (
                   <>
                     <Offset />
@@ -78,7 +78,7 @@ function MenuBar({ match }) {
                 </NavLink>
               </ButtonContainer>
               <FlexComponent>
-                <FlexContainer alignItems="center" height="43px" overFlow="hidden">
+                <FlexContainer alignItems="center" height="43px" overflow="hidden">
                   <Offset />
                   <NavLink to="/">
                     <img referrerPolicy="no-referrer" height={310} src="./logo.jpeg" />

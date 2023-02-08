@@ -15,9 +15,9 @@ function Card({body, bodyTitle, bodySubTitle, margin, onClick, subTitle, title})
         onClick={onClick}>
         <CardContentWrapper>
           <PageHeader margin="0">{title}</PageHeader>
-          {bodyTitle && <DetailsText><SectionHeadingText>{bodyTitle}</SectionHeadingText></DetailsText>}
-          {bodySubTitle && <DetailsText marginBottom="4px">{bodySubTitle}</DetailsText>}
-          <DetailsText>{subTitle}</DetailsText>
+          {bodyTitle && <DetailsText overflow="hidden"><SectionHeadingText>{bodyTitle}</SectionHeadingText></DetailsText>}
+          {bodySubTitle && <DetailsText marginBottom="4px" overflow="hidden">{bodySubTitle}</DetailsText>}
+          <DetailsText overflow="hidden">{subTitle}</DetailsText>
           <Divider />
           <CardBody>
             <BodyText>{body}</BodyText>
