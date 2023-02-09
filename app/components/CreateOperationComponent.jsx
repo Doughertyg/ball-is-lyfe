@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   border: 1px solid rgb(105, 105, 105);
   background-color: rgba(139, 139, 139, 0.2);
   box-sizing: border-box;
-  margin: 8px 0;
+  margin: ${props => props.margin ?? '0'};
   padding: 20px;
   width: 100%;
 `;
@@ -140,7 +140,7 @@ const CREATE_OPERATION_MUTATION = gql`
  *  |              '--------'    '------------------'         |
  *  `---------------------------------------------------------`
  */
-const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
+const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) => {
   const [name, setName] = useState('');
   const [termA, setTermA] = useState(null);
   const [termB, setTermB] = useState(null);
@@ -208,14 +208,14 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
   }, [data?.getStatUnits, data?.getStatOperations]);
 
   return (
-  <Wrapper>
+  <Wrapper margin={margin}>
     <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
       <PageHeader margin="0px">Create Operation</PageHeader>
       <DetailsText padding="4px 0">
         Operations create a mathematical result from two Stat Metrics or operations. The operation value dictates what mathematical operation should be completed. Operations can be nested to create more complicated results.
       </DetailsText>
       <Divider width="100%" />
-      <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
+      <SectionHeadingText margin="20px 0 8px 0">Name</SectionHeadingText>
       <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Operation name..." width="100%" value={name} />
       <SectionHeadingText margin="20px 0 8px 0">Term 1</SectionHeadingText>
       <DetailsText padding="0 0 4px 0">
@@ -262,7 +262,7 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
       />
       {createMetricBExpanded && (
         <FlexContainer direction="column" marginTop="8px" overflow="visible">
-          <SimpleSelector options={CREATE_TYPES} value={createMetricBType?.name} onClick={(option) => setCreateMetricBType(option?.value)} />
+          <SimpleSelector options={CREATE_TYPES} value={createMetricBType} onClick={(option) => setCreateMetricBType(option?.value)} />
           {createMetricBType != null ?
             createMetricBType === "metric" ?
               <CreateStatMetricComponent onCancel={() => setCreateMetricBExpanded(false)} onComplete={createStatUnitCompleted(setTermB, setCreateMetricBExpanded)} />
@@ -273,7 +273,7 @@ const CreateOperationComponent = ({ onCancel, onCompleted, seasonID }) => {
       {termB != null && (
         <CompactDetailsCard subTitle={[termB?.__typename]} title={termB?.name ?? 'term 2 name missing'} onClose={() => setTermB(null)} />
       )}
-      <FlexContainer justify="center" marginTop="12px">
+      <FlexContainer justify="center" marginTop="20px">
         <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
         <Button isLoading={false} label="Create Operation" loading={isSubmitting} onClick={createOperation} />
       </FlexContainer>

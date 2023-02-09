@@ -403,7 +403,7 @@ const Season = ({match}) => {
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
-        <FlexContainer height="45px" justify="flex-start" width="800px">
+        <FlexContainer height="45px" justify="flex-start" width="800px" overflow="hidden">
           <LoadingSpinnerBack />
         </FlexContainer>
       ) : (
@@ -411,11 +411,11 @@ const Season = ({match}) => {
           <FlexContainer direction="row" justify="space-between">
             <FlexContainer direction="column">
               <PageHeader margin="20px 0 8px 0">{seasonData?.getSeasonByID?.season?.name ?? 'Season name missing'}</PageHeader>
-              <DetailsText marginBottom="4px">
+              <DetailsText padding="0 0 4px 0">
                 <SectionHeadingText>{seasonData?.getSeasonByID?.season?.league?.name ?? 'League missing'}</SectionHeadingText>
               </DetailsText>
               <FlexContainer alignItems="center" justify="start">
-                <DetailsText>{
+                <DetailsText overflow="hidden">{
                   (dayjs(seasonData?.getSeasonByID?.season?.seasonStart).format('MMM YYYY') ?? 'Season start missing') + ' - ' + (dayjs(seasonData?.getSeasonByID?.season?.seasonEnd).format('MMM YYYY') ?? 'season end missing')
                 }</DetailsText>
               </FlexContainer>

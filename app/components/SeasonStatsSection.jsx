@@ -5,7 +5,23 @@ import { FlexContainer, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
+import CreateOperationComponent from './CreateOperationComponent.jsx';
+import CreateSimpleStatComponent from './CreateSimpleStatComponent.jsx';
 import CreateStatComponent from './CreateStatComponent.jsx';
+import SimpleSelector from './SimpleSelector.jsx';
+
+const STAT_TYPES = {
+  SIMPLE_STAT:
+  {
+    name: 'Simple Stat',
+    value: 'SIMPLE_STAT'
+  },
+  COMPOUND_STAT:
+  {
+    name: 'Compound Stat',
+    value: 'COMPOUND_STAT'
+  }
+};
 
 const SEASON_STATS_QUERY = gql`
   query($seasonID: ID!) {
@@ -35,6 +51,7 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
   const [statsToAdd, setStatsToAdd] = useState({});
   const [stats, setStats] = useState([]);
   const [createStatExpanded, setCreateStatExpanded] = useState(false);
+  const [createStatType, setCreateStatType] = useState(STAT_TYPES.SIMPLE_STAT.value);
   const { loading, data: seasonStats, error } = useQuery(SEASON_STATS_QUERY, {
     variables: { seasonID }
   });
@@ -93,7 +110,14 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
           />)}
       </FlexContainer>
       {createStatExpanded && (
-        <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
+        <>
+          <SimpleSelector options={Object.values(STAT_TYPES)} value={STAT_TYPES[createStatType]?.name} onClick={(option) => setCreateStatType(option?.value)} />
+          {createStatType != null ?
+            createStatType === STAT_TYPES.COMPOUND_STAT.value ?
+            <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
+              : <CreateSimpleStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
+            : null}
+        </>
       )}
       <FlexContainer flexWrap="wrap" justify="flex-start">
         {stats != null && stats.length > 0 && (

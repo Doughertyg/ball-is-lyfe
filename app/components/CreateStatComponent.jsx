@@ -147,9 +147,9 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
           Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)
         </DetailsText>
         <Divider width="100%" />
-        <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
+        <SectionHeadingText margin="20px 0 8px 0">Name</SectionHeadingText>
         <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Stat name..." width="100%" value={name} />
-        <SectionHeadingText margin="8px 0 8px 0">Operations</SectionHeadingText>
+        <SectionHeadingText margin="20px 0 8px 0">Operations</SectionHeadingText>
         <CollapsibleSearchField
           filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}
           forceExpanded
@@ -161,7 +161,7 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
           source={data?.getStatOperations ?? []}
         />
         {createOperationExpanded && (
-          <CreateOperationComponent onCancel={() => setCreateOperationExpanded(false)} onCompleted={onCreateOperationCompleted} seasonID={seasonID} />
+          <CreateOperationComponent margin="8px 0 0 0" onCancel={() => setCreateOperationExpanded(false)} onCompleted={onCreateOperationCompleted} seasonID={seasonID} />
         )}
         {operations != null && (
           <CompactDetailsCard
@@ -169,7 +169,7 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
             subTitle={`${operations?.metricA?.name ?? 'term 1'} ${operations?.operation} ${operations?.metricB?.name ?? 'term 2'}`}
           />
         )}
-        <FlexContainer justify="center" marginTop="12px">
+        <FlexContainer justify="center" marginTop="20px">
           <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
           <Button isLoading={false} label="Create Stat" loading={isSubmitting} onClick={onSubmit} />
         </FlexContainer>

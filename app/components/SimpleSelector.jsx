@@ -31,6 +31,10 @@ const ContentWrapper = styled.div`
   box-sizing: border-box;
 `;
 
+const SelectorWrapper = styled.div`
+  padding-bottom: 4px;
+`;
+
 /**
  * Simple Selector Component
  * Show the selected option and a down arrow button
@@ -44,7 +48,7 @@ const SimpleSelector = ({ options, value, onClick }) => {
   }
 
   return (
-    <>
+    <SelectorWrapper>
       <FlexContainer justify="flex-start">
         {value != null ? value : 'Select'}<Clickable onClick={() => setExpanded(true)}>  &#9660;</Clickable>
       </FlexContainer>
@@ -81,7 +85,7 @@ const SimpleSelector = ({ options, value, onClick }) => {
           </ModalStyle>
         </ModalWrapper>
       )}
-    </>
+    </SelectorWrapper>
   )
 }
 

@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   border: 1px solid rgb(105, 105, 105);
   background-color: rgba(139, 139, 139, 0.2);
   box-sizing: border-box;
-  margin: 8px 0;
+  margin: ${props => props.margin ?? '0'};
   padding: 20px;
   width: 100%;
 `;
@@ -51,7 +51,7 @@ const CREATE_STAT_METRIC_MUTATION = gql`
  *  |              '--------'    '------------------'         |
  *  `---------------------------------------------------------`
  */
-const CreateStatMetricComponent = ({ onCancel, onComplete }) => {
+const CreateStatMetricComponent = ({ margin, onCancel, onComplete }) => {
   const [name, setName] = useState('');
   const [value, setValue] = useState('');
 
@@ -70,16 +70,16 @@ const CreateStatMetricComponent = ({ onCancel, onComplete }) => {
   });
 
   return (
-    <Wrapper>
+    <Wrapper margin={margin}>
       <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
       <PageHeader margin="0px">Create Stat Metric</PageHeader>
-      <DetailsText margin="4px 0">A Stat Metric is the most fundamental unit of a stat and meant purely for tracking/counting (FGA, Assists, etc.). All stats and operations will be built from your stat metrics.</DetailsText>
+      <DetailsText padding="4px 0" overflow="hidden">A Stat Metric is the most fundamental unit of a stat and meant purely for tracking/counting (FGA, Assists, etc.). All stats and operations will be built from your stat metrics.</DetailsText>
       <Divider width="100%" />
-      <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
+      <SectionHeadingText margin="20px 0 8px 0">Name</SectionHeadingText>
       <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={isSubmitting} name="name" onChange={(input) => setName(input)} placeholder="Stat Metric name..." width="100%" value={name} />
-      <SectionHeadingText margin="8px 0 8px 0">Value</SectionHeadingText>
+      <SectionHeadingText margin="20px 0 8px 0">Value</SectionHeadingText>
       <InputField errors={value === "" ? 'Value cannot be blank.' : null} loading={isSubmitting} name="value" onChange={(input) => setValue(input)} placeholder="Stat Metric value..." type="number" width="100%" value={value} />
-      <FlexContainer justify="center" marginTop="12px">
+      <FlexContainer justify="center" marginTop="20px">
         <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
         <Button isLoading={false} label="Create Metric" loading={isSubmitting} onClick={createStatMetric} />
       </FlexContainer>

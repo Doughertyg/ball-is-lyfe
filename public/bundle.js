@@ -5007,7 +5007,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: 8px 0;\n  padding: 20px;\n  width: 100%;\n"])));
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: ", ";\n  padding: 20px;\n  width: 100%;\n"])), function (props) {
+  var _props$margin;
+  return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '0';
+});
 var OPERATIONS = [{
   name: 'Multiply by',
   value: '*'
@@ -5059,7 +5062,8 @@ var CREATE_OPERATION_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["de
  */
 var CreateOperationComponent = function CreateOperationComponent(_ref) {
   var _termA$name, _termB$name;
-  var onCancel = _ref.onCancel,
+  var margin = _ref.margin,
+    onCancel = _ref.onCancel,
     _onCompleted = _ref.onCompleted,
     seasonID = _ref.seasonID;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
@@ -5157,7 +5161,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     var operations = (_data$getStatOperatio = data === null || data === void 0 ? void 0 : data.getStatOperations) !== null && _data$getStatOperatio !== void 0 ? _data$getStatOperatio : [];
     return statUnits.concat(operations);
   }, [data === null || data === void 0 ? void 0 : data.getStatUnits, data === null || data === void 0 ? void 0 : data.getStatOperations]);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
+    margin: margin
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     direction: "column",
     height: "100%",
     justify: "flex-start",
@@ -5171,7 +5177,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
   }, "Operations create a mathematical result from two Stat Metrics or operations. The operation value dictates what mathematical operation should be completed. Operations can be nested to create more complicated results."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
     errors: name === "" ? 'Name cannot be blank.' : null,
     loading: false /* isSubmitting */,
@@ -5267,7 +5273,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     overflow: "visible"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
     options: CREATE_TYPES,
-    value: createMetricBType === null || createMetricBType === void 0 ? void 0 : createMetricBType.name,
+    value: createMetricBType,
     onClick: function onClick(option) {
       return setCreateMetricBType(option === null || option === void 0 ? void 0 : option.value);
     }
@@ -5290,7 +5296,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
-    marginTop: "12px"
+    marginTop: "20px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     isDisabled: false,
     label: "Cancel",
@@ -5304,6 +5310,208 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateOperationComponent);
+
+/***/ }),
+
+/***/ "./app/components/CreateSimpleStatComponent.jsx":
+/*!******************************************************!*\
+  !*** ./app/components/CreateSimpleStatComponent.jsx ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _apollo_client__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @apollo/client */ "./node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
+/* harmony import */ var _CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CollapsibleSearchField.jsx */ "./app/components/CollapsibleSearchField.jsx");
+/* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
+/* harmony import */ var _CreateStatMetricComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateStatMetricComponent.jsx */ "./app/components/CreateStatMetricComponent.jsx");
+/* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+
+
+
+
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+var Bold = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  display: inline-block;\n  font-weight: 600;\n"])));
+var NoShrink = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  flex-shrink: 0;\n"])));
+var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
+
+/**
+ * Create simple stat component for creating 'simple' tabulated stats
+ * These stats are just sum of the stat unit over a season or game or per game
+ * 
+ * ___________________________________________________________
+ *  ,---------------------------------------------------------,
+ *  |   ,--------------------------.                          |
+ *  |  |     Name...                |                         |
+ *  |   `--------------------------`                          |
+ *  |   ,----------------------------------.                  |
+ *  |  |   Add Stat Unit...      | Create  |                  |
+ *  |   '----------------------------------'                  |
+ *  |   .-------------------,                                 |
+ *  |  |  FGA            X  |                                 |
+ *  |   `-------------------`                                 |
+ *  |  .------------------,                                   |
+ *  |  |  Per Game    [_] |                                   |
+ *  |  |  Total       [_] |                                   |
+ *  |  '------------------'                                   |
+ *  |                                                         |
+ *  |              .--------.    .-------------.              |
+ *  |              | Cancel |    | Create Stat |              |
+ *  |              '--------'    '-------------'              |
+ *  `---------------------------------------------------------`
+ * 
+ */
+var CreateSimpleStatComponent = function CreateSimpleStatComponent(_ref) {
+  var _data$getStatUnits, _metric$name;
+  var onCancel = _ref.onCancel,
+    onCompleted = _ref.onCompleted,
+    seasonID = _ref.seasonID;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState2 = _slicedToArray(_useState, 2),
+    name = _useState2[0],
+    setName = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState4 = _slicedToArray(_useState3, 2),
+    metric = _useState4[0],
+    setMetric = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    isPerGame = _useState6[0],
+    setIsPerGame = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    createStatMetricExpanded = _useState8[0],
+    setCreateMetricExpanded = _useState8[1];
+  var _useQuery = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_9__.useQuery)(FETCH_STAT_METRICS_OPERATIONS, {
+      variables: {
+        seasonID: seasonID
+      }
+    }),
+    loading = _useQuery.loading,
+    data = _useQuery.data,
+    error = _useQuery.error;
+  if (error != null) {
+    // TODO: display user friendly error to user
+    console.log('error fetching stat units: ', JSON.stringify(error, null, 2));
+  }
+  var getCreateMetricButton = function getCreateMetricButton() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      borderRadius: "0 8px 8px 0",
+      boxShadow: "none",
+      height: "46px",
+      label: "Create Metric / Operation",
+      margin: "0",
+      onClick: function onClick() {
+        return setCreateMetricExpanded(true);
+      }
+    });
+  };
+  var onSubmit = function onSubmit() {
+    // submit mutation
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    direction: "column",
+    height: "100%",
+    justify: "flex-start",
+    overflow: "visible",
+    padding: "0 8px",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
+    margin: "0px"
+  }, "Create Simple Stat"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    padding: "4px 0"
+  }, "Simple stats simply tabulate a player or team's totals for a given stat metric (FGA, Points, etc) over either a season or a game or ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Bold, null, "per"), " games. To create a simple stat that tracks stats per game, select the ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Bold, null, "\"per game\""), " option."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+    width: "100%"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "20px 0 8px 0"
+  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    errors: name === "" ? 'Name cannot be blank.' : null,
+    loading: false /* isSubmitting */,
+    name: "name",
+    onChange: function onChange(input) {
+      return setName(input);
+    },
+    placeholder: "Stat name...",
+    width: "100%",
+    value: name
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "20px 0 8px 0"
+  }, "Stat Metric"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    filterResults: function filterResults(entry, input) {
+      var _entry$name;
+      return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.toLowerCase().includes(input.toLowerCase());
+    },
+    forceExpanded: true,
+    getRightButton: getCreateMetricButton,
+    label: "Add metric",
+    loading: loading,
+    onClick: function onClick(statMetric) {
+      return setMetric(statMetric);
+    },
+    onClose: function onClose() {},
+    source: (_data$getStatUnits = data === null || data === void 0 ? void 0 : data.getStatUnits) !== null && _data$getStatUnits !== void 0 ? _data$getStatUnits : []
+  }), createStatMetricExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatMetricComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    margin: "4px 0 0 0",
+    onCancel: function onCancel() {
+      return setCreateMetricExpanded(false);
+    },
+    onComplete: function onComplete() {/* do something */}
+  }), metric != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    title: (_metric$name = metric === null || metric === void 0 ? void 0 : metric.name) !== null && _metric$name !== void 0 ? _metric$name : 'metric name missing'
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    marginTop: "20px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(NoShrink, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "0 4px 0 0"
+  }, "Per game?")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    name: "stat-frequency",
+    onChange: function onChange() {
+      return setIsPerGame(!isPerGame);
+    },
+    placeholder: "Per game",
+    type: "checkbox",
+    value: isPerGame
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    overflow: "hidden",
+    padding: "4px 0 0 0"
+  }, "This stat will be calculated ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Bold, null, "per game"), " if the option above is selected. Otherwise the stat will simply show totals."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    justify: "center",
+    marginTop: "20px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    isDisabled: false,
+    label: "Cancel",
+    loading: false /* isSubmitting */,
+    onClick: onCancel
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    isLoading: false,
+    label: "Create Simple Stat",
+    loading: false /* isSubmitting */,
+    onClick: onSubmit
+  }))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateSimpleStatComponent);
 
 /***/ }),
 
@@ -5459,7 +5667,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
   }, "Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
     errors: name === "" ? 'Name cannot be blank.' : null,
     loading: false /* isSubmitting */,
@@ -5471,7 +5679,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     width: "100%",
     value: name
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Operations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     filterResults: function filterResults(entry, input) {
       var _entry$name;
@@ -5487,6 +5695,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     onClose: function onClose() {},
     source: (_data$getStatOperatio = data === null || data === void 0 ? void 0 : data.getStatOperations) !== null && _data$getStatOperatio !== void 0 ? _data$getStatOperatio : []
   }), createOperationExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateOperationComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    margin: "8px 0 0 0",
     onCancel: function onCancel() {
       return setCreateOperationExpanded(false);
     },
@@ -5497,7 +5706,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     subTitle: "".concat((_operations$metricA$n = operations === null || operations === void 0 ? void 0 : (_operations$metricA = operations.metricA) === null || _operations$metricA === void 0 ? void 0 : _operations$metricA.name) !== null && _operations$metricA$n !== void 0 ? _operations$metricA$n : 'term 1', " ").concat(operations === null || operations === void 0 ? void 0 : operations.operation, " ").concat((_operations$metricB$n = operations === null || operations === void 0 ? void 0 : (_operations$metricB = operations.metricB) === null || _operations$metricB === void 0 ? void 0 : _operations$metricB.name) !== null && _operations$metricB$n !== void 0 ? _operations$metricB$n : 'term 2')
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
-    marginTop: "12px"
+    marginTop: "20px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     isDisabled: false,
     label: "Cancel",
@@ -5547,7 +5756,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: 8px 0;\n  padding: 20px;\n  width: 100%;\n"])));
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  border: 1px solid rgb(105, 105, 105);\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  margin: ", ";\n  padding: 20px;\n  width: 100%;\n"])), function (props) {
+  var _props$margin;
+  return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '0';
+});
 var CREATE_STAT_METRIC_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createStatUnit(\n    $name: String!,\n    $value: Int!,\n  ) {\n    createStatUnit(\n      name: $name,\n      value: $value\n    ) {\n      id\n      name\n      __typename\n    }\n  }\n"])));
 
 /**
@@ -5570,7 +5782,8 @@ var CREATE_STAT_METRIC_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["d
  *  `---------------------------------------------------------`
  */
 var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
-  var onCancel = _ref.onCancel,
+  var margin = _ref.margin,
+    onCancel = _ref.onCancel,
     onComplete = _ref.onComplete;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
@@ -5596,7 +5809,9 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     createStatMetric = _useMutation2[0],
     isSubmitting = _useMutation2[1].isSubmitting;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
+    margin: margin
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     direction: "column",
     height: "100%",
     justify: "flex-start",
@@ -5606,11 +5821,12 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0px"
   }, "Create Stat Metric"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
-    margin: "4px 0"
+    padding: "4px 0",
+    overflow: "hidden"
   }, "A Stat Metric is the most fundamental unit of a stat and meant purely for tracking/counting (FGA, Assists, etc.). All stats and operations will be built from your stat metrics."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     errors: name === "" ? 'Name cannot be blank.' : null,
     loading: isSubmitting,
@@ -5622,7 +5838,7 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     width: "100%",
     value: name
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-    margin: "8px 0 8px 0"
+    margin: "20px 0 8px 0"
   }, "Value"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     errors: value === "" ? 'Value cannot be blank.' : null,
     loading: isSubmitting,
@@ -5636,7 +5852,7 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     value: value
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
-    marginTop: "12px"
+    marginTop: "20px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     isDisabled: false,
     label: "Cancel",
@@ -7118,14 +7334,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
 /* harmony import */ var _CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CollapsibleSearchField.jsx */ "./app/components/CollapsibleSearchField.jsx");
 /* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
-/* harmony import */ var _CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateStatComponent.jsx */ "./app/components/CreateStatComponent.jsx");
+/* harmony import */ var _CreateOperationComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateOperationComponent.jsx */ "./app/components/CreateOperationComponent.jsx");
+/* harmony import */ var _CreateSimpleStatComponent_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./CreateSimpleStatComponent.jsx */ "./app/components/CreateSimpleStatComponent.jsx");
+/* harmony import */ var _CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./CreateStatComponent.jsx */ "./app/components/CreateStatComponent.jsx");
+/* harmony import */ var _SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./SimpleSelector.jsx */ "./app/components/SimpleSelector.jsx");
 var _templateObject;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7146,7 +7365,20 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      name\n    }\n  }\n"])));
+
+
+
+var STAT_TYPES = {
+  SIMPLE_STAT: {
+    name: 'Simple Stat',
+    value: 'SIMPLE_STAT'
+  },
+  COMPOUND_STAT: {
+    name: 'Compound Stat',
+    value: 'COMPOUND_STAT'
+  }
+};
+var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      name\n    }\n  }\n"])));
 
 /**
  * Component for rendering the stats section on the season page
@@ -7165,6 +7397,7 @@ var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_6__["default"])
  * '-------------------'
  */
 var SeasonStatsSection = function SeasonStatsSection(_ref) {
+  var _STAT_TYPES$createSta;
   var seasonID = _ref.seasonID,
     isAdmin = _ref.isAdmin;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
@@ -7179,7 +7412,11 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
     _useState6 = _slicedToArray(_useState5, 2),
     createStatExpanded = _useState6[0],
     setCreateStatExpanded = _useState6[1];
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_7__.useQuery)(SEASON_STATS_QUERY, {
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(STAT_TYPES.SIMPLE_STAT.value),
+    _useState8 = _slicedToArray(_useState7, 2),
+    createStatType = _useState8[0],
+    setCreateStatType = _useState8[1];
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useQuery)(SEASON_STATS_QUERY, {
       variables: {
         seasonID: seasonID
       }
@@ -7240,13 +7477,25 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
     },
     selected: statsToAdd,
     source: seasonStats !== null && seasonStats !== void 0 ? seasonStats : []
-  })), createStatExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  })), createStatExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    options: Object.values(STAT_TYPES),
+    value: (_STAT_TYPES$createSta = STAT_TYPES[createStatType]) === null || _STAT_TYPES$createSta === void 0 ? void 0 : _STAT_TYPES$createSta.name,
+    onClick: function onClick(option) {
+      return setCreateStatType(option === null || option === void 0 ? void 0 : option.value);
+    }
+  }), createStatType != null ? createStatType === STAT_TYPES.COMPOUND_STAT.value ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     onCancel: function onCancel() {
       return setCreateStatExpanded(false);
     },
     onCompleted: onCreateStat,
     seasonID: seasonID
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateSimpleStatComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    onCancel: function onCancel() {
+      return setCreateStatExpanded(false);
+    },
+    onCompleted: onCreateStat,
+    seasonID: seasonID
+  }) : null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     flexWrap: "wrap",
     justify: "flex-start"
   }, stats != null && stats.length > 0 && stats.map(function (seasonStat, idx) {
@@ -7275,7 +7524,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
-var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -7291,6 +7540,7 @@ var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div
 var ModalContainer = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 10:\n"])));
 var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  position: absolute;\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: 100%;\n  z-index: 10000;\n"])));
 var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  padding: 10px;\n  box-sizing: border-box;\n"])));
+var SelectorWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  padding-bottom: 4px;\n"])));
 
 /**
  * Simple Selector Component
@@ -7308,7 +7558,7 @@ var SimpleSelector = function SimpleSelector(_ref) {
     onClick === null || onClick === void 0 ? void 0 : onClick(entry);
     setExpanded(false);
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SelectorWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "flex-start"
   }, value != null ? value : 'Select', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Clickable, {
     onClick: function onClick() {
@@ -9372,7 +9622,8 @@ var Season = function Season(_ref) {
   }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     height: "45px",
     justify: "flex-start",
-    width: "800px"
+    width: "800px",
+    overflow: "hidden"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "row",
     justify: "space-between"
@@ -9381,11 +9632,13 @@ var Season = function Season(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
     margin: "20px 0 8px 0"
   }, (_seasonData$getSeason26 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason27 = seasonData.getSeasonByID) === null || _seasonData$getSeason27 === void 0 ? void 0 : (_seasonData$getSeason28 = _seasonData$getSeason27.season) === null || _seasonData$getSeason28 === void 0 ? void 0 : _seasonData$getSeason28.name) !== null && _seasonData$getSeason26 !== void 0 ? _seasonData$getSeason26 : 'Season name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, {
-    marginBottom: "4px"
+    padding: "0 0 4px 0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, null, (_seasonData$getSeason29 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason30 = seasonData.getSeasonByID) === null || _seasonData$getSeason30 === void 0 ? void 0 : (_seasonData$getSeason31 = _seasonData$getSeason30.season) === null || _seasonData$getSeason31 === void 0 ? void 0 : (_seasonData$getSeason32 = _seasonData$getSeason31.league) === null || _seasonData$getSeason32 === void 0 ? void 0 : _seasonData$getSeason32.name) !== null && _seasonData$getSeason29 !== void 0 ? _seasonData$getSeason29 : 'League missing')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
     justify: "start"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, ((_dayjs$format = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason33 = seasonData.getSeasonByID) === null || _seasonData$getSeason33 === void 0 ? void 0 : (_seasonData$getSeason34 = _seasonData$getSeason33.season) === null || _seasonData$getSeason34 === void 0 ? void 0 : _seasonData$getSeason34.seasonStart).format('MMM YYYY')) !== null && _dayjs$format !== void 0 ? _dayjs$format : 'Season start missing') + ' - ' + ((_dayjs$format2 = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason35 = seasonData.getSeasonByID) === null || _seasonData$getSeason35 === void 0 ? void 0 : (_seasonData$getSeason36 = _seasonData$getSeason35.season) === null || _seasonData$getSeason36 === void 0 ? void 0 : _seasonData$getSeason36.seasonEnd).format('MMM YYYY')) !== null && _dayjs$format2 !== void 0 ? _dayjs$format2 : 'season end missing'))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, null, seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason37 = seasonData.getSeasonByID) === null || _seasonData$getSeason37 === void 0 ? void 0 : (_seasonData$getSeason38 = _seasonData$getSeason37.season) === null || _seasonData$getSeason38 === void 0 ? void 0 : _seasonData$getSeason38.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, {
+    overflow: "hidden"
+  }, ((_dayjs$format = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason33 = seasonData.getSeasonByID) === null || _seasonData$getSeason33 === void 0 ? void 0 : (_seasonData$getSeason34 = _seasonData$getSeason33.season) === null || _seasonData$getSeason34 === void 0 ? void 0 : _seasonData$getSeason34.seasonStart).format('MMM YYYY')) !== null && _dayjs$format !== void 0 ? _dayjs$format : 'Season start missing') + ' - ' + ((_dayjs$format2 = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason35 = seasonData.getSeasonByID) === null || _seasonData$getSeason35 === void 0 ? void 0 : (_seasonData$getSeason36 = _seasonData$getSeason35.season) === null || _seasonData$getSeason36 === void 0 ? void 0 : _seasonData$getSeason36.seasonEnd).format('MMM YYYY')) !== null && _dayjs$format2 !== void 0 ? _dayjs$format2 : 'season end missing'))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, null, seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason37 = seasonData.getSeasonByID) === null || _seasonData$getSeason37 === void 0 ? void 0 : (_seasonData$getSeason38 = _seasonData$getSeason37.season) === null || _seasonData$getSeason38 === void 0 ? void 0 : _seasonData$getSeason38.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
     marginBottom: "12px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
@@ -74227,6 +74480,388 @@ function useMutation(mutation, options) {
     return [execute, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({ reset: reset }, result)];
 }
 //# sourceMappingURL=useMutation.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@apollo/client/react/hooks/useQuery.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@apollo/client/react/hooks/useQuery.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "useInternalState": () => (/* binding */ useInternalState),
+/* harmony export */   "useQuery": () => (/* binding */ useQuery)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _utilities_globals_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utilities/globals/index.js */ "./node_modules/@apollo/client/utilities/globals/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _useSyncExternalStore_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./useSyncExternalStore.js */ "./node_modules/@apollo/client/react/hooks/useSyncExternalStore.js");
+/* harmony import */ var _wry_equality__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wry/equality */ "./node_modules/@wry/equality/lib/equality.esm.js");
+/* harmony import */ var _core_index_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../core/index.js */ "./node_modules/@apollo/client/utilities/common/mergeOptions.js");
+/* harmony import */ var _context_index_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../context/index.js */ "./node_modules/@apollo/client/react/context/ApolloContext.js");
+/* harmony import */ var _errors_index_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../errors/index.js */ "./node_modules/@apollo/client/errors/index.js");
+/* harmony import */ var _core_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/index.js */ "./node_modules/@apollo/client/core/networkStatus.js");
+/* harmony import */ var _parser_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../parser/index.js */ "./node_modules/@apollo/client/react/parser/index.js");
+/* harmony import */ var _useApolloClient_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./useApolloClient.js */ "./node_modules/@apollo/client/react/hooks/useApolloClient.js");
+/* harmony import */ var _utilities_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utilities/index.js */ "./node_modules/@apollo/client/utilities/common/canUse.js");
+/* harmony import */ var _utilities_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utilities/index.js */ "./node_modules/@apollo/client/utilities/common/maybeDeepFreeze.js");
+/* harmony import */ var _utilities_index_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utilities/index.js */ "./node_modules/@apollo/client/utilities/common/compact.js");
+/* harmony import */ var _utilities_index_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../utilities/index.js */ "./node_modules/@apollo/client/utilities/common/arrays.js");
+
+
+
+
+
+
+
+
+
+
+
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+function useQuery(query, options) {
+    if (options === void 0) { options = Object.create(null); }
+    return useInternalState((0,_useApolloClient_js__WEBPACK_IMPORTED_MODULE_3__.useApolloClient)(options.client), query).useQuery(options);
+}
+function useInternalState(client, query) {
+    var stateRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)();
+    if (!stateRef.current ||
+        client !== stateRef.current.client ||
+        query !== stateRef.current.query) {
+        stateRef.current = new InternalState(client, query, stateRef.current);
+    }
+    var state = stateRef.current;
+    var _a = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0), _tick = _a[0], setTick = _a[1];
+    state.forceUpdate = function () {
+        setTick(function (tick) { return tick + 1; });
+    };
+    return state;
+}
+var InternalState = (function () {
+    function InternalState(client, query, previous) {
+        this.client = client;
+        this.query = query;
+        this.asyncResolveFns = new Set();
+        this.optionsToIgnoreOnce = new (_utilities_index_js__WEBPACK_IMPORTED_MODULE_4__.canUseWeakSet ? WeakSet : Set)();
+        this.ssrDisabledResult = (0,_utilities_index_js__WEBPACK_IMPORTED_MODULE_5__.maybeDeepFreeze)({
+            loading: true,
+            data: void 0,
+            error: void 0,
+            networkStatus: _core_index_js__WEBPACK_IMPORTED_MODULE_6__.NetworkStatus.loading,
+        });
+        this.skipStandbyResult = (0,_utilities_index_js__WEBPACK_IMPORTED_MODULE_5__.maybeDeepFreeze)({
+            loading: false,
+            data: void 0,
+            error: void 0,
+            networkStatus: _core_index_js__WEBPACK_IMPORTED_MODULE_6__.NetworkStatus.ready,
+        });
+        this.toQueryResultCache = new (_utilities_index_js__WEBPACK_IMPORTED_MODULE_4__.canUseWeakMap ? WeakMap : Map)();
+        (0,_parser_index_js__WEBPACK_IMPORTED_MODULE_7__.verifyDocumentType)(query, _parser_index_js__WEBPACK_IMPORTED_MODULE_7__.DocumentType.Query);
+        var previousResult = previous && previous.result;
+        var previousData = previousResult && previousResult.data;
+        if (previousData) {
+            this.previousData = previousData;
+        }
+    }
+    InternalState.prototype.forceUpdate = function () {
+        __DEV__ && _utilities_globals_index_js__WEBPACK_IMPORTED_MODULE_0__.invariant.warn("Calling default no-op implementation of InternalState#forceUpdate");
+    };
+    InternalState.prototype.asyncUpdate = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.asyncResolveFns.add(resolve);
+            _this.optionsToIgnoreOnce.add(_this.watchQueryOptions);
+            _this.forceUpdate();
+        });
+    };
+    InternalState.prototype.useQuery = function (options) {
+        var _this = this;
+        this.renderPromises = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)((0,_context_index_js__WEBPACK_IMPORTED_MODULE_8__.getApolloContext)()).renderPromises;
+        this.useOptions(options);
+        var obsQuery = this.useObservableQuery();
+        var result = (0,_useSyncExternalStore_js__WEBPACK_IMPORTED_MODULE_9__.useSyncExternalStore)((0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+            if (_this.renderPromises) {
+                return function () { };
+            }
+            var onNext = function () {
+                var previousResult = _this.result;
+                var result = obsQuery.getCurrentResult();
+                if (previousResult &&
+                    previousResult.loading === result.loading &&
+                    previousResult.networkStatus === result.networkStatus &&
+                    (0,_wry_equality__WEBPACK_IMPORTED_MODULE_2__.equal)(previousResult.data, result.data)) {
+                    return;
+                }
+                _this.setResult(result);
+            };
+            var onError = function (error) {
+                var last = obsQuery["last"];
+                subscription.unsubscribe();
+                try {
+                    obsQuery.resetLastResults();
+                    subscription = obsQuery.subscribe(onNext, onError);
+                }
+                finally {
+                    obsQuery["last"] = last;
+                }
+                if (!hasOwnProperty.call(error, 'graphQLErrors')) {
+                    throw error;
+                }
+                var previousResult = _this.result;
+                if (!previousResult ||
+                    (previousResult && previousResult.loading) ||
+                    !(0,_wry_equality__WEBPACK_IMPORTED_MODULE_2__.equal)(error, previousResult.error)) {
+                    _this.setResult({
+                        data: (previousResult && previousResult.data),
+                        error: error,
+                        loading: false,
+                        networkStatus: _core_index_js__WEBPACK_IMPORTED_MODULE_6__.NetworkStatus.error,
+                    });
+                }
+            };
+            var subscription = obsQuery.subscribe(onNext, onError);
+            return function () { return subscription.unsubscribe(); };
+        }, [
+            obsQuery,
+            this.renderPromises,
+            this.client.disableNetworkFetches,
+        ]), function () { return _this.getCurrentResult(); }, function () { return _this.getCurrentResult(); });
+        this.unsafeHandlePartialRefetch(result);
+        var queryResult = this.toQueryResult(result);
+        if (!queryResult.loading && this.asyncResolveFns.size) {
+            this.asyncResolveFns.forEach(function (resolve) { return resolve(queryResult); });
+            this.asyncResolveFns.clear();
+        }
+        return queryResult;
+    };
+    InternalState.prototype.useOptions = function (options) {
+        var _a;
+        var watchQueryOptions = this.createWatchQueryOptions(this.queryHookOptions = options);
+        var currentWatchQueryOptions = this.watchQueryOptions;
+        if (this.optionsToIgnoreOnce.has(currentWatchQueryOptions) ||
+            !(0,_wry_equality__WEBPACK_IMPORTED_MODULE_2__.equal)(watchQueryOptions, currentWatchQueryOptions)) {
+            this.watchQueryOptions = watchQueryOptions;
+            if (currentWatchQueryOptions && this.observable) {
+                this.optionsToIgnoreOnce.delete(currentWatchQueryOptions);
+                this.observable.reobserve(this.getObsQueryOptions());
+                this.previousData = ((_a = this.result) === null || _a === void 0 ? void 0 : _a.data) || this.previousData;
+                this.result = void 0;
+            }
+        }
+        this.onCompleted = options.onCompleted || InternalState.prototype.onCompleted;
+        this.onError = options.onError || InternalState.prototype.onError;
+        if ((this.renderPromises || this.client.disableNetworkFetches) &&
+            this.queryHookOptions.ssr === false &&
+            !this.queryHookOptions.skip) {
+            this.result = this.ssrDisabledResult;
+        }
+        else if (this.queryHookOptions.skip ||
+            this.watchQueryOptions.fetchPolicy === 'standby') {
+            this.result = this.skipStandbyResult;
+        }
+        else if (this.result === this.ssrDisabledResult ||
+            this.result === this.skipStandbyResult) {
+            this.result = void 0;
+        }
+    };
+    InternalState.prototype.getObsQueryOptions = function () {
+        var toMerge = [];
+        var globalDefaults = this.client.defaultOptions.watchQuery;
+        if (globalDefaults)
+            toMerge.push(globalDefaults);
+        if (this.queryHookOptions.defaultOptions) {
+            toMerge.push(this.queryHookOptions.defaultOptions);
+        }
+        toMerge.push((0,_utilities_index_js__WEBPACK_IMPORTED_MODULE_10__.compact)(this.observable && this.observable.options, this.watchQueryOptions));
+        return toMerge.reduce(_core_index_js__WEBPACK_IMPORTED_MODULE_11__.mergeOptions);
+    };
+    InternalState.prototype.createWatchQueryOptions = function (_a) {
+        var _b;
+        if (_a === void 0) { _a = {}; }
+        var skip = _a.skip, ssr = _a.ssr, onCompleted = _a.onCompleted, onError = _a.onError, defaultOptions = _a.defaultOptions, otherOptions = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__rest)(_a, ["skip", "ssr", "onCompleted", "onError", "defaultOptions"]);
+        var watchQueryOptions = Object.assign(otherOptions, { query: this.query });
+        if (this.renderPromises &&
+            (watchQueryOptions.fetchPolicy === 'network-only' ||
+                watchQueryOptions.fetchPolicy === 'cache-and-network')) {
+            watchQueryOptions.fetchPolicy = 'cache-first';
+        }
+        if (!watchQueryOptions.variables) {
+            watchQueryOptions.variables = {};
+        }
+        if (skip) {
+            var _c = watchQueryOptions.fetchPolicy, fetchPolicy = _c === void 0 ? this.getDefaultFetchPolicy() : _c, _d = watchQueryOptions.initialFetchPolicy, initialFetchPolicy = _d === void 0 ? fetchPolicy : _d;
+            Object.assign(watchQueryOptions, {
+                initialFetchPolicy: initialFetchPolicy,
+                fetchPolicy: 'standby',
+            });
+        }
+        else if (!watchQueryOptions.fetchPolicy) {
+            watchQueryOptions.fetchPolicy =
+                ((_b = this.observable) === null || _b === void 0 ? void 0 : _b.options.initialFetchPolicy) ||
+                    this.getDefaultFetchPolicy();
+        }
+        return watchQueryOptions;
+    };
+    InternalState.prototype.getDefaultFetchPolicy = function () {
+        var _a, _b;
+        return (((_a = this.queryHookOptions.defaultOptions) === null || _a === void 0 ? void 0 : _a.fetchPolicy) ||
+            ((_b = this.client.defaultOptions.watchQuery) === null || _b === void 0 ? void 0 : _b.fetchPolicy) ||
+            "cache-first");
+    };
+    InternalState.prototype.onCompleted = function (data) { };
+    InternalState.prototype.onError = function (error) { };
+    InternalState.prototype.useObservableQuery = function () {
+        var obsQuery = this.observable =
+            this.renderPromises
+                && this.renderPromises.getSSRObservable(this.watchQueryOptions)
+                || this.observable
+                || this.client.watchQuery(this.getObsQueryOptions());
+        this.obsQueryFields = (0,react__WEBPACK_IMPORTED_MODULE_1__.useMemo)(function () { return ({
+            refetch: obsQuery.refetch.bind(obsQuery),
+            reobserve: obsQuery.reobserve.bind(obsQuery),
+            fetchMore: obsQuery.fetchMore.bind(obsQuery),
+            updateQuery: obsQuery.updateQuery.bind(obsQuery),
+            startPolling: obsQuery.startPolling.bind(obsQuery),
+            stopPolling: obsQuery.stopPolling.bind(obsQuery),
+            subscribeToMore: obsQuery.subscribeToMore.bind(obsQuery),
+        }); }, [obsQuery]);
+        var ssrAllowed = !(this.queryHookOptions.ssr === false ||
+            this.queryHookOptions.skip);
+        if (this.renderPromises && ssrAllowed) {
+            this.renderPromises.registerSSRObservable(obsQuery);
+            if (obsQuery.getCurrentResult().loading) {
+                this.renderPromises.addObservableQueryPromise(obsQuery);
+            }
+        }
+        return obsQuery;
+    };
+    InternalState.prototype.setResult = function (nextResult) {
+        var previousResult = this.result;
+        if (previousResult && previousResult.data) {
+            this.previousData = previousResult.data;
+        }
+        this.result = nextResult;
+        this.forceUpdate();
+        this.handleErrorOrCompleted(nextResult);
+    };
+    InternalState.prototype.handleErrorOrCompleted = function (result) {
+        var _this = this;
+        if (!result.loading) {
+            Promise.resolve().then(function () {
+                if (result.error) {
+                    _this.onError(result.error);
+                }
+                else if (result.data) {
+                    _this.onCompleted(result.data);
+                }
+            }).catch(function (error) {
+                __DEV__ && _utilities_globals_index_js__WEBPACK_IMPORTED_MODULE_0__.invariant.warn(error);
+            });
+        }
+    };
+    InternalState.prototype.getCurrentResult = function () {
+        if (!this.result) {
+            this.handleErrorOrCompleted(this.result = this.observable.getCurrentResult());
+        }
+        return this.result;
+    };
+    InternalState.prototype.toQueryResult = function (result) {
+        var queryResult = this.toQueryResultCache.get(result);
+        if (queryResult)
+            return queryResult;
+        var data = result.data, partial = result.partial, resultWithoutPartial = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__rest)(result, ["data", "partial"]);
+        this.toQueryResultCache.set(result, queryResult = (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_12__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_12__.__assign)({ data: data }, resultWithoutPartial), this.obsQueryFields), { client: this.client, observable: this.observable, variables: this.observable.variables, called: !this.queryHookOptions.skip, previousData: this.previousData }));
+        if (!queryResult.error && (0,_utilities_index_js__WEBPACK_IMPORTED_MODULE_13__.isNonEmptyArray)(result.errors)) {
+            queryResult.error = new _errors_index_js__WEBPACK_IMPORTED_MODULE_14__.ApolloError({ graphQLErrors: result.errors });
+        }
+        return queryResult;
+    };
+    InternalState.prototype.unsafeHandlePartialRefetch = function (result) {
+        if (result.partial &&
+            this.queryHookOptions.partialRefetch &&
+            !result.loading &&
+            (!result.data || Object.keys(result.data).length === 0) &&
+            this.observable.options.fetchPolicy !== 'cache-only') {
+            Object.assign(result, {
+                loading: true,
+                networkStatus: _core_index_js__WEBPACK_IMPORTED_MODULE_6__.NetworkStatus.refetch,
+            });
+            this.observable.refetch();
+        }
+    };
+    return InternalState;
+}());
+//# sourceMappingURL=useQuery.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@apollo/client/react/hooks/useSyncExternalStore.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@apollo/client/react/hooks/useSyncExternalStore.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+var react__WEBPACK_IMPORTED_MODULE_1___namespace_cache;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "useSyncExternalStore": () => (/* binding */ useSyncExternalStore)
+/* harmony export */ });
+/* harmony import */ var _utilities_globals_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utilities/globals/index.js */ "./node_modules/@apollo/client/utilities/globals/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _utilities_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utilities/index.js */ "./node_modules/@apollo/client/utilities/common/canUse.js");
+
+
+
+var didWarnUncachedGetSnapshot = false;
+var uSESKey = "useSyncExternalStore";
+var realHook = /*#__PURE__*/ (react__WEBPACK_IMPORTED_MODULE_1___namespace_cache || (react__WEBPACK_IMPORTED_MODULE_1___namespace_cache = __webpack_require__.t(react__WEBPACK_IMPORTED_MODULE_1__, 2)))[uSESKey];
+var useSyncExternalStore = realHook || (function (subscribe, getSnapshot, getServerSnapshot) {
+    var value = getSnapshot();
+    if (__DEV__ &&
+        !didWarnUncachedGetSnapshot &&
+        value !== getSnapshot()) {
+        didWarnUncachedGetSnapshot = true;
+        __DEV__ && _utilities_globals_index_js__WEBPACK_IMPORTED_MODULE_0__.invariant.error('The result of getSnapshot should be cached to avoid an infinite loop');
+    }
+    var _a = react__WEBPACK_IMPORTED_MODULE_1__.useState({ inst: { value: value, getSnapshot: getSnapshot } }), inst = _a[0].inst, forceUpdate = _a[1];
+    if (_utilities_index_js__WEBPACK_IMPORTED_MODULE_2__.canUseLayoutEffect) {
+        react__WEBPACK_IMPORTED_MODULE_1__.useLayoutEffect(function () {
+            Object.assign(inst, { value: value, getSnapshot: getSnapshot });
+            if (checkIfSnapshotChanged(inst)) {
+                forceUpdate({ inst: inst });
+            }
+        }, [subscribe, value, getSnapshot]);
+    }
+    else {
+        Object.assign(inst, { value: value, getSnapshot: getSnapshot });
+    }
+    react__WEBPACK_IMPORTED_MODULE_1__.useEffect(function () {
+        if (checkIfSnapshotChanged(inst)) {
+            forceUpdate({ inst: inst });
+        }
+        return subscribe(function handleStoreChange() {
+            if (checkIfSnapshotChanged(inst)) {
+                forceUpdate({ inst: inst });
+            }
+        });
+    }, [subscribe]);
+    return value;
+});
+function checkIfSnapshotChanged(_a) {
+    var value = _a.value, getSnapshot = _a.getSnapshot;
+    try {
+        return value !== getSnapshot();
+    }
+    catch (_b) {
+        return true;
+    }
+}
+//# sourceMappingURL=useSyncExternalStore.js.map
 
 /***/ }),
 
