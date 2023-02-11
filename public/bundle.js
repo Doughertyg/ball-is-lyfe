@@ -5537,7 +5537,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
 /* harmony import */ var _CreateOperationComponent_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateOperationComponent.jsx */ "./app/components/CreateOperationComponent.jsx");
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
-var _templateObject, _templateObject2, _templateObject3;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5555,9 +5555,11 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
-var FETCH_STAT_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
-var CREATE_STAT_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createStat(\n    $name: String!,\n    $operation: ID!,\n    $seasonID: ID!\n  ) {\n    createStat(\n      name: $name,\n      operation: $operation,\n      seasonID: $seasonID\n    ) {\n      id\n      name\n    }\n  }\n"])));
+var Bold = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  display: inline-block;\n  font-weight: 600;\n"])));
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+var NoShrink = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  flex-shrink: 0;\n"])));
+var FETCH_STAT_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
+var CREATE_STAT_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  mutation createStat(\n    $isPerGame: Boolean!,\n    $name: String!,\n    $operation: ID!,\n    $seasonID: ID!\n  ) {\n    createStat(\n      isPerGame: $isPerGame,\n      name: $name,\n      operation: $operation,\n      seasonID: $seasonID\n    ) {\n      id\n      name\n    }\n  }\n"])));
 
 /**
  * Create Stat component for creating stats
@@ -5598,6 +5600,10 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     _useState6 = _slicedToArray(_useState5, 2),
     createOperationExpanded = _useState6[0],
     setCreateOperationExpanded = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    isPerGame = _useState8[0],
+    setIsPerGame = _useState8[1];
   var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__.useQuery)(FETCH_STAT_OPERATIONS, {
       variables: {
         seasonID: seasonID
@@ -5617,6 +5623,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
       variables: {
         name: name,
         operation: operations === null || operations === void 0 ? void 0 : operations.id,
+        isPerGame: isPerGame,
         seasonID: seasonID
       }
     }),
@@ -5664,7 +5671,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     margin: "0px"
   }, "Create Stat"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
     padding: "4px 0"
-  }, "Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+  }, "Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA). Stats are computed per player and per team for a season or game. If ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Bold, null, "\"per game\""), " is selected the stat is only computed for a season and is computed ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Bold, null, "per game.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "20px 0 8px 0"
@@ -5705,6 +5712,22 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     title: (_operations$name = operations === null || operations === void 0 ? void 0 : operations.name) !== null && _operations$name !== void 0 ? _operations$name : 'Operation name missing',
     subTitle: "".concat((_operations$metricA$n = operations === null || operations === void 0 ? void 0 : (_operations$metricA = operations.metricA) === null || _operations$metricA === void 0 ? void 0 : _operations$metricA.name) !== null && _operations$metricA$n !== void 0 ? _operations$metricA$n : 'term 1', " ").concat(operations === null || operations === void 0 ? void 0 : operations.operation, " ").concat((_operations$metricB$n = operations === null || operations === void 0 ? void 0 : (_operations$metricB = operations.metricB) === null || _operations$metricB === void 0 ? void 0 : _operations$metricB.name) !== null && _operations$metricB$n !== void 0 ? _operations$metricB$n : 'term 2')
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    marginTop: "20px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(NoShrink, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "0 4px 0 0"
+  }, "Per game?")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    name: "stat-frequency",
+    onChange: function onChange() {
+      return setIsPerGame(!isPerGame);
+    },
+    placeholder: "Per game",
+    type: "checkbox",
+    value: isPerGame
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    overflow: "hidden",
+    padding: "4px 0 0 0"
+  }, "This stat will be calculated ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Bold, null, "per game"), " if the option above is selected. Note that some stats will not make sense on a per game basis (such as percentages)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
     marginTop: "20px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -7397,7 +7420,6 @@ var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])
  * '-------------------'
  */
 var SeasonStatsSection = function SeasonStatsSection(_ref) {
-  var _STAT_TYPES$createSta;
   var seasonID = _ref.seasonID,
     isAdmin = _ref.isAdmin;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
@@ -7477,25 +7499,13 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
     },
     selected: statsToAdd,
     source: seasonStats !== null && seasonStats !== void 0 ? seasonStats : []
-  })), createStatExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    options: Object.values(STAT_TYPES),
-    value: (_STAT_TYPES$createSta = STAT_TYPES[createStatType]) === null || _STAT_TYPES$createSta === void 0 ? void 0 : _STAT_TYPES$createSta.name,
-    onClick: function onClick(option) {
-      return setCreateStatType(option === null || option === void 0 ? void 0 : option.value);
-    }
-  }), createStatType != null ? createStatType === STAT_TYPES.COMPOUND_STAT.value ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  })), createStatExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     onCancel: function onCancel() {
       return setCreateStatExpanded(false);
     },
     onCompleted: onCreateStat,
     seasonID: seasonID
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateSimpleStatComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    onCancel: function onCancel() {
-      return setCreateStatExpanded(false);
-    },
-    onCompleted: onCreateStat,
-    seasonID: seasonID
-  }) : null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     flexWrap: "wrap",
     justify: "flex-start"
   }, stats != null && stats.length > 0 && stats.map(function (seasonStat, idx) {

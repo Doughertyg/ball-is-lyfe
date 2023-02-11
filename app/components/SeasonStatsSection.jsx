@@ -110,14 +110,7 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
           />)}
       </FlexContainer>
       {createStatExpanded && (
-        <>
-          <SimpleSelector options={Object.values(STAT_TYPES)} value={STAT_TYPES[createStatType]?.name} onClick={(option) => setCreateStatType(option?.value)} />
-          {createStatType != null ?
-            createStatType === STAT_TYPES.COMPOUND_STAT.value ?
-            <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
-              : <CreateSimpleStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
-            : null}
-        </>
+        <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
       )}
       <FlexContainer flexWrap="wrap" justify="flex-start">
         {stats != null && stats.length > 0 && (

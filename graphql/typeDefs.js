@@ -119,6 +119,7 @@ module.exports = gql`
   }
   type Stat {
     id: ID!
+    isPerGame: Boolean!
     name: String!
     operation: Operation!
   }
@@ -253,7 +254,7 @@ module.exports = gql`
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
     createSeason(seasonInput: CreateSeasonInput): Season!
-    createStat(name: String!, operation: ID!, seasonID: ID!): Stat
+    createStat(isPerGame: Boolean!, name: String!, operation: ID!, seasonID: ID!): Stat
     createStatOperation(input: OperationInput): Operation
     createStatUnit(name: String!, seasonID: ID, value: Int!): StatUnit!
     createTeam(

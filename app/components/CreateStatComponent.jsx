@@ -9,12 +9,21 @@ import CompactDetailsCard from './CompactDetailsCard.jsx';
 import CreateOperationComponent from './CreateOperationComponent.jsx';
 import InputField from './InputField.jsx';
 
+const Bold = styled.div`
+  display: inline-block;
+  font-weight: 600;
+`;
+
 const Wrapper = styled.div`
   border-radius: 8px;
   background-color: rgba(139, 139, 139, 0.2);
   box-sizing: border-box;
   padding: 20px;
   width: 100%;
+`;
+
+const NoShrink = styled.div`
+  flex-shrink: 0;
 `;
 
 const FETCH_STAT_OPERATIONS = gql`
@@ -45,11 +54,13 @@ const FETCH_STAT_OPERATIONS = gql`
 
 const CREATE_STAT_MUTATION = gql`
   mutation createStat(
+    $isPerGame: Boolean!,
     $name: String!,
     $operation: ID!,
     $seasonID: ID!
   ) {
     createStat(
+      isPerGame: $isPerGame,
       name: $name,
       operation: $operation,
       seasonID: $seasonID
@@ -86,6 +97,7 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
   const [name, setName] = useState("");
   const [operations, setOperations] = useState(null);
   const [createOperationExpanded, setCreateOperationExpanded] = useState(false);
+  const [isPerGame, setIsPerGame] = useState(false);
 
   const { loading: loadingOperations, data, error } = useQuery(FETCH_STAT_OPERATIONS, {
     variables: {seasonID}
@@ -102,6 +114,7 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
     variables: {
       name,
       operation: operations?.id,
+      isPerGame,
       seasonID
     }
   });
@@ -144,7 +157,8 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
       <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
         <PageHeader margin="0px">Create Stat</PageHeader>
         <DetailsText padding="4px 0">
-          Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA)
+          Stats are the result of an operation. An operation can be be composed of multiple child operations. E.x.: Field Goal Percentage: FGM / (FGM + FGA). 
+          Stats are computed per player and per team for a season or game. If <Bold>"per game"</Bold> is selected the stat is only computed for a season and is computed <Bold>per game.</Bold>
         </DetailsText>
         <Divider width="100%" />
         <SectionHeadingText margin="20px 0 8px 0">Name</SectionHeadingText>
@@ -169,6 +183,13 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
             subTitle={`${operations?.metricA?.name ?? 'term 1'} ${operations?.operation} ${operations?.metricB?.name ?? 'term 2'}`}
           />
         )}
+        <FlexContainer alignItems="center" marginTop="20px">
+          <NoShrink>
+            <SectionHeadingText margin="0 4px 0 0">Per game?</SectionHeadingText>
+          </NoShrink>
+          <InputField name="stat-frequency" onChange={() => setIsPerGame(!isPerGame)} placeholder="Per game" type="checkbox" value={isPerGame} />
+        </FlexContainer>
+        <DetailsText overflow="hidden" padding="4px 0 0 0">This stat will be calculated <Bold>per game</Bold> if the option above is selected. Note that some stats will not make sense on a per game basis (such as percentages).</DetailsText>
         <FlexContainer justify="center" marginTop="20px">
           <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
           <Button isLoading={false} label="Create Stat" loading={isSubmitting} onClick={onSubmit} />

@@ -26,6 +26,7 @@ const {model, Schema} = require('mongoose');
  *    - as required by that season's stats.
  */
 const statSchema = new Schema({
+  isPerGame: Boolean,
   name: String,
   operation: {
     type: Schema.Types.ObjectId,

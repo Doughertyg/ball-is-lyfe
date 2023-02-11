@@ -10,7 +10,7 @@ const userResolvers = require('./users');
 
 module.exports = {
   Mutation: {
-    async createStat(_, { name, operation, seasonID }, context) {
+    async createStat(_, { isPerGame, name, operation, seasonID }, context) {
       const authHeader = context.req.headers.authorization;
       if (authHeader == null) {
         throw new AuthenticationError('Authentication header not provided. User not authenticated.');
@@ -29,6 +29,7 @@ module.exports = {
       }
 
       const stat = new Stat({
+        isPerGame,
         name,
         operation
       });
