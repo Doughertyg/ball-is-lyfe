@@ -21,6 +21,11 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
+const NoShrink = styled.div`
+  flex-shrink: 0;
+  display: inline-block;
+`;
+
 const OPERATIONS = [
   {
     name: 'Multiply by',
@@ -149,6 +154,10 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
   const [createMetricAType, setCreateMetricAType] = useState();
   const [createMetricBExpanded, setCreateMetricBExpanded] = useState(false);
   const [createMetricBType, setCreateMetricBType] = useState();
+  const [term1Constant, setTerm1Constant] = useState();
+  const [isTerm1Constant, setIsTerm1Constant] = useState();
+  const [term2Constant, setTerm2Constant] = useState();
+  const [isTerm2Constant, setIsTerm2Constant] = useState();
 
   const { loading, data, error } = useQuery(FETCH_STAT_METRICS_OPERATIONS, {
     variables: {seasonID}
@@ -176,10 +185,11 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
     }
   });
 
-  const getCreateMetricButton = (onClick) => (
+  const getCreateMetricButton = (onClick, isDisabled) => (
     <Button
       borderRadius="0 8px 8px 0"
       boxShadow="none"
+      isDisabled={isDisabled}
       height='46px'
       label="Create Metric / Operation"
       margin="0"
@@ -219,12 +229,13 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
       <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Operation name..." width="100%" value={name} />
       <SectionHeadingText margin="20px 0 8px 0">Term 1</SectionHeadingText>
       <DetailsText padding="0 0 4px 0">
-        A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
+        A term can either be a Stat Metric (FGM, 3PA, etc.), the result of another operation (FGM + FGA), or a constant value (2, 0.5, etc.).
       </DetailsText>
       <CollapsibleSearchField
+        isDisabled={isTerm1Constant}
         filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}
         forceExpanded
-        getRightButton={() => getCreateMetricButton(() => setCreateMetricAExpanded(true))}
+        getRightButton={() => getCreateMetricButton(() => setCreateMetricAExpanded(true), isTerm1Constant)}
         label="Add metric or operation..."
         loading={loading}
         onClick={(operation) => setTermA(operation)}
@@ -244,16 +255,25 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
       {termA != null && (
         <CompactDetailsCard subTitle={[termA?.__typename]} title={termA?.name ?? 'term 1 name missing'} onClose={() => setTermA(null)} />
       )}
+      <FlexContainer alignItems="center" marginTop="20px">
+        <NoShrink>
+          <SectionHeadingText margin="0 4px 0 0">Constant value:</SectionHeadingText>
+        </NoShrink>
+        <InputField margin="0 4px 0 0" name="term1 constant" onChange={() => setIsTerm1Constant(!isTerm1Constant)} type="checkbox" value={isTerm1Constant} width="24px" wrapperWidth="24px" />
+        <InputField disabled={!isTerm1Constant} name="term1 constant value" onChange={(e) => setTerm1Constant(e?.target?.value)} placeholder="Type a number" type="number" value={term1Constant} />
+      </FlexContainer>
+      <DetailsText margin="4px 0 0 0">If a constant value is set above, no Stat metric or operation will be attached for term 1.</DetailsText>
       <SectionHeadingText margin="20px 0 8px 0">Operation</SectionHeadingText>
       <DropdownSelector onClick={(entry) => setOperation(entry)} options={OPERATIONS} value={operation?.name} />
       <SectionHeadingText margin="20px 0 8px 0">Term 2</SectionHeadingText>
       <DetailsText padding="0 0 4px 0">
-        A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA).
+        A term can either be a Stat Metric (FGM, 3PA, etc.), the result of another operation (FGM + FGA), or a constant value (2, 0.5, etc.).
       </DetailsText>
       <CollapsibleSearchField
         filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}
         forceExpanded
-        getRightButton={() => getCreateMetricButton(() => setCreateMetricBExpanded(true))}
+        getRightButton={() => getCreateMetricButton(() => setCreateMetricBExpanded(true), isTerm2Constant)}
+        isDisabled={isTerm2Constant}
         label="Add metric or operation..."
         loading={loading}
         onClick={(operation) => setTermB(operation)}
@@ -273,6 +293,14 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
       {termB != null && (
         <CompactDetailsCard subTitle={[termB?.__typename]} title={termB?.name ?? 'term 2 name missing'} onClose={() => setTermB(null)} />
       )}
+      <FlexContainer alignItems="center" marginTop="20px">
+        <NoShrink>
+          <SectionHeadingText margin="0 4px 0 0">Constant value:</SectionHeadingText>
+        </NoShrink>
+        <InputField margin="0 4px 0 0" name="term2 constant" onChange={() => setIsTerm2Constant(!isTerm2Constant)} type="checkbox" value={isTerm2Constant} width="24px" wrapperWidth="24px" />
+        <InputField disabled={!isTerm2Constant} onChange={(e) => setTerm2Constant(e?.target?.value)} placeholder="Type a number" type="number" value={term2Constant} />
+      </FlexContainer>
+      <DetailsText margin="4px 0 0 0">If a constant value is set above, no Stat metric or operation will be attached for term 2.</DetailsText>
       <FlexContainer justify="center" marginTop="20px">
         <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
         <Button isLoading={false} label="Create Operation" loading={isSubmitting} onClick={createOperation} />

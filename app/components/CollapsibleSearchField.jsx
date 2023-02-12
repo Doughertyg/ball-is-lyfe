@@ -37,6 +37,7 @@ const CollapsibleSearchField = ({
   getResultComponent,
   getRightButton,
   height,
+  isDisabled,
   label,
   loading,
   onClick,
@@ -64,6 +65,7 @@ const CollapsibleSearchField = ({
             filterResults={filterResults}
             getResultComponent={getResultComponent}
             height={height}
+            isDisabled={isDisabled}
             label={label}
             loading={loading}
             onClick={onClick}

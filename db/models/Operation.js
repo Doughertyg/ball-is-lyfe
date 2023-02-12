@@ -14,10 +14,12 @@ const operationSchema = new Schema({
     type: Schema.Types.ObjectId,
     refPath: "metricAModel"
   },
+  termAScalar: Schema.Types.Decimal128,
   metricB: {
     type: Schema.Types.ObjectId,
     refPath: "metricBModel"
   },
+  termBScalar: Schema.Types.Decimal128,
   metricAModel: {
     type: String,
     enum: ["Operation", "StatUnit"]

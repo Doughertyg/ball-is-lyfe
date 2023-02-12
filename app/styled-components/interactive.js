@@ -4,6 +4,7 @@ export const Button = styled.button`
   background-color: white;
   border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
   border-radius: ${props => props.borderRadius ?? "4px"};
+  disabled: ${props => props.disabled ?? 'initial'};
   height: ${props => props.height ?? 'auto'};
   padding: 8px 20px;
   cursor: ${props => props.cursor ?? 'pointer'};
@@ -35,6 +36,7 @@ export const Input = styled.input`
   border: ${props => props.errors != null ? "1px solid red" : "1px solid rgba(0, 0, 0, 0.1)"};
   height: ${props => props.height ?? 'auto'};
   width: ${props => props.width ?? '100%'};
+  margin: ${props => props.margin ?? 'initial'};
   max-width: ${props => props.maxWidth ?? "400px"};
   line-height: 20px;
   padding: 12px;

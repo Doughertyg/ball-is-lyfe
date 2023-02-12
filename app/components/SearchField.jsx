@@ -54,6 +54,7 @@ export default function SearchField({
   filterResults,
   getResultComponent,
   height,
+  isDisabled,
   label,
   loading,
   onClick,
@@ -89,6 +90,7 @@ export default function SearchField({
       <InputField
         autoComplete={false}
         borderRadius={borderRadius}
+        disabled={isDisabled}
         height={height}
         loading={loading}
         onChange={(input) => setInput(input)}

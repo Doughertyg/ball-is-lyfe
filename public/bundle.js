@@ -4733,6 +4733,7 @@ var CollapsibleSearchField = function CollapsibleSearchField(_ref) {
     getResultComponent = _ref.getResultComponent,
     getRightButton = _ref.getRightButton,
     height = _ref.height,
+    isDisabled = _ref.isDisabled,
     label = _ref.label,
     loading = _ref.loading,
     onClick = _ref.onClick,
@@ -4763,6 +4764,7 @@ var CollapsibleSearchField = function CollapsibleSearchField(_ref) {
     filterResults: filterResults,
     getResultComponent: getResultComponent,
     height: height,
+    isDisabled: isDisabled,
     label: label,
     loading: loading,
     onClick: onClick,
@@ -4987,7 +4989,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
-var _templateObject, _templateObject2, _templateObject3;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5011,6 +5013,7 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_tem
   var _props$margin;
   return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '0';
 });
+var NoShrink = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  flex-shrink: 0;\n  display: inline-block;\n"])));
 var OPERATIONS = [{
   name: 'Multiply by',
   value: '*'
@@ -5031,8 +5034,8 @@ var CREATE_TYPES = [{
   name: "Operation",
   value: "operation"
 }];
-var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        __typename\n      }\n      metricB {\n        __typename\n      }\n      name\n      operation\n      __typename\n    }\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
-var CREATE_OPERATION_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createStatOperation(\n    $name: String!,\n    $term1: ID!,\n    $term2: ID!\n    $operation: String!\n    $seasonID: ID\n  ) {\n    createStatOperation(\n      input: {\n        name: $name,\n        term1: $term1,\n        term2: $term2,\n        operation: $operation,\n        seasonID: $seasonID\n      }\n    ) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
+var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        __typename\n      }\n      metricB {\n        __typename\n      }\n      name\n      operation\n      __typename\n    }\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
+var CREATE_OPERATION_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation createStatOperation(\n    $name: String!,\n    $term1: ID!,\n    $term2: ID!\n    $operation: String!\n    $seasonID: ID\n  ) {\n    createStatOperation(\n      input: {\n        name: $name,\n        term1: $term1,\n        term2: $term2,\n        operation: $operation,\n        seasonID: $seasonID\n      }\n    ) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
 
 /**
  * 
@@ -5098,6 +5101,22 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     _useState16 = _slicedToArray(_useState15, 2),
     createMetricBType = _useState16[0],
     setCreateMetricBType = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState18 = _slicedToArray(_useState17, 2),
+    term1Constant = _useState18[0],
+    setTerm1Constant = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState20 = _slicedToArray(_useState19, 2),
+    isTerm1Constant = _useState20[0],
+    setIsTerm1Constant = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState22 = _slicedToArray(_useState21, 2),
+    term2Constant = _useState22[0],
+    setTerm2Constant = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState24 = _slicedToArray(_useState23, 2),
+    isTerm2Constant = _useState24[0],
+    setIsTerm2Constant = _useState24[1];
   var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useQuery)(FETCH_STAT_METRICS_OPERATIONS, {
       variables: {
         seasonID: seasonID
@@ -5129,10 +5148,11 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     createOperation = _useMutation2[0],
     isSubmitting = _useMutation2[1].isSubmitting;
-  var getCreateMetricButton = function getCreateMetricButton(onClick) {
+  var getCreateMetricButton = function getCreateMetricButton(onClick, isDisabled) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       borderRadius: "0 8px 8px 0",
       boxShadow: "none",
+      isDisabled: isDisabled,
       height: "46px",
       label: "Create Metric / Operation",
       margin: "0",
@@ -5192,7 +5212,8 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     margin: "20px 0 8px 0"
   }, "Term 1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
     padding: "0 0 4px 0"
-  }, "A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, "A term can either be a Stat Metric (FGM, 3PA, etc.), the result of another operation (FGM + FGA), or a constant value (2, 0.5, etc.)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    isDisabled: isTerm1Constant,
     filterResults: function filterResults(entry, input) {
       var _entry$name;
       return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.toLowerCase().includes(input.toLowerCase());
@@ -5201,7 +5222,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     getRightButton: function getRightButton() {
       return getCreateMetricButton(function () {
         return setCreateMetricAExpanded(true);
-      });
+      }, isTerm1Constant);
     },
     label: "Add metric or operation...",
     loading: loading,
@@ -5237,7 +5258,34 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     onClose: function onClose() {
       return setTermA(null);
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    marginTop: "20px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(NoShrink, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "0 4px 0 0"
+  }, "Constant value:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    margin: "0 4px 0 0",
+    name: "term1 constant",
+    onChange: function onChange() {
+      return setIsTerm1Constant(!isTerm1Constant);
+    },
+    type: "checkbox",
+    value: isTerm1Constant,
+    width: "24px",
+    wrapperWidth: "24px"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    disabled: !isTerm1Constant,
+    name: "term1 constant value",
+    onChange: function onChange(e) {
+      var _e$target;
+      return setTerm1Constant(e === null || e === void 0 ? void 0 : (_e$target = e.target) === null || _e$target === void 0 ? void 0 : _e$target.value);
+    },
+    placeholder: "Type a number",
+    type: "number",
+    value: term1Constant
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    margin: "4px 0 0 0"
+  }, "If a constant value is set above, no Stat metric or operation will be attached for term 1."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "20px 0 8px 0"
   }, "Operation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_DropdownSelector_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     onClick: function onClick(entry) {
@@ -5249,7 +5297,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     margin: "20px 0 8px 0"
   }, "Term 2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
     padding: "0 0 4px 0"
-  }, "A term can either be a Stat Metric (FGM, 3PA, etc.) or the result of another operation (FGM + FGA)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, "A term can either be a Stat Metric (FGM, 3PA, etc.), the result of another operation (FGM + FGA), or a constant value (2, 0.5, etc.)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     filterResults: function filterResults(entry, input) {
       var _entry$name2;
       return entry === null || entry === void 0 ? void 0 : (_entry$name2 = entry.name) === null || _entry$name2 === void 0 ? void 0 : _entry$name2.toLowerCase().includes(input.toLowerCase());
@@ -5258,8 +5306,9 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     getRightButton: function getRightButton() {
       return getCreateMetricButton(function () {
         return setCreateMetricBExpanded(true);
-      });
+      }, isTerm2Constant);
     },
+    isDisabled: isTerm2Constant,
     label: "Add metric or operation...",
     loading: loading,
     onClick: function onClick(operation) {
@@ -5295,6 +5344,32 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
       return setTermB(null);
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+    alignItems: "center",
+    marginTop: "20px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(NoShrink, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "0 4px 0 0"
+  }, "Constant value:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    margin: "0 4px 0 0",
+    name: "term2 constant",
+    onChange: function onChange() {
+      return setIsTerm2Constant(!isTerm2Constant);
+    },
+    type: "checkbox",
+    value: isTerm2Constant,
+    width: "24px",
+    wrapperWidth: "24px"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    disabled: !isTerm2Constant,
+    onChange: function onChange(e) {
+      var _e$target2;
+      return setTerm2Constant(e === null || e === void 0 ? void 0 : (_e$target2 = e.target) === null || _e$target2 === void 0 ? void 0 : _e$target2.value);
+    },
+    placeholder: "Type a number",
+    type: "number",
+    value: term2Constant
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    margin: "4px 0 0 0"
+  }, "If a constant value is set above, no Stat metric or operation will be attached for term 2."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
     marginTop: "20px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -6448,7 +6523,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var InputWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  width: 100%;\n"])));
+var InputWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  width: ", ";\n"])), function (props) {
+  var _props$width;
+  return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : '100%';
+});
 var ContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  align-items: flex-start;\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n"])));
 var SpinnerWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  margin-left: 8px;\n"])));
 function InputField(_ref) {
@@ -6461,14 +6539,18 @@ function InputField(_ref) {
     name = _ref.name,
     loading = _ref.loading,
     minLength = _ref.minLength,
+    margin = _ref.margin,
     maxLength = _ref.maxLength,
     _onChange = _ref.onChange,
     onClick = _ref.onClick,
     type = _ref.type,
     placeholder = _ref.placeholder,
     width = _ref.width,
+    wrapperWidth = _ref.wrapperWidth,
     value = _ref.value;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(InputWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(InputWrapper, {
+    width: wrapperWidth
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContentWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     alignItems: "center",
     justify: "flex-start",
     width: "100%"
@@ -6481,6 +6563,7 @@ function InputField(_ref) {
     height: height !== null && height !== void 0 ? height : 'auto',
     disabled: disabled,
     minLength: minLength !== null && minLength !== void 0 ? minLength : "8",
+    margin: margin,
     maxLength: maxLength !== null && maxLength !== void 0 ? maxLength : "36",
     onChange: function onChange(e) {
       return _onChange(e.target.value);
@@ -7258,6 +7341,7 @@ function SearchField(_ref) {
     filterResults = _ref.filterResults,
     getResultComponent = _ref.getResultComponent,
     height = _ref.height,
+    isDisabled = _ref.isDisabled,
     label = _ref.label,
     loading = _ref.loading,
     onClick = _ref.onClick,
@@ -7297,6 +7381,7 @@ function SearchField(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     autoComplete: false,
     borderRadius: borderRadius,
+    disabled: isDisabled,
     height: height,
     loading: loading,
     onChange: function onChange(input) {
@@ -10570,12 +10655,15 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border: ", ";\n  border-radius: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  cursor: ", ";\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  &:hover {\n    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);\n  }\n  &:active {\n    background-color: teal;\n    color: white;\n  }\n"])), function (props) {
+var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border: ", ";\n  border-radius: ", ";\n  disabled: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  cursor: ", ";\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  &:hover {\n    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);\n  }\n  &:active {\n    background-color: teal;\n    color: white;\n  }\n"])), function (props) {
   var _props$border;
   return (_props$border = props.border) !== null && _props$border !== void 0 ? _props$border : '1px solid rgba(0, 0, 0, 0.1)';
 }, function (props) {
   var _props$borderRadius;
   return (_props$borderRadius = props.borderRadius) !== null && _props$borderRadius !== void 0 ? _props$borderRadius : "4px";
+}, function (props) {
+  var _props$disabled;
+  return (_props$disabled = props.disabled) !== null && _props$disabled !== void 0 ? _props$disabled : 'initial';
 }, function (props) {
   var _props$height;
   return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : 'auto';
@@ -10599,7 +10687,7 @@ var Clickable = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_t
   var _props$borderRadius2;
   return (_props$borderRadius2 = props.borderRadius) !== null && _props$borderRadius2 !== void 0 ? _props$borderRadius2 : "0";
 });
-var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  border-radius: ", ";\n  box-sizing: border-box;\n  border: ", ";\n  height: ", ";\n  width: ", ";\n  max-width: ", ";\n  line-height: 20px;\n  padding: 12px;\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
+var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  border-radius: ", ";\n  box-sizing: border-box;\n  border: ", ";\n  height: ", ";\n  width: ", ";\n  margin: ", ";\n  max-width: ", ";\n  line-height: 20px;\n  padding: 12px;\n  transition: width .24s;\n  transition-timing-function: ease-out;\n"])), function (props) {
   var _props$borderRadius3;
   return (_props$borderRadius3 = props.borderRadius) !== null && _props$borderRadius3 !== void 0 ? _props$borderRadius3 : "8px";
 }, function (props) {
@@ -10610,6 +10698,9 @@ var Input = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].input(_tem
 }, function (props) {
   var _props$width2;
   return (_props$width2 = props.width) !== null && _props$width2 !== void 0 ? _props$width2 : '100%';
+}, function (props) {
+  var _props$margin2;
+  return (_props$margin2 = props.margin) !== null && _props$margin2 !== void 0 ? _props$margin2 : 'initial';
 }, function (props) {
   var _props$maxWidth;
   return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : "400px";

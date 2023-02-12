@@ -130,7 +130,10 @@ module.exports = gql`
     metricB: OperationTermUnion!
     operation: String!
   }
-  union OperationTermUnion = StatUnit | Operation
+  union OperationTermUnion = StatUnit | Operation | ScalarType
+  type ScalarType {
+    scalar: Float!
+  }
   type PlayerStatUnits {
     id: ID!
     player: PlayerInstance!
@@ -236,8 +239,10 @@ module.exports = gql`
     name: String!,
     operation: String!,
     seasonID: ID,
-    term1: ID!,
-    term2: ID!
+    term1: ID,
+    term1Scalar: Float,
+    term2: ID,
+    term2Scalar: Float
   }
   type Mutation {
     addGamesToSeason(seasonID: ID!, gamesToAdd: [GamesToAddInput!]): Season!

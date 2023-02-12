@@ -10,7 +10,7 @@ const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  width: 100%;
+  width: ${props => props.width ?? '100%'};
 `;
 
 const ContentWrapper = styled.div`
@@ -33,17 +33,19 @@ function InputField({
   name,
   loading,
   minLength,
+  margin,
   maxLength,
   onChange,
   onClick,
   type,
   placeholder,
   width,
+  wrapperWidth,
   value
 }) {
 
   return (
-    <InputWrapper>
+    <InputWrapper width={wrapperWidth}>
       <ContentWrapper>
         <FlexContainer alignItems="center" justify="flex-start" width="100%">
           <Input 
@@ -55,6 +57,7 @@ function InputField({
             height={height ?? 'auto'}
             disabled={disabled}
             minLength={minLength ?? "8"}
+            margin={margin}
             maxLength={maxLength ?? "36"}
             onChange={(e) => onChange(e.target.value)}
             onClick={onClick}
