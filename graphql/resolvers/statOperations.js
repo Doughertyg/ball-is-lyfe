@@ -42,6 +42,14 @@ module.exports = {
         throw new Error('No stat metric, operation, or constant given for term 2.');
       }
 
+      if (term1 != null && term1Scalar != null) {
+        throw new Error('Unexpectedly recieved both term1 and a constant value');
+      }
+
+      if (term2 != null && term2Scalar != null) {
+        throw new Error('Unexpectedly recieved both term2 and a constant value');
+      }
+
       if (term1StatUnit != null && !season?.statUnits?.includes(term1StatUnit.id)) {
         season.statUnits = [...season.statUnits, term1StatUnit.id];
       } else if (term1Operation != null) {

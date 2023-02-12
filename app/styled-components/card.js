@@ -26,7 +26,7 @@ export const CardContentWrapper = styled.div`
 
 export const CardWrapper = styled.div`
 max-width: ${props => props.maxWidth ?? '400px'};
-background-color: white;
+background-color: ${props => props.isDisabled ? 'lightgrey' : 'white'};
 border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
 border-radius: 8px;
 box-shadow: ${props => props.boxShadow ?? 'none'};

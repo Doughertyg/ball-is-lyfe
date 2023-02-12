@@ -126,14 +126,13 @@ module.exports = gql`
   type Operation {
     id: ID!
     name: String!
-    metricA: OperationTermUnion!
-    metricB: OperationTermUnion!
+    metricA: OperationTermUnion
+    metricB: OperationTermUnion
     operation: String!
+    termAScalar: Float
+    termBScalar: Float
   }
-  union OperationTermUnion = StatUnit | Operation | ScalarType
-  type ScalarType {
-    scalar: Float!
-  }
+  union OperationTermUnion = StatUnit | Operation
   type PlayerStatUnits {
     id: ID!
     player: PlayerInstance!

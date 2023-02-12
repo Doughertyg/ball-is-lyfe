@@ -4817,13 +4817,15 @@ var List = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].ul(_templat
  *  `------------------------------------`
  */
 var CompactDetailsCard = function CompactDetailsCard(_ref) {
-  var picture = _ref.picture,
-    title = _ref.title,
+  var details = _ref.details,
+    isDisabled = _ref.isDisabled,
+    onClose = _ref.onClose,
+    picture = _ref.picture,
     subTitle = _ref.subTitle,
-    details = _ref.details,
-    onClose = _ref.onClose;
+    title = _ref.title;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_1__.CardWrapper, {
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
+    isDisabled: isDisabled,
     margin: "4px 4px 0 0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
     alignItems: "center",
@@ -4851,7 +4853,7 @@ var CompactDetailsCard = function CompactDetailsCard(_ref) {
       key: idx,
       overflow: "hidden"
     }, detail));
-  })))), onClose && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  })))), onClose && !isDisabled && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     icon: "close",
     margin: "4px 4px 4px 32px",
     onClick: onClose
@@ -5034,8 +5036,8 @@ var CREATE_TYPES = [{
   name: "Operation",
   value: "operation"
 }];
-var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        __typename\n      }\n      metricB {\n        __typename\n      }\n      name\n      operation\n      __typename\n    }\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
-var CREATE_OPERATION_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation createStatOperation(\n    $name: String!,\n    $term1: ID!,\n    $term2: ID!\n    $operation: String!\n    $seasonID: ID\n  ) {\n    createStatOperation(\n      input: {\n        name: $name,\n        term1: $term1,\n        term2: $term2,\n        operation: $operation,\n        seasonID: $seasonID\n      }\n    ) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
+var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        __typename\n      }\n      metricB {\n        __typename\n      }\n      name\n      operation\n      termAScalar\n      termBScalar\n      __typename\n    }\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
+var CREATE_OPERATION_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation createStatOperation(\n    $name: String!,\n    $term1: ID,\n    $term1Scalar: Float,\n    $term2: ID,\n    $term2Scalar: Float,\n    $operation: String!\n    $seasonID: ID\n  ) {\n    createStatOperation(\n      input: {\n        name: $name,\n        term1: $term1,\n        term1Scalar: $term1Scalar\n        term2: $term2,\n        term2Scalar: $term2Scalar,\n        operation: $operation,\n        seasonID: $seasonID\n      }\n    ) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n      termAScalar\n      termBScalar\n    }\n  }\n"])));
 
 /**
  * 
@@ -5140,8 +5142,10 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
       variables: {
         name: name,
         seasonID: seasonID,
-        term1: termA === null || termA === void 0 ? void 0 : termA.id,
-        term2: termB === null || termB === void 0 ? void 0 : termB.id,
+        term1: term1Constant == null ? termA === null || termA === void 0 ? void 0 : termA.id : null,
+        term1Scalar: term1Constant != null ? Number(term1Constant) : null,
+        term2: term2Constant == null ? termB === null || termB === void 0 ? void 0 : termB.id : null,
+        term2Scalar: term2Constant != null ? Number(term2Constant) : null,
         operation: operation === null || operation === void 0 ? void 0 : operation.value
       }
     }),
@@ -5253,6 +5257,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     onCompleted: createOperationCompleted(setTermA, setCreateMetricAExpanded),
     seasonID: seasonID
   }) : null), termA != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    isDisabled: isTerm1Constant,
     subTitle: [termA === null || termA === void 0 ? void 0 : termA.__typename],
     title: (_termA$name = termA === null || termA === void 0 ? void 0 : termA.name) !== null && _termA$name !== void 0 ? _termA$name : 'term 1 name missing',
     onClose: function onClose() {
@@ -5276,13 +5281,12 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
     disabled: !isTerm1Constant,
     name: "term1 constant value",
-    onChange: function onChange(e) {
-      var _e$target;
-      return setTerm1Constant(e === null || e === void 0 ? void 0 : (_e$target = e.target) === null || _e$target === void 0 ? void 0 : _e$target.value);
+    onChange: function onChange(num) {
+      return setTerm1Constant(num);
     },
     placeholder: "Type a number",
     type: "number",
-    value: term1Constant
+    value: term1Constant || 1
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
     margin: "4px 0 0 0"
   }, "If a constant value is set above, no Stat metric or operation will be attached for term 1."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
@@ -5338,6 +5342,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     onCompleted: createOperationCompleted(setTermB, setCreateMetricBExpanded),
     seasonID: seasonID
   }) : null), termB != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    isDisabled: isTerm2Constant,
     subTitle: [termB === null || termB === void 0 ? void 0 : termB.__typename],
     title: (_termB$name = termB === null || termB === void 0 ? void 0 : termB.name) !== null && _termB$name !== void 0 ? _termB$name : 'term 2 name missing',
     onClose: function onClose() {
@@ -5360,13 +5365,12 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
     wrapperWidth: "24px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
     disabled: !isTerm2Constant,
-    onChange: function onChange(e) {
-      var _e$target2;
-      return setTerm2Constant(e === null || e === void 0 ? void 0 : (_e$target2 = e.target) === null || _e$target2 === void 0 ? void 0 : _e$target2.value);
+    onChange: function onChange(num) {
+      return setTerm2Constant(num);
     },
     placeholder: "Type a number",
     type: "number",
-    value: term2Constant
+    value: term2Constant || 1
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
     margin: "4px 0 0 0"
   }, "If a constant value is set above, no Stat metric or operation will be attached for term 2."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
@@ -10364,9 +10368,11 @@ var CardContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
 });
-var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: white;\nborder: ", ";\nborder-radius: 8px;\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: ", ";\nmargin-bottom: 4px;\nmargin-right: ", ";\nmargin-top: ", ";\nmargin: ", ";\nwidth: ", ";\n", "\n"])), function (props) {
+var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: ", ";\nborder: ", ";\nborder-radius: 8px;\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: ", ";\nmargin-bottom: 4px;\nmargin-right: ", ";\nmargin-top: ", ";\nmargin: ", ";\nwidth: ", ";\n", "\n"])), function (props) {
   var _props$maxWidth;
   return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : '400px';
+}, function (props) {
+  return props.isDisabled ? 'lightgrey' : 'white';
 }, function (props) {
   var _props$border;
   return (_props$border = props.border) !== null && _props$border !== void 0 ? _props$border : '1px solid rgba(0, 0, 0, 0.1)';

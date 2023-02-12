@@ -21,15 +21,17 @@ const List = styled.ul`
  *  `------------------------------------`
  */
 const CompactDetailsCard = ({
-  picture,
-  title,
-  subTitle,
   details, // Array of strings
+  isDisabled,
   onClose,
+  picture,
+  subTitle,
+  title,
 }) => {
   return (
     <CardWrapper
       boxShadow="0 0 10px rgba(0, 0, 0, 0.07)"
+      isDisabled={isDisabled}
       margin='4px 4px 0 0'>
       <FlexContainer alignItems="center" justify="space-between">
         {picture && (
@@ -58,7 +60,7 @@ const CompactDetailsCard = ({
             </FlexContainer>
           )}
         </FlexContainer>
-        {onClose && <Icon icon="close" margin="4px 4px 4px 32px" onClick={onClose} />}
+        {onClose && !isDisabled && <Icon icon="close" margin="4px 4px 4px 32px" onClick={onClose} />}
       </FlexContainer>
     </CardWrapper>
   )

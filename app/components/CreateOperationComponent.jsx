@@ -68,6 +68,8 @@ const FETCH_STAT_METRICS_OPERATIONS = gql`
       }
       name
       operation
+      termAScalar
+      termBScalar
       __typename
     }
     getStatUnits(seasonID: $seasonID) {
@@ -82,8 +84,10 @@ const FETCH_STAT_METRICS_OPERATIONS = gql`
 const CREATE_OPERATION_MUTATION = gql`
   mutation createStatOperation(
     $name: String!,
-    $term1: ID!,
-    $term2: ID!
+    $term1: ID,
+    $term1Scalar: Float,
+    $term2: ID,
+    $term2Scalar: Float,
     $operation: String!
     $seasonID: ID
   ) {
@@ -91,7 +95,9 @@ const CREATE_OPERATION_MUTATION = gql`
       input: {
         name: $name,
         term1: $term1,
+        term1Scalar: $term1Scalar
         term2: $term2,
+        term2Scalar: $term2Scalar,
         operation: $operation,
         seasonID: $seasonID
       }
@@ -115,6 +121,8 @@ const CREATE_OPERATION_MUTATION = gql`
       }
       name
       operation
+      termAScalar
+      termBScalar
     }
   }
 `;
@@ -179,8 +187,10 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
     variables: {
       name,
       seasonID,
-      term1: termA?.id,
-      term2: termB?.id,
+      term1: term1Constant == null ? termA?.id : null,
+      term1Scalar: term1Constant != null ? Number(term1Constant) : null,
+      term2: term2Constant == null ? termB?.id : null,
+      term2Scalar: term2Constant != null ? Number(term2Constant) : null,
       operation: operation?.value
     }
   });
@@ -253,14 +263,14 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
         </FlexContainer>
       )}
       {termA != null && (
-        <CompactDetailsCard subTitle={[termA?.__typename]} title={termA?.name ?? 'term 1 name missing'} onClose={() => setTermA(null)} />
+        <CompactDetailsCard isDisabled={isTerm1Constant} subTitle={[termA?.__typename]} title={termA?.name ?? 'term 1 name missing'} onClose={() => setTermA(null)} />
       )}
       <FlexContainer alignItems="center" marginTop="20px">
         <NoShrink>
           <SectionHeadingText margin="0 4px 0 0">Constant value:</SectionHeadingText>
         </NoShrink>
         <InputField margin="0 4px 0 0" name="term1 constant" onChange={() => setIsTerm1Constant(!isTerm1Constant)} type="checkbox" value={isTerm1Constant} width="24px" wrapperWidth="24px" />
-        <InputField disabled={!isTerm1Constant} name="term1 constant value" onChange={(e) => setTerm1Constant(e?.target?.value)} placeholder="Type a number" type="number" value={term1Constant} />
+        <InputField disabled={!isTerm1Constant} name="term1 constant value" onChange={(num) => setTerm1Constant(num)} placeholder="Type a number" type="number" value={term1Constant || 1} />
       </FlexContainer>
       <DetailsText margin="4px 0 0 0">If a constant value is set above, no Stat metric or operation will be attached for term 1.</DetailsText>
       <SectionHeadingText margin="20px 0 8px 0">Operation</SectionHeadingText>
@@ -291,14 +301,14 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
         </FlexContainer>
       )}
       {termB != null && (
-        <CompactDetailsCard subTitle={[termB?.__typename]} title={termB?.name ?? 'term 2 name missing'} onClose={() => setTermB(null)} />
+        <CompactDetailsCard isDisabled={isTerm2Constant} subTitle={[termB?.__typename]} title={termB?.name ?? 'term 2 name missing'} onClose={() => setTermB(null)} />
       )}
       <FlexContainer alignItems="center" marginTop="20px">
         <NoShrink>
           <SectionHeadingText margin="0 4px 0 0">Constant value:</SectionHeadingText>
         </NoShrink>
         <InputField margin="0 4px 0 0" name="term2 constant" onChange={() => setIsTerm2Constant(!isTerm2Constant)} type="checkbox" value={isTerm2Constant} width="24px" wrapperWidth="24px" />
-        <InputField disabled={!isTerm2Constant} onChange={(e) => setTerm2Constant(e?.target?.value)} placeholder="Type a number" type="number" value={term2Constant} />
+        <InputField disabled={!isTerm2Constant} onChange={(num) => setTerm2Constant(num)} placeholder="Type a number" type="number" value={term2Constant || 1} />
       </FlexContainer>
       <DetailsText margin="4px 0 0 0">If a constant value is set above, no Stat metric or operation will be attached for term 2.</DetailsText>
       <FlexContainer justify="center" marginTop="20px">

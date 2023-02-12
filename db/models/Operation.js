@@ -1,5 +1,12 @@
 const {model, Schema} = require('mongoose');
 
+function getFloatFromDecimal(value) {
+  if (typeof value !== 'undefined' && value != null) {
+     return parseFloat(value.toString());
+  }
+  return value;
+};
+
 /**
  * Stat operation
  * A mathematic operation that makes up a stat equation
@@ -14,12 +21,18 @@ const operationSchema = new Schema({
     type: Schema.Types.ObjectId,
     refPath: "metricAModel"
   },
-  termAScalar: Schema.Types.Decimal128,
+  termAScalar: {
+    type: Schema.Types.Decimal128,
+    get: getFloatFromDecimal
+  },
   metricB: {
     type: Schema.Types.ObjectId,
     refPath: "metricBModel"
   },
-  termBScalar: Schema.Types.Decimal128,
+  termBScalar: {
+    type: Schema.Types.Decimal128,
+    get: getFloatFromDecimal
+  },
   metricAModel: {
     type: String,
     enum: ["Operation", "StatUnit"]
@@ -29,7 +42,7 @@ const operationSchema = new Schema({
     enum: ["Operation", "StatUnit"]
   },
   name: String,
-  operation: String
-});
+  operation: String,
+}, {toJSON: {getters: true}});
 
 module.exports = model('Operation', operationSchema);
