@@ -54,12 +54,14 @@ const FETCH_STAT_OPERATIONS = gql`
 
 const CREATE_STAT_MUTATION = gql`
   mutation createStat(
+    $description: String,
     $isPerGame: Boolean!,
     $name: String!,
     $operation: ID!,
     $seasonID: ID!
   ) {
     createStat(
+      description: $description,
       isPerGame: $isPerGame,
       name: $name,
       operation: $operation,
@@ -94,6 +96,7 @@ const CREATE_STAT_MUTATION = gql`
  *  `---------------------------------------------------------`
  */
 const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
+  const [description, setDescription] = useState('');
   const [name, setName] = useState("");
   const [operations, setOperations] = useState(null);
   const [createOperationExpanded, setCreateOperationExpanded] = useState(false);
@@ -112,6 +115,7 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
       console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
     },
     variables: {
+      description,
       name,
       operation: operations?.id,
       isPerGame,
@@ -163,6 +167,8 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
         <Divider width="100%" />
         <SectionHeadingText margin="20px 0 8px 0">Name</SectionHeadingText>
         <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={false/* isSubmitting */} name="name" onChange={(input) => setName(input)} placeholder="Stat name..." width="100%" value={name} />
+        <SectionHeadingText margin="20px 0 8px 0">Description</SectionHeadingText>
+        <InputField loading={false/* isSubmitting */} name="description" maxLength={150} onChange={(input) => setDescription(input)} placeholder="Stat description..." width="100%" value={description} />
         <SectionHeadingText margin="20px 0 8px 0">Operations</SectionHeadingText>
         <CollapsibleSearchField
           filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}

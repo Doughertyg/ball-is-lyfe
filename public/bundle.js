@@ -5638,7 +5638,7 @@ var Bold = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templa
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
 var NoShrink = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  flex-shrink: 0;\n"])));
 var FETCH_STAT_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
-var CREATE_STAT_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  mutation createStat(\n    $isPerGame: Boolean!,\n    $name: String!,\n    $operation: ID!,\n    $seasonID: ID!\n  ) {\n    createStat(\n      isPerGame: $isPerGame,\n      name: $name,\n      operation: $operation,\n      seasonID: $seasonID\n    ) {\n      id\n      name\n    }\n  }\n"])));
+var CREATE_STAT_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  mutation createStat(\n    $description: String,\n    $isPerGame: Boolean!,\n    $name: String!,\n    $operation: ID!,\n    $seasonID: ID!\n  ) {\n    createStat(\n      description: $description,\n      isPerGame: $isPerGame,\n      name: $name,\n      operation: $operation,\n      seasonID: $seasonID\n    ) {\n      id\n      name\n    }\n  }\n"])));
 
 /**
  * Create Stat component for creating stats
@@ -5667,22 +5667,26 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
   var onCancel = _ref.onCancel,
     _onCompleted = _ref.onCompleted,
     seasonID = _ref.seasonID;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
-    name = _useState2[0],
-    setName = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    description = _useState2[0],
+    setDescription = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState4 = _slicedToArray(_useState3, 2),
-    operations = _useState4[0],
-    setOperations = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    name = _useState4[0],
+    setName = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState6 = _slicedToArray(_useState5, 2),
-    createOperationExpanded = _useState6[0],
-    setCreateOperationExpanded = _useState6[1];
+    operations = _useState6[0],
+    setOperations = _useState6[1];
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    isPerGame = _useState8[0],
-    setIsPerGame = _useState8[1];
+    createOperationExpanded = _useState8[0],
+    setCreateOperationExpanded = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    isPerGame = _useState10[0],
+    setIsPerGame = _useState10[1];
   var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__.useQuery)(FETCH_STAT_OPERATIONS, {
       variables: {
         seasonID: seasonID
@@ -5700,6 +5704,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
         console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
       },
       variables: {
+        description: description,
         name: name,
         operation: operations === null || operations === void 0 ? void 0 : operations.id,
         isPerGame: isPerGame,
@@ -5764,6 +5769,18 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     placeholder: "Stat name...",
     width: "100%",
     value: name
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "20px 0 8px 0"
+  }, "Description"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    loading: false /* isSubmitting */,
+    name: "description",
+    maxLength: 150,
+    onChange: function onChange(input) {
+      return setDescription(input);
+    },
+    placeholder: "Stat description...",
+    width: "100%",
+    value: description
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "20px 0 8px 0"
   }, "Operations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -5862,7 +5879,7 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_tem
   var _props$margin;
   return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '0';
 });
-var CREATE_STAT_METRIC_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createStatUnit(\n    $name: String!,\n    $value: Int!,\n  ) {\n    createStatUnit(\n      name: $name,\n      value: $value\n    ) {\n      id\n      name\n      __typename\n    }\n  }\n"])));
+var CREATE_STAT_METRIC_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_5__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation createStatUnit(\n    $abbreviation: String!,\n    $name: String!,\n    $value: Int!,\n  ) {\n    createStatUnit(\n      abbreviation: $abbreviation,\n      name: $name,\n      value: $value\n    ) {\n      id\n      name\n      __typename\n    }\n  }\n"])));
 
 /**
  * Create Stat Metric Component
@@ -5889,12 +5906,16 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     onComplete = _ref.onComplete;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
-    name = _useState2[0],
-    setName = _useState2[1];
+    abbreviation = _useState2[0],
+    setAbbreviation = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState4 = _slicedToArray(_useState3, 2),
-    value = _useState4[0],
-    setValue = _useState4[1];
+    name = _useState4[0],
+    setName = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState6 = _slicedToArray(_useState5, 2),
+    value = _useState6[0],
+    setValue = _useState6[1];
   var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_6__.useMutation)(CREATE_STAT_METRIC_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
@@ -5904,6 +5925,7 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
         console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
       },
       variables: {
+        abbreviation: abbreviation,
         name: name,
         value: Number(value)
       }
@@ -5939,6 +5961,23 @@ var CreateStatMetricComponent = function CreateStatMetricComponent(_ref) {
     placeholder: "Stat Metric name...",
     width: "100%",
     value: name
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+    margin: "20px 0 8px 0"
+  }, "Abbreviation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+    padding: "4px 0",
+    overflow: "hidden"
+  }, "The abbreviation will be used to identify the stat metric in search, stat operation previews, and in the live stats mode."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    errors: abbreviation === "" ? 'Abbreviation cannot be blank.' : null,
+    loading: isSubmitting,
+    maxLength: 5,
+    minLength: 1,
+    name: "abbreviation",
+    onChange: function onChange(input) {
+      return setAbbreviation(input);
+    },
+    placeholder: "Stat Metric abbreviation...",
+    width: "100%",
+    value: abbreviation
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "20px 0 8px 0"
   }, "Value"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {

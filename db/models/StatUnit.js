@@ -6,6 +6,7 @@ const {model, Schema} = require('mongoose');
  *  e.g.: "Field Goal Made"
  */
 const statUnitSchema = new Schema({
+  abbreviation: String,
   name: String,
   value: Number,
 });

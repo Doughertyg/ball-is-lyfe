@@ -9,7 +9,7 @@ const userResolvers = require('./users');
 
 module.exports = {
   Mutation: {
-    async createStatUnit(_, { name, seasonID, value }, context) {
+    async createStatUnit(_, { abbreviation, name, seasonID, value }, context) {
       const authHeader = context.req.headers.authorization;
       if (authHeader == null) {
         throw new AuthenticationError('Authentication header not provided. User not authenticated.');
@@ -22,6 +22,7 @@ module.exports = {
       }
 
       const newStatUnit = new StatUnit({
+        abbreviation,
         name,
         value
       });
