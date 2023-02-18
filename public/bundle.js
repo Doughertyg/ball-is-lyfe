@@ -5036,7 +5036,7 @@ var CREATE_TYPES = [{
   name: "Operation",
   value: "operation"
 }];
-var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        __typename\n      }\n      metricB {\n        __typename\n      }\n      name\n      operation\n      termAScalar\n      termBScalar\n      __typename\n    }\n    getStatUnits(seasonID: $seasonID) {\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
+var FETCH_STAT_METRICS_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      expression\n      id\n      metricA {\n        ... on Operation {\n          name\n          metricA {\n            ... on Operation {\n              name\n              metricA {\n                __typename\n              }\n              metricB {\n                __typename\n              }\n              operation\n              termAScalar\n              termBScalar\n            }\n            ... on StatUnit {\n              abbreviation\n              name\n            }\n          }\n          metricB {\n            ... on Operation {\n              name\n              metricA {\n                __typename\n              }\n              metricB {\n                __typename\n              }\n              operation\n              termAScalar\n              termBScalar\n            }\n            ... on StatUnit {\n              abbreviation\n              name\n            }\n          }\n          operation\n          termAScalar\n          termBScalar\n          __typename\n        }\n        ... on StatUnit {\n          __typename\n          abbreviation\n          name\n        }\n        __typename\n      }\n      metricB {\n        ... on Operation {\n          name\n          metricA {\n            ... on Operation {\n              name\n              metricA {\n                __typename\n              }\n              metricB {\n                __typename\n              }\n              operation\n              termAScalar\n              termBScalar\n            }\n            ... on StatUnit {\n              abbreviation\n              name\n            }\n          }\n          metricB {\n            ... on Operation {\n              name\n              metricA {\n                __typename\n              }\n              metricB {\n                __typename\n              }\n              operation\n              termAScalar\n              termBScalar\n            }\n            ... on StatUnit {\n              abbreviation\n              name\n            }\n          }\n          operation\n          termAScalar\n          termBScalar\n        }\n        ... on StatUnit {\n          abbreviation\n          name\n          __typename\n        }\n        __typename\n      }\n      name\n      operation\n      termAScalar\n      termBScalar\n      __typename\n    }\n    getStatUnits(seasonID: $seasonID) {\n      abbreviation\n      id\n      name\n      value\n      __typename\n    }\n  }\n"])));
 var CREATE_OPERATION_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation createStatOperation(\n    $name: String!,\n    $term1: ID,\n    $term1Scalar: Float,\n    $term2: ID,\n    $term2Scalar: Float,\n    $operation: String!\n    $seasonID: ID\n  ) {\n    createStatOperation(\n      input: {\n        name: $name,\n        term1: $term1,\n        term1Scalar: $term1Scalar\n        term2: $term2,\n        term2Scalar: $term2Scalar,\n        operation: $operation,\n        seasonID: $seasonID\n      }\n    ) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n      termAScalar\n      termBScalar\n    }\n  }\n"])));
 
 /**
@@ -5179,12 +5179,24 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
       }
     };
   };
+  console.log('data:  ', data);
   var statMetricsOperationsSource = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var _data$getStatUnits, _data$getStatOperatio;
     var statUnits = (_data$getStatUnits = data === null || data === void 0 ? void 0 : data.getStatUnits) !== null && _data$getStatUnits !== void 0 ? _data$getStatUnits : [];
     var operations = (_data$getStatOperatio = data === null || data === void 0 ? void 0 : data.getStatOperations) !== null && _data$getStatOperatio !== void 0 ? _data$getStatOperatio : [];
     return statUnits.concat(operations);
   }, [data === null || data === void 0 ? void 0 : data.getStatUnits, data === null || data === void 0 ? void 0 : data.getStatOperations]);
+  var getResultsComponent = function getResultsComponent(entry /* either an operation or a stat unit */) {
+    var _entry$abbreviation;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      alignItems: "center"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
+      width: "fit-content"
+    }, (_entry$abbreviation = entry.abbreviation) !== null && _entry$abbreviation !== void 0 ? _entry$abbreviation : entry.name), entry.abbreviation && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+      flexGrow: "1",
+      margin: "0 0 0 4px"
+    }, entry === null || entry === void 0 ? void 0 : entry.name));
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
     margin: margin
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
@@ -5223,6 +5235,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
       return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.toLowerCase().includes(input.toLowerCase());
     },
     forceExpanded: true,
+    getResultComponent: getResultsComponent,
     getRightButton: function getRightButton() {
       return getCreateMetricButton(function () {
         return setCreateMetricAExpanded(true);
@@ -5307,6 +5320,7 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
       return entry === null || entry === void 0 ? void 0 : (_entry$name2 = entry.name) === null || _entry$name2 === void 0 ? void 0 : _entry$name2.toLowerCase().includes(input.toLowerCase());
     },
     forceExpanded: true,
+    getResultComponent: getResultsComponent,
     getRightButton: function getRightButton() {
       return getCreateMetricButton(function () {
         return setCreateMetricBExpanded(true);

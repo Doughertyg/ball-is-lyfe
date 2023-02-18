@@ -126,6 +126,7 @@ module.exports = gql`
     operation: Operation!
   }
   type Operation {
+    expression: String
     id: ID!
     name: String!
     metricA: OperationTermUnion

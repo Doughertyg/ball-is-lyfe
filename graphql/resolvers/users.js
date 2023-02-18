@@ -17,6 +17,7 @@ function generateToken(user) {
 }
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+console.log('client id:  ', CLIENT_ID);
 const googleClient = new OAuth2Client({
   clientId: `${CLIENT_ID}`,
 });
