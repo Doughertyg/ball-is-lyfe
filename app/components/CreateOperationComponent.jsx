@@ -327,13 +327,20 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
   }, [data?.getStatUnits, data?.getStatOperations]);
 
   const getResultsComponent = (entry /* either an operation or a stat unit */) => (
-    <FlexContainer alignItems="center">
-      <BodyText width="fit-content">
-        {entry.abbreviation ?? entry.name}
-      </BodyText>
-      {entry.abbreviation && (
-        <DetailsText flexGrow="1" margin="0 0 0 4px">
-          {entry?.name}
+    <FlexContainer alignItems="start" direction="column">
+      <FlexContainer alignItems="center">
+        <BodyText width="fit-content">
+          {entry.abbreviation ?? entry.name}
+        </BodyText>
+        {entry.abbreviation && (
+          <DetailsText flexGrow="1" margin="0 0 0 4px">
+            {entry?.name}
+          </DetailsText>
+        )}
+      </FlexContainer>
+      {entry.expression && (
+        <DetailsText flexGrow="1">
+          {entry.expression}
         </DetailsText>
       )}
     </FlexContainer>

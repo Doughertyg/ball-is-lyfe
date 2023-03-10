@@ -20,18 +20,19 @@ const statOperationsResolvers = require('./statOperations');
 function generateOperationExpression(operation) {
   // input is a stat operation which has two terms
   // the terms may be an operation, a stat unit/metric, or a scalar
-  console.log('op:  ', operation);
   let term1 = '';
   let term2 = '';
   if (operation.termAScalar) {
     term1 = operation.termAScalar;
   } else {
+    // TODO: handle cases where metric is not populated and not an object (query object)
     term1 = operation.metricA?.operation ? `(${generateOperationExpression(operation.metricA)})` : operation.metricA?.abbreviation;
   }
 
   if (operation.termBScalar) {
     term2 = operation.termAScalar;
   } else {
+    // TODO: handle cases where metric is not populated and not an object (query object)
     term2 = operation.metricB?.operation ? `(${generateOperationExpression(operation.metricB)})` : operation.metricB?.abbreviation;
   }
 

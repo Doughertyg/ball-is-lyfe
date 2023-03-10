@@ -84,7 +84,43 @@ module.exports = {
         // query operations relating to statUnits or stats in season
       }
 
-      return await Operation.find().populate(['metricA', 'metricB']);
+      // populate 3 levels of operations max for calculating expressions
+      return await Operation.find()
+      .populate([{
+        path: 'metricA',
+        populate: [{
+          path: 'metricA',
+          populate: [{
+            path: 'metricA'
+          }, {
+            path: 'metricB'
+          }]
+        }, {
+          path: 'metricB',
+          populate: [{
+            path: 'metricA'
+          }, {
+            path: 'metricB'
+          }]
+        }]
+      }, {
+        path: 'metricB',
+        populate: [{
+          path: 'metricA',
+          populate: [{
+            path: 'metricA'
+          }, {
+            path: 'metricB'
+          }]
+        }, {
+          path: 'metricB',
+          populate: [{
+            path: 'metricA'
+          }, {
+            path: 'metricB'
+          }]
+        }]
+      }]);
     }
   }
 }

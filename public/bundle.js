@@ -5189,13 +5189,18 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
   var getResultsComponent = function getResultsComponent(entry /* either an operation or a stat unit */) {
     var _entry$abbreviation;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      alignItems: "start",
+      direction: "column"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
       alignItems: "center"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
       width: "fit-content"
     }, (_entry$abbreviation = entry.abbreviation) !== null && _entry$abbreviation !== void 0 ? _entry$abbreviation : entry.name), entry.abbreviation && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
       flexGrow: "1",
       margin: "0 0 0 4px"
-    }, entry === null || entry === void 0 ? void 0 : entry.name));
+    }, entry === null || entry === void 0 ? void 0 : entry.name)), entry.expression && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+      flexGrow: "1"
+    }, entry.expression));
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
     margin: margin
@@ -5651,7 +5656,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 var Bold = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  display: inline-block;\n  font-weight: 600;\n"])));
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
 var NoShrink = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  flex-shrink: 0;\n"])));
-var FETCH_STAT_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
+var FETCH_STAT_OPERATIONS = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  query($seasonID: ID) {\n    getStatOperations(seasonID: $seasonID) {\n      expression\n      id\n      metricA {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      metricB {\n        ... on StatUnit {\n          name\n        }\n        ... on Operation {\n          name\n        }\n      }\n      name\n      operation\n    }\n  }\n"])));
 var CREATE_STAT_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_8__["default"])(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  mutation createStat(\n    $description: String,\n    $isPerGame: Boolean!,\n    $name: String!,\n    $operation: ID!,\n    $seasonID: ID!\n  ) {\n    createStat(\n      description: $description,\n      isPerGame: $isPerGame,\n      name: $name,\n      operation: $operation,\n      seasonID: $seasonID\n    ) {\n      id\n      name\n    }\n  }\n"])));
 
 /**
@@ -5758,6 +5763,18 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
     }
     setCreateOperationExpanded(false);
   };
+  var getResultsComponent = function getResultsComponent(entry) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      alignItems: "start",
+      direction: "column"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      alignItems: "center"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
+      width: "fit-content"
+    }, entry.name)), entry.expression && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+      flexGrow: "1"
+    }, entry.expression));
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     direction: "column",
     height: "100%",
@@ -5803,6 +5820,7 @@ var CreateStatComponent = function CreateStatComponent(_ref) {
       return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.toLowerCase().includes(input.toLowerCase());
     },
     forceExpanded: true,
+    getResultComponent: getResultsComponent,
     getRightButton: getCreateOperationButton,
     label: "Add Operations...",
     loading: loadingOperations,

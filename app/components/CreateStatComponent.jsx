@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
+import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
@@ -29,6 +29,7 @@ const NoShrink = styled.div`
 const FETCH_STAT_OPERATIONS = gql`
   query($seasonID: ID) {
     getStatOperations(seasonID: $seasonID) {
+      expression
       id
       metricA {
         ... on StatUnit {
@@ -156,6 +157,21 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
     setCreateOperationExpanded(false);
   }
 
+  const getResultsComponent = entry => (
+    <FlexContainer alignItems="start" direction="column">
+      <FlexContainer alignItems="center">
+        <BodyText width="fit-content">
+          {entry.name}
+        </BodyText>
+      </FlexContainer>
+      {entry.expression && (
+        <DetailsText flexGrow="1">
+          {entry.expression}
+        </DetailsText>
+      )}
+    </FlexContainer>
+  )
+
   return (
     <Wrapper>
       <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
@@ -173,6 +189,7 @@ const CreateStatComponent = ({ onCancel, onCompleted, seasonID }) => {
         <CollapsibleSearchField
           filterResults={(entry, input) => entry?.name?.toLowerCase().includes(input.toLowerCase())}
           forceExpanded
+          getResultComponent={getResultsComponent}
           getRightButton={getCreateOperationButton}
           label="Add Operations..."
           loading={loadingOperations}
