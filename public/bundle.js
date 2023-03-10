@@ -5179,7 +5179,6 @@ var CreateOperationComponent = function CreateOperationComponent(_ref) {
       }
     };
   };
-  console.log('data:  ', data);
   var statMetricsOperationsSource = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var _data$getStatUnits, _data$getStatOperatio;
     var statUnits = (_data$getStatUnits = data === null || data === void 0 ? void 0 : data.getStatUnits) !== null && _data$getStatUnits !== void 0 ? _data$getStatUnits : [];

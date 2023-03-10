@@ -318,8 +318,6 @@ const CreateOperationComponent = ({ margin, onCancel, onCompleted, seasonID }) =
     }
   }
 
-  console.log('data:  ', data);
-
   const statMetricsOperationsSource = useMemo(() => {
     const statUnits = data?.getStatUnits ?? [];
     const operations = data?.getStatOperations ?? [];
