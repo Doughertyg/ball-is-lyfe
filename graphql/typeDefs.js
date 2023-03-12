@@ -60,6 +60,12 @@ module.exports = gql`
     profilePicture: String!
     bannerPicture: String!
   }
+  enum SeasonStatus {
+    ACTIVE
+    CONFIGURATION
+    INACTIVE
+    OPEN
+  }
   type Season {
     id: ID!
     admin: [User]!
@@ -71,6 +77,8 @@ module.exports = gql`
     seasonStart: String!
     seasonEnd: String!
     stats: [Stat]
+    statUnits: [StatUnit]
+    status: SeasonStatus!
     sport: String
     league: League!
     players: [User]!

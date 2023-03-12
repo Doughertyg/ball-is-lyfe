@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server');
+const { ApolloError, AuthenticationError } = require('apollo-server');
 
 const Season = require('../../db/models/Season');
 const League = require('../../db/models/League');
@@ -6,6 +6,12 @@ const Stat = require('../../db/models/Stat');
 const Game = require('../../db/models/Game');
 const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
+
+const SeasonStatus = {
+  CONFIGURATION: 'Configuration',
+  INACTIVE: 'Inactive',
+  OPEN: 'Open',
+}
 
 module.exports = {
   Query: {
@@ -94,6 +100,9 @@ module.exports = {
       }
       
       const season = await Season.findById(seasonID);
+      if (season.status === SeasonStatus.INACTIVE) {
+        throw new ApolloError('Cannot add captains to inactive season');
+      }
       const players = [...season.players];
       const newCaptains = season.captains.concat(captains.filter(player => !season.captains.includes(player)));
       captains.forEach(captain => {
@@ -120,6 +129,10 @@ module.exports = {
       const season = await Season.findById(seasonID);
       if (season == null) {
         throw new Error('Season unexpectedly null.');
+      }
+
+      if (season.status === SeasonStatus.INACTIVE) {
+        throw new ApolloError('Cannot add games to inactive season');
       }
 
       const games = [...season.games];
@@ -175,6 +188,11 @@ module.exports = {
       }
 
       const season = await Season.findById(seasonID);
+
+      if (season.status === SeasonStatus.INACTIVE) {
+        throw new ApolloError('Cannot add players to inactive season');
+      }
+
       const newPlayers = season.players.concat(players.filter(player => !season.players.includes(player)));
       season.players = newPlayers;
       return await season.save();
@@ -194,7 +212,8 @@ module.exports = {
       const newSeason = new Season({
         ...seasonInput,
         createdAt: new Date().toISOString(),
-        admins: [user.id]
+        admins: [user.id],
+        status: SeasonStatus.CONFIGURATION
       });
 
       const season = await newSeason.save();
@@ -206,7 +225,6 @@ module.exports = {
         }
       );
       // handle error
-      console.log('updated league:  ', league);
       return season;
     }
   },
