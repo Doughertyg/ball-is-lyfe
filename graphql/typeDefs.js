@@ -61,10 +61,10 @@ module.exports = gql`
     bannerPicture: String!
   }
   enum SeasonStatus {
-    ACTIVE
+    CONFIRMED
     CONFIGURATION
     INACTIVE
-    OPEN
+    ACTIVE
   }
   type Season {
     id: ID!
@@ -232,6 +232,7 @@ module.exports = gql`
     players: [ID]
   }
   input CreateSeasonInput {
+    name: String!
     description: String!
     seasonEnd: String!
     league: ID!
@@ -282,6 +283,7 @@ module.exports = gql`
       seasonID: ID,
       sport: String
     ): CreateTeamMutationReturnType
+    confirmSeason: Season!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }

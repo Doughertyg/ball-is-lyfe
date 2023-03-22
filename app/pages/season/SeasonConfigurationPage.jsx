@@ -8,6 +8,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import dayjs from 'dayjs';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';
+import BannerComponent from '../../components/BannerComponent.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
 import Button from '../../components/Button.jsx';
 import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
@@ -17,7 +18,6 @@ import Card from '../../components/Card.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
 import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
-import SeasonConfigurationPage from '../season/SeasonConfigurationPage.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -45,7 +45,6 @@ const FETCH_SEASON_QUERY = gql`
         }
         seasonStart 
         seasonEnd
-        status
         teams {
           id
           captain {
@@ -162,7 +161,7 @@ const ADD_TEAMS_TO_SEASON_MUTATION = gql`
 `;
 
 /**
- * Home page for season. Logged in user sees stats, games, standings
+ * Home page for configuring a season.
  * 
  *     |*************************************|
  *     | Season Name (i)                     |
@@ -190,7 +189,7 @@ const ADD_TEAMS_TO_SEASON_MUTATION = gql`
  *      `-----------------------------------"
  * 
  */
-const Season = ({match}) => {
+const SeasonConfigurationPage = ({match}) => {
   const [addGamesExpanded, setAddGamesExpanded] = useState(false);
   const [teamsToAdd, setTeamsToAdd] = useState({});
   const [playersToAdd, setPlayersToAdd] = useState({});
@@ -229,18 +228,6 @@ const Season = ({match}) => {
     console.log('season ID null, redirecting home.');
     history.push('/');
   }
-
-  const recentGames = useMemo(() => {
-    return seasonGames?.filter(game => {
-      return dayjs().isSame(game.date) || (dayjs().isAfter(game.date) && dayjs().subtract(1, 'week').isBefore(game.date));
-    }) ?? [];
-  }, [seasonGames]);
-
-  const upcomingGames = useMemo(() => {
-    return seasonGames?.filter(game => {
-      return dayjs().isBefore(game.date); // when you only want to see this week's games: && dayjs().add(1, 'week').isAfter(game.date);
-    }) ?? [];
-  }, [seasonGames]);
 
   const filterTeamSearchResults = (team, searchString) => {
     return team?.name?.includes(searchString);
@@ -402,11 +389,6 @@ const Season = ({match}) => {
     }
   }
 
-  console.log('seasonData.getSeasonByID.season.status:  ', seasonData?.getSeasonByID?.season?.status);
-  if (seasonData?.getSeasonByID?.season?.status === 'CONFIGURATION') {
-    return <SeasonConfigurationPage match={match} />
-  }
-
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
@@ -415,6 +397,7 @@ const Season = ({match}) => {
         </FlexContainer>
       ) : (
         <>
+          <BannerComponent title="Configure your season" subtitle="Only admins can configure a season" />
           <FlexContainer direction="row" justify="space-between">
             <FlexContainer direction="column">
               <PageHeader margin="20px 0 8px 0">{seasonData?.getSeasonByID?.season?.name ?? 'Season name missing'}</PageHeader>
@@ -433,65 +416,6 @@ const Season = ({match}) => {
             {seasonData?.getSeasonByID?.season?.description}
           </BodyText>
           <Divider marginBottom="12px" />
-          <FlexContainer alignItems="center" justify="start">
-            <SectionHeadingText margin="20px 12px 20px 0">Recent Games</SectionHeadingText>
-          </FlexContainer>
-          <FlexContainer justify="flex-start" flexWrap="wrap" width="100%">
-            {recentGames.length > 0 ?
-              recentGames.map((game, idx) => {
-                const date = dayjs(game?.date).format('MMM YYYY');
-                return (
-                  <CompactDetailsCard
-                    details={[
-                      game?.homeTeam?.team?.name,
-                      game?.awayTeam?.team?.name
-                    ]}
-                    picture={game?.homeTeam?.team?.profilePicture}
-                    key={idx}
-                    title={date}
-                    onclose={() => {/* delete game */}}
-                  />
-                )
-            }) : (
-            <FlexContainer justify="flex-start" width="800px">
-              <DetailsText>No recent Games</DetailsText>
-            </FlexContainer>
-            )}
-          </FlexContainer>
-          <FlexContainer alignItems="center" justify="start" overFlow="visible">
-            <SectionHeadingText margin="20px 12px 20px 0">Upcoming Games</SectionHeadingText>
-            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setAddGamesExpanded(!addGamesExpanded)} />}
-          </FlexContainer>
-          {addGamesExpanded && (
-            <AddGamesComponent
-              onCancel={() => setAddGamesExpanded(false)}
-              onComplete={onAddGamesToSeason}
-              seasonID={seasonID}
-              teamsSource={seasonTeams}
-            />)}
-          <FlexContainer justify="flex-start" flexWrap="wrap" width="100%">
-            {upcomingGames.length > 0 ?
-              upcomingGames.map((game, idx) => {
-                const date = `${dayjs(game?.date).format('MMM DD')} at ${dayjs(game?.date).format('h:MM')}`;
-                return (
-                  <CompactDetailsCard
-                    details={[
-                      game?.homeTeam?.team?.name,
-                      game?.awayTeam?.team?.name
-                    ]}
-                    picture={game?.homeTeam?.team?.profilePicture}
-                    key={idx}
-                    title={date}
-                    onclose={() => {/* delete game */}}
-                  />
-                )
-            }) : (
-            <FlexContainer justify="flex-start" width="800px">
-              <DetailsText>No upcoming Games</DetailsText>
-            </FlexContainer>
-            )}
-          </FlexContainer>
-          <Divider marginBottom="10px" />
           <FlexContainer alignItems="center" justify="start" overflow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Teams</SectionHeadingText>
             <CollapsibleSearchField
@@ -545,6 +469,40 @@ const Season = ({match}) => {
             )}
           </FlexContainer>
           <Divider />
+          <FlexContainer alignItems="center" justify="start" overFlow="visible">
+            <SectionHeadingText margin="20px 12px 20px 0">Games</SectionHeadingText>
+            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setAddGamesExpanded(!addGamesExpanded)} />}
+          </FlexContainer>
+          {addGamesExpanded && (
+            <AddGamesComponent
+              onCancel={() => setAddGamesExpanded(false)}
+              onComplete={onAddGamesToSeason}
+              seasonID={seasonID}
+              teamsSource={seasonTeams}
+            />)}
+          <FlexContainer justify="flex-start" flexWrap="wrap" width="100%">
+            {seasonGames.length > 0 ?
+              seasonGames.map((game, idx) => {
+                const date = `${dayjs(game?.date).format('MMM DD')} at ${dayjs(game?.date).format('h:MM')}`;
+                return (
+                  <CompactDetailsCard
+                    details={[
+                      game?.homeTeam?.team?.name,
+                      game?.awayTeam?.team?.name
+                    ]}
+                    picture={game?.homeTeam?.team?.profilePicture}
+                    key={idx}
+                    title={date}
+                    onclose={() => {/* delete game */}}
+                  />
+                )
+            }) : (
+            <FlexContainer justify="flex-start" width="800px">
+              <DetailsText>No games added to season</DetailsText>
+            </FlexContainer>
+            )}
+          </FlexContainer>
+          <Divider marginBottom="10px" />
           <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
             {isLeagueAdmin && leagueID && (
@@ -649,11 +607,10 @@ const Season = ({match}) => {
           <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
           <Divider />
           <SectionHeadingText margin="20px 12px 20px 0">Standings</SectionHeadingText>
-          
         </>
       )}
     </FlexContainer>
   );
 }
 
-export default Season;
+export default SeasonConfigurationPage;

@@ -8,9 +8,10 @@ const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 
 const SeasonStatus = {
-  CONFIGURATION: 'Configuration',
-  INACTIVE: 'Inactive',
-  OPEN: 'Open',
+  CONFIGURATION: 'CONFIGURATION',
+  CONFIRMED: 'CONFIRMED',
+  INACTIVE: 'INACTIVE',
+  ACTIVE: 'ACTIVE',
 }
 
 module.exports = {
@@ -100,8 +101,8 @@ module.exports = {
       }
       
       const season = await Season.findById(seasonID);
-      if (season.status === SeasonStatus.INACTIVE) {
-        throw new ApolloError('Cannot add captains to inactive season');
+      if (season.status !== SeasonStatus.CONFIGURATION) {
+        throw new ApolloError('Cannot add captains to a season that is not currently being configured');
       }
       const players = [...season.players];
       const newCaptains = season.captains.concat(captains.filter(player => !season.captains.includes(player)));
@@ -226,7 +227,28 @@ module.exports = {
       );
       // handle error
       return season;
-    }
+    },
+    async confirmSeason(_, { seasonID }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+      // check that user is admin
+
+      const season = await Season.findById(seasonID);
+      if (season.status === SeasonStatus.CONFIRMED) {
+        throw new ApolloError('Season already confirmed');
+      }
+      if (season.status === SeasonStatus.INACTIVE) {
+        throw new ApolloError('Cannot confirm an inactive season');
+      }
+    },
   },
   Subscription: {
     newSeason: {
