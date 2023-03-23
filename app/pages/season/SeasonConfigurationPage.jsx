@@ -18,6 +18,14 @@ import Card from '../../components/Card.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
 import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
+import BadgeComponent from '../../components/BadgeComponent.jsx';
+
+const SEASON_STATUS_LABELS = {
+  CONFIGURATION: 'Configuration',
+  CONFIRMED: 'Confirmed',
+  INACTIVE: 'Inactive',
+  ACTIVE: 'Active',
+}
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -45,6 +53,7 @@ const FETCH_SEASON_QUERY = gql`
         }
         seasonStart 
         seasonEnd
+        status
         teams {
           id
           captain {
@@ -399,8 +408,13 @@ const SeasonConfigurationPage = ({match}) => {
         <>
           <BannerComponent title="Configure your season" subtitle="Only admins can configure a season" />
           <FlexContainer direction="row" justify="space-between">
-            <FlexContainer direction="column">
-              <PageHeader margin="20px 0 8px 0">{seasonData?.getSeasonByID?.season?.name ?? 'Season name missing'}</PageHeader>
+            <FlexContainer direction="column" width="100%">
+              <FlexContainer alignItems="center" justify="space-between" width="100%">
+                <PageHeader margin="20px 0 8px 0">
+                  {seasonData?.getSeasonByID?.season?.name ?? 'Season name missing'}
+                </PageHeader>
+                <BadgeComponent label={SEASON_STATUS_LABELS[seasonData?.getSeasonByID?.season?.status]} status="DRAFT" />
+              </FlexContainer>
               <DetailsText padding="0 0 4px 0">
                 <SectionHeadingText>{seasonData?.getSeasonByID?.season?.league?.name ?? 'League missing'}</SectionHeadingText>
               </DetailsText>

@@ -402,7 +402,6 @@ const Season = ({match}) => {
     }
   }
 
-  console.log('seasonData.getSeasonByID.season.status:  ', seasonData?.getSeasonByID?.season?.status);
   if (seasonData?.getSeasonByID?.season?.status === 'CONFIGURATION') {
     return <SeasonConfigurationPage match={match} />
   }

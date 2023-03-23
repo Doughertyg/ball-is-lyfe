@@ -8,7 +8,7 @@ import {
 const Wrapper = styled.div`
   background-color: ${props => props.color ?? 'springgreen'};
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
   margin-top: 8px;
   padding: 12px;
 `;
@@ -26,7 +26,7 @@ const BannerComponent = ({ title, subtitle }) => {
         <FlexContainer direction="column" alignItems="center" justify="center">
           {title}
           {subtitle && (
-            <DetailsText>
+            <DetailsText overflow="hidden">
               {subtitle}
             </DetailsText>
           )}
