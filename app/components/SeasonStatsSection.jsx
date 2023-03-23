@@ -106,7 +106,7 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
             onClick={onSelectStat}
             onClose={() => setStatsToAdd({})}
             selected={statsToAdd}
-            source={seasonStats ?? []}
+            source={stats ?? []}
           />)}
       </FlexContainer>
       {createStatExpanded && (

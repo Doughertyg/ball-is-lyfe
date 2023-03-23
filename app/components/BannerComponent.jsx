@@ -6,7 +6,7 @@ import {
 } from '../styled-components/common';
 
 const Wrapper = styled.div`
-  background-color: ${props => props.color ?? 'springgreen'};
+  background-color: ${props => props.color ?? 'cyan'};
   border-radius: 8px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
   margin-top: 8px;
@@ -19,9 +19,9 @@ const Wrapper = styled.div`
  * :            Banner message              :
  *  '--------------------------------------'
  */
-const BannerComponent = ({ title, subtitle }) => {
+const BannerComponent = ({ color, title, subtitle }) => {
   return (
-    <Wrapper>
+    <Wrapper color={color}>
       <FlexContainer justify="center" alignItems="center">
         <FlexContainer direction="column" alignItems="center" justify="center">
           {title}

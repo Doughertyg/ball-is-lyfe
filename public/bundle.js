@@ -4673,7 +4673,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border-radius: 8px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);\n  margin-top: 8px;\n  padding: 12px;\n"])), function (props) {
   var _props$color;
-  return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'springgreen';
+  return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'cyan';
 });
 
 /**
@@ -4683,9 +4683,12 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_tem
  *  '--------------------------------------'
  */
 var BannerComponent = function BannerComponent(_ref) {
-  var title = _ref.title,
+  var color = _ref.color,
+    title = _ref.title,
     subtitle = _ref.subtitle;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
+    color: color
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
     alignItems: "center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
@@ -7778,7 +7781,7 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
       return setStatsToAdd({});
     },
     selected: statsToAdd,
-    source: seasonStats !== null && seasonStats !== void 0 ? seasonStats : []
+    source: stats !== null && stats !== void 0 ? stats : []
   })), createStatExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateStatComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     onCancel: function onCancel() {
       return setCreateStatExpanded(false);
