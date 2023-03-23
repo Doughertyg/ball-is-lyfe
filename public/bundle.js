@@ -10316,7 +10316,7 @@ var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_18__[
  * 
  */
 var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
-  var _match$params, _seasonData$getSeason, _seasonData$getSeason2, _seasonData$getSeason3, _seasonData$getSeason4, _seasonData$getSeason5, _seasonData$getSeason22, _seasonData$getSeason23, _seasonData$getSeason24, _seasonData$getSeason25, _seasonData$getSeason26, _seasonData$getSeason27, _seasonData$getSeason28, _seasonData$getSeason29, _seasonData$getSeason30, _seasonData$getSeason31, _seasonData$getSeason32, _seasonData$getSeason33, _seasonData$getSeason34, _dayjs$format, _seasonData$getSeason35, _seasonData$getSeason36, _dayjs$format2, _seasonData$getSeason37, _seasonData$getSeason38, _seasonData$getSeason39, _seasonData$getSeason40, _seasonData$getTeams, _seasonData$getSeason41, _seasonData$getSeason42, _seasonData$getSeason43, _seasonData$getSeason44, _seasonData$getSeason45, _Object$values$concat, _seasonData$getSeason46, _seasonData$getSeason47, _seasonData$getSeason48, _seasonData$getSeason49, _seasonData$getSeason50;
+  var _match$params, _seasonData$getSeason, _seasonData$getSeason2, _seasonData$getSeason3, _seasonData$getSeason4, _seasonData$getSeason5, _seasonData$getSeason22, _seasonData$getSeason23, _seasonData$getSeason24, _seasonData$getSeason25, _seasonData$getSeason26, _seasonData$getSeason27, _seasonData$getSeason28, _seasonData$getSeason29, _seasonData$getSeason30, _seasonData$getSeason31, _seasonData$getSeason32, _seasonData$getSeason33, _seasonData$getSeason34, _dayjs$format, _seasonData$getSeason35, _seasonData$getSeason36, _dayjs$format2, _seasonData$getSeason37, _seasonData$getSeason38, _seasonData$getSeason39, _seasonData$getSeason40, _seasonData$getSeason41, _seasonData$getSeason42, _seasonData$getSeason43, _seasonData$getSeason44, _seasonData$getSeason45, _Object$values$concat, _seasonData$getSeason46, _seasonData$getSeason47, _seasonData$getSeason48, _seasonData$getSeason49, _seasonData$getSeason50, _seasonData$getTeams;
   var match = _ref.match;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -10591,121 +10591,6 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     marginBottom: "12px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
-    justify: "start",
-    overflow: "visible"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "20px 12px 20px 0"
-  }, "Teams"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    filterResults: filterTeamSearchResults,
-    getResultComponent: getTeamResultsComponent,
-    getRightButton: getCreateTeamButton,
-    label: "Search teams...",
-    loading: loading,
-    onClick: onClickTeamEntry,
-    onClose: function onClose() {
-      return setCreateTeamExpanded(false);
-    },
-    source: (_seasonData$getTeams = seasonData === null || seasonData === void 0 ? void 0 : seasonData.getTeams) !== null && _seasonData$getTeams !== void 0 ? _seasonData$getTeams : []
-  })), createTeamExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CreateTeamComponent_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    onCancel: function onCancel() {
-      return setCreateTeamExpanded(false);
-    },
-    onComplete: onCompleteCreateTeam,
-    seasonID: seasonID
-  }), Object.keys(teamsToAdd).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    flexWrap: "wrap",
-    justify: "start",
-    overflow: "initial",
-    shrink: "0",
-    width: "100%"
-  }, Object.values(teamsToAdd).map(function (team, idx) {
-    var _team$name2, _team$players, _team$team;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
-      key: idx,
-      title: (_team$name2 = team.name) !== null && _team$name2 !== void 0 ? _team$name2 : 'Team name missing',
-      details: team === null || team === void 0 ? void 0 : (_team$players = team.players) === null || _team$players === void 0 ? void 0 : _team$players.map(function (player) {
-        var _ref3, _player$name3;
-        return (_ref3 = (_player$name3 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name3 !== void 0 ? _player$name3 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref3 !== void 0 ? _ref3 : player === null || player === void 0 ? void 0 : player.email;
-      }),
-      picture: team === null || team === void 0 ? void 0 : (_team$team = team.team) === null || _team$team === void 0 ? void 0 : _team$team.profilePicture,
-      onClose: function onClose() {
-        return onClickTeamEntry(team);
-      }
-    });
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    alignItems: "center",
-    direction: "column",
-    marginTop: "8px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "A team added to this season will only include players already in the season."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    marginTop: "12px",
-    width: "100%"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    isDisabled: isAddingTeamsToSeason,
-    label: "Cancel",
-    onClick: function onClick() {
-      return setTeamsToAdd({});
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    isLoading: isAddingTeamsToSeason,
-    label: "Add teams to season",
-    onClick: function onClick() {
-      return addTeamsToSeason();
-    }
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    justify: "flex-start",
-    flexWrap: "wrap"
-  }, seasonTeams.length > 0 && seasonTeams.map(function (team, idx) {
-    var _team$team$name, _team$team2, _team$captain, _team$captain2, _team$players2, _team$team3;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
-      key: "season-teams-".concat(team.id, "-").concat(idx),
-      title: (_team$team$name = team === null || team === void 0 ? void 0 : (_team$team2 = team.team) === null || _team$team2 === void 0 ? void 0 : _team$team2.name) !== null && _team$team$name !== void 0 ? _team$team$name : 'team name missing',
-      subTitle: team !== null && team !== void 0 && (_team$captain = team.captain) !== null && _team$captain !== void 0 && _team$captain.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain2 = team.captain) === null || _team$captain2 === void 0 ? void 0 : _team$captain2.name) : 'No captain assigned',
-      details: team === null || team === void 0 ? void 0 : (_team$players2 = team.players) === null || _team$players2 === void 0 ? void 0 : _team$players2.map(function (player) {
-        var _ref4, _player$name4;
-        return (_ref4 = (_player$name4 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name4 !== void 0 ? _player$name4 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref4 !== void 0 ? _ref4 : player === null || player === void 0 ? void 0 : player.email;
-      }),
-      picture: team === null || team === void 0 ? void 0 : (_team$team3 = team.team) === null || _team$team3 === void 0 ? void 0 : _team$team3.profilePicture
-    });
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    alignItems: "center",
-    justify: "start",
-    overFlow: "visible"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "20px 12px 20px 0"
-  }, "Games"), isLeagueAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    borderRadius: "50%",
-    icon: "plus",
-    onClick: function onClick() {
-      return setAddGamesExpanded(!addGamesExpanded);
-    }
-  })), addGamesExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    onCancel: function onCancel() {
-      return setAddGamesExpanded(false);
-    },
-    onComplete: onAddGamesToSeason,
-    seasonID: seasonID,
-    teamsSource: seasonTeams
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    justify: "flex-start",
-    flexWrap: "wrap",
-    width: "100%"
-  }, seasonGames.length > 0 ? seasonGames.map(function (game, idx) {
-    var _game$homeTeam, _game$homeTeam$team, _game$awayTeam, _game$awayTeam$team, _game$homeTeam2, _game$homeTeam2$team;
-    var date = "".concat(dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('MMM DD'), " at ").concat(dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('h:MM'));
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
-      details: [game === null || game === void 0 ? void 0 : (_game$homeTeam = game.homeTeam) === null || _game$homeTeam === void 0 ? void 0 : (_game$homeTeam$team = _game$homeTeam.team) === null || _game$homeTeam$team === void 0 ? void 0 : _game$homeTeam$team.name, game === null || game === void 0 ? void 0 : (_game$awayTeam = game.awayTeam) === null || _game$awayTeam === void 0 ? void 0 : (_game$awayTeam$team = _game$awayTeam.team) === null || _game$awayTeam$team === void 0 ? void 0 : _game$awayTeam$team.name],
-      picture: game === null || game === void 0 ? void 0 : (_game$homeTeam2 = game.homeTeam) === null || _game$homeTeam2 === void 0 ? void 0 : (_game$homeTeam2$team = _game$homeTeam2.team) === null || _game$homeTeam2$team === void 0 ? void 0 : _game$homeTeam2$team.profilePicture,
-      key: idx,
-      title: date,
-      onclose: function onclose() {/* delete game */}
-    });
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    justify: "flex-start",
-    width: "800px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No games added to season"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
-    marginBottom: "10px"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
-    alignItems: "center",
     flexWrap: "wrap",
     justify: "flex-start",
     overflow: "visible"
@@ -10761,7 +10646,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     shrink: "0",
     width: "100%"
   }, Object.values(captainsToAdd).map(function (player, idx) {
-    var _player$name5;
+    var _player$name3;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card_js__WEBPACK_IMPORTED_MODULE_14__.CardWrapper, {
       boxShadow: "0 0 10px rgba(0, 0, 0, 0.07)",
       key: "captains-".concat(player.id, "-").concat(idx),
@@ -10778,7 +10663,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
       direction: "column"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, {
       marginBottom: "4px"
-    }, (_player$name5 = player.name) !== null && _player$name5 !== void 0 ? _player$name5 : player.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, player.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    }, (_player$name3 = player.name) !== null && _player$name3 !== void 0 ? _player$name3 : player.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, player.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
       icon: "close",
       onClick: function onClick() {
         return onSelectCaptains(player);
@@ -10820,6 +10705,121 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     justify: "flex-start",
     width: "800px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No captains assigned"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
+    marginBottom: "10px"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    alignItems: "center",
+    justify: "start",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
+    margin: "20px 12px 20px 0"
+  }, "Teams"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    filterResults: filterTeamSearchResults,
+    getResultComponent: getTeamResultsComponent,
+    getRightButton: getCreateTeamButton,
+    label: "Search teams...",
+    loading: loading,
+    onClick: onClickTeamEntry,
+    onClose: function onClose() {
+      return setCreateTeamExpanded(false);
+    },
+    source: (_seasonData$getTeams = seasonData === null || seasonData === void 0 ? void 0 : seasonData.getTeams) !== null && _seasonData$getTeams !== void 0 ? _seasonData$getTeams : []
+  })), createTeamExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CreateTeamComponent_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    onCancel: function onCancel() {
+      return setCreateTeamExpanded(false);
+    },
+    onComplete: onCompleteCreateTeam,
+    seasonID: seasonID
+  }), Object.keys(teamsToAdd).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    flexWrap: "wrap",
+    justify: "start",
+    overflow: "initial",
+    shrink: "0",
+    width: "100%"
+  }, Object.values(teamsToAdd).map(function (team, idx) {
+    var _team$name2, _team$players, _team$team;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
+      key: idx,
+      title: (_team$name2 = team.name) !== null && _team$name2 !== void 0 ? _team$name2 : 'Team name missing',
+      details: team === null || team === void 0 ? void 0 : (_team$players = team.players) === null || _team$players === void 0 ? void 0 : _team$players.map(function (player) {
+        var _ref3, _player$name4;
+        return (_ref3 = (_player$name4 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name4 !== void 0 ? _player$name4 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref3 !== void 0 ? _ref3 : player === null || player === void 0 ? void 0 : player.email;
+      }),
+      picture: team === null || team === void 0 ? void 0 : (_team$team = team.team) === null || _team$team === void 0 ? void 0 : _team$team.profilePicture,
+      onClose: function onClose() {
+        return onClickTeamEntry(team);
+      }
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    alignItems: "center",
+    direction: "column",
+    marginTop: "8px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "A team added to this season will only include players already in the season."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    marginTop: "12px",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    isDisabled: isAddingTeamsToSeason,
+    label: "Cancel",
+    onClick: function onClick() {
+      return setTeamsToAdd({});
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    isLoading: isAddingTeamsToSeason,
+    label: "Add teams to season",
+    onClick: function onClick() {
+      return addTeamsToSeason();
+    }
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    justify: "flex-start",
+    flexWrap: "wrap"
+  }, seasonTeams.length > 0 && seasonTeams.map(function (team, idx) {
+    var _team$team$name, _team$team2, _team$captain, _team$captain2, _team$players2, _team$team3;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
+      key: "season-teams-".concat(team.id, "-").concat(idx),
+      title: (_team$team$name = team === null || team === void 0 ? void 0 : (_team$team2 = team.team) === null || _team$team2 === void 0 ? void 0 : _team$team2.name) !== null && _team$team$name !== void 0 ? _team$team$name : 'team name missing',
+      subTitle: team !== null && team !== void 0 && (_team$captain = team.captain) !== null && _team$captain !== void 0 && _team$captain.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain2 = team.captain) === null || _team$captain2 === void 0 ? void 0 : _team$captain2.name) : 'No captain assigned',
+      details: team === null || team === void 0 ? void 0 : (_team$players2 = team.players) === null || _team$players2 === void 0 ? void 0 : _team$players2.map(function (player) {
+        var _ref4, _player$name5;
+        return (_ref4 = (_player$name5 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name5 !== void 0 ? _player$name5 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref4 !== void 0 ? _ref4 : player === null || player === void 0 ? void 0 : player.email;
+      }),
+      picture: team === null || team === void 0 ? void 0 : (_team$team3 = team.team) === null || _team$team3 === void 0 ? void 0 : _team$team3.profilePicture
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    alignItems: "center",
+    justify: "start",
+    overFlow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
+    margin: "20px 12px 20px 0"
+  }, "Games"), isLeagueAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    borderRadius: "50%",
+    icon: "plus",
+    onClick: function onClick() {
+      return setAddGamesExpanded(!addGamesExpanded);
+    }
+  })), addGamesExpanded && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    onCancel: function onCancel() {
+      return setAddGamesExpanded(false);
+    },
+    onComplete: onAddGamesToSeason,
+    seasonID: seasonID,
+    teamsSource: seasonTeams
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    justify: "flex-start",
+    flexWrap: "wrap",
+    width: "100%"
+  }, seasonGames.length > 0 ? seasonGames.map(function (game, idx) {
+    var _game$homeTeam, _game$homeTeam$team, _game$awayTeam, _game$awayTeam$team, _game$homeTeam2, _game$homeTeam2$team;
+    var date = "".concat(dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('MMM DD'), " at ").concat(dayjs__WEBPACK_IMPORTED_MODULE_4___default()(game === null || game === void 0 ? void 0 : game.date).format('h:MM'));
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
+      details: [game === null || game === void 0 ? void 0 : (_game$homeTeam = game.homeTeam) === null || _game$homeTeam === void 0 ? void 0 : (_game$homeTeam$team = _game$homeTeam.team) === null || _game$homeTeam$team === void 0 ? void 0 : _game$homeTeam$team.name, game === null || game === void 0 ? void 0 : (_game$awayTeam = game.awayTeam) === null || _game$awayTeam === void 0 ? void 0 : (_game$awayTeam$team = _game$awayTeam.team) === null || _game$awayTeam$team === void 0 ? void 0 : _game$awayTeam$team.name],
+      picture: game === null || game === void 0 ? void 0 : (_game$homeTeam2 = game.homeTeam) === null || _game$homeTeam2 === void 0 ? void 0 : (_game$homeTeam2$team = _game$homeTeam2.team) === null || _game$homeTeam2$team === void 0 ? void 0 : _game$homeTeam2$team.profilePicture,
+      key: idx,
+      title: date,
+      onclose: function onclose() {/* delete game */}
+    });
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    justify: "flex-start",
+    width: "800px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No games added to season"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
     marginBottom: "10px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SeasonStatsSection_jsx__WEBPACK_IMPORTED_MODULE_16__["default"], {
     isAdmin: isLeagueAdmin,

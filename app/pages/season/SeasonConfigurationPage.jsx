@@ -430,93 +430,6 @@ const SeasonConfigurationPage = ({match}) => {
             {seasonData?.getSeasonByID?.season?.description}
           </BodyText>
           <Divider marginBottom="12px" />
-          <FlexContainer alignItems="center" justify="start" overflow="visible">
-            <SectionHeadingText margin="20px 12px 20px 0">Teams</SectionHeadingText>
-            <CollapsibleSearchField
-              filterResults={filterTeamSearchResults}
-              getResultComponent={getTeamResultsComponent}
-              getRightButton={getCreateTeamButton}
-              label="Search teams..."
-              loading={loading}
-              onClick={onClickTeamEntry}
-              onClose={() => setCreateTeamExpanded(false)}
-              source={seasonData?.getTeams ?? []}
-            />
-          </FlexContainer>
-          {createTeamExpanded && (
-            <CreatetTeamComponent onCancel={() => setCreateTeamExpanded(false)} onComplete={onCompleteCreateTeam} seasonID={seasonID} />
-          )}
-          {Object.keys(teamsToAdd).length > 0 && (
-            <>
-              <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
-                {Object.values(teamsToAdd).map((team, idx) => (
-                  <CompactDetailsCard
-                    key={idx}
-                    title={team.name ?? 'Team name missing'}
-                    details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
-                    picture={team?.team?.profilePicture} 
-                    onClose={() => onClickTeamEntry(team)} />
-                ))}
-              </FlexContainer>
-              <FlexContainer alignItems="center" direction="column" marginTop="8px">
-                <DetailsText>A team added to this season will only include players already in the season.</DetailsText>
-                <FlexContainer marginTop="12px" width="100%">
-                  <Button isDisabled={isAddingTeamsToSeason} label="Cancel" onClick={() => setTeamsToAdd({})} />
-                  <Button isLoading={isAddingTeamsToSeason} label="Add teams to season" onClick={() => addTeamsToSeason()} />
-                </FlexContainer>
-              </FlexContainer>
-            </>
-          )}
-          <FlexContainer justify="flex-start" flexWrap="wrap">
-            {seasonTeams.length > 0 && (
-              seasonTeams.map((team, idx) => {
-                return (
-                  <CompactDetailsCard
-                    key={`season-teams-${team.id}-${idx}`}
-                    title={team?.team?.name ?? 'team name missing'}
-                    subTitle={team?.captain?.name ? `Captain: ${team?.captain?.name }` : 'No captain assigned'}
-                    details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
-                    picture={team?.team?.profilePicture}
-                  />
-                )
-              })
-            )}
-          </FlexContainer>
-          <Divider />
-          <FlexContainer alignItems="center" justify="start" overFlow="visible">
-            <SectionHeadingText margin="20px 12px 20px 0">Games</SectionHeadingText>
-            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setAddGamesExpanded(!addGamesExpanded)} />}
-          </FlexContainer>
-          {addGamesExpanded && (
-            <AddGamesComponent
-              onCancel={() => setAddGamesExpanded(false)}
-              onComplete={onAddGamesToSeason}
-              seasonID={seasonID}
-              teamsSource={seasonTeams}
-            />)}
-          <FlexContainer justify="flex-start" flexWrap="wrap" width="100%">
-            {seasonGames.length > 0 ?
-              seasonGames.map((game, idx) => {
-                const date = `${dayjs(game?.date).format('MMM DD')} at ${dayjs(game?.date).format('h:MM')}`;
-                return (
-                  <CompactDetailsCard
-                    details={[
-                      game?.homeTeam?.team?.name,
-                      game?.awayTeam?.team?.name
-                    ]}
-                    picture={game?.homeTeam?.team?.profilePicture}
-                    key={idx}
-                    title={date}
-                    onclose={() => {/* delete game */}}
-                  />
-                )
-            }) : (
-            <FlexContainer justify="flex-start" width="800px">
-              <DetailsText>No games added to season</DetailsText>
-            </FlexContainer>
-            )}
-          </FlexContainer>
-          <Divider marginBottom="10px" />
           <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
             {isLeagueAdmin && leagueID && (
@@ -616,6 +529,93 @@ const SeasonConfigurationPage = ({match}) => {
                 </FlexContainer>
               )
             }
+          </FlexContainer>
+          <Divider marginBottom="10px" />
+          <FlexContainer alignItems="center" justify="start" overflow="visible">
+            <SectionHeadingText margin="20px 12px 20px 0">Teams</SectionHeadingText>
+            <CollapsibleSearchField
+              filterResults={filterTeamSearchResults}
+              getResultComponent={getTeamResultsComponent}
+              getRightButton={getCreateTeamButton}
+              label="Search teams..."
+              loading={loading}
+              onClick={onClickTeamEntry}
+              onClose={() => setCreateTeamExpanded(false)}
+              source={seasonData?.getTeams ?? []}
+            />
+          </FlexContainer>
+          {createTeamExpanded && (
+            <CreatetTeamComponent onCancel={() => setCreateTeamExpanded(false)} onComplete={onCompleteCreateTeam} seasonID={seasonID} />
+          )}
+          {Object.keys(teamsToAdd).length > 0 && (
+            <>
+              <FlexContainer flexWrap="wrap" justify="start" overflow="initial" shrink="0" width="100%">
+                {Object.values(teamsToAdd).map((team, idx) => (
+                  <CompactDetailsCard
+                    key={idx}
+                    title={team.name ?? 'Team name missing'}
+                    details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
+                    picture={team?.team?.profilePicture} 
+                    onClose={() => onClickTeamEntry(team)} />
+                ))}
+              </FlexContainer>
+              <FlexContainer alignItems="center" direction="column" marginTop="8px">
+                <DetailsText>A team added to this season will only include players already in the season.</DetailsText>
+                <FlexContainer marginTop="12px" width="100%">
+                  <Button isDisabled={isAddingTeamsToSeason} label="Cancel" onClick={() => setTeamsToAdd({})} />
+                  <Button isLoading={isAddingTeamsToSeason} label="Add teams to season" onClick={() => addTeamsToSeason()} />
+                </FlexContainer>
+              </FlexContainer>
+            </>
+          )}
+          <FlexContainer justify="flex-start" flexWrap="wrap">
+            {seasonTeams.length > 0 && (
+              seasonTeams.map((team, idx) => {
+                return (
+                  <CompactDetailsCard
+                    key={`season-teams-${team.id}-${idx}`}
+                    title={team?.team?.name ?? 'team name missing'}
+                    subTitle={team?.captain?.name ? `Captain: ${team?.captain?.name }` : 'No captain assigned'}
+                    details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
+                    picture={team?.team?.profilePicture}
+                  />
+                )
+              })
+            )}
+          </FlexContainer>
+          <Divider />
+          <FlexContainer alignItems="center" justify="start" overFlow="visible">
+            <SectionHeadingText margin="20px 12px 20px 0">Games</SectionHeadingText>
+            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setAddGamesExpanded(!addGamesExpanded)} />}
+          </FlexContainer>
+          {addGamesExpanded && (
+            <AddGamesComponent
+              onCancel={() => setAddGamesExpanded(false)}
+              onComplete={onAddGamesToSeason}
+              seasonID={seasonID}
+              teamsSource={seasonTeams}
+            />)}
+          <FlexContainer justify="flex-start" flexWrap="wrap" width="100%">
+            {seasonGames.length > 0 ?
+              seasonGames.map((game, idx) => {
+                const date = `${dayjs(game?.date).format('MMM DD')} at ${dayjs(game?.date).format('h:MM')}`;
+                return (
+                  <CompactDetailsCard
+                    details={[
+                      game?.homeTeam?.team?.name,
+                      game?.awayTeam?.team?.name
+                    ]}
+                    picture={game?.homeTeam?.team?.profilePicture}
+                    key={idx}
+                    title={date}
+                    onclose={() => {/* delete game */}}
+                  />
+                )
+            }) : (
+            <FlexContainer justify="flex-start" width="800px">
+              <DetailsText>No games added to season</DetailsText>
+            </FlexContainer>
+            )}
           </FlexContainer>
           <Divider marginBottom="10px" />
           <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
