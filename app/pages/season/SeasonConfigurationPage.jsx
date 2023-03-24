@@ -19,6 +19,7 @@ import { CardWrapper } from '../../styled-components/card.js';
 import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
 import BadgeComponent from '../../components/BadgeComponent.jsx';
+import ConfigureGamesComponent from '../../components/ConfigureGamesComponent.jsx';
 
 const SEASON_STATUS_LABELS = {
   CONFIGURATION: 'Configuration',
@@ -617,6 +618,8 @@ const SeasonConfigurationPage = ({match}) => {
             </FlexContainer>
             )}
           </FlexContainer>
+          <Divider marginBottom="10px" />
+          <ConfigureGamesComponent seasonID={seasonID} isLeagueAdmin={isLeagueAdmin} />
           <Divider marginBottom="10px" />
           <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
           <Divider />

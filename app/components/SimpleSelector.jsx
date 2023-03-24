@@ -33,13 +33,14 @@ const ContentWrapper = styled.div`
 
 const SelectorWrapper = styled.div`
   padding-bottom: 4px;
+  flex-grow: ${props => props.grow ?? 'initial'};
 `;
 
 /**
  * Simple Selector Component
  * Show the selected option and a down arrow button
  */
-const SimpleSelector = ({ options, value, onClick }) => {
+const SimpleSelector = ({ options, value, onClick, grow }) => {
   const [expanded, setExpanded] = useState(false);
 
   const onEntryClick = (entry) => {
@@ -48,7 +49,7 @@ const SimpleSelector = ({ options, value, onClick }) => {
   }
 
   return (
-    <SelectorWrapper>
+    <SelectorWrapper grow={grow}>
       <FlexContainer justify="flex-start">
         {value != null ? value : 'Select'}<Clickable onClick={() => setExpanded(true)}>  &#9660;</Clickable>
       </FlexContainer>
