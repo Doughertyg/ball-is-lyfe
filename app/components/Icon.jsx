@@ -5,6 +5,7 @@ import Comment from '../icons/comment.svg';
 import Comments from '../icons/comments.svg';
 import Heart from '../icons/heart.svg';
 import Message from '../icons/message.svg';
+import Pencil from '../icons/pencil.svg'
 import Plus from '../icons/plus.svg'
 import PlusRound from '../icons/plusround.svg';
 import Circle from '../icons/circle.svg';
@@ -29,6 +30,8 @@ function SvgComponent({ icon, ...rest }) {
       return <Comment {...rest} />
     case 'comments':
       return <Comments {...rest} />
+    case 'edit':
+      return <Pencil {...rest} />
     case 'heart':
       return <Heart {...rest} />
     case 'info':

@@ -6,6 +6,18 @@ const seasonSchema = new Schema({
     ref: "User"
   }],
   createdAt: String,
+  gameConfiguration: {
+    scoreStat: {
+      type: Schema.Types.ObjectId,
+      ref: 'Stat'
+    },
+    winCondition: {
+      type: String,
+      enum: ['GREATER', 'LESSER']
+    },
+    periods: Number,
+    periodLength: Number,
+  },
   name: String,
   description: String,
   games: [{

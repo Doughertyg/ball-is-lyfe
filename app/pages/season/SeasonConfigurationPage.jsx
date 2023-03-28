@@ -90,6 +90,14 @@ const FETCH_SEASON_QUERY = gql`
             }
           }
         }
+        gameConfiguration {
+          periods
+          periodLength
+          scoreStat {
+            id
+          }
+          winCondition
+        }
       }
       isLeagueAdmin
     }
@@ -399,6 +407,7 @@ const SeasonConfigurationPage = ({match}) => {
     }
   }
 
+  console.log('seasonData:  ', seasonData);
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
@@ -619,7 +628,7 @@ const SeasonConfigurationPage = ({match}) => {
             )}
           </FlexContainer>
           <Divider marginBottom="10px" />
-          <ConfigureGamesComponent seasonID={seasonID} isLeagueAdmin={isLeagueAdmin} />
+          <ConfigureGamesComponent configuration={seasonData?.getSeasonByID?.season?.gameConfiguration} seasonID={seasonID} isLeagueAdmin={isLeagueAdmin} />
           <Divider marginBottom="10px" />
           <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
           <Divider />

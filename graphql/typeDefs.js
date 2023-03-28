@@ -66,11 +66,22 @@ module.exports = gql`
     INACTIVE
     ACTIVE
   }
+  enum WinConditionEnum {
+    GREATER
+    LESSER
+  }
+  type GameSeasonConfiguration {
+    scoreStat: Stat
+    winCondition: WinConditionEnum
+    periods: Int
+    periodLength: Int
+  }
   type Season {
     id: ID!
     admin: [User]!
     captains: [User]!
     createdAt: String!
+    gameConfiguration: GameSeasonConfiguration
     games: [Game]
     name: String!
     description: String!
