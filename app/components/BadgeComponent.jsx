@@ -5,8 +5,8 @@ import { FlexContainer } from '../styled-components/common';
 const Banner = styled.div`
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  background-color: ${props => props.color ?? 'lightgrey'};
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+  background-color: ${props => props.color ?? 'white'};
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   color: DimGrey;
   height: fit-content;
   margin-right: 8px;

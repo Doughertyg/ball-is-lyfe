@@ -416,7 +416,7 @@ const SeasonConfigurationPage = ({match}) => {
         </FlexContainer>
       ) : (
         <>
-          <BannerComponent title="Configure your season" subtitle="Only admins can configure a season" />
+          <BannerComponent color="orange" title="Configure your season" subtitle="Only admins can configure a season" />
           <FlexContainer direction="row" justify="space-between">
             <FlexContainer direction="column" width="100%">
               <FlexContainer alignItems="center" justify="space-between" width="100%">

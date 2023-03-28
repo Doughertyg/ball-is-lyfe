@@ -4630,9 +4630,9 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Banner = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  background-color: ", ";\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);\n  color: DimGrey;\n  height: fit-content;\n  margin-right: 8px;\n  padding: 4px 12px;\n  width: fit-content\n"])), function (props) {
+var Banner = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 20px;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  background-color: ", ";\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n  color: DimGrey;\n  height: fit-content;\n  margin-right: 8px;\n  padding: 4px 12px;\n  width: fit-content\n"])), function (props) {
   var _props$color;
-  return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'lightgrey';
+  return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'white';
 });
 var StatusIcon = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border-radius: 50%;\n  box-shadow: ", ";\n  height: 8px;\n  margin: 8px;\n  margin-left: 12px;\n  width: 8px;\n"])), function (props) {
   var _props$color2;
@@ -4703,9 +4703,9 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border-radius: 8px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);\n  margin-top: 8px;\n  padding: 12px;\n"])), function (props) {
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: 'white';\n  border-radius: 8px;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  color: ", ";\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);\n  margin-top: 8px;\n  padding: 12px;\n"])), function (props) {
   var _props$color;
-  return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'cyan';
+  return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'black';
 });
 
 /**
@@ -10833,6 +10833,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     width: "800px",
     overflow: "hidden"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    color: "orange",
     title: "Configure your season",
     subtitle: "Only admins can configure a season"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
