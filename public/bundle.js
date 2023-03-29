@@ -4703,9 +4703,15 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: rgba(239, 239, 239, 1);\n  border-radius: 8px;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  color: ", ";\n  margin-top: 8px;\n  padding: 12px;\n"])), function (props) {
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: rgba(239, 239, 239, 1);\n  border-radius: 8px;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  color: ", ";\n  margin-top: ", ";\n  margin-bottom: ", ";\n  padding: 12px;\n"])), function (props) {
   var _props$color;
   return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'black';
+}, function (props) {
+  var _props$marginTop;
+  return (_props$marginTop = props.marginTop) !== null && _props$marginTop !== void 0 ? _props$marginTop : '8px';
+}, function (props) {
+  var _props$marginBottom;
+  return (_props$marginBottom = props.marginBottom) !== null && _props$marginBottom !== void 0 ? _props$marginBottom : '0';
 });
 
 /**
@@ -4717,9 +4723,13 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_tem
 var BannerComponent = function BannerComponent(_ref) {
   var color = _ref.color,
     title = _ref.title,
-    subtitle = _ref.subtitle;
+    subtitle = _ref.subtitle,
+    marginBottom = _ref.marginBottom,
+    marginTop = _ref.marginTop;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
-    color: color
+    color: color,
+    marginBottom: marginBottom,
+    marginTop: marginTop
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
     alignItems: "center"
@@ -5080,8 +5090,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CollapsibleSearchField.jsx */ "./app/components/CollapsibleSearchField.jsx");
 /* harmony import */ var _CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
@@ -5089,10 +5099,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
 /* harmony import */ var _SearchField_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SearchField.jsx */ "./app/components/SearchField.jsx");
 /* harmony import */ var _SimpleSelector_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./SimpleSelector.jsx */ "./app/components/SimpleSelector.jsx");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
 /* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
 /* harmony import */ var _Icon_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Icon.jsx */ "./app/components/Icon.jsx");
+/* harmony import */ var _BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./BannerComponent.jsx */ "./app/components/BannerComponent.jsx");
 var _templateObject, _templateObject2, _templateObject3;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5101,6 +5112,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
 
 
 
@@ -5124,9 +5136,9 @@ var OPTIONS = [{
   description: 'The team with a lower score wins',
   value: 'LESSER'
 }];
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_10__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
-var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      description\n      id\n      name\n    }\n  }\n"])));
-var CONFIGURE_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_11__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation configureSeason(\n    $periods: Int!,\n    $periodLength: Int!,\n    $scoreStat: ID!,\n    $seasonID: ID!,\n    $winCondition: WinConditionEnum!\n  ) {\n    configureSeason(\n      input: {\n        periods: $periods,\n        periodLength: $periodLength,\n        scoreStat: $scoreStat,\n        seasonID: $seasonID,\n        winCondition: $winCondition\n      }\n    ) {\n      id\n      name\n      gameConfiguration {\n        periods\n        periodLength\n        scoreStat {\n          id\n          name\n        }\n        winCondition\n      }\n    }\n  }\n"])));
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_11__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      description\n      id\n      name\n    }\n  }\n"])));
+var CONFIGURE_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation configureSeason(\n    $periods: Int!,\n    $periodLength: Int!,\n    $scoreStat: ID!,\n    $seasonID: ID!,\n    $winCondition: WinConditionEnum!\n  ) {\n    configureSeason(\n      input: {\n        periods: $periods,\n        periodLength: $periodLength,\n        scoreStat: $scoreStat,\n        seasonID: $seasonID,\n        winCondition: $winCondition\n      }\n    ) {\n      id\n      name\n      gameConfiguration {\n        periods\n        periodLength\n        scoreStat {\n          id\n          name\n        }\n        winCondition\n      }\n    }\n  }\n"])));
 
 /**
  * Component for configuring games during season configuration
@@ -5182,7 +5194,11 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
     _useState10 = _slicedToArray(_useState9, 2),
     configureGames = _useState10[0],
     setConfigureGames = _useState10[1];
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useQuery)(SEASON_STATS_QUERY, {
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState12 = _slicedToArray(_useState11, 2),
+    mutationError = _useState12[0],
+    setMutationError = _useState12[1];
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useQuery)(SEASON_STATS_QUERY, {
       variables: {
         seasonID: seasonID
       }
@@ -5196,7 +5212,7 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
     setScoreStat(configuration === null || configuration === void 0 ? void 0 : configuration.scoreStat);
     setOperator((configuration === null || configuration === void 0 ? void 0 : configuration.winCondition) === 'GREATER' ? OPTIONS[0] : OPTIONS[1]);
   }, [configuration === null || configuration === void 0 ? void 0 : configuration.periods, configuration === null || configuration === void 0 ? void 0 : configuration.periodLength, configuration === null || configuration === void 0 ? void 0 : configuration.scoreStat, configuration === null || configuration === void 0 ? void 0 : configuration.winCondition]);
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_13__.useMutation)(CONFIGURE_SEASON_MUTATION, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_14__.useMutation)(CONFIGURE_SEASON_MUTATION, {
       onCompleted: function onCompleted(res) {
         setConfigureGames(false);
         setScoreStat(null);
@@ -5205,6 +5221,8 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
         _onCompleted === null || _onCompleted === void 0 ? void 0 : _onCompleted(res === null || res === void 0 ? void 0 : res.configureSeason);
       },
       onError: function onError(error) {
+        var _ref2, _error$clientErrors$, _error$clientErrors, _error$clientErrors$2;
+        setMutationError((_ref2 = (_error$clientErrors$ = error === null || error === void 0 ? void 0 : (_error$clientErrors = error.clientErrors) === null || _error$clientErrors === void 0 ? void 0 : (_error$clientErrors$2 = _error$clientErrors[0]) === null || _error$clientErrors$2 === void 0 ? void 0 : _error$clientErrors$2.message) !== null && _error$clientErrors$ !== void 0 ? _error$clientErrors$ : error === null || error === void 0 ? void 0 : error.message) !== null && _ref2 !== void 0 ? _ref2 : 'There was an error processing your request. Please try again.');
         console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
       }
     }),
@@ -5213,6 +5231,7 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
     isSubmitting = _useMutation2[1].isSubmitting;
   var onSubmit = function onSubmit() {
     if (scoreStat != null) {
+      setMutationError(null);
       configureSeason({
         variables: {
           periods: Number(periods),
@@ -5239,7 +5258,13 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
     onClick: function onClick() {
       return setConfigureGames(!configureGames);
     }
-  })), configureGames && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
+  })), configureGames && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, mutationError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    color: "red",
+    title: "There has been an error",
+    subtitle: mutationError,
+    marginTop: "0",
+    marginBottom: "8px"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0 0 8px 0"
   }, "Configure Games"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     marginBottom: "10px",

@@ -12,6 +12,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { concatAST } from 'graphql';
 import Button from './Button.jsx';
 import Icon from './Icon.jsx';
+import BannerComponent from './BannerComponent.jsx';
 
 const OPTIONS = [
   {
@@ -107,6 +108,7 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, se
   const [periods, setPeriods] = useState(configuration?.periods ?? 0);
   const [periodLength, setPeriodLength] = useState(configuration?.periodLength ?? 0);
   const [configureGames, setConfigureGames] = useState(false);
+  const [mutationError, setMutationError] = useState(null);
   const { loading, data, error } = useQuery(SEASON_STATS_QUERY, {
     variables: { seasonID }
   });
@@ -127,12 +129,14 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, se
       onCompleted?.(res?.configureSeason);
     },
     onError: error => {
+      setMutationError(error?.clientErrors?.[0]?.message ?? error?.message ?? 'There was an error processing your request. Please try again.');
       console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
     }
   });
 
   const onSubmit = () => {
     if (scoreStat != null) {
+      setMutationError(null);
       configureSeason({
         variables: {
           periods: Number(periods),
@@ -164,6 +168,7 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, se
       </FlexContainer>
       {configureGames && (
         <Wrapper>
+          {mutationError && <BannerComponent color="red" title="There has been an error" subtitle={mutationError} marginTop="0" marginBottom="8px" />}
           <PageHeader margin="0 0 8px 0">Configure Games</PageHeader>
           <Divider marginBottom="10px" marginTop="0" />
           <SectionHeadingText margin="0 0 4px 0">Stat for complete team score</SectionHeadingText>
