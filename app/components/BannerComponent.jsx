@@ -6,11 +6,10 @@ import {
 } from '../styled-components/common';
 
 const Wrapper = styled.div`
-  background-color: 'white';
+  background-color: rgba(239, 239, 239, 1);
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: ${props => props.color ?? 'black'};
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
   margin-top: 8px;
   padding: 12px;
 `;
