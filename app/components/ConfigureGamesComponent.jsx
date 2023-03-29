@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
@@ -8,7 +8,7 @@ import CreateStatComponent from './CreateStatComponent.jsx';
 import InputField from './InputField.jsx';
 import SearchField from './SearchField.jsx';
 import SimpleSelector from './SimpleSelector.jsx';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { concatAST } from 'graphql';
 import Button from './Button.jsx';
 import Icon from './Icon.jsx';
@@ -37,7 +37,40 @@ const SEASON_STATS_QUERY = gql`
   query($seasonID: ID!) {
     getStats(seasonID: $seasonID) {
       description
+      id
       name
+    }
+  }
+`;
+
+const CONFIGURE_SEASON_MUTATION = gql`
+  mutation configureSeason(
+    $periods: Int!,
+    $periodLength: Int!,
+    $scoreStat: ID!,
+    $seasonID: ID!,
+    $winCondition: WinConditionEnum!
+  ) {
+    configureSeason(
+      input: {
+        periods: $periods,
+        periodLength: $periodLength,
+        scoreStat: $scoreStat,
+        seasonID: $seasonID,
+        winCondition: $winCondition
+      }
+    ) {
+      id
+      name
+      gameConfiguration {
+        periods
+        periodLength
+        scoreStat {
+          id
+          name
+        }
+        winCondition
+      }
     }
   }
 `;
@@ -68,7 +101,7 @@ const SEASON_STATS_QUERY = gql`
  * }
  * 
  */
-const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, seasonID }) => {
+const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, seasonID }) => {
   const [operator, setOperator] = useState( configuration?.winCondition === 'GREATER' ? OPTIONS[0] : OPTIONS[1]);
   const [scoreStat, setScoreStat] = useState(configuration?.scoreStat != null ? {name: configuration?.scoreStat?.name} : undefined);
   const [periods, setPeriods] = useState(configuration?.periods ?? 0);
@@ -78,12 +111,38 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, seasonID }) => 
     variables: { seasonID }
   });
 
-  const onSelectStat = () => {
-    // do something
-  }
+  useEffect(() => {
+    setPeriods(configuration?.periods);
+    setPeriodLength(configuration?.periodLength);
+    setScoreStat(configuration?.scoreStat);
+    setOperator(configuration?.winCondition === 'GREATER' ? OPTIONS[0] : OPTIONS[1]);
+  }, [configuration?.periods, configuration?.periodLength, configuration?.scoreStat, configuration?.winCondition])
 
-  const onCreateStat = () => {
-    // do something
+  const [configureSeason, {isSubmitting}] = useMutation(CONFIGURE_SEASON_MUTATION, {
+    onCompleted: res => {
+      setConfigureGames(false);
+      setScoreStat(null);
+      setPeriods(0);
+      setPeriodLength(0);
+      onCompleted?.(res?.configureSeason);
+    },
+    onError: error => {
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
+    }
+  });
+
+  const onSubmit = () => {
+    if (scoreStat != null) {
+      configureSeason({
+        variables: {
+          periods: Number(periods),
+          periodLength: Number(periodLength),
+          scoreStat: scoreStat?.id,
+          winCondition: operator?.value,
+          seasonID,
+        }
+      });
+    }
   }
 
   const filterStatsResults = (entry, input) => {
@@ -111,6 +170,7 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, seasonID }) => 
           <DetailsText marginBottom="8px">Select the stat for tabulating complete team score</DetailsText>
           <SearchField
             filterResults={filterStatsResults}
+            isDisabled={isSubmitting} 
             label="Search for stats..."
             loading={loading}
             onClick={(stat) => setScoreStat(stat)}
@@ -127,19 +187,19 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, seasonID }) => 
           </FlexContainer>
           <FlexContainer marginTop="8px" justify="flex-start" overflow="visible">
             <SectionHeadingText margin="0 8px 0 0">Win condition:</SectionHeadingText>
-            <SimpleSelector grow={1} onClick={(entry) => setOperator(entry)} options={OPTIONS} value={operator.name} />
+            <SimpleSelector grow={1} onClick={(entry) => setOperator(entry)} options={OPTIONS} value={operator?.name} />
           </FlexContainer>
           <Divider marginTop="7px" marginBottom="10px" />
           <SectionHeadingText margin="0 0 4px 0">Periods</SectionHeadingText>
           <DetailsText marginBottom="8px">Set the number of periods in a game</DetailsText>
-          <InputField onChange={(e) => setPeriods(e)} type="number" value={periods} />
+          <InputField isDisabled={isSubmitting} onChange={(e) => setPeriods(e)} type="number" value={periods} />
           <SectionHeadingText margin="8px 0 4px 0">Period length</SectionHeadingText>
           <DetailsText marginBottom="8px">Set the length of periods in minutes</DetailsText>
-          <InputField onChange={(e) => setPeriodLength(e)} type="number" value={periodLength} />
+          <InputField isDisabled={isSubmitting} onChange={(e) => setPeriodLength(e)} type="number" value={periodLength} />
           <Divider marginTop="10px" marginBottom="10px" />
           <FlexContainer>
-            <Button label="Cancel" onClick={() => setConfigureGames(false)} />
-            <Button label="Submit" onClick={() => {}} />
+            <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setConfigureGames(false)} />
+            <Button isDisabled={scoreStat == null || isSubmitting} label="Submit" onClick={onSubmit} />
           </FlexContainer>
         </Wrapper>
       )}

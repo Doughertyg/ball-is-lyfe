@@ -250,6 +250,13 @@ module.exports = gql`
     players: [ID]!
     seasonStart: String!
   }
+  input ConfigureSeasonInput {
+    seasonID: ID!
+    scoreStat: ID!
+    winCondition: WinConditionEnum!
+    periods: Int!
+    periodLength: Int!
+  }
   input GamesToAddInput {
     awayScore: Int
     awayTeam: ID!
@@ -278,6 +285,7 @@ module.exports = gql`
     loginUser(token: String!): User!
     createPost(body: String!): Post!
     deletePost(postId: String!): String!
+    configureSeason(input: ConfigureSeasonInput): Season!
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
     createSeason(seasonInput: CreateSeasonInput): Season!

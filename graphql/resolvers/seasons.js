@@ -48,6 +48,7 @@ module.exports = {
           .populate('league')
           .populate('players')
           .populate('captains')
+          .populate('gameConfiguration.scoreStat')
           .populate({
             path: 'games',
             populate: [{
@@ -227,6 +228,38 @@ module.exports = {
       );
       // handle error
       return season;
+    },
+    async configureSeason(_, { input: { seasonID, periods, periodLength, scoreStat, winCondition }}, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const season = await Season.findById(seasonID);
+      if (season == null) {
+        throw new ApolloError('Season is unexpectedly null');
+      }
+      if (season.status === SeasonStatus.ACTIVE) {
+        throw new ApolloError('Cannot configure an active season.');
+      }
+      if (season.status !== SeasonStatus.CONFIGURATION) {
+        throw new ApolloError('Cannot configure a season that is not in the configuration stage.');
+      }
+
+      season.gameConfiguration = {
+        periods,
+        periodLength,
+        scoreStat,
+        winCondition,
+      }
+
+      return await season.save().then(szn => szn.populate('gameConfiguration.scoreStat').execPopulate());
     },
     async confirmSeason(_, { seasonID }, context) {
       const authHeader = context.req.headers.authorization;

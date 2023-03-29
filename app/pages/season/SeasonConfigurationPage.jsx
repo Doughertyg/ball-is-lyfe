@@ -95,6 +95,7 @@ const FETCH_SEASON_QUERY = gql`
           periodLength
           scoreStat {
             id
+            name
           }
           winCondition
         }
@@ -215,6 +216,7 @@ const SeasonConfigurationPage = ({match}) => {
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const [seasonTeams, setSeasonTeams] = useState([]);
   const [seasonGames, setSeasonGames] = useState([]);
+  const [gameConfiguration, setGameConfiguration] = useState({});
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -239,6 +241,12 @@ const SeasonConfigurationPage = ({match}) => {
   useEffect(() => {
     if (seasonData != null && seasonData?.getSeasonByID?.season?.games != null) {
       setSeasonGames(seasonData?.getSeasonByID?.season?.games);
+    }
+  }, [seasonData]);
+
+  useEffect(() => {
+    if (seasonData != null && seasonData?.getSeasonByID?.season?.gameConfiguration != null) {
+      setGameConfiguration(seasonData?.getSeasonByID?.season?.gameConfiguration);
     }
   }, [seasonData]);
 
@@ -628,7 +636,11 @@ const SeasonConfigurationPage = ({match}) => {
             )}
           </FlexContainer>
           <Divider marginBottom="10px" />
-          <ConfigureGamesComponent configuration={seasonData?.getSeasonByID?.season?.gameConfiguration} seasonID={seasonID} isLeagueAdmin={isLeagueAdmin} />
+          <ConfigureGamesComponent
+            configuration={gameConfiguration}
+            onCompleted={(res) => setGameConfiguration(res?.gameConfiguration)}
+            seasonID={seasonID}
+            isLeagueAdmin={isLeagueAdmin}/>
           <Divider marginBottom="10px" />
           <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
           <Divider />
