@@ -8114,7 +8114,7 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
     overflow: "visible"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "20px 12px 20px 0"
-  }, "Stat Leaders"), isAdmin && seasonID && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, "Stats"), isAdmin && seasonID && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CollapsibleSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     filterResults: filterStatsResults,
     getRightButton: getCreateStatButton,
     label: "Search for stats...",
@@ -11199,9 +11199,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SeasonStatsSection_jsx__WEBPACK_IMPORTED_MODULE_16__["default"], {
     isAdmin: isLeagueAdmin,
     seasonID: seasonID
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, {
-    margin: "20px 12px 20px 0"
-  }, "Standings")));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null)));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonConfigurationPage);
 

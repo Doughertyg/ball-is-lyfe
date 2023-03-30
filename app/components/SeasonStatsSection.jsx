@@ -96,7 +96,7 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
   return (
     <>
       <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
-        <SectionHeadingText margin="20px 12px 20px 0">Stat Leaders</SectionHeadingText>
+        <SectionHeadingText margin="20px 12px 20px 0">Stats</SectionHeadingText>
         {isAdmin && seasonID && (
           <CollapsibleSearchField
             filterResults={filterStatsResults}
