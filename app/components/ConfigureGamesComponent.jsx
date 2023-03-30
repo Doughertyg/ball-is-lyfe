@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
-import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
+import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
 import CreateStatComponent from './CreateStatComponent.jsx';
@@ -39,7 +39,11 @@ const SEASON_STATS_QUERY = gql`
     getStats(seasonID: $seasonID) {
       description
       id
+      isPerGame
       name
+      operation {
+        expression
+      }
     }
   }
 `;
@@ -97,6 +101,9 @@ const CONFIGURE_SEASON_MUTATION = gql`
  *   periodLength
  *   scoreStat {
  *     name
+ *     operation {
+ *       expression
+ *     }
  *   }
  *   winCondition
  * }
@@ -158,7 +165,29 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, se
     `Win condition: ${configuration?.winCondition ?? 'Not set'}`,
     `Periods: ${configuration?.periods ?? 'Not set'}`,
     `Period length: ${configuration?.periodLength ?? 'Not set'}`
-  ]
+  ];
+
+  const getResultsComponent = (entry) => (
+    <FlexContainer direction="column">
+      <FlexContainer alignItems="center" justify="flex-start">
+        <BodyText width="fit-content">
+          {entry.name ?? entry.username ?? 'Name missing'}
+        </BodyText>
+        {entry.isPerGame && <SectionHeadingText margin="0 0 0 4px">
+          <DetailsText>
+            (Per game)
+          </DetailsText>
+        </SectionHeadingText>}
+      </FlexContainer>
+      <DetailsText flexGrow="1" margin="4px 0 0 0">
+        {entry?.operation?.expression ?? JSON.stringify(entry.operation)}
+      </DetailsText>
+    </FlexContainer>
+  );
+
+  if (error != null) {
+    console.log('error querying stats:  ', error);
+  }
 
   return (
     <>
@@ -175,16 +204,18 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, se
           <DetailsText marginBottom="8px">Select the stat for tabulating complete team score</DetailsText>
           <SearchField
             filterResults={filterStatsResults}
+            getResultComponent={getResultsComponent}
             isDisabled={isSubmitting} 
             label="Search for stats..."
             loading={loading}
             onClick={(stat) => setScoreStat(stat)}
-            selected={scoreStat}
             source={data?.getStats ?? []}
           />
           <FlexContainer flexWrap="wrap" justify="flex-start">
             {scoreStat != null && 
               <CompactDetailsCard
+                details={scoreStat.isPerGame ? ['Per game'] : null}
+                subTitle={scoreStat.operation?.expression}
                 title={scoreStat.name}
                 onClose={() => setScoreStat(null)}
               />

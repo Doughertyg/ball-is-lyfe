@@ -5137,7 +5137,7 @@ var OPTIONS = [{
   value: 'LESSER'
 }];
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_11__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
-var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      description\n      id\n      name\n    }\n  }\n"])));
+var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      description\n      id\n      isPerGame\n      name\n      operation {\n        expression\n      }\n    }\n  }\n"])));
 var CONFIGURE_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation configureSeason(\n    $periods: Int!,\n    $periodLength: Int!,\n    $scoreStat: ID!,\n    $seasonID: ID!,\n    $winCondition: WinConditionEnum!\n  ) {\n    configureSeason(\n      input: {\n        periods: $periods,\n        periodLength: $periodLength,\n        scoreStat: $scoreStat,\n        seasonID: $seasonID,\n        winCondition: $winCondition\n      }\n    ) {\n      id\n      name\n      gameConfiguration {\n        periods\n        periodLength\n        scoreStat {\n          id\n          name\n        }\n        winCondition\n      }\n    }\n  }\n"])));
 
 /**
@@ -5161,13 +5161,16 @@ var CONFIGURE_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["de
  *   periodLength
  *   scoreStat {
  *     name
+ *     operation {
+ *       expression
+ *     }
  *   }
  *   winCondition
  * }
  * 
  */
 var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
-  var _configuration$scoreS, _configuration$period, _configuration$period2, _configuration$scoreS2, _configuration$scoreS3, _configuration$winCon, _configuration$period3, _configuration$period4, _data$getStats;
+  var _configuration$scoreS, _configuration$period, _configuration$period2, _configuration$scoreS2, _configuration$scoreS3, _configuration$winCon, _configuration$period3, _configuration$period4, _data$getStats, _scoreStat$operation;
   var configuration = _ref.configuration,
     isLeagueAdmin = _ref.isLeagueAdmin,
     _onCompleted = _ref.onCompleted,
@@ -5248,6 +5251,25 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
     return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.toLowerCase().includes(input);
   };
   var configurationDetails = ["Score stat: ".concat((_configuration$scoreS2 = configuration === null || configuration === void 0 ? void 0 : (_configuration$scoreS3 = configuration.scoreStat) === null || _configuration$scoreS3 === void 0 ? void 0 : _configuration$scoreS3.name) !== null && _configuration$scoreS2 !== void 0 ? _configuration$scoreS2 : 'Not set'), "Win condition: ".concat((_configuration$winCon = configuration === null || configuration === void 0 ? void 0 : configuration.winCondition) !== null && _configuration$winCon !== void 0 ? _configuration$winCon : 'Not set'), "Periods: ".concat((_configuration$period3 = configuration === null || configuration === void 0 ? void 0 : configuration.periods) !== null && _configuration$period3 !== void 0 ? _configuration$period3 : 'Not set'), "Period length: ".concat((_configuration$period4 = configuration === null || configuration === void 0 ? void 0 : configuration.periodLength) !== null && _configuration$period4 !== void 0 ? _configuration$period4 : 'Not set')];
+  var getResultsComponent = function getResultsComponent(entry) {
+    var _ref3, _entry$name2, _entry$operation$expr, _entry$operation;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      direction: "column"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+      alignItems: "center",
+      justify: "flex-start"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.BodyText, {
+      width: "fit-content"
+    }, (_ref3 = (_entry$name2 = entry.name) !== null && _entry$name2 !== void 0 ? _entry$name2 : entry.username) !== null && _ref3 !== void 0 ? _ref3 : 'Name missing'), entry.isPerGame && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
+      margin: "0 0 0 4px"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, "(Per game)"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
+      flexGrow: "1",
+      margin: "4px 0 0 0"
+    }, (_entry$operation$expr = entry === null || entry === void 0 ? void 0 : (_entry$operation = entry.operation) === null || _entry$operation === void 0 ? void 0 : _entry$operation.expression) !== null && _entry$operation$expr !== void 0 ? _entry$operation$expr : JSON.stringify(entry.operation)));
+  };
+  if (error != null) {
+    console.log('error querying stats:  ', error);
+  }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     alignItems: "center",
     justify: "flex-start",
@@ -5275,18 +5297,20 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
     marginBottom: "8px"
   }, "Select the stat for tabulating complete team score"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
     filterResults: filterStatsResults,
+    getResultComponent: getResultsComponent,
     isDisabled: isSubmitting,
     label: "Search for stats...",
     loading: loading,
     onClick: function onClick(stat) {
       return setScoreStat(stat);
     },
-    selected: scoreStat,
     source: (_data$getStats = data === null || data === void 0 ? void 0 : data.getStats) !== null && _data$getStats !== void 0 ? _data$getStats : []
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     flexWrap: "wrap",
     justify: "flex-start"
   }, scoreStat != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    details: scoreStat.isPerGame ? ['Per game'] : null,
+    subTitle: (_scoreStat$operation = scoreStat.operation) === null || _scoreStat$operation === void 0 ? void 0 : _scoreStat$operation.expression,
     title: scoreStat.name,
     onClose: function onClose() {
       return setScoreStat(null);
@@ -10611,7 +10635,7 @@ var SEASON_STATUS_LABELS = {
   INACTIVE: 'Inactive',
   ACTIVE: 'Active'
 };
-var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n          }\n          winCondition\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
+var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n            operation {\n              expression\n            }\n          }\n          winCondition\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
 var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
@@ -10892,7 +10916,6 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
       setSeasonGames(season === null || season === void 0 ? void 0 : (_season$addGamesToSea2 = season.addGamesToSeason) === null || _season$addGamesToSea2 === void 0 ? void 0 : _season$addGamesToSea2.games);
     }
   };
-  console.log('seasonData:  ', seasonData);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
     justify: "flex-start",

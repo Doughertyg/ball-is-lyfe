@@ -43,7 +43,49 @@ module.exports = {
   Query: {
     async getStats(_, {seasonID}) {
       if (seasonID != null) {
-        const season = await Season.findById(seasonID).populate('stats');
+        const season = await Season.findById(seasonID)
+          .populate({
+            path: 'stats',
+            populate: {
+              path: 'operation',
+              populate: [{
+                path: 'metricA',
+                populate: [{
+                  path: 'metricA',
+                  populate: [{
+                    path: 'metricA'
+                  }, {
+                    path: 'metricB'
+                  }]
+                }, {
+                  path: 'metricB',
+                  populate: [{
+                    path: 'metricA'
+                  }, {
+                    path: 'metricB'
+                  }]
+                }]
+              }, {
+                path: 'metricB',
+                populate: [{
+                  path: 'metricA',
+                  populate: [{
+                    path: 'metricA'
+                  }, {
+                    path: 'metricB'
+                  }]
+                }, {
+                  path: 'metricB',
+                  populate: [{
+                    path: 'metricA'
+                  }, {
+                    path: 'metricB'
+                  }]
+                }]
+              }]
+            }
+          });
+
         return season?.stats ?? [];
       }
 

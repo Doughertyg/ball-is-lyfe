@@ -96,6 +96,9 @@ const FETCH_SEASON_QUERY = gql`
           scoreStat {
             id
             name
+            operation {
+              expression
+            }
           }
           winCondition
         }
@@ -415,7 +418,6 @@ const SeasonConfigurationPage = ({match}) => {
     }
   }
 
-  console.log('seasonData:  ', seasonData);
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
