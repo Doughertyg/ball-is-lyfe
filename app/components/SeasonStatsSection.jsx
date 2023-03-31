@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
-import { FlexContainer, SectionHeadingText } from '../styled-components/common';
+import { DetailsText, Divider, FlexContainer, SectionHeadingText } from '../styled-components/common';
+import BannerComponent from './BannerComponent.jsx';
 import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';
 import CompactDetailsCard from './CompactDetailsCard.jsx';
@@ -26,7 +27,11 @@ const STAT_TYPES = {
 const SEASON_STATS_QUERY = gql`
   query($seasonID: ID!) {
     getStats(seasonID: $seasonID) {
+      id
       name
+      operation {
+        expression
+      }
     }
   }
 `;
@@ -68,11 +73,17 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
   }
 
   const filterStatsResults = (entry, input) => {
-    return entry?.name?.includes(input);
+    return entry?.name?.toLowerCase()?.includes(input);
   }
 
-  const onSelectStat = () => {
-    // select stat
+  const onSelectStat = (stat) => {
+    const newStatsToAdd = {...statsToAdd};
+    if (newStatsToAdd[stat.id]) {
+      delete newStatsToAdd[stat.id];
+    } else {
+      newStatsToAdd[stat.id] = stat;
+    }
+    setStatsToAdd(newStatsToAdd);
   }
 
   const getCreateStatButton = () => (
@@ -118,11 +129,35 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
             <CompactDetailsCard
               key={idx}
               title={seasonStat.name}
+              subTitle={seasonStat.operation.expression}
             />
           ))
         )}
       </FlexContainer>
-    </>
+      {Object.keys(statsToAdd).length > 0 && (
+        <>
+          <SectionHeadingText margin="20px 12px 20px 0">Stats to add</SectionHeadingText>
+          <FlexContainer flexWrap="wrap" justify="flex-start">
+            {Object.values(statsToAdd).map((stat, idx) => (
+              <CompactDetailsCard
+                key={idx}
+                onClose={() => {
+                  const newStatsToAdd = {...statsToAdd};
+                  delete newStatsToAdd[stat.id];
+                  setStatsToAdd(newStatsToAdd);
+                }}
+                title={stat.name}
+                subTitle={stat?.operation?.expression}
+              />
+            ))}
+          </FlexContainer>
+        </>)}
+        <Divider />
+        <BannerComponent color="dimgrey" marginTop="10px" title="Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active." />
+        <FlexContainer justify="flex-end" marginTop="8px">
+          <Button isLoading={false} label="Confirm season" loading="isSubmitting" margin="4px" marginTop="4px" onClick={() => {/* confirm season */}} />
+        </FlexContainer>
+      </>
   )
 }
 
