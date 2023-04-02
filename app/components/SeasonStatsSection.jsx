@@ -152,11 +152,6 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
             ))}
           </FlexContainer>
         </>)}
-        <Divider />
-        <BannerComponent color="dimgrey" marginTop="10px" title="Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active." />
-        <FlexContainer justify="flex-end" marginTop="8px">
-          <Button isLoading={false} label="Confirm season" loading="isSubmitting" margin="4px" marginTop="4px" onClick={() => {/* confirm season */}} />
-        </FlexContainer>
       </>
   )
 }

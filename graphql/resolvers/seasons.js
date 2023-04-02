@@ -272,15 +272,22 @@ module.exports = {
       if (user == null) {
         throw new AuthenticationError('User not authenticated');
       }
-      // check that user is admin
+      console.log('user: ', user);
 
-      const season = await Season.findById(seasonID);
+      const season = await Season.findById(seasonID).populate('league');
+      const isLeagueAdmin = season?.league?.admins?.includes(user.id) ?? false;
+      if (!isLeagueAdmin) {
+        throw new ApolloError('User is not authorized to confirm the season. Only admins can confirm seasons');
+      }
       if (season.status === SeasonStatus.CONFIRMED) {
         throw new ApolloError('Season already confirmed');
       }
       if (season.status === SeasonStatus.INACTIVE) {
         throw new ApolloError('Cannot confirm an inactive season');
       }
+
+      season.status = SeasonStatus.CONFIRMED;
+      return await season.save();
     },
   },
   Subscription: {

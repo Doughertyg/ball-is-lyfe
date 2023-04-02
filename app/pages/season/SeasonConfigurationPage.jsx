@@ -182,6 +182,16 @@ const ADD_TEAMS_TO_SEASON_MUTATION = gql`
   }
 `;
 
+const CONFIRM_SEASON = gql`
+  mutation confirmSeason($seasonID: ID!) {
+    confirmSeason(seasonID: $seasonID) {
+      id
+      name
+      status
+    }
+  }
+`;
+
 /**
  * Home page for configuring a season.
  * 
@@ -220,6 +230,7 @@ const SeasonConfigurationPage = ({match}) => {
   const [seasonTeams, setSeasonTeams] = useState([]);
   const [seasonGames, setSeasonGames] = useState([]);
   const [gameConfiguration, setGameConfiguration] = useState({});
+  const [confirmMutationError, setConfirmMutationError] = useState(null);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -261,6 +272,19 @@ const SeasonConfigurationPage = ({match}) => {
   const filterTeamSearchResults = (team, searchString) => {
     return team?.name?.includes(searchString);
   }
+
+  const [confirmSeason, {isSubmitting: isConfirmingSeason}] = useMutation(CONFIRM_SEASON, {
+    onCompleted: res => {
+      location.reload();
+    },
+    onError: error => {
+      console.log('Error confirming season. error: ', JSON.stringify(error, null, 2));
+      setConfirmMutationError(error?.message ?? 'Error confirming season, please try again.');
+    },
+    variables: {
+      seasonID
+    }
+  });
 
   const [addPlayersToSeason, {isSubmitting}] = useMutation(ADD_PLAYERS_MUTATION, {
     onCompleted: (res) => {
@@ -416,6 +440,12 @@ const SeasonConfigurationPage = ({match}) => {
     if (season?.addGamesToSeason?.games != null) {
       setSeasonGames(season?.addGamesToSeason?.games);
     }
+  }
+
+  const onSubmitConfirmSeason = () => {
+    setConfirmMutationError(null);
+    // validate input
+    confirmSeason();
   }
 
   return (
@@ -645,6 +675,12 @@ const SeasonConfigurationPage = ({match}) => {
             isLeagueAdmin={isLeagueAdmin}/>
           <Divider marginBottom="10px" />
           <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
+          <Divider />
+          <BannerComponent color="dimgrey" marginTop="10px" title="Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active." />
+          {confirmMutationError && <BannerComponent backgroundColor="rgba(255, 0, 0, 0.2)" color="red" title={confirmMutationError} />}
+          <FlexContainer justify="flex-end" marginTop="8px">
+            <Button isDisabled={isConfirmingSeason} label="Confirm season" margin="4px" marginTop="4px" onClick={onSubmitConfirmSeason} />
+          </FlexContainer>
           <Divider />
         </>
       )}

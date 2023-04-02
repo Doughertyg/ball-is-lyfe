@@ -6,7 +6,7 @@ import {
 } from '../styled-components/common';
 
 const Wrapper = styled.div`
-  background-color: rgba(239, 239, 239, 1);
+  background-color: ${props => props.backgroundColor ?? 'rgba(239, 239, 239, 1)'};
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: ${props => props.color ?? 'black'};
@@ -21,9 +21,9 @@ const Wrapper = styled.div`
  * :            Banner message              :
  *  '--------------------------------------'
  */
-const BannerComponent = ({ color, title, subtitle, marginBottom, marginTop }) => {
+const BannerComponent = ({ backgroundColor, color, title, subtitle, marginBottom, marginTop }) => {
   return (
-    <Wrapper color={color} marginBottom={marginBottom} marginTop={marginTop}>
+    <Wrapper backgroundColor={backgroundColor} color={color} marginBottom={marginBottom} marginTop={marginTop}>
       <FlexContainer justify="center" alignItems="center">
         <FlexContainer direction="column" alignItems="center" justify="center">
           {title}

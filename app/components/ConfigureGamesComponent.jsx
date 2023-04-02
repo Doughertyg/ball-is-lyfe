@@ -26,6 +26,14 @@ const OPTIONS = [
   }
 ];
 
+const getWinConditionLabel = (option) => {
+  if (option == null) {
+    return null;
+  }
+
+  return option === 'GREATER' ? OPTIONS[0].name : OPTIONS[1].name;
+}
+
 const Wrapper = styled.div`
   border-radius: 8px;
   background-color: rgba(139, 139, 139, 0.2);
@@ -162,9 +170,9 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, se
 
   const configurationDetails = [
     `Score stat: ${configuration?.scoreStat?.name ?? 'Not set'}`,
-    `Win condition: ${configuration?.winCondition ?? 'Not set'}`,
+    `Win condition: ${getWinConditionLabel(configuration?.winCondition) ?? 'Not set'}`,
     `Periods: ${configuration?.periods ?? 'Not set'}`,
-    `Period length: ${configuration?.periodLength ?? 'Not set'}`
+    `Period length: ${configuration?.periodLength != null ? configuration?.periodLength + ' min.' : 'Not set'}`
   ];
 
   const getResultsComponent = (entry) => (

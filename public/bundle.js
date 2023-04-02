@@ -4703,7 +4703,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: rgba(239, 239, 239, 1);\n  border-radius: 8px;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  color: ", ";\n  margin-top: ", ";\n  margin-bottom: ", ";\n  padding: 12px;\n"])), function (props) {
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border-radius: 8px;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  color: ", ";\n  margin-top: ", ";\n  margin-bottom: ", ";\n  padding: 12px;\n"])), function (props) {
+  var _props$backgroundColo;
+  return (_props$backgroundColo = props.backgroundColor) !== null && _props$backgroundColo !== void 0 ? _props$backgroundColo : 'rgba(239, 239, 239, 1)';
+}, function (props) {
   var _props$color;
   return (_props$color = props.color) !== null && _props$color !== void 0 ? _props$color : 'black';
 }, function (props) {
@@ -4721,12 +4724,14 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_tem
  *  '--------------------------------------'
  */
 var BannerComponent = function BannerComponent(_ref) {
-  var color = _ref.color,
+  var backgroundColor = _ref.backgroundColor,
+    color = _ref.color,
     title = _ref.title,
     subtitle = _ref.subtitle,
     marginBottom = _ref.marginBottom,
     marginTop = _ref.marginTop;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
+    backgroundColor: backgroundColor,
     color: color,
     marginBottom: marginBottom,
     marginTop: marginTop
@@ -5136,6 +5141,12 @@ var OPTIONS = [{
   description: 'The team with a lower score wins',
   value: 'LESSER'
 }];
+var getWinConditionLabel = function getWinConditionLabel(option) {
+  if (option == null) {
+    return null;
+  }
+  return option === 'GREATER' ? OPTIONS[0].name : OPTIONS[1].name;
+};
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_11__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
 var SEASON_STATS_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!) {\n    getStats(seasonID: $seasonID) {\n      description\n      id\n      isPerGame\n      name\n      operation {\n        expression\n      }\n    }\n  }\n"])));
 var CONFIGURE_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation configureSeason(\n    $periods: Int!,\n    $periodLength: Int!,\n    $scoreStat: ID!,\n    $seasonID: ID!,\n    $winCondition: WinConditionEnum!\n  ) {\n    configureSeason(\n      input: {\n        periods: $periods,\n        periodLength: $periodLength,\n        scoreStat: $scoreStat,\n        seasonID: $seasonID,\n        winCondition: $winCondition\n      }\n    ) {\n      id\n      name\n      gameConfiguration {\n        periods\n        periodLength\n        scoreStat {\n          id\n          name\n        }\n        winCondition\n      }\n    }\n  }\n"])));
@@ -5170,7 +5181,7 @@ var CONFIGURE_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_12__["de
  * 
  */
 var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
-  var _configuration$scoreS, _configuration$period, _configuration$period2, _configuration$scoreS2, _configuration$scoreS3, _configuration$winCon, _configuration$period3, _configuration$period4, _data$getStats, _scoreStat$operation;
+  var _configuration$scoreS, _configuration$period, _configuration$period2, _configuration$scoreS2, _configuration$scoreS3, _getWinConditionLabel, _configuration$period3, _data$getStats, _scoreStat$operation;
   var configuration = _ref.configuration,
     isLeagueAdmin = _ref.isLeagueAdmin,
     _onCompleted = _ref.onCompleted,
@@ -5250,7 +5261,7 @@ var ConfigureGamesComponent = function ConfigureGamesComponent(_ref) {
     var _entry$name;
     return entry === null || entry === void 0 ? void 0 : (_entry$name = entry.name) === null || _entry$name === void 0 ? void 0 : _entry$name.toLowerCase().includes(input);
   };
-  var configurationDetails = ["Score stat: ".concat((_configuration$scoreS2 = configuration === null || configuration === void 0 ? void 0 : (_configuration$scoreS3 = configuration.scoreStat) === null || _configuration$scoreS3 === void 0 ? void 0 : _configuration$scoreS3.name) !== null && _configuration$scoreS2 !== void 0 ? _configuration$scoreS2 : 'Not set'), "Win condition: ".concat((_configuration$winCon = configuration === null || configuration === void 0 ? void 0 : configuration.winCondition) !== null && _configuration$winCon !== void 0 ? _configuration$winCon : 'Not set'), "Periods: ".concat((_configuration$period3 = configuration === null || configuration === void 0 ? void 0 : configuration.periods) !== null && _configuration$period3 !== void 0 ? _configuration$period3 : 'Not set'), "Period length: ".concat((_configuration$period4 = configuration === null || configuration === void 0 ? void 0 : configuration.periodLength) !== null && _configuration$period4 !== void 0 ? _configuration$period4 : 'Not set')];
+  var configurationDetails = ["Score stat: ".concat((_configuration$scoreS2 = configuration === null || configuration === void 0 ? void 0 : (_configuration$scoreS3 = configuration.scoreStat) === null || _configuration$scoreS3 === void 0 ? void 0 : _configuration$scoreS3.name) !== null && _configuration$scoreS2 !== void 0 ? _configuration$scoreS2 : 'Not set'), "Win condition: ".concat((_getWinConditionLabel = getWinConditionLabel(configuration === null || configuration === void 0 ? void 0 : configuration.winCondition)) !== null && _getWinConditionLabel !== void 0 ? _getWinConditionLabel : 'Not set'), "Periods: ".concat((_configuration$period3 = configuration === null || configuration === void 0 ? void 0 : configuration.periods) !== null && _configuration$period3 !== void 0 ? _configuration$period3 : 'Not set'), "Period length: ".concat((configuration === null || configuration === void 0 ? void 0 : configuration.periodLength) != null ? (configuration === null || configuration === void 0 ? void 0 : configuration.periodLength) + ' min.' : 'Not set')];
   var getResultsComponent = function getResultsComponent(entry) {
     var _ref3, _entry$name2, _entry$operation$expr, _entry$operation;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
@@ -8171,21 +8182,7 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
       title: stat.name,
       subTitle: stat === null || stat === void 0 ? void 0 : (_stat$operation = stat.operation) === null || _stat$operation === void 0 ? void 0 : _stat$operation.expression
     });
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    color: "dimgrey",
-    marginTop: "10px",
-    title: "Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active."
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
-    justify: "flex-end",
-    marginTop: "8px"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    isLoading: false,
-    label: "Confirm season",
-    loading: "isSubmitting",
-    margin: "4px",
-    marginTop: "4px",
-    onClick: function onClick() {/* confirm season */}
-  })));
+  }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonStatsSection);
 
@@ -10636,7 +10633,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_BadgeComponent_jsx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../components/BadgeComponent.jsx */ "./app/components/BadgeComponent.jsx");
 /* harmony import */ var _components_ConfigureGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../components/ConfigureGamesComponent.jsx */ "./app/components/ConfigureGamesComponent.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
@@ -10685,6 +10682,7 @@ var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"]
 var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
+var CONFIRM_SEASON = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  mutation confirmSeason($seasonID: ID!) {\n    confirmSeason(seasonID: $seasonID) {\n      id\n      name\n      status\n    }\n  }\n"])));
 
 /**
  * Home page for configuring a season.
@@ -10750,6 +10748,10 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     _useState16 = _slicedToArray(_useState15, 2),
     gameConfiguration = _useState16[0],
     setGameConfiguration = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState18 = _slicedToArray(_useState17, 2),
+    confirmMutationError = _useState18[0],
+    setConfirmMutationError = _useState18[1];
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
   var seasonID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.seasonID;
@@ -10797,7 +10799,23 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     var _team$name;
     return team === null || team === void 0 ? void 0 : (_team$name = team.name) === null || _team$name === void 0 ? void 0 : _team$name.includes(searchString);
   };
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_PLAYERS_MUTATION, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(CONFIRM_SEASON, {
+      onCompleted: function onCompleted(res) {
+        location.reload();
+      },
+      onError: function onError(error) {
+        var _error$message;
+        console.log('Error confirming season. error: ', JSON.stringify(error, null, 2));
+        setConfirmMutationError((_error$message = error === null || error === void 0 ? void 0 : error.message) !== null && _error$message !== void 0 ? _error$message : 'Error confirming season, please try again.');
+      },
+      variables: {
+        seasonID: seasonID
+      }
+    }),
+    _useMutation2 = _slicedToArray(_useMutation, 2),
+    confirmSeason = _useMutation2[0],
+    isConfirmingSeason = _useMutation2[1].isSubmitting;
+  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_PLAYERS_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         location.reload();
@@ -10810,10 +10828,10 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
         players: Object.keys(playersToAdd)
       }
     }),
-    _useMutation2 = _slicedToArray(_useMutation, 2),
-    addPlayersToSeason = _useMutation2[0],
-    isSubmitting = _useMutation2[1].isSubmitting;
-  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_CAPTAINS_MUTATION, {
+    _useMutation4 = _slicedToArray(_useMutation3, 2),
+    addPlayersToSeason = _useMutation4[0],
+    isSubmitting = _useMutation4[1].isSubmitting;
+  var _useMutation5 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_CAPTAINS_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         location.reload();
@@ -10826,10 +10844,10 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
         captains: Object.keys(captainsToAdd)
       }
     }),
-    _useMutation4 = _slicedToArray(_useMutation3, 2),
-    addCaptainsToSeason = _useMutation4[0],
-    isSubmittingCaptains = _useMutation4[1].isSubmitting;
-  var _useMutation5 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
+    _useMutation6 = _slicedToArray(_useMutation5, 2),
+    addCaptainsToSeason = _useMutation6[0],
+    isSubmittingCaptains = _useMutation6[1].isSubmitting;
+  var _useMutation7 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('Added teams to season. res: ', res);
         if (res.addTeamsToSeason != null) {
@@ -10845,9 +10863,9 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
         teamIDs: Object.keys(teamsToAdd)
       }
     }),
-    _useMutation6 = _slicedToArray(_useMutation5, 2),
-    addTeamsToSeason = _useMutation6[0],
-    isAddingTeamsToSeason = _useMutation6[1].isSubmitting;
+    _useMutation8 = _slicedToArray(_useMutation7, 2),
+    addTeamsToSeason = _useMutation8[0],
+    isAddingTeamsToSeason = _useMutation8[1].isSubmitting;
   var onSelectPlayers = function onSelectPlayers(player) {
     if (!playersToAdd[player.id]) {
       var newPlayersToAddMap = _objectSpread({}, playersToAdd);
@@ -10961,6 +10979,11 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
       var _season$addGamesToSea2;
       setSeasonGames(season === null || season === void 0 ? void 0 : (_season$addGamesToSea2 = season.addGamesToSeason) === null || _season$addGamesToSea2 === void 0 ? void 0 : _season$addGamesToSea2.games);
     }
+  };
+  var onSubmitConfirmSeason = function onSubmitConfirmSeason() {
+    setConfirmMutationError(null);
+    // validate input
+    confirmSeason();
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
@@ -11245,7 +11268,24 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SeasonStatsSection_jsx__WEBPACK_IMPORTED_MODULE_16__["default"], {
     isAdmin: isLeagueAdmin,
     seasonID: seasonID
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null)));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    color: "dimgrey",
+    marginTop: "10px",
+    title: "Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active."
+  }), confirmMutationError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    backgroundColor: "rgba(255, 0, 0, 0.2)",
+    color: "red",
+    title: confirmMutationError
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    justify: "flex-end",
+    marginTop: "8px"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Button_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    isDisabled: isConfirmingSeason,
+    label: "Confirm season",
+    margin: "4px",
+    marginTop: "4px",
+    onClick: onSubmitConfirmSeason
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null)));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonConfigurationPage);
 

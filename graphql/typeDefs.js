@@ -286,6 +286,7 @@ module.exports = gql`
     createPost(body: String!): Post!
     deletePost(postId: String!): String!
     configureSeason(input: ConfigureSeasonInput): Season!
+    confirmSeason(seasonID: ID!): Season!
     createComment(postId: ID!, body: String!): Post!
     createLeague(leagueInput: CreateLeagueInput): League!
     createSeason(seasonInput: CreateSeasonInput): Season!
@@ -302,7 +303,6 @@ module.exports = gql`
       seasonID: ID,
       sport: String
     ): CreateTeamMutationReturnType
-    confirmSeason: Season!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }
