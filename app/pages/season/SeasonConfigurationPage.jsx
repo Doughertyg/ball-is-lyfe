@@ -26,6 +26,39 @@ const SEASON_STATUS_LABELS = {
   CONFIRMED: 'Confirmed',
   INACTIVE: 'Inactive',
   ACTIVE: 'Active',
+};
+
+const ERROR_TYPES = {
+  FATAL: 'FATAL',
+  WARNING: 'WARNING'
+}
+
+const VALIDATION_ERRORS = {
+  NO_PLAYERS_ADDED: {
+    message: 'Please add players to the season before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_TEAMS_ADDED: {
+    details: 'Teams must be added to the season and must contain at least one player.',
+    message: 'No teams added to the, please add at least one before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_CAPTAINS_ADDED: {
+    message: 'No captains added to the season, Do you want to continue?',
+    type: ERROR_TYPES.WARNING
+  },
+  NO_GAMES_ADDED: {
+    message: 'No games added, please add at least one game before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_GAME_CONFIGURATION: {
+    message: 'Season games not configured, please configure before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_STATS_ADDED: {
+    message: 'No stats added! Do you want to continue?',
+    type: ERROR_TYPES.WARNING
+  }
 }
 
 const FETCH_SEASON_QUERY = gql`
@@ -55,6 +88,9 @@ const FETCH_SEASON_QUERY = gql`
         seasonStart 
         seasonEnd
         status
+        stats {
+          __typename
+        }
         teams {
           id
           captain {
@@ -229,8 +265,10 @@ const SeasonConfigurationPage = ({match}) => {
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const [seasonTeams, setSeasonTeams] = useState([]);
   const [seasonGames, setSeasonGames] = useState([]);
+  const [seasonStats, setSeasonStats] = useState([]);
   const [gameConfiguration, setGameConfiguration] = useState({});
   const [confirmMutationError, setConfirmMutationError] = useState(null);
+  const [validationErrors, setValidationErrors] = useState([]);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -249,6 +287,12 @@ const SeasonConfigurationPage = ({match}) => {
   useEffect(() => {
     if (seasonData != null && seasonData?.getSeasonByID?.season?.teams != null) {
       setSeasonTeams(seasonData.getSeasonByID.season.teams);
+    }
+  }, [seasonData]);
+
+  useEffect(() => {
+    if (seasonData != null && seasonData?.getSeasonByID?.season?.stats != null) {
+      setSeasonStats(seasonData.getSeasonByID.season.stats);
     }
   }, [seasonData]);
 
@@ -442,10 +486,55 @@ const SeasonConfigurationPage = ({match}) => {
     }
   }
 
+  const validateInput = () => {
+    // validate page input
+    // prompt user when validations fail
+    const validationErrors = [];
+    if (seasonData?.getSeasonByID?.season?.players?.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_PLAYERS_ADDED);
+    }
+
+    if (seasonData?.getSeasonByID?.season?.captains?.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_CAPTAINS_ADDED);
+    }
+
+    if (seasonTeams.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_TEAMS_ADDED);
+    }
+
+    if (seasonGames.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_GAMES_ADDED);
+    }
+
+    if (gameConfiguration == null
+        || gameConfiguration?.periods == null
+        || gameConfiguration?.periodLength == null
+        || gameConfiguration?.winCondition == null
+        || gameConfiguration?.scoreStat == null) {
+      validationErrors.push(VALIDATION_ERRORS.NO_GAME_CONFIGURATION);
+    }
+
+    if (seasonStats.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_STATS_ADDED);
+    }
+
+    setValidationErrors(validationErrors);
+    return validationErrors;
+  }
+
   const onSubmitConfirmSeason = () => {
     setConfirmMutationError(null);
-    // validate input
-    confirmSeason();
+    const errors = validateInput();
+
+    if (errors.length === 0) {
+      confirmSeason();
+    }
+  }
+
+  const onCreateStat = (stat) => {
+    const newStats = [...seasonStats];
+    newStats.push(stat);
+    setSeasonStats(newStats);
   }
 
   return (
@@ -674,7 +763,7 @@ const SeasonConfigurationPage = ({match}) => {
             seasonID={seasonID}
             isLeagueAdmin={isLeagueAdmin}/>
           <Divider marginBottom="10px" />
-          <SeasonStatsSection isAdmin={isLeagueAdmin} seasonID={seasonID} />
+          <SeasonStatsSection isAdmin={isLeagueAdmin} onCreateStat={onCreateStat} seasonID={seasonID} />
           <Divider />
           <BannerComponent color="dimgrey" marginTop="10px" title="Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active." />
           {confirmMutationError && <BannerComponent backgroundColor="rgba(255, 0, 0, 0.2)" color="red" title={confirmMutationError} />}
@@ -684,6 +773,7 @@ const SeasonConfigurationPage = ({match}) => {
           <Divider />
         </>
       )}
+      {validationErrors.length > 0 ? 'Show validation error modal' : null}
     </FlexContainer>
   );
 }

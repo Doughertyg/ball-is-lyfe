@@ -10678,7 +10678,38 @@ var SEASON_STATUS_LABELS = {
   INACTIVE: 'Inactive',
   ACTIVE: 'Active'
 };
-var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n            operation {\n              expression\n            }\n          }\n          winCondition\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
+var ERROR_TYPES = {
+  FATAL: 'FATAL',
+  WARNING: 'WARNING'
+};
+var VALIDATION_ERRORS = {
+  NO_PLAYERS_ADDED: {
+    message: 'Please add players to the season before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_TEAMS_ADDED: {
+    details: 'Teams must be added to the season and must contain at least one player.',
+    message: 'No teams added to the, please add at least one before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_CAPTAINS_ADDED: {
+    message: 'No captains added to the season, Do you want to continue?',
+    type: ERROR_TYPES.WARNING
+  },
+  NO_GAMES_ADDED: {
+    message: 'No games added, please add at least one game before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_GAME_CONFIGURATION: {
+    message: 'Season games not configured, please configure before continuing.',
+    type: ERROR_TYPES.FATAL
+  },
+  NO_STATS_ADDED: {
+    message: 'No stats added! Do you want to continue?',
+    type: ERROR_TYPES.WARNING
+  }
+};
+var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        stats {\n          __typename\n        }\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n            operation {\n              expression\n            }\n          }\n          winCondition\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
 var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
@@ -10714,7 +10745,7 @@ var CONFIRM_SEASON = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_t
  * 
  */
 var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
-  var _match$params, _seasonData$getSeason, _seasonData$getSeason2, _seasonData$getSeason3, _seasonData$getSeason4, _seasonData$getSeason5, _seasonData$getSeason26, _seasonData$getSeason27, _seasonData$getSeason28, _seasonData$getSeason29, _seasonData$getSeason30, _seasonData$getSeason31, _seasonData$getSeason32, _seasonData$getSeason33, _seasonData$getSeason34, _seasonData$getSeason35, _seasonData$getSeason36, _seasonData$getSeason37, _seasonData$getSeason38, _dayjs$format, _seasonData$getSeason39, _seasonData$getSeason40, _dayjs$format2, _seasonData$getSeason41, _seasonData$getSeason42, _seasonData$getSeason43, _seasonData$getSeason44, _seasonData$getSeason45, _seasonData$getSeason46, _seasonData$getSeason47, _seasonData$getSeason48, _seasonData$getSeason49, _Object$values$concat, _seasonData$getSeason50, _seasonData$getSeason51, _seasonData$getSeason52, _seasonData$getSeason53, _seasonData$getSeason54, _seasonData$getTeams;
+  var _match$params, _seasonData$getSeason, _seasonData$getSeason2, _seasonData$getSeason3, _seasonData$getSeason4, _seasonData$getSeason5, _seasonData$getSeason28, _seasonData$getSeason29, _seasonData$getSeason30, _seasonData$getSeason31, _seasonData$getSeason38, _seasonData$getSeason39, _seasonData$getSeason40, _seasonData$getSeason41, _seasonData$getSeason42, _seasonData$getSeason43, _seasonData$getSeason44, _seasonData$getSeason45, _seasonData$getSeason46, _dayjs$format, _seasonData$getSeason47, _seasonData$getSeason48, _dayjs$format2, _seasonData$getSeason49, _seasonData$getSeason50, _seasonData$getSeason51, _seasonData$getSeason52, _seasonData$getSeason53, _seasonData$getSeason54, _seasonData$getSeason55, _seasonData$getSeason56, _seasonData$getSeason57, _Object$values$concat, _seasonData$getSeason58, _seasonData$getSeason59, _seasonData$getSeason60, _seasonData$getSeason61, _seasonData$getSeason62, _seasonData$getTeams;
   var match = _ref.match;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -10744,14 +10775,22 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     _useState14 = _slicedToArray(_useState13, 2),
     seasonGames = _useState14[0],
     setSeasonGames = _useState14[1];
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState16 = _slicedToArray(_useState15, 2),
-    gameConfiguration = _useState16[0],
-    setGameConfiguration = _useState16[1];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    seasonStats = _useState16[0],
+    setSeasonStats = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
     _useState18 = _slicedToArray(_useState17, 2),
-    confirmMutationError = _useState18[0],
-    setConfirmMutationError = _useState18[1];
+    gameConfiguration = _useState18[0],
+    setGameConfiguration = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState20 = _slicedToArray(_useState19, 2),
+    confirmMutationError = _useState20[0],
+    setConfirmMutationError = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState22 = _slicedToArray(_useState21, 2),
+    validationErrors = _useState22[0],
+    setValidationErrors = _useState22[1];
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
   var seasonID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.seasonID;
@@ -10779,16 +10818,22 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
   }, [seasonData]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var _seasonData$getSeason8, _seasonData$getSeason9;
-    if (seasonData != null && (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason8 = seasonData.getSeasonByID) === null || _seasonData$getSeason8 === void 0 ? void 0 : (_seasonData$getSeason9 = _seasonData$getSeason8.season) === null || _seasonData$getSeason9 === void 0 ? void 0 : _seasonData$getSeason9.games) != null) {
-      var _seasonData$getSeason10, _seasonData$getSeason11;
-      setSeasonGames(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason10 = seasonData.getSeasonByID) === null || _seasonData$getSeason10 === void 0 ? void 0 : (_seasonData$getSeason11 = _seasonData$getSeason10.season) === null || _seasonData$getSeason11 === void 0 ? void 0 : _seasonData$getSeason11.games);
+    if (seasonData != null && (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason8 = seasonData.getSeasonByID) === null || _seasonData$getSeason8 === void 0 ? void 0 : (_seasonData$getSeason9 = _seasonData$getSeason8.season) === null || _seasonData$getSeason9 === void 0 ? void 0 : _seasonData$getSeason9.stats) != null) {
+      setSeasonStats(seasonData.getSeasonByID.season.stats);
     }
   }, [seasonData]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var _seasonData$getSeason12, _seasonData$getSeason13;
-    if (seasonData != null && (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason12 = seasonData.getSeasonByID) === null || _seasonData$getSeason12 === void 0 ? void 0 : (_seasonData$getSeason13 = _seasonData$getSeason12.season) === null || _seasonData$getSeason13 === void 0 ? void 0 : _seasonData$getSeason13.gameConfiguration) != null) {
-      var _seasonData$getSeason14, _seasonData$getSeason15;
-      setGameConfiguration(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason14 = seasonData.getSeasonByID) === null || _seasonData$getSeason14 === void 0 ? void 0 : (_seasonData$getSeason15 = _seasonData$getSeason14.season) === null || _seasonData$getSeason15 === void 0 ? void 0 : _seasonData$getSeason15.gameConfiguration);
+    var _seasonData$getSeason10, _seasonData$getSeason11;
+    if (seasonData != null && (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason10 = seasonData.getSeasonByID) === null || _seasonData$getSeason10 === void 0 ? void 0 : (_seasonData$getSeason11 = _seasonData$getSeason10.season) === null || _seasonData$getSeason11 === void 0 ? void 0 : _seasonData$getSeason11.games) != null) {
+      var _seasonData$getSeason12, _seasonData$getSeason13;
+      setSeasonGames(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason12 = seasonData.getSeasonByID) === null || _seasonData$getSeason12 === void 0 ? void 0 : (_seasonData$getSeason13 = _seasonData$getSeason12.season) === null || _seasonData$getSeason13 === void 0 ? void 0 : _seasonData$getSeason13.games);
+    }
+  }, [seasonData]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var _seasonData$getSeason14, _seasonData$getSeason15;
+    if (seasonData != null && (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason14 = seasonData.getSeasonByID) === null || _seasonData$getSeason14 === void 0 ? void 0 : (_seasonData$getSeason15 = _seasonData$getSeason14.season) === null || _seasonData$getSeason15 === void 0 ? void 0 : _seasonData$getSeason15.gameConfiguration) != null) {
+      var _seasonData$getSeason16, _seasonData$getSeason17;
+      setGameConfiguration(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason16 = seasonData.getSeasonByID) === null || _seasonData$getSeason16 === void 0 ? void 0 : (_seasonData$getSeason17 = _seasonData$getSeason16.season) === null || _seasonData$getSeason17 === void 0 ? void 0 : _seasonData$getSeason17.gameConfiguration);
     }
   }, [seasonData]);
   if (seasonID == null) {
@@ -10887,8 +10932,8 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     var teamToAdd = _objectSpread({}, team);
     // only include the players that are in the season
     teamToAdd.players = teamToAdd.players.filter(function (player) {
-      var _seasonData$getSeason16, _seasonData$getSeason17, _seasonData$getSeason18;
-      return (_seasonData$getSeason16 = seasonData.getSeasonByID) === null || _seasonData$getSeason16 === void 0 ? void 0 : (_seasonData$getSeason17 = _seasonData$getSeason16.season) === null || _seasonData$getSeason17 === void 0 ? void 0 : (_seasonData$getSeason18 = _seasonData$getSeason17.players) === null || _seasonData$getSeason18 === void 0 ? void 0 : _seasonData$getSeason18.map(function (seasonPlayer) {
+      var _seasonData$getSeason18, _seasonData$getSeason19, _seasonData$getSeason20;
+      return (_seasonData$getSeason18 = seasonData.getSeasonByID) === null || _seasonData$getSeason18 === void 0 ? void 0 : (_seasonData$getSeason19 = _seasonData$getSeason18.season) === null || _seasonData$getSeason19 === void 0 ? void 0 : (_seasonData$getSeason20 = _seasonData$getSeason19.players) === null || _seasonData$getSeason20 === void 0 ? void 0 : _seasonData$getSeason20.map(function (seasonPlayer) {
         return seasonPlayer.id;
       }).includes(player.id);
     });
@@ -10964,14 +11009,14 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     setCreateTeamExpanded(false);
   };
   var nonCaptainPlayers = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    var _seasonData$getSeason19, _seasonData$getSeason20, _seasonData$getSeason21, _seasonData$getSeason22;
-    return (_seasonData$getSeason19 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason20 = seasonData.getSeasonByID) === null || _seasonData$getSeason20 === void 0 ? void 0 : (_seasonData$getSeason21 = _seasonData$getSeason20.season) === null || _seasonData$getSeason21 === void 0 ? void 0 : (_seasonData$getSeason22 = _seasonData$getSeason21.players) === null || _seasonData$getSeason22 === void 0 ? void 0 : _seasonData$getSeason22.filter(function (player) {
-      var _seasonData$getSeason23, _seasonData$getSeason24, _seasonData$getSeason25;
-      return !(seasonData !== null && seasonData !== void 0 && (_seasonData$getSeason23 = seasonData.getSeasonByID) !== null && _seasonData$getSeason23 !== void 0 && (_seasonData$getSeason24 = _seasonData$getSeason23.season) !== null && _seasonData$getSeason24 !== void 0 && (_seasonData$getSeason25 = _seasonData$getSeason24.captains) !== null && _seasonData$getSeason25 !== void 0 && _seasonData$getSeason25.map(function (player) {
+    var _seasonData$getSeason21, _seasonData$getSeason22, _seasonData$getSeason23, _seasonData$getSeason24;
+    return (_seasonData$getSeason21 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason22 = seasonData.getSeasonByID) === null || _seasonData$getSeason22 === void 0 ? void 0 : (_seasonData$getSeason23 = _seasonData$getSeason22.season) === null || _seasonData$getSeason23 === void 0 ? void 0 : (_seasonData$getSeason24 = _seasonData$getSeason23.players) === null || _seasonData$getSeason24 === void 0 ? void 0 : _seasonData$getSeason24.filter(function (player) {
+      var _seasonData$getSeason25, _seasonData$getSeason26, _seasonData$getSeason27;
+      return !(seasonData !== null && seasonData !== void 0 && (_seasonData$getSeason25 = seasonData.getSeasonByID) !== null && _seasonData$getSeason25 !== void 0 && (_seasonData$getSeason26 = _seasonData$getSeason25.season) !== null && _seasonData$getSeason26 !== void 0 && (_seasonData$getSeason27 = _seasonData$getSeason26.captains) !== null && _seasonData$getSeason27 !== void 0 && _seasonData$getSeason27.map(function (player) {
         return player.id;
       }).includes(player.id));
-    })) !== null && _seasonData$getSeason19 !== void 0 ? _seasonData$getSeason19 : [];
-  }, [seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason26 = seasonData.getSeasonByID) === null || _seasonData$getSeason26 === void 0 ? void 0 : (_seasonData$getSeason27 = _seasonData$getSeason26.season) === null || _seasonData$getSeason27 === void 0 ? void 0 : _seasonData$getSeason27.captains, seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason28 = seasonData.getSeasonByID) === null || _seasonData$getSeason28 === void 0 ? void 0 : (_seasonData$getSeason29 = _seasonData$getSeason28.season) === null || _seasonData$getSeason29 === void 0 ? void 0 : _seasonData$getSeason29.players]);
+    })) !== null && _seasonData$getSeason21 !== void 0 ? _seasonData$getSeason21 : [];
+  }, [seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason28 = seasonData.getSeasonByID) === null || _seasonData$getSeason28 === void 0 ? void 0 : (_seasonData$getSeason29 = _seasonData$getSeason28.season) === null || _seasonData$getSeason29 === void 0 ? void 0 : _seasonData$getSeason29.captains, seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason30 = seasonData.getSeasonByID) === null || _seasonData$getSeason30 === void 0 ? void 0 : (_seasonData$getSeason31 = _seasonData$getSeason30.season) === null || _seasonData$getSeason31 === void 0 ? void 0 : _seasonData$getSeason31.players]);
   var onAddGamesToSeason = function onAddGamesToSeason(season) {
     var _season$addGamesToSea;
     setAddGamesExpanded(false);
@@ -10980,10 +11025,43 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
       setSeasonGames(season === null || season === void 0 ? void 0 : (_season$addGamesToSea2 = season.addGamesToSeason) === null || _season$addGamesToSea2 === void 0 ? void 0 : _season$addGamesToSea2.games);
     }
   };
+  var validateInput = function validateInput() {
+    var _seasonData$getSeason32, _seasonData$getSeason33, _seasonData$getSeason34, _seasonData$getSeason35, _seasonData$getSeason36, _seasonData$getSeason37;
+    // validate page input
+    // prompt user when validations fail
+    var validationErrors = [];
+    if ((seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason32 = seasonData.getSeasonByID) === null || _seasonData$getSeason32 === void 0 ? void 0 : (_seasonData$getSeason33 = _seasonData$getSeason32.season) === null || _seasonData$getSeason33 === void 0 ? void 0 : (_seasonData$getSeason34 = _seasonData$getSeason33.players) === null || _seasonData$getSeason34 === void 0 ? void 0 : _seasonData$getSeason34.length) === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_PLAYERS_ADDED);
+    }
+    if ((seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason35 = seasonData.getSeasonByID) === null || _seasonData$getSeason35 === void 0 ? void 0 : (_seasonData$getSeason36 = _seasonData$getSeason35.season) === null || _seasonData$getSeason36 === void 0 ? void 0 : (_seasonData$getSeason37 = _seasonData$getSeason36.captains) === null || _seasonData$getSeason37 === void 0 ? void 0 : _seasonData$getSeason37.length) === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_CAPTAINS_ADDED);
+    }
+    if (seasonTeams.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_TEAMS_ADDED);
+    }
+    if (seasonGames.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_GAMES_ADDED);
+    }
+    if (gameConfiguration == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periods) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periodLength) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.winCondition) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.scoreStat) == null) {
+      validationErrors.push(VALIDATION_ERRORS.NO_GAME_CONFIGURATION);
+    }
+    if (seasonStats.length === 0) {
+      validationErrors.push(VALIDATION_ERRORS.NO_STATS_ADDED);
+    }
+    setValidationErrors(validationErrors);
+    return validationErrors;
+  };
   var onSubmitConfirmSeason = function onSubmitConfirmSeason() {
     setConfirmMutationError(null);
-    // validate input
-    confirmSeason();
+    var errors = validateInput();
+    if (errors.length === 0) {
+      confirmSeason();
+    }
+  };
+  var onCreateStat = function onCreateStat(stat) {
+    var newStats = _toConsumableArray(seasonStats);
+    newStats.push(stat);
+    setSeasonStats(newStats);
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     direction: "column",
@@ -11012,17 +11090,17 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.PageHeader, {
     margin: "20px 0 8px 0"
-  }, (_seasonData$getSeason30 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason31 = seasonData.getSeasonByID) === null || _seasonData$getSeason31 === void 0 ? void 0 : (_seasonData$getSeason32 = _seasonData$getSeason31.season) === null || _seasonData$getSeason32 === void 0 ? void 0 : _seasonData$getSeason32.name) !== null && _seasonData$getSeason30 !== void 0 ? _seasonData$getSeason30 : 'Season name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_BadgeComponent_jsx__WEBPACK_IMPORTED_MODULE_17__["default"], {
-    label: SEASON_STATUS_LABELS[seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason33 = seasonData.getSeasonByID) === null || _seasonData$getSeason33 === void 0 ? void 0 : (_seasonData$getSeason34 = _seasonData$getSeason33.season) === null || _seasonData$getSeason34 === void 0 ? void 0 : _seasonData$getSeason34.status],
+  }, (_seasonData$getSeason38 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason39 = seasonData.getSeasonByID) === null || _seasonData$getSeason39 === void 0 ? void 0 : (_seasonData$getSeason40 = _seasonData$getSeason39.season) === null || _seasonData$getSeason40 === void 0 ? void 0 : _seasonData$getSeason40.name) !== null && _seasonData$getSeason38 !== void 0 ? _seasonData$getSeason38 : 'Season name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_BadgeComponent_jsx__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    label: SEASON_STATUS_LABELS[seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason41 = seasonData.getSeasonByID) === null || _seasonData$getSeason41 === void 0 ? void 0 : (_seasonData$getSeason42 = _seasonData$getSeason41.season) === null || _seasonData$getSeason42 === void 0 ? void 0 : _seasonData$getSeason42.status],
     status: "DRAFT"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, {
     padding: "0 0 4px 0"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, null, (_seasonData$getSeason35 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason36 = seasonData.getSeasonByID) === null || _seasonData$getSeason36 === void 0 ? void 0 : (_seasonData$getSeason37 = _seasonData$getSeason36.season) === null || _seasonData$getSeason37 === void 0 ? void 0 : (_seasonData$getSeason38 = _seasonData$getSeason37.league) === null || _seasonData$getSeason38 === void 0 ? void 0 : _seasonData$getSeason38.name) !== null && _seasonData$getSeason35 !== void 0 ? _seasonData$getSeason35 : 'League missing')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.SectionHeadingText, null, (_seasonData$getSeason43 = seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason44 = seasonData.getSeasonByID) === null || _seasonData$getSeason44 === void 0 ? void 0 : (_seasonData$getSeason45 = _seasonData$getSeason44.season) === null || _seasonData$getSeason45 === void 0 ? void 0 : (_seasonData$getSeason46 = _seasonData$getSeason45.league) === null || _seasonData$getSeason46 === void 0 ? void 0 : _seasonData$getSeason46.name) !== null && _seasonData$getSeason43 !== void 0 ? _seasonData$getSeason43 : 'League missing')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
     justify: "start"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, {
     overflow: "hidden"
-  }, ((_dayjs$format = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason39 = seasonData.getSeasonByID) === null || _seasonData$getSeason39 === void 0 ? void 0 : (_seasonData$getSeason40 = _seasonData$getSeason39.season) === null || _seasonData$getSeason40 === void 0 ? void 0 : _seasonData$getSeason40.seasonStart).format('MMM YYYY')) !== null && _dayjs$format !== void 0 ? _dayjs$format : 'Season start missing') + ' - ' + ((_dayjs$format2 = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason41 = seasonData.getSeasonByID) === null || _seasonData$getSeason41 === void 0 ? void 0 : (_seasonData$getSeason42 = _seasonData$getSeason41.season) === null || _seasonData$getSeason42 === void 0 ? void 0 : _seasonData$getSeason42.seasonEnd).format('MMM YYYY')) !== null && _dayjs$format2 !== void 0 ? _dayjs$format2 : 'season end missing'))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, null, seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason43 = seasonData.getSeasonByID) === null || _seasonData$getSeason43 === void 0 ? void 0 : (_seasonData$getSeason44 = _seasonData$getSeason43.season) === null || _seasonData$getSeason44 === void 0 ? void 0 : _seasonData$getSeason44.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
+  }, ((_dayjs$format = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason47 = seasonData.getSeasonByID) === null || _seasonData$getSeason47 === void 0 ? void 0 : (_seasonData$getSeason48 = _seasonData$getSeason47.season) === null || _seasonData$getSeason48 === void 0 ? void 0 : _seasonData$getSeason48.seasonStart).format('MMM YYYY')) !== null && _dayjs$format !== void 0 ? _dayjs$format : 'Season start missing') + ' - ' + ((_dayjs$format2 = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason49 = seasonData.getSeasonByID) === null || _seasonData$getSeason49 === void 0 ? void 0 : (_seasonData$getSeason50 = _seasonData$getSeason49.season) === null || _seasonData$getSeason50 === void 0 ? void 0 : _seasonData$getSeason50.seasonEnd).format('MMM YYYY')) !== null && _dayjs$format2 !== void 0 ? _dayjs$format2 : 'season end missing'))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.BodyText, null, seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason51 = seasonData.getSeasonByID) === null || _seasonData$getSeason51 === void 0 ? void 0 : (_seasonData$getSeason52 = _seasonData$getSeason51.season) === null || _seasonData$getSeason52 === void 0 ? void 0 : _seasonData$getSeason52.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
     marginBottom: "12px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",
@@ -11046,7 +11124,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     flexWrap: "wrap"
-  }, (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason45 = seasonData.getSeasonByID) === null || _seasonData$getSeason45 === void 0 ? void 0 : (_seasonData$getSeason46 = _seasonData$getSeason45.season) === null || _seasonData$getSeason46 === void 0 ? void 0 : (_seasonData$getSeason47 = _seasonData$getSeason46.players) === null || _seasonData$getSeason47 === void 0 ? void 0 : _seasonData$getSeason47.length) > 0 ? (_seasonData$getSeason48 = seasonData.getSeasonByID) === null || _seasonData$getSeason48 === void 0 ? void 0 : (_seasonData$getSeason49 = _seasonData$getSeason48.season) === null || _seasonData$getSeason49 === void 0 ? void 0 : _seasonData$getSeason49.players.map(function (player, idx) {
+  }, (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason53 = seasonData.getSeasonByID) === null || _seasonData$getSeason53 === void 0 ? void 0 : (_seasonData$getSeason54 = _seasonData$getSeason53.season) === null || _seasonData$getSeason54 === void 0 ? void 0 : (_seasonData$getSeason55 = _seasonData$getSeason54.players) === null || _seasonData$getSeason55 === void 0 ? void 0 : _seasonData$getSeason55.length) > 0 ? (_seasonData$getSeason56 = seasonData.getSeasonByID) === null || _seasonData$getSeason56 === void 0 ? void 0 : (_seasonData$getSeason57 = _seasonData$getSeason56.season) === null || _seasonData$getSeason57 === void 0 ? void 0 : _seasonData$getSeason57.players.map(function (player, idx) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_PlayerCard_jsx__WEBPACK_IMPORTED_MODULE_12__["default"], {
       email: player.email,
       key: "players-".concat(player.id, "-").concat(idx),
@@ -11127,7 +11205,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     justify: "flex-start",
     flexWrap: "wrap"
-  }, (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason50 = seasonData.getSeasonByID) === null || _seasonData$getSeason50 === void 0 ? void 0 : (_seasonData$getSeason51 = _seasonData$getSeason50.season) === null || _seasonData$getSeason51 === void 0 ? void 0 : (_seasonData$getSeason52 = _seasonData$getSeason51.captains) === null || _seasonData$getSeason52 === void 0 ? void 0 : _seasonData$getSeason52.length) > 0 ? (_seasonData$getSeason53 = seasonData.getSeasonByID) === null || _seasonData$getSeason53 === void 0 ? void 0 : (_seasonData$getSeason54 = _seasonData$getSeason53.season) === null || _seasonData$getSeason54 === void 0 ? void 0 : _seasonData$getSeason54.captains.map(function (player, idx) {
+  }, (seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason58 = seasonData.getSeasonByID) === null || _seasonData$getSeason58 === void 0 ? void 0 : (_seasonData$getSeason59 = _seasonData$getSeason58.season) === null || _seasonData$getSeason59 === void 0 ? void 0 : (_seasonData$getSeason60 = _seasonData$getSeason59.captains) === null || _seasonData$getSeason60 === void 0 ? void 0 : _seasonData$getSeason60.length) > 0 ? (_seasonData$getSeason61 = seasonData.getSeasonByID) === null || _seasonData$getSeason61 === void 0 ? void 0 : (_seasonData$getSeason62 = _seasonData$getSeason61.season) === null || _seasonData$getSeason62 === void 0 ? void 0 : _seasonData$getSeason62.captains.map(function (player, idx) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_PlayerCard_jsx__WEBPACK_IMPORTED_MODULE_12__["default"], {
       email: player.email,
       key: "captains-added-".concat(player.id, "-").concat(idx),
@@ -11267,6 +11345,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     marginBottom: "10px"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SeasonStatsSection_jsx__WEBPACK_IMPORTED_MODULE_16__["default"], {
     isAdmin: isLeagueAdmin,
+    onCreateStat: onCreateStat,
     seasonID: seasonID
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     color: "dimgrey",
@@ -11285,7 +11364,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     margin: "4px",
     marginTop: "4px",
     onClick: onSubmitConfirmSeason
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null)));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null)), validationErrors.length > 0 ? 'Show validation error modal' : null);
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonConfigurationPage);
 
