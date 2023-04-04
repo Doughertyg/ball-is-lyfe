@@ -8282,6 +8282,136 @@ var SimpleSelector = function SimpleSelector(_ref) {
 
 /***/ }),
 
+/***/ "./app/components/SteppedConfirmationModal.jsx":
+/*!*****************************************************!*\
+  !*** ./app/components/SteppedConfirmationModal.jsx ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _styled_components_card__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/card */ "./app/styled-components/card.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
+var _templateObject, _templateObject2;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+var ModalBackground = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  min-height: 100vh;\n  min-width: 100vw;\n  height: 100%;\n  width: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  background-color: rgba(0, 0, 0, 0.4);\n"])));
+var ModalWrapper = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  align-items: center;\n  height: 100vh;\n  width: 100vw;\n  display: flex;\n  justify-content: center;\n  position: absolute;\n"])));
+
+/**
+ * Stepped confirmation modal can show 1 or more prompts
+ * with configurable next and cancel.
+ * 
+ * cancel steps back when the modal is beyond the first step
+ * if the modal is on the first step the cancel button calls the onCancel prop
+ * 
+ * the next button displays the nextLabel and calls the onNext
+ * callback and increments the step to the next step
+ * 
+ * ,-----------------------------------------,
+ * |             Prompt Title                |
+ * |     Prompt question or description      |
+ * | ,------------,           ,------------, |
+ * | |   Cancel   |           |    Next    | |
+ * | '------------'           '------------' |
+ * '-----------------------------------------'
+ * 
+ * @param steps Array
+ * [{
+ *   title: prompt title,
+ *   text: prompt text,
+ *   onNext: on next callback,
+ *   nextLabel: next button label text,
+ *   preventNext: boolean to prevent going to next
+ * }]
+ * 
+ *
+ */
+var SteppedConfirmationModal = function SteppedConfirmationModal(_ref) {
+  var _step$nextLabel;
+  var steps = _ref.steps,
+    onCancel = _ref.onCancel,
+    onSubmit = _ref.onSubmit;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState2 = _slicedToArray(_useState, 2),
+    stepIdx = _useState2[0],
+    setStepIdx = _useState2[1];
+  var step = steps[stepIdx];
+  console.log('step: ', step, '  idx: ', stepIdx, '  steps: ', steps);
+  // do the thing
+
+  var onBackOrCancel = function onBackOrCancel() {
+    if (stepIdx > 0) {
+      console.log('step back');
+      setStepIdx(stepIdx - 1);
+    } else {
+      onCancel();
+    }
+  };
+  var onNext = function onNext() {
+    console.log('step: ', step);
+    if (step.preventNext) {
+      var _step$onNext;
+      (_step$onNext = step.onNext) === null || _step$onNext === void 0 ? void 0 : _step$onNext.call(step);
+    } else if (stepIdx < steps.length - 1) {
+      console.log('step next');
+      setStepIdx(stepIdx + 1);
+    } else {
+      onSubmit === null || onSubmit === void 0 ? void 0 : onSubmit();
+    }
+  };
+  var nextLabel = step.preventNext ? (_step$nextLabel = step.nextLabel) !== null && _step$nextLabel !== void 0 ? _step$nextLabel : 'Done' : stepIdx < steps.length - 1 ? 'Next' : 'Confirm';
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalBackground, {
+    onClick: onCancel
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ModalWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_1__.CardWrapper, {
+    borderRadius: "6px",
+    boxShadow: "0 0 5px 5px rgba(0, 0, 0, 0.1)",
+    maxWidth: "none"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_1__.CardContentWrapper, {
+    onClick: function onClick(e) {
+      return e.stopPropagation();
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_card__WEBPACK_IMPORTED_MODULE_1__.CardBody, {
+    align: "center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    alignItems: "center",
+    direction: "column"
+  }, step.title && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.SectionHeadingText, {
+    marginBottom: "4px"
+  }, step.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.DetailsText, {
+    marginBottom: "10px",
+    overflow: "visible"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.SectionHeadingText, null, step.text)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_2__.FlexContainer, {
+    justify: "flex-end",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_3__.Button, {
+    secondary: true,
+    onClick: onBackOrCancel
+  }, stepIdx > 0 ? 'Back' : 'Cancel'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_3__.Button, {
+    onClick: onNext,
+    primary: true
+  }, nextLabel))))))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SteppedConfirmationModal);
+
+/***/ }),
+
 /***/ "./app/components/transitions/FadeInTransition.jsx":
 /*!*********************************************************!*\
   !*** ./app/components/transitions/FadeInTransition.jsx ***!
@@ -10612,10 +10742,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Icon_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Icon.jsx */ "./app/components/Icon.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../context/auth */ "./app/context/auth.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../styled-components/common */ "./app/styled-components/common.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _components_LoadingSpinnerBack_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/LoadingSpinnerBack.jsx */ "./app/components/LoadingSpinnerBack.jsx");
@@ -10631,7 +10761,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../components/CompactDetailsCard.jsx */ "./app/components/CompactDetailsCard.jsx");
 /* harmony import */ var _components_SeasonStatsSection_jsx__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/SeasonStatsSection.jsx */ "./app/components/SeasonStatsSection.jsx");
 /* harmony import */ var _components_BadgeComponent_jsx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../components/BadgeComponent.jsx */ "./app/components/BadgeComponent.jsx");
-/* harmony import */ var _components_ConfigureGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../components/ConfigureGamesComponent.jsx */ "./app/components/ConfigureGamesComponent.jsx");
+/* harmony import */ var _components_SteppedConfirmationModal_jsx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../components/SteppedConfirmationModal.jsx */ "./app/components/SteppedConfirmationModal.jsx");
+/* harmony import */ var _components_ConfigureGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../components/ConfigureGamesComponent.jsx */ "./app/components/ConfigureGamesComponent.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -10672,6 +10803,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
 var SEASON_STATUS_LABELS = {
   CONFIGURATION: 'Configuration',
   CONFIRMED: 'Confirmed',
@@ -10683,37 +10815,60 @@ var ERROR_TYPES = {
   WARNING: 'WARNING'
 };
 var VALIDATION_ERRORS = {
-  NO_PLAYERS_ADDED: {
-    message: 'Please add players to the season before continuing.',
-    type: ERROR_TYPES.FATAL
+  NO_PLAYERS_ADDED: function NO_PLAYERS_ADDED(onNext) {
+    return {
+      text: 'Please add players to the season before continuing.',
+      type: ERROR_TYPES.FATAL,
+      nextLabel: 'Done',
+      onNext: onNext,
+      preventNext: true
+    };
   },
-  NO_TEAMS_ADDED: {
-    details: 'Teams must be added to the season and must contain at least one player.',
-    message: 'No teams added to the, please add at least one before continuing.',
-    type: ERROR_TYPES.FATAL
+  NO_TEAMS_ADDED: function NO_TEAMS_ADDED(onNext) {
+    return {
+      text: 'No teams added to the season, please add at least one before continuing.',
+      type: ERROR_TYPES.FATAL,
+      nextLabel: 'Done',
+      onNext: onNext,
+      preventNext: true
+    };
   },
-  NO_CAPTAINS_ADDED: {
-    message: 'No captains added to the season, Do you want to continue?',
-    type: ERROR_TYPES.WARNING
+  NO_CAPTAINS_ADDED: function NO_CAPTAINS_ADDED(onNext) {
+    return {
+      text: 'No captains added to the season, Do you want to continue?',
+      type: ERROR_TYPES.WARNING
+    };
   },
-  NO_GAMES_ADDED: {
-    message: 'No games added, please add at least one game before continuing.',
-    type: ERROR_TYPES.FATAL
+  NO_GAMES_ADDED: function NO_GAMES_ADDED(onNext) {
+    return {
+      text: 'No games added, please add at least one game before continuing.',
+      type: ERROR_TYPES.FATAL,
+      nextLabel: 'Done',
+      onNext: onNext,
+      preventNext: true
+    };
   },
-  NO_GAME_CONFIGURATION: {
-    message: 'Season games not configured, please configure before continuing.',
-    type: ERROR_TYPES.FATAL
+  NO_GAME_CONFIGURATION: function NO_GAME_CONFIGURATION(onNext) {
+    return {
+      text: 'Season games not configured, please configure before continuing.',
+      type: ERROR_TYPES.FATAL,
+      nextLabel: 'Done',
+      onNext: onNext,
+      preventNext: true
+    };
   },
-  NO_STATS_ADDED: {
-    message: 'No stats added! Do you want to continue?',
-    type: ERROR_TYPES.WARNING
+  NO_STATS_ADDED: function NO_STATS_ADDED(onNext) {
+    return {
+      text: 'No stats added! Do you want to continue?',
+      type: ERROR_TYPES.WARNING
+    };
   }
 };
-var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        stats {\n          __typename\n        }\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n            operation {\n              expression\n            }\n          }\n          winCondition\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
-var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
-var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
-var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
-var CONFIRM_SEASON = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_19__["default"])(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  mutation confirmSeason($seasonID: ID!) {\n    confirmSeason(seasonID: $seasonID) {\n      id\n      name\n      status\n    }\n  }\n"])));
+var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        stats {\n          __typename\n        }\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n            operation {\n              expression\n            }\n          }\n          winCondition\n        }\n      }\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
+var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
+var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
+var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
+var CONFIRM_SEASON = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  mutation confirmSeason($seasonID: ID!) {\n    confirmSeason(seasonID: $seasonID) {\n      id\n      name\n      status\n    }\n  }\n"])));
 
 /**
  * Home page for configuring a season.
@@ -10794,8 +10949,8 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
   var seasonID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.seasonID;
-  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_20__.useHistory)();
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_21__.useQuery)(FETCH_SEASON_QUERY, {
+  var history = (0,react_router__WEBPACK_IMPORTED_MODULE_21__.useHistory)();
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useQuery)(FETCH_SEASON_QUERY, {
       variables: {
         seasonID: seasonID,
         userID: user.id
@@ -10844,7 +10999,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     var _team$name;
     return team === null || team === void 0 ? void 0 : (_team$name = team.name) === null || _team$name === void 0 ? void 0 : _team$name.includes(searchString);
   };
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(CONFIRM_SEASON, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_23__.useMutation)(CONFIRM_SEASON, {
       onCompleted: function onCompleted(res) {
         location.reload();
       },
@@ -10860,7 +11015,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     confirmSeason = _useMutation2[0],
     isConfirmingSeason = _useMutation2[1].isSubmitting;
-  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_PLAYERS_MUTATION, {
+  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_23__.useMutation)(ADD_PLAYERS_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         location.reload();
@@ -10876,7 +11031,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     _useMutation4 = _slicedToArray(_useMutation3, 2),
     addPlayersToSeason = _useMutation4[0],
     isSubmitting = _useMutation4[1].isSubmitting;
-  var _useMutation5 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_CAPTAINS_MUTATION, {
+  var _useMutation5 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_23__.useMutation)(ADD_CAPTAINS_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('mutation completed!!! res: ', res);
         location.reload();
@@ -10892,7 +11047,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     _useMutation6 = _slicedToArray(_useMutation5, 2),
     addCaptainsToSeason = _useMutation6[0],
     isSubmittingCaptains = _useMutation6[1].isSubmitting;
-  var _useMutation7 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
+  var _useMutation7 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_23__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
       onCompleted: function onCompleted(res) {
         console.log('Added teams to season. res: ', res);
         if (res.addTeamsToSeason != null) {
@@ -11025,28 +11180,38 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
       setSeasonGames(season === null || season === void 0 ? void 0 : (_season$addGamesToSea2 = season.addGamesToSeason) === null || _season$addGamesToSea2 === void 0 ? void 0 : _season$addGamesToSea2.games);
     }
   };
+  var addError = function addError(errorObj, errorArray) {
+    var error = errorObj(function () {
+      return setValidationErrors([]);
+    });
+    if (error.type === ERROR_TYPES.FATAL) {
+      errorArray.unshift(error);
+    } else {
+      errorArray.push(error);
+    }
+  };
   var validateInput = function validateInput() {
     var _seasonData$getSeason32, _seasonData$getSeason33, _seasonData$getSeason34, _seasonData$getSeason35, _seasonData$getSeason36, _seasonData$getSeason37;
     // validate page input
     // prompt user when validations fail
     var validationErrors = [];
-    if ((seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason32 = seasonData.getSeasonByID) === null || _seasonData$getSeason32 === void 0 ? void 0 : (_seasonData$getSeason33 = _seasonData$getSeason32.season) === null || _seasonData$getSeason33 === void 0 ? void 0 : (_seasonData$getSeason34 = _seasonData$getSeason33.players) === null || _seasonData$getSeason34 === void 0 ? void 0 : _seasonData$getSeason34.length) === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_PLAYERS_ADDED);
-    }
-    if ((seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason35 = seasonData.getSeasonByID) === null || _seasonData$getSeason35 === void 0 ? void 0 : (_seasonData$getSeason36 = _seasonData$getSeason35.season) === null || _seasonData$getSeason36 === void 0 ? void 0 : (_seasonData$getSeason37 = _seasonData$getSeason36.captains) === null || _seasonData$getSeason37 === void 0 ? void 0 : _seasonData$getSeason37.length) === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_CAPTAINS_ADDED);
-    }
-    if (seasonTeams.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_TEAMS_ADDED);
+    if (gameConfiguration == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periods) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periodLength) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.winCondition) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.scoreStat) == null) {
+      // addError(VALIDATION_ERRORS.NO_GAME_CONFIGURATION, validationErrors);
     }
     if (seasonGames.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_GAMES_ADDED);
+      addError(VALIDATION_ERRORS.NO_GAMES_ADDED, validationErrors);
     }
-    if (gameConfiguration == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periods) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periodLength) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.winCondition) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.scoreStat) == null) {
-      validationErrors.push(VALIDATION_ERRORS.NO_GAME_CONFIGURATION);
+    if (seasonTeams.length === 0) {
+      addError(VALIDATION_ERRORS.NO_TEAMS_ADDED, validationErrors);
+    }
+    if ((seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason32 = seasonData.getSeasonByID) === null || _seasonData$getSeason32 === void 0 ? void 0 : (_seasonData$getSeason33 = _seasonData$getSeason32.season) === null || _seasonData$getSeason33 === void 0 ? void 0 : (_seasonData$getSeason34 = _seasonData$getSeason33.captains) === null || _seasonData$getSeason34 === void 0 ? void 0 : _seasonData$getSeason34.length) !== 0) {
+      addError(VALIDATION_ERRORS.NO_CAPTAINS_ADDED, validationErrors);
+    }
+    if ((seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason35 = seasonData.getSeasonByID) === null || _seasonData$getSeason35 === void 0 ? void 0 : (_seasonData$getSeason36 = _seasonData$getSeason35.season) === null || _seasonData$getSeason36 === void 0 ? void 0 : (_seasonData$getSeason37 = _seasonData$getSeason36.players) === null || _seasonData$getSeason37 === void 0 ? void 0 : _seasonData$getSeason37.length) === 0) {
+      addError(VALIDATION_ERRORS.NO_PLAYERS_ADDED, validationErrors);
     }
     if (seasonStats.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_STATS_ADDED);
+      addError(VALIDATION_ERRORS.NO_STATS_ADDED, validationErrors);
     }
     setValidationErrors(validationErrors);
     return validationErrors;
@@ -11334,7 +11499,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     width: "800px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, null, "No games added to season"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, {
     marginBottom: "10px"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_ConfigureGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_18__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_ConfigureGamesComponent_jsx__WEBPACK_IMPORTED_MODULE_19__["default"], {
     configuration: gameConfiguration,
     onCompleted: function onCompleted(res) {
       return setGameConfiguration(res === null || res === void 0 ? void 0 : res.gameConfiguration);
@@ -11364,7 +11529,13 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     margin: "4px",
     marginTop: "4px",
     onClick: onSubmitConfirmSeason
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null)), validationErrors.length > 0 ? 'Show validation error modal' : null);
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null)), validationErrors.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_SteppedConfirmationModal_jsx__WEBPACK_IMPORTED_MODULE_18__["default"], {
+    onCancel: function onCancel() {
+      return setValidationErrors([]);
+    },
+    onSubmit: confirmSeason,
+    steps: validationErrors
+  }) : null);
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonConfigurationPage);
 
@@ -11734,7 +11905,7 @@ var CardContentWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default
   var _props$width;
   return (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : 'auto';
 });
-var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: ", ";\nborder: ", ";\nborder-radius: 8px;\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: ", ";\nmargin-bottom: 4px;\nmargin-right: ", ";\nmargin-top: ", ";\nmargin: ", ";\nwidth: ", ";\n", "\n"])), function (props) {
+var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\nmax-width: ", ";\nbackground-color: ", ";\nborder: ", ";\nborder-radius: ", ";\nbox-shadow: ", ";\nbox-sizing: border-box;\ncursor: ", ";\nheight: ", ";\npadding: ", ";\nmargin-bottom: 4px;\nmargin-right: ", ";\nmargin-top: ", ";\nmargin: ", ";\nwidth: ", ";\n", "\n"])), function (props) {
   var _props$maxWidth;
   return (_props$maxWidth = props.maxWidth) !== null && _props$maxWidth !== void 0 ? _props$maxWidth : '400px';
 }, function (props) {
@@ -11742,6 +11913,9 @@ var CardWrapper = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(
 }, function (props) {
   var _props$border;
   return (_props$border = props.border) !== null && _props$border !== void 0 ? _props$border : '1px solid rgba(0, 0, 0, 0.1)';
+}, function (props) {
+  var _props$borderRadius;
+  return (_props$borderRadius = props.borderRadius) !== null && _props$borderRadius !== void 0 ? _props$borderRadius : '8px';
 }, function (props) {
   var _props$boxShadow;
   return (_props$boxShadow = props.boxShadow) !== null && _props$boxShadow !== void 0 ? _props$boxShadow : 'none';
@@ -12027,12 +12201,16 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: white;\n  border: ", ";\n  border-radius: ", ";\n  disabled: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  cursor: ", ";\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  &:hover {\n    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);\n  }\n  &:active {\n    background-color: teal;\n    color: white;\n  }\n"])), function (props) {
+var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border: ", ";\n  border-radius: ", ";\n  color: ", ";\n  disabled: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  cursor: ", ";\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  &:hover {\n    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);\n  }\n  &:active {\n    background-color: teal;\n    color: white;\n  }\n  ", "\n  ", "\n"])), function (props) {
+  return props.primary ? 'lightskyblue' : props.secondary ? 'lightgrey' : 'white';
+}, function (props) {
   var _props$border;
   return (_props$border = props.border) !== null && _props$border !== void 0 ? _props$border : '1px solid rgba(0, 0, 0, 0.1)';
 }, function (props) {
   var _props$borderRadius;
   return (_props$borderRadius = props.borderRadius) !== null && _props$borderRadius !== void 0 ? _props$borderRadius : "4px";
+}, function (props) {
+  return props.primary || props.secondary ? 'white' : 'black';
 }, function (props) {
   var _props$disabled;
   return (_props$disabled = props.disabled) !== null && _props$disabled !== void 0 ? _props$disabled : 'initial';
@@ -12054,6 +12232,10 @@ var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_t
 }, function (props) {
   var _props$boxShadow;
   return (_props$boxShadow = props.boxShadow) !== null && _props$boxShadow !== void 0 ? _props$boxShadow : "0 0 10px rgba(0, 0, 0, 0.07)";
+}, function (props) {
+  return props.primary ? '&:hover { background-color: dodgerblue }' : '';
+}, function (props) {
+  return props.secondary ? '&:hover { background-color: darkgrey }' : '';
 });
 var Clickable = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\nborder-radius: ", ";\ncursor: pointer;\n&:hover {\n  stroke: white;\n  fill: black;\n}\n"])), function (props) {
   var _props$borderRadius2;

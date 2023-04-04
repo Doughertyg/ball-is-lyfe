@@ -19,6 +19,7 @@ import { CardWrapper } from '../../styled-components/card.js';
 import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
 import BadgeComponent from '../../components/BadgeComponent.jsx';
+import SteppedConfirmationModal from '../../components/SteppedConfirmationModal.jsx';
 import ConfigureGamesComponent from '../../components/ConfigureGamesComponent.jsx';
 
 const SEASON_STATUS_LABELS = {
@@ -34,31 +35,42 @@ const ERROR_TYPES = {
 }
 
 const VALIDATION_ERRORS = {
-  NO_PLAYERS_ADDED: {
-    message: 'Please add players to the season before continuing.',
-    type: ERROR_TYPES.FATAL
-  },
-  NO_TEAMS_ADDED: {
-    details: 'Teams must be added to the season and must contain at least one player.',
-    message: 'No teams added to the, please add at least one before continuing.',
-    type: ERROR_TYPES.FATAL
-  },
-  NO_CAPTAINS_ADDED: {
-    message: 'No captains added to the season, Do you want to continue?',
+  NO_PLAYERS_ADDED: onNext => ({
+    text: 'Please add players to the season before continuing.',
+    type: ERROR_TYPES.FATAL,
+    nextLabel: 'Done',
+    onNext,
+    preventNext: true,
+  }),
+  NO_TEAMS_ADDED: onNext => ({
+    text: 'No teams added to the season, please add at least one before continuing.',
+    type: ERROR_TYPES.FATAL,
+    nextLabel: 'Done',
+    onNext,
+    preventNext: true
+  }),
+  NO_CAPTAINS_ADDED: onNext => ({
+    text: 'No captains added to the season, Do you want to continue?',
     type: ERROR_TYPES.WARNING
-  },
-  NO_GAMES_ADDED: {
-    message: 'No games added, please add at least one game before continuing.',
-    type: ERROR_TYPES.FATAL
-  },
-  NO_GAME_CONFIGURATION: {
-    message: 'Season games not configured, please configure before continuing.',
-    type: ERROR_TYPES.FATAL
-  },
-  NO_STATS_ADDED: {
-    message: 'No stats added! Do you want to continue?',
+  }),
+  NO_GAMES_ADDED: onNext => ({
+    text: 'No games added, please add at least one game before continuing.',
+    type: ERROR_TYPES.FATAL,
+    nextLabel: 'Done',
+    onNext,
+    preventNext: true
+  }),
+  NO_GAME_CONFIGURATION: onNext => ({
+    text: 'Season games not configured, please configure before continuing.',
+    type: ERROR_TYPES.FATAL,
+    nextLabel: 'Done',
+    onNext,
+    preventNext: true
+  }),
+  NO_STATS_ADDED: onNext => ({
+    text: 'No stats added! Do you want to continue?',
     type: ERROR_TYPES.WARNING
-  }
+  })
 }
 
 const FETCH_SEASON_QUERY = gql`
@@ -486,36 +498,45 @@ const SeasonConfigurationPage = ({match}) => {
     }
   }
 
+  const addError = (errorObj, errorArray) => {
+    const error = errorObj(() => setValidationErrors([]));
+    if (error.type === ERROR_TYPES.FATAL) {
+      errorArray.unshift(error);
+    } else {
+      errorArray.push(error);
+    }
+  }
+
   const validateInput = () => {
     // validate page input
     // prompt user when validations fail
     const validationErrors = [];
-    if (seasonData?.getSeasonByID?.season?.players?.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_PLAYERS_ADDED);
-    }
-
-    if (seasonData?.getSeasonByID?.season?.captains?.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_CAPTAINS_ADDED);
-    }
-
-    if (seasonTeams.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_TEAMS_ADDED);
+    if (gameConfiguration == null
+      || gameConfiguration?.periods == null
+      || gameConfiguration?.periodLength == null
+      || gameConfiguration?.winCondition == null
+      || gameConfiguration?.scoreStat == null) {
+      // addError(VALIDATION_ERRORS.NO_GAME_CONFIGURATION, validationErrors);
     }
 
     if (seasonGames.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_GAMES_ADDED);
+      addError(VALIDATION_ERRORS.NO_GAMES_ADDED, validationErrors);
     }
 
-    if (gameConfiguration == null
-        || gameConfiguration?.periods == null
-        || gameConfiguration?.periodLength == null
-        || gameConfiguration?.winCondition == null
-        || gameConfiguration?.scoreStat == null) {
-      validationErrors.push(VALIDATION_ERRORS.NO_GAME_CONFIGURATION);
+    if (seasonTeams.length === 0) {
+      addError(VALIDATION_ERRORS.NO_TEAMS_ADDED, validationErrors);
+    }
+
+    if (seasonData?.getSeasonByID?.season?.captains?.length !== 0) {
+      addError(VALIDATION_ERRORS.NO_CAPTAINS_ADDED, validationErrors);
+    }
+
+    if (seasonData?.getSeasonByID?.season?.players?.length === 0) {
+      addError(VALIDATION_ERRORS.NO_PLAYERS_ADDED, validationErrors);
     }
 
     if (seasonStats.length === 0) {
-      validationErrors.push(VALIDATION_ERRORS.NO_STATS_ADDED);
+      addError(VALIDATION_ERRORS.NO_STATS_ADDED, validationErrors);
     }
 
     setValidationErrors(validationErrors);
@@ -773,7 +794,8 @@ const SeasonConfigurationPage = ({match}) => {
           <Divider />
         </>
       )}
-      {validationErrors.length > 0 ? 'Show validation error modal' : null}
+      {validationErrors.length > 0 ? (
+        <SteppedConfirmationModal onCancel={() => setValidationErrors([])} onSubmit={confirmSeason} steps={validationErrors} />) : null}
     </FlexContainer>
   );
 }

@@ -28,7 +28,7 @@ export const CardWrapper = styled.div`
 max-width: ${props => props.maxWidth ?? '400px'};
 background-color: ${props => props.isDisabled ? 'lightgrey' : 'white'};
 border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
-border-radius: 8px;
+border-radius: ${props => props.borderRadius ?? '8px'};
 box-shadow: ${props => props.boxShadow ?? 'none'};
 box-sizing: border-box;
 cursor: ${props => props.onClick != null ? 'pointer' : 'default'};

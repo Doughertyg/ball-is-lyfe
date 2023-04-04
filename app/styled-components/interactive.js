@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const Button = styled.button`
-  background-color: white;
+  background-color: ${props => props.primary ? 'lightskyblue' : props.secondary ? 'lightgrey' : 'white'};
   border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
   border-radius: ${props => props.borderRadius ?? "4px"};
+  color: ${props => props.primary || props.secondary ? 'white' : 'black'};
   disabled: ${props => props.disabled ?? 'initial'};
   height: ${props => props.height ?? 'auto'};
   padding: 8px 20px;
@@ -18,6 +19,14 @@ export const Button = styled.button`
   &:active {
     background-color: teal;
     color: white;
+  }
+  ${props => props.primary 
+    ? '&:hover { background-color: dodgerblue }' 
+    : ''
+  }
+  ${props => props.secondary
+    ? '&:hover { background-color: darkgrey }'
+    : ''
   }
 `;
 
