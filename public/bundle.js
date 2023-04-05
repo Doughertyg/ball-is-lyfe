@@ -11219,7 +11219,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     // prompt user when validations fail
     var validationErrors = [];
     if (gameConfiguration == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periods) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.periodLength) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.winCondition) == null || (gameConfiguration === null || gameConfiguration === void 0 ? void 0 : gameConfiguration.scoreStat) == null) {
-      // addError(VALIDATION_ERRORS.NO_GAME_CONFIGURATION, validationErrors);
+      addError(VALIDATION_ERRORS.NO_GAME_CONFIGURATION, validationErrors);
     }
     if (seasonGames.length === 0) {
       addError(VALIDATION_ERRORS.NO_GAMES_ADDED, validationErrors);

@@ -520,7 +520,7 @@ const SeasonConfigurationPage = ({match}) => {
       || gameConfiguration?.periodLength == null
       || gameConfiguration?.winCondition == null
       || gameConfiguration?.scoreStat == null) {
-      // addError(VALIDATION_ERRORS.NO_GAME_CONFIGURATION, validationErrors);
+      addError(VALIDATION_ERRORS.NO_GAME_CONFIGURATION, validationErrors);
     }
 
     if (seasonGames.length === 0) {
