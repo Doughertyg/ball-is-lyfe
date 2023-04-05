@@ -4703,6 +4703,18 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+var BANNER_TYPES = {
+  INFO: 'info',
+  ERROR: 'error'
+};
+var BANNER_TYPE_COLORS = {
+  ERROR: 'red',
+  INFO: 'dimgrey'
+};
+var BANNER_TYPE_BACKGROUND_COLORS = {
+  ERROR: 'rgba(255, 0, 0, 0.1)',
+  INFO: 'rgba(239, 239, 239, 1)'
+};
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border-radius: 8px;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  color: ", ";\n  margin-top: ", ";\n  margin-bottom: ", ";\n  padding: 12px;\n"])), function (props) {
   var _props$backgroundColo;
   return (_props$backgroundColo = props.backgroundColor) !== null && _props$backgroundColo !== void 0 ? _props$backgroundColo : 'rgba(239, 239, 239, 1)';
@@ -4719,17 +4731,22 @@ var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_tem
 
 /**
  * Component that displays a banner message
+ *   type prop should be used to set the styling of the banner
+ *   types supported: error, info
  *  ,--------------------------------------,
  * :            Banner message              :
  *  '--------------------------------------'
  */
 var BannerComponent = function BannerComponent(_ref) {
-  var backgroundColor = _ref.backgroundColor,
-    color = _ref.color,
+  var backgroundColorProp = _ref.backgroundColor,
+    colorProp = _ref.color,
     title = _ref.title,
+    type = _ref.type,
     subtitle = _ref.subtitle,
     marginBottom = _ref.marginBottom,
     marginTop = _ref.marginTop;
+  var backgroundColor = backgroundColorProp ? backgroundColorProp : type === BANNER_TYPES.ERROR ? BANNER_TYPE_BACKGROUND_COLORS.ERROR : type === BANNER_TYPES.INFO ? BANNER_TYPE_BACKGROUND_COLORS.INFO : null;
+  var color = colorProp ? colorProp : type === BANNER_TYPES.ERROR ? BANNER_TYPE_COLORS.ERROR : type === BANNER_TYPES.INFO ? BANNER_TYPE_COLORS.INFO : null;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
     backgroundColor: backgroundColor,
     color: color,
@@ -6527,11 +6544,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/lib/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useMutation.js");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/node_modules/@apollo/client/react/hooks/useQuery.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _InputField_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputField.jsx */ "./app/components/InputField.jsx");
 /* harmony import */ var _PlayerSearchField_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PlayerSearchField.jsx */ "./app/components/PlayerSearchField.jsx");
@@ -6539,6 +6556,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CompactPlayerCard_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CompactPlayerCard.jsx */ "./app/components/CompactPlayerCard.jsx");
 /* harmony import */ var _context_auth__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../context/auth */ "./app/context/auth.js");
 /* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
+/* harmony import */ var _BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./BannerComponent.jsx */ "./app/components/BannerComponent.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var _templateObject, _templateObject2, _templateObject3;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -6564,9 +6582,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
-var PLAYER_CAPTAIN_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getCaptains(seasonID: $seasonID) {\n      email\n      name\n      profilePicture\n      id\n      username\n    }\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        players {\n          email\n          id\n          name\n          username\n          profilePicture\n        }\n      }\n    }\n  }\n"])));
-var CREATE_TEAM_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_9__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createTeam(\n    $bannerPicture: String,\n    $captain: ID!,\n    $description: String,\n    $name: String!,\n    $players: [ID]!,\n    $profilePicture: String,\n    $seasonID: ID,\n    $sport: String\n  ) {\n    createTeam(\n      bannerPicture: $bannerPicture,\n      captain: $captain,\n      description: $description,\n      name: $name,\n      players: $players,\n      profilePicture: $profilePicture,\n      seasonID: $seasonID,\n      sport: $sport\n    ) {\n      teamInstance {\n        id\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
+
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
+var PLAYER_CAPTAIN_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getCaptains(seasonID: $seasonID) {\n      email\n      name\n      profilePicture\n      id\n      username\n    }\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        players {\n          email\n          id\n          name\n          username\n          profilePicture\n        }\n      }\n    }\n  }\n"])));
+var CREATE_TEAM_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createTeam(\n    $bannerPicture: String,\n    $captain: ID!,\n    $description: String,\n    $name: String!,\n    $players: [ID]!,\n    $profilePicture: String,\n    $seasonID: ID,\n    $sport: String\n  ) {\n    createTeam(\n      bannerPicture: $bannerPicture,\n      captain: $captain,\n      description: $description,\n      name: $name,\n      players: $players,\n      profilePicture: $profilePicture,\n      seasonID: $seasonID,\n      sport: $sport\n    ) {\n      teamInstance {\n        id\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
 
 /**
  * Component for creating a team
@@ -6608,20 +6627,26 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     _useState6 = _slicedToArray(_useState5, 2),
     captain = _useState6[0],
     setCaptain = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState8 = _slicedToArray(_useState7, 2),
+    mutationError = _useState8[0],
+    setMutationError = _useState8[1];
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_6__.AuthContext),
     user = _useContext.user;
-  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useMutation)(CREATE_TEAM_MUTATION, {
+  var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(CREATE_TEAM_MUTATION, {
       onCompleted: function onCompleted(res) {
         onComplete === null || onComplete === void 0 ? void 0 : onComplete(res);
       },
       onError: function onError(error) {
+        var _error$message;
         console.log('error creating team: ', JSON.stringify(error, null, 2));
+        setMutationError((_error$message = error === null || error === void 0 ? void 0 : error.message) !== null && _error$message !== void 0 ? _error$message : 'There has been an error, please try again.');
       }
     }),
     _useMutation2 = _slicedToArray(_useMutation, 2),
     createTeam = _useMutation2[0],
     isSubmitting = _useMutation2[1].isSubmitting;
-  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useQuery)(PLAYER_CAPTAIN_QUERY, {
+  var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useQuery)(PLAYER_CAPTAIN_QUERY, {
       variables: {
         seasonID: seasonID,
         userID: user.id
@@ -6721,7 +6746,10 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
       picture: player.profilePicture,
       subLabel: player.email
     });
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
+  })), mutationError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    title: mutationError,
+    type: "error"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
     justify: "center",
     marginTop: "12px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {

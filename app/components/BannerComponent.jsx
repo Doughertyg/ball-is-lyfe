@@ -5,6 +5,21 @@ import {
   FlexContainer,
 } from '../styled-components/common';
 
+const BANNER_TYPES = {
+  INFO: 'info',
+  ERROR: 'error'
+}
+
+const BANNER_TYPE_COLORS = {
+  ERROR: 'red',
+  INFO: 'dimgrey'
+}
+
+const BANNER_TYPE_BACKGROUND_COLORS = {
+  ERROR: 'rgba(255, 0, 0, 0.1)',
+  INFO: 'rgba(239, 239, 239, 1)'
+}
+
 const Wrapper = styled.div`
   background-color: ${props => props.backgroundColor ?? 'rgba(239, 239, 239, 1)'};
   border-radius: 8px;
@@ -17,11 +32,22 @@ const Wrapper = styled.div`
 
 /**
  * Component that displays a banner message
+ *   type prop should be used to set the styling of the banner
+ *   types supported: error, info
  *  ,--------------------------------------,
  * :            Banner message              :
  *  '--------------------------------------'
  */
-const BannerComponent = ({ backgroundColor, color, title, subtitle, marginBottom, marginTop }) => {
+const BannerComponent = ({ backgroundColor: backgroundColorProp, color: colorProp, title, type, subtitle, marginBottom, marginTop }) => {
+  const backgroundColor = backgroundColorProp ? backgroundColorProp :
+    type === BANNER_TYPES.ERROR ? BANNER_TYPE_BACKGROUND_COLORS.ERROR :
+    type === BANNER_TYPES.INFO ? BANNER_TYPE_BACKGROUND_COLORS.INFO :
+    null;
+  const color = colorProp ? colorProp :
+    type === BANNER_TYPES.ERROR ? BANNER_TYPE_COLORS.ERROR :
+    type === BANNER_TYPES.INFO ? BANNER_TYPE_COLORS.INFO :
+    null;
+
   return (
     <Wrapper backgroundColor={backgroundColor} color={color} marginBottom={marginBottom} marginTop={marginTop}>
       <FlexContainer justify="center" alignItems="center">

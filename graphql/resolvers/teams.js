@@ -116,6 +116,20 @@ module.exports = {
       let teamInstance = null;
 
       if (seasonID != null) {
+        const season = await Season.findById(seasonID).populate('teams');
+
+        if (season == null) {
+          throw new Error('season is unexpectedly null.');
+        }
+
+        const isAlreadyCaptain = season?.teams?.reduce((acc, team) => {
+          return team.captain?.toString() === user.id?.toString() ? true : acc;
+        }, false);
+
+        if (isAlreadyCaptain) {
+          throw new Error('Captain is already assigned to a different team. Captains can only captain one team.');
+        }
+
         const newTeamInstance = new TeamInstance({
           captain,
           players,
@@ -128,12 +142,6 @@ module.exports = {
         }
 
         await teamInstance.populate(['captain', 'players', 'team']).execPopulate();
-
-        const season = await Season.findById(seasonID);
-        if (season == null) {
-          throw new Error('season is unexpectedly null.');
-        }
-
         const newSeasonTeams = [...season.teams];
         newSeasonTeams.push(teamInstance);
         season.teams = newSeasonTeams;

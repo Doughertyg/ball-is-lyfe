@@ -9,6 +9,7 @@ import SearchField from './SearchField.jsx';
 import CompactPlayerCard from './CompactPlayerCard.jsx';
 import { AuthContext } from '../context/auth';
 import Button from './Button.jsx';
+import BannerComponent from './BannerComponent.jsx';
 
 const Wrapper = styled.div`
   border-radius: 8px;
@@ -110,6 +111,7 @@ const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }
   const [name, setName] = useState("");
   const [players, setPlayers] = useState({});
   const [captain, setCaptain] = useState(defaultCaptain);
+  const [mutationError, setMutationError] = useState(null);
   const { user } = useContext(AuthContext);
 
   const [createTeam, { isSubmitting }] = useMutation(CREATE_TEAM_MUTATION, {
@@ -118,6 +120,7 @@ const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }
     },
     onError: (error) => {
       console.log('error creating team: ', JSON.stringify(error, null, 2));
+      setMutationError(error?.message ?? 'There has been an error, please try again.');
     },
   })
 
@@ -189,6 +192,7 @@ const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }
             />
           ))}
         </FlexContainer>
+        {mutationError && <BannerComponent title={mutationError} type="error" />}
         <FlexContainer justify="center" marginTop="12px">
           <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
           <Button isLoading={false} label="Create Team" loading={isSubmitting} onClick={onSubmit} />
