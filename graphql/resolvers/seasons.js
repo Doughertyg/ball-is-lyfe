@@ -70,8 +70,11 @@ module.exports = {
             }]
           });
         const isLeagueAdmin = season?.league?.admins?.includes(userID) ?? false;
+        const isCaptain = season?.captains?.reduce((acc, val) => {
+          return val._id?.toString() === userID ? true : acc; 
+        }, false);
         if (season) {
-          return { season, isLeagueAdmin };
+          return { season, isCaptain, isLeagueAdmin };
         } else {
           throw new Error('Season not found');
         }

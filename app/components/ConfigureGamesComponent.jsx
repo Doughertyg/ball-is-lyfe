@@ -205,7 +205,7 @@ const ConfigureGamesComponent = ({ configuration, isLeagueAdmin, onCompleted, se
       </FlexContainer>
       {configureGames && (
         <Wrapper>
-          {mutationError && <BannerComponent color="red" title="There has been an error" subtitle={mutationError} marginTop="0" marginBottom="8px" />}
+          {mutationError && <BannerComponent backgroundColor="rgba(255, 0, 0, 0.2)" color="red" title="There has been an error" subtitle={mutationError} marginTop="0" marginBottom="8px" />}
           <PageHeader margin="0 0 8px 0">Configure Games</PageHeader>
           <Divider marginBottom="10px" marginTop="0" />
           <SectionHeadingText margin="0 0 4px 0">Stat for complete team score</SectionHeadingText>

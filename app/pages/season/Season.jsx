@@ -18,6 +18,7 @@ import { CardWrapper } from '../../styled-components/card.js';
 import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
 import SeasonConfigurationPage from '../season/SeasonConfigurationPage.jsx';
+import BannerComponent from '../../components/BannerComponent.jsx';
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -82,6 +83,7 @@ const FETCH_SEASON_QUERY = gql`
           }
         }
       }
+      isCaptain
       isLeagueAdmin
     }
     getTeams(seasonIDToExclude: $seasonID) {
@@ -198,6 +200,7 @@ const Season = ({match}) => {
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const [seasonTeams, setSeasonTeams] = useState([]);
   const [seasonGames, setSeasonGames] = useState([]);
+  const [addCaptainsError, setAddCaptainsError] = useState(null);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -206,6 +209,7 @@ const Season = ({match}) => {
     variables: {seasonID, userID: user.id }
   });
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
+  const isCaptain = seasonData?.getSeasonByID?.isCaptain ?? false;
   const leagueID = seasonData?.getSeasonByID?.season?.league?._id;
 
   if (error != null) {
@@ -266,7 +270,8 @@ const Season = ({match}) => {
       location.reload();
     },
     onError: (error) => {
-      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
+      setAddCaptainsError(error?.message ?? 'There was an error, please try again.');
     },
     variables: {
       seasonID,
@@ -618,6 +623,7 @@ const Season = ({match}) => {
           </FlexContainer>
           {Object.keys(captainsToAdd).length > 0 && (
             <FlexContainer alignItems="center" direction="column" marginTop="8px">
+              {addCaptainsError && <BannerComponent backgroundColor="rgba(255, 0, 0, 0.2)" color="red" marginBottom="8px" title={addCaptainsError} />}
               <DetailsText>Adding a captain that has not already been added as a player will add them as a player.</DetailsText>
               <FlexContainer marginBottom="12px" marginTop="12px" width="100%">
                 <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setCaptainsToAdd({})} />

@@ -151,6 +151,7 @@ const FETCH_SEASON_QUERY = gql`
           winCondition
         }
       }
+      isCaptain
       isLeagueAdmin
     }
     getTeams(seasonIDToExclude: $seasonID) {
@@ -281,6 +282,7 @@ const SeasonConfigurationPage = ({match}) => {
   const [gameConfiguration, setGameConfiguration] = useState({});
   const [confirmMutationError, setConfirmMutationError] = useState(null);
   const [validationErrors, setValidationErrors] = useState([]);
+  const [addCaptainsError, setAddCaptainsError] = useState(null);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -289,6 +291,7 @@ const SeasonConfigurationPage = ({match}) => {
     variables: {seasonID, userID: user.id }
   });
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
+  const isCaptain = seasonData?.getSeasonByID?.isCaptain ?? false;
   const leagueID = seasonData?.getSeasonByID?.season?.league?._id;
 
   if (error != null) {
@@ -362,7 +365,8 @@ const SeasonConfigurationPage = ({match}) => {
       location.reload();
     },
     onError: (error) => {
-      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2))
+      console.log('stringified error on mutation:  ', JSON.stringify(error, null, 2));
+      setAddCaptainsError(error?.message ?? 'There was an error, please try again.');
     },
     variables: {
       seasonID,
@@ -664,6 +668,7 @@ const SeasonConfigurationPage = ({match}) => {
           </FlexContainer>
           {Object.keys(captainsToAdd).length > 0 && (
             <FlexContainer alignItems="center" direction="column" marginTop="8px">
+              {addCaptainsError && <BannerComponent backgroundColor="rgba(255, 0, 0, 0.2)" color="red" title={addCaptainsError} />}
               <DetailsText>Adding a captain that has not already been added as a player will add them as a player.</DetailsText>
               <FlexContainer marginBottom="12px" marginTop="12px" width="100%">
                 <Button isDisabled={isSubmitting} label="Cancel" onClick={() => setCaptainsToAdd({})} />
@@ -693,7 +698,7 @@ const SeasonConfigurationPage = ({match}) => {
           <Divider marginBottom="10px" />
           <FlexContainer alignItems="center" justify="start" overflow="visible">
             <SectionHeadingText margin="20px 12px 20px 0">Teams</SectionHeadingText>
-            <CollapsibleSearchField
+            {(isLeagueAdmin || isCaptain) && <CollapsibleSearchField
               filterResults={filterTeamSearchResults}
               getResultComponent={getTeamResultsComponent}
               getRightButton={getCreateTeamButton}
@@ -702,10 +707,14 @@ const SeasonConfigurationPage = ({match}) => {
               onClick={onClickTeamEntry}
               onClose={() => setCreateTeamExpanded(false)}
               source={seasonData?.getTeams ?? []}
-            />
+            />}
           </FlexContainer>
           {createTeamExpanded && (
-            <CreatetTeamComponent onCancel={() => setCreateTeamExpanded(false)} onComplete={onCompleteCreateTeam} seasonID={seasonID} />
+            <CreatetTeamComponent
+              defaultCaptain={isCaptain ? user : null}
+              onCancel={() => setCreateTeamExpanded(false)}
+              onComplete={onCompleteCreateTeam}
+              seasonID={seasonID}/>
           )}
           {Object.keys(teamsToAdd).length > 0 && (
             <>

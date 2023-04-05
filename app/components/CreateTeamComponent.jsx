@@ -21,9 +21,11 @@ const Wrapper = styled.div`
 const PLAYER_CAPTAIN_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
     getCaptains(seasonID: $seasonID) {
+      email
       name
       profilePicture
       id
+      username
     }
     getSeasonByID(seasonID: $seasonID, userID: $userID) {
       season {
@@ -104,10 +106,10 @@ const CREATE_TEAM_MUTATION = gql`
  *  `---------------------------------------------------------`
  * 
  */
-const CreatetTeamComponent = ({ onCancel, onComplete, seasonID }) => {
+const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }) => {
   const [name, setName] = useState("");
   const [players, setPlayers] = useState({});
-  const [captain, setCaptain] = useState(null);
+  const [captain, setCaptain] = useState(defaultCaptain);
   const { user } = useContext(AuthContext);
 
   const [createTeam, { isSubmitting }] = useMutation(CREATE_TEAM_MUTATION, {
@@ -124,7 +126,9 @@ const CreatetTeamComponent = ({ onCancel, onComplete, seasonID }) => {
   });
 
   const filterCaptainResults = (entry, input) => {
-    return entry?.name?.includes(input);
+    return entry?.name?.toLowerCase().includes(input.toLowerCase()) ||
+      entry?.email?.toLowerCase().includes(input.toLowerCase()) ||
+      entry?.username?.toLowerCase().includes(input.toLowerCase());
   };
 
   const filterPlayerResults = (entry, input) => {

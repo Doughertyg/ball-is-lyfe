@@ -29,6 +29,7 @@ module.exports = gql`
   }
   type GetSeasonByIDReturnType {
     season: Season
+    isCaptain: Boolean
     isLeagueAdmin: Boolean
   }
   type Post {
