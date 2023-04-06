@@ -67,6 +67,7 @@ module.exports = {
         const players = team.players.filter(player => season.players.includes(player));
         const newTeamInstance = new TeamInstance({
           captain: null,
+          createdAt: new Date().toISOString(),
           players,
           season: season.id,
           team: team.id
@@ -110,10 +111,7 @@ module.exports = {
         createdAt: new Date().toISOString(),
         createdBy: user.id,
         admins: [captain]
-      });
-
-      const team = await newTeam.save();
-      let teamInstance = null;
+      }); 
 
       if (seasonID != null) {
         const season = await Season.findById(seasonID).populate('teams');
@@ -129,7 +127,12 @@ module.exports = {
         if (isAlreadyCaptain) {
           throw new Error('Captain is already assigned to a different team. Captains can only captain one team.');
         }
+      }
 
+      const team = await newTeam.save();
+      let teamInstance = null;
+
+      if (seasonID != null) {
         const newTeamInstance = new TeamInstance({
           captain,
           players,
@@ -145,7 +148,12 @@ module.exports = {
         const newSeasonTeams = [...season.teams];
         newSeasonTeams.push(teamInstance);
         season.teams = newSeasonTeams;
-        await season.save();
+        
+        try {
+          await season.save();
+        } catch (error) {
+          throw new Error(`failed to save teamInstance to season. TeamInstance: ${teamInstance._id}`);
+        }
       }
 
       return {team, teamInstance};
