@@ -329,7 +329,7 @@ const SeasonConfigurationPage = ({match}) => {
   }
 
   const filterTeamSearchResults = (team, searchString) => {
-    return team?.name?.includes(searchString);
+    return team?.name?.toLowerCase().includes(searchString.toLowerCase());
   }
 
   const [confirmSeason, {isSubmitting: isConfirmingSeason}] = useMutation(CONFIRM_SEASON, {
@@ -377,9 +377,7 @@ const SeasonConfigurationPage = ({match}) => {
   const [addTeamsToSeason, {isSubmitting: isAddingTeamsToSeason}] = useMutation(ADD_TEAMS_TO_SEASON_MUTATION, {
     onCompleted: (res) => {
       console.log('Added teams to season. res: ', res);
-      if (res.addTeamsToSeason != null) {
-        setSeasonTeams(res.addTeamsToSeason.teams);
-      }
+      setSeasonTeams(res?.addTeamsToSeason?.teams ?? []);
       setTeamsToAdd({});
     },
     onError: (error) => {

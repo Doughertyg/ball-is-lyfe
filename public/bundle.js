@@ -11046,7 +11046,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
   }
   var filterTeamSearchResults = function filterTeamSearchResults(team, searchString) {
     var _team$name;
-    return team === null || team === void 0 ? void 0 : (_team$name = team.name) === null || _team$name === void 0 ? void 0 : _team$name.includes(searchString);
+    return team === null || team === void 0 ? void 0 : (_team$name = team.name) === null || _team$name === void 0 ? void 0 : _team$name.toLowerCase().includes(searchString.toLowerCase());
   };
   var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_23__.useMutation)(CONFIRM_SEASON, {
       onCompleted: function onCompleted(res) {
@@ -11100,10 +11100,9 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     isSubmittingCaptains = _useMutation6[1].isSubmitting;
   var _useMutation7 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_23__.useMutation)(ADD_TEAMS_TO_SEASON_MUTATION, {
       onCompleted: function onCompleted(res) {
+        var _res$addTeamsToSeason, _res$addTeamsToSeason2;
         console.log('Added teams to season. res: ', res);
-        if (res.addTeamsToSeason != null) {
-          setSeasonTeams(res.addTeamsToSeason.teams);
-        }
+        setSeasonTeams((_res$addTeamsToSeason = res === null || res === void 0 ? void 0 : (_res$addTeamsToSeason2 = res.addTeamsToSeason) === null || _res$addTeamsToSeason2 === void 0 ? void 0 : _res$addTeamsToSeason2.teams) !== null && _res$addTeamsToSeason !== void 0 ? _res$addTeamsToSeason : []);
         setTeamsToAdd({});
       },
       onError: function onError(error) {
