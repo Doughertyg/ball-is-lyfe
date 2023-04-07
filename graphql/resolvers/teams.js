@@ -139,9 +139,11 @@ module.exports = {
           season: seasonID,
           team: team.id
         });
-        teamInstance = await newTeamInstance.save();
-        if (teamInstance == null) {
-          throw new Error('Team instance failed to save.');
+
+        try {
+          teamInstance = await newTeamInstance.save();
+        } catch (error) {
+          throw new Error(`Failed to save team instance. Team created: ${team.id ?? team._id}`)
         }
 
         await teamInstance.populate(['captain', 'players', 'team']).execPopulate();
