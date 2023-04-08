@@ -24,6 +24,7 @@ const CompactDetailsCard = ({
   details, // Array of strings
   isDisabled,
   onClose,
+  onEdit,
   picture,
   subTitle,
   title,
@@ -61,6 +62,7 @@ const CompactDetailsCard = ({
           )}
         </FlexContainer>
         {onClose && !isDisabled && <Icon icon="close" margin="4px 4px 4px 32px" onClick={onClose} />}
+        {onEdit && <Icon fill="dimgrey" icon="edit" margin="4px 4px 4px 32px" onClick={onEdit} />}
       </FlexContainer>
     </CardWrapper>
   )

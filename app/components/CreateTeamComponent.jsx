@@ -85,6 +85,43 @@ const CREATE_TEAM_MUTATION = gql`
   }
 `;
 
+const EDIT_TEAM_MUTATION = gql`
+  mutation editTeam(
+    $captain: ID,
+    $name: String,
+    $players: [ID!],
+    $seasonID: ID!,
+    $teamID: ID!
+  ) {
+    editTeam(
+      teamInput: {
+        captain: $captain,
+        name: $name,
+        players: $players,
+        seasonID: $seasonID,
+        teamID: $teamID
+      }
+    ) {
+      id
+      captain {
+        email
+        name
+        profilePicture
+        username
+      }
+      players {
+        email
+        name
+        profilePicture
+        username
+      }
+      team {
+        name
+      }
+    }
+  }
+`;
+
 /**
  * Component for creating a team
  * Can create a team attached to a season
@@ -107,22 +144,33 @@ const CREATE_TEAM_MUTATION = gql`
  *  `---------------------------------------------------------`
  * 
  */
-const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }) => {
-  const [name, setName] = useState("");
-  const [players, setPlayers] = useState({});
+const CreatetTeamComponent = ({ defaultCaptain, isEditing, teamName, teamPlayers, onCancel, onComplete, seasonID, teamID }) => {
+  const [name, setName] = useState(isEditing ? (teamName ?? 'Team name not set') : '');
+  const [players, setPlayers] = useState(isEditing ? teamPlayers : {});
   const [captain, setCaptain] = useState(defaultCaptain);
   const [mutationError, setMutationError] = useState(null);
   const { user } = useContext(AuthContext);
 
   const [createTeam, { isSubmitting }] = useMutation(CREATE_TEAM_MUTATION, {
     onCompleted: (res) => {
-      onComplete?.(res);
+      onComplete?.(res.createTeam?.teamInstance);
     },
     onError: (error) => {
       console.log('error creating team: ', JSON.stringify(error, null, 2));
       setMutationError(error?.message ?? 'There has been an error, please try again.');
     },
-  })
+  });
+
+  const [editTeam, { isSubmitting: isEditingTeam }] = useMutation(EDIT_TEAM_MUTATION, {
+    onCompleted: res => {
+      console.log('completed editing team. res: ', res);
+      onComplete?.(res.editTeam);
+    },
+    onError: error => {
+      console.log('error editing team: ', JSON.stringify(error, null, 2));
+      setMutationError(error?.message ?? 'There has been an error, please try again.');
+    },
+  });
 
   const { loading, data, error } = useQuery(PLAYER_CAPTAIN_QUERY, {
     variables: {seasonID, userID: user.id}
@@ -150,7 +198,7 @@ const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }
     setPlayers(newPlayers);
   }
 
-  const onSubmit = () => {
+  const onCreateTeam = () => {
     createTeam({
       variables: {
         name,
@@ -161,32 +209,44 @@ const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }
     });
   }
 
+  const onEditTeam = () => {
+    editTeam({
+      variables: {
+        name,
+        players: Object.keys(players) ?? [],
+        captain: captain?.id,
+        seasonID,
+        teamID,
+      }
+    })
+  }
+
   return (
     <Wrapper>
       <FlexContainer direction="column" height="100%" justify="flex-start" overflow="visible" padding="0 8px" width="100%">
-        <PageHeader margin="0px">Create team</PageHeader>
+        <PageHeader margin="0px">{isEditing ? 'Edit Team' : 'Create team'}</PageHeader>
         <Divider width="100%" />
         <SectionHeadingText margin="8px 0 8px 0">Name</SectionHeadingText>
-        <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={isSubmitting} name="name" onChange={(input) => setName(input)} placeholder="Create sick team name..." width="100%" value={name} />
+        <InputField errors={name === "" ? 'Name cannot be blank.' : null} loading={isSubmitting || isEditingTeam} name="name" onChange={(input) => setName(input)} placeholder="Create sick team name..." width="100%" value={name} />
         <SectionHeadingText margin="8px 0 8px 0">Captain</SectionHeadingText>
         <DetailsText marginBottom="4px">Please select a captain (they will also be added as a player) </DetailsText>
-        <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loading || isSubmitting} onClick={(player) => setCaptain(player)} source={data?.getCaptains ?? []} />
+        {captain == null && <SearchField filterResults={filterCaptainResults} label="Select a captain..." loading={loading || isSubmitting || isEditingTeam} onClick={(player) => setCaptain(player)} source={data?.getCaptains ?? []} />}
         {captain != null && (
           <CompactPlayerCard
-            name={captain.name}
+            name={captain.name ?? captain.username}
             onClick={() => setCaptain(null)}
             picture={captain.profilePicture}
             subLabel={captain.email}
           />
         )}
         <SectionHeadingText margin="8px 0 8px 0">Players</SectionHeadingText>
-        <SearchField filterResults={filterPlayerResults} label="Search players..." loading={loading || isSubmitting} onClick={addRemovePlayers} selected={players} source={data?.getSeasonByID?.season?.players ?? []} />
+        <SearchField filterResults={filterPlayerResults} label="Search players..." loading={loading || isSubmitting || isEditingTeam} onClick={addRemovePlayers} selected={players} source={data?.getSeasonByID?.season?.players ?? []} />
         <FlexContainer flexWrap="wrap" justify="flex-start">
           {Object.values(players).map((player, idx) => (
             <CompactPlayerCard
               key={`players-${player.id}-${idx}`}
               name={player?.name ?? player?.username}
-              onClick={addRemovePlayers}
+              onClick={() => addRemovePlayers(player)}
               picture={player.profilePicture}
               subLabel={player.email}
             />
@@ -194,8 +254,8 @@ const CreatetTeamComponent = ({ defaultCaptain, onCancel, onComplete, seasonID }
         </FlexContainer>
         {mutationError && <BannerComponent title={mutationError} type="error" />}
         <FlexContainer justify="center" marginTop="12px">
-          <Button isDisabled={false} label="Cancel" loading={isSubmitting} onClick={onCancel} />
-          <Button isLoading={false} label="Create Team" loading={isSubmitting} onClick={onSubmit} />
+          <Button isDisabled={false} label="Cancel" loading={isSubmitting || isEditingTeam} onClick={onCancel} />
+          <Button isLoading={false} label={isEditing ? 'Edit Team' : "Create Team"} loading={isSubmitting || isEditingTeam} onClick={isEditing ? onEditTeam : onCreateTeam} />
         </FlexContainer>
       </FlexContainer>
     </Wrapper>

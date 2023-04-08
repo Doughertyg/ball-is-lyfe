@@ -6,6 +6,10 @@ const TeamInstance = require('../../db/models/TeamInstance');
 const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 
+const dedupePlayers = (playerIDs) => {
+  return [...new Set(playerIDs)];
+}
+
 module.exports = {
   Query: {
     async getTeamsByUser(_, { userID }) {
@@ -101,11 +105,16 @@ module.exports = {
         throw new AuthenticationError('User not authenticated');
       }
 
+      const playersToAdd = [...players];
+      if (captain != null) {
+        playersToAdd.push(captain);
+      }
+
       const newTeam = new Team({
         bannerPicture,
         description,
         name,
-        players,
+        players: dedupePlayers(playersToAdd),
         profilePicture,
         sport,
         createdAt: new Date().toISOString(),
@@ -159,6 +168,70 @@ module.exports = {
       }
 
       return {team, teamInstance};
+    },
+    async editTeam(_, { teamInput: {captain, name, players, seasonID, teamID} }, context) {
+      const authHeader = context.req?.headers?.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const team = await TeamInstance.findById(teamID);
+      if (team == null) {
+        throw new Error('Error editing team: team unexpectedly null. Please try again.');
+      }
+
+      const parentTeam = await Team.findById(team.team);
+      if (parentTeam == null) {
+        throw new Error('Error populating parent team, please try again.');
+      }
+
+      /**
+       * Validate that the captain being set is not already a captain on a different team
+       */
+      if (seasonID != null) {
+        const season = await Season.findById(seasonID).populate('teams');
+
+        if (season == null) {
+          throw new Error('Error editing team: season is unexpectedly null.');
+        }
+
+        const isAlreadyCaptain = season?.teams?.reduce((acc, team) => {
+          return (team.captain?.toString() === captain && team.id !== teamID) ? true : acc;
+        }, false);
+
+        if (isAlreadyCaptain) {
+          throw new Error('Captain is already assigned to a different team. Captains can only captain one team.');
+        }
+      }
+
+      /**
+       *  -* Validation *-
+       * user can remove/add players from the team
+       *   - if add ensure that the players aren't already on the team (no dupes)
+       *   - if remove, ensure that the captain isn't removed
+       * user can update team name
+       *   - update master team name
+       * user can update captain
+       *   - remove from players?
+       *   - add new captain as player if not already
+       *   - cannot already be a captain for another team
+       */
+      const playersToAdd = [...players];
+      if (captain != null) {
+        playersToAdd.push(captain);
+      }
+      //deduplicate players array
+      team.players = dedupePlayers(playersToAdd);
+      team.captain = captain;
+      parentTeam.name = name;
+      await parentTeam.save();
+      return await team.save().then(teamIns => teamIns.populate(['team', 'captain', 'players']).execPopulate());
     }
   },
   Subscription: {

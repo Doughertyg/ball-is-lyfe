@@ -5008,6 +5008,7 @@ var CompactDetailsCard = function CompactDetailsCard(_ref) {
   var details = _ref.details,
     isDisabled = _ref.isDisabled,
     onClose = _ref.onClose,
+    onEdit = _ref.onEdit,
     picture = _ref.picture,
     subTitle = _ref.subTitle,
     title = _ref.title;
@@ -5045,6 +5046,11 @@ var CompactDetailsCard = function CompactDetailsCard(_ref) {
     icon: "close",
     margin: "4px 4px 4px 32px",
     onClick: onClose
+  }), onEdit && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Icon_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    fill: "dimgrey",
+    icon: "edit",
+    margin: "4px 4px 4px 32px",
+    onClick: onEdit
   })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompactDetailsCard);
@@ -6558,7 +6564,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Button_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Button.jsx */ "./app/components/Button.jsx");
 /* harmony import */ var _BannerComponent_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./BannerComponent.jsx */ "./app/components/BannerComponent.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var _templateObject, _templateObject2, _templateObject3;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -6586,6 +6592,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  border-radius: 8px;\n  background-color: rgba(139, 139, 139, 0.2);\n  box-sizing: border-box;\n  padding: 20px;\n  width: 100%;\n"])));
 var PLAYER_CAPTAIN_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getCaptains(seasonID: $seasonID) {\n      email\n      name\n      profilePicture\n      id\n      username\n    }\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        players {\n          email\n          id\n          name\n          username\n          profilePicture\n        }\n      }\n    }\n  }\n"])));
 var CREATE_TEAM_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation createTeam(\n    $bannerPicture: String,\n    $captain: ID!,\n    $description: String,\n    $name: String!,\n    $players: [ID]!,\n    $profilePicture: String,\n    $seasonID: ID,\n    $sport: String\n  ) {\n    createTeam(\n      bannerPicture: $bannerPicture,\n      captain: $captain,\n      description: $description,\n      name: $name,\n      players: $players,\n      profilePicture: $profilePicture,\n      seasonID: $seasonID,\n      sport: $sport\n    ) {\n      teamInstance {\n        id\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
+var EDIT_TEAM_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation editTeam(\n    $captain: ID,\n    $name: String,\n    $players: [ID!],\n    $seasonID: ID!,\n    $teamID: ID!\n  ) {\n    editTeam(\n      teamInput: {\n        captain: $captain,\n        name: $name,\n        players: $players,\n        seasonID: $seasonID,\n        teamID: $teamID\n      }\n    ) {\n      id\n      captain {\n        email\n        name\n        profilePicture\n        username\n      }\n      players {\n        email\n        name\n        profilePicture\n        username\n      }\n      team {\n        name\n      }\n    }\n  }\n"])));
 
 /**
  * Component for creating a team
@@ -6610,16 +6617,20 @@ var CREATE_TEAM_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_10__["default
  * 
  */
 var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
-  var _data$getCaptains, _data$getSeasonByID$s, _data$getSeasonByID, _data$getSeasonByID$s2;
+  var _data$getCaptains, _captain$name, _data$getSeasonByID$s, _data$getSeasonByID, _data$getSeasonByID$s2;
   var defaultCaptain = _ref.defaultCaptain,
+    isEditing = _ref.isEditing,
+    teamName = _ref.teamName,
+    teamPlayers = _ref.teamPlayers,
     onCancel = _ref.onCancel,
     onComplete = _ref.onComplete,
-    seasonID = _ref.seasonID;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    seasonID = _ref.seasonID,
+    teamID = _ref.teamID;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(isEditing ? teamName !== null && teamName !== void 0 ? teamName : 'Team name not set' : ''),
     _useState2 = _slicedToArray(_useState, 2),
     name = _useState2[0],
     setName = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(isEditing ? teamPlayers : {}),
     _useState4 = _slicedToArray(_useState3, 2),
     players = _useState4[0],
     setPlayers = _useState4[1];
@@ -6635,7 +6646,8 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     user = _useContext.user;
   var _useMutation = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(CREATE_TEAM_MUTATION, {
       onCompleted: function onCompleted(res) {
-        onComplete === null || onComplete === void 0 ? void 0 : onComplete(res);
+        var _res$createTeam;
+        onComplete === null || onComplete === void 0 ? void 0 : onComplete((_res$createTeam = res.createTeam) === null || _res$createTeam === void 0 ? void 0 : _res$createTeam.teamInstance);
       },
       onError: function onError(error) {
         var _error$message;
@@ -6646,6 +6658,20 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     _useMutation2 = _slicedToArray(_useMutation, 2),
     createTeam = _useMutation2[0],
     isSubmitting = _useMutation2[1].isSubmitting;
+  var _useMutation3 = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useMutation)(EDIT_TEAM_MUTATION, {
+      onCompleted: function onCompleted(res) {
+        console.log('completed editing team. res: ', res);
+        onComplete === null || onComplete === void 0 ? void 0 : onComplete(res.editTeam);
+      },
+      onError: function onError(error) {
+        var _error$message2;
+        console.log('error editing team: ', JSON.stringify(error, null, 2));
+        setMutationError((_error$message2 = error === null || error === void 0 ? void 0 : error.message) !== null && _error$message2 !== void 0 ? _error$message2 : 'There has been an error, please try again.');
+      }
+    }),
+    _useMutation4 = _slicedToArray(_useMutation3, 2),
+    editTeam = _useMutation4[0],
+    isEditingTeam = _useMutation4[1].isSubmitting;
   var _useQuery = (0,_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useQuery)(PLAYER_CAPTAIN_QUERY, {
       variables: {
         seasonID: seasonID,
@@ -6672,7 +6698,7 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     }
     setPlayers(newPlayers);
   };
-  var onSubmit = function onSubmit() {
+  var onCreateTeam = function onCreateTeam() {
     var _Object$keys;
     createTeam({
       variables: {
@@ -6680,6 +6706,18 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
         players: (_Object$keys = Object.keys(players)) !== null && _Object$keys !== void 0 ? _Object$keys : [],
         captain: captain === null || captain === void 0 ? void 0 : captain.id,
         seasonID: seasonID
+      }
+    });
+  };
+  var onEditTeam = function onEditTeam() {
+    var _Object$keys2;
+    editTeam({
+      variables: {
+        name: name,
+        players: (_Object$keys2 = Object.keys(players)) !== null && _Object$keys2 !== void 0 ? _Object$keys2 : [],
+        captain: captain === null || captain === void 0 ? void 0 : captain.id,
+        seasonID: seasonID,
+        teamID: teamID
       }
     });
   };
@@ -6692,13 +6730,13 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     width: "100%"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.PageHeader, {
     margin: "0px"
-  }, "Create team"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
+  }, isEditing ? 'Edit Team' : 'Create team'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.Divider, {
     width: "100%"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
     margin: "8px 0 8px 0"
   }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_InputField_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     errors: name === "" ? 'Name cannot be blank.' : null,
-    loading: isSubmitting,
+    loading: isSubmitting || isEditingTeam,
     name: "name",
     onChange: function onChange(input) {
       return setName(input);
@@ -6710,16 +6748,16 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     margin: "8px 0 8px 0"
   }, "Captain"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, {
     marginBottom: "4px"
-  }, "Please select a captain (they will also be added as a player) "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "Please select a captain (they will also be added as a player) "), captain == null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     filterResults: filterCaptainResults,
     label: "Select a captain...",
-    loading: loading || isSubmitting,
+    loading: loading || isSubmitting || isEditingTeam,
     onClick: function onClick(player) {
       return setCaptain(player);
     },
     source: (_data$getCaptains = data === null || data === void 0 ? void 0 : data.getCaptains) !== null && _data$getCaptains !== void 0 ? _data$getCaptains : []
   }), captain != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactPlayerCard_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    name: captain.name,
+    name: (_captain$name = captain.name) !== null && _captain$name !== void 0 ? _captain$name : captain.username,
     onClick: function onClick() {
       return setCaptain(null);
     },
@@ -6730,7 +6768,7 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
   }, "Players"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SearchField_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     filterResults: filterPlayerResults,
     label: "Search players...",
-    loading: loading || isSubmitting,
+    loading: loading || isSubmitting || isEditingTeam,
     onClick: addRemovePlayers,
     selected: players,
     source: (_data$getSeasonByID$s = data === null || data === void 0 ? void 0 : (_data$getSeasonByID = data.getSeasonByID) === null || _data$getSeasonByID === void 0 ? void 0 : (_data$getSeasonByID$s2 = _data$getSeasonByID.season) === null || _data$getSeasonByID$s2 === void 0 ? void 0 : _data$getSeasonByID$s2.players) !== null && _data$getSeasonByID$s !== void 0 ? _data$getSeasonByID$s : []
@@ -6742,7 +6780,9 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactPlayerCard_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
       key: "players-".concat(player.id, "-").concat(idx),
       name: (_player$name = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name !== void 0 ? _player$name : player === null || player === void 0 ? void 0 : player.username,
-      onClick: addRemovePlayers,
+      onClick: function onClick() {
+        return addRemovePlayers(player);
+      },
       picture: player.profilePicture,
       subLabel: player.email
     });
@@ -6755,13 +6795,13 @@ var CreatetTeamComponent = function CreatetTeamComponent(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     isDisabled: false,
     label: "Cancel",
-    loading: isSubmitting,
+    loading: isSubmitting || isEditingTeam,
     onClick: onCancel
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
     isLoading: false,
-    label: "Create Team",
-    loading: isSubmitting,
-    onClick: onSubmit
+    label: isEditing ? 'Edit Team' : "Create Team",
+    loading: isSubmitting || isEditingTeam,
+    onClick: isEditing ? onEditTeam : onCreateTeam
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreatetTeamComponent);
@@ -10908,7 +10948,7 @@ var VALIDATION_ERRORS = {
     };
   }
 };
-var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        stats {\n          __typename\n        }\n        teams {\n          id\n          captain {\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n            operation {\n              expression\n            }\n          }\n          winCondition\n        }\n      }\n      isCaptain\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
+var FETCH_SEASON_QUERY = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query($seasonID: ID!, $userID: ID!) {\n    getSeasonByID(seasonID: $seasonID, userID: $userID) {\n      season {\n        captains {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        name\n        description\n        league {\n          _id\n          name\n        }\n        players {\n          id\n          name\n          email\n          profilePicture\n          username\n        }\n        seasonStart \n        seasonEnd\n        status\n        stats {\n          __typename\n        }\n        teams {\n          id\n          captain {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          players {\n            id\n            email\n            name\n            profilePicture\n            username\n          }\n          team {\n            id\n            name\n          }\n        }\n        games {\n          awayScore\n          awayTeam {\n            team {\n              name\n            }\n          }\n          date\n          homeScore\n          homeTeam {\n            team {\n              name\n            }\n          }\n        }\n        gameConfiguration {\n          periods\n          periodLength\n          scoreStat {\n            id\n            name\n            operation {\n              expression\n            }\n          }\n          winCondition\n        }\n      }\n      isCaptain\n      isLeagueAdmin\n    }\n    getTeams(seasonIDToExclude: $seasonID) {\n      id\n      name\n      players {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n      profilePicture\n      seasonPlayers {\n        id\n        email\n        name\n        profilePicture\n        username\n      }\n    }\n  }\n"])));
 var ADD_PLAYERS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  mutation addPlayersToSeason(\n    $seasonID: ID!,\n    $players: [ID!]\n  ) {\n    addPlayersToSeason(\n      seasonID: $seasonID,\n      players: $players\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_CAPTAINS_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  mutation addCaptainsToSeason(\n    $seasonID: ID!,\n    $captains: [ID!]\n  ) {\n    addCaptainsToSeason(\n      seasonID: $seasonID,\n      captains: $captains\n    ) {\n      name\n    }\n  }\n"])));
 var ADD_TEAMS_TO_SEASON_MUTATION = (0,graphql_tag__WEBPACK_IMPORTED_MODULE_20__["default"])(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation addTeamsToSeason($teamIDs: [ID], $seasonID: ID!) {\n    addTeamsToSeason(teamIDs: $teamIDs, seasonID: $seasonID) {\n      id\n      name\n      teams {\n        captain {\n          email\n          name\n          profilePicture\n          username\n        }\n        players {\n          id\n          email\n          name\n          profilePicture\n          username\n        }\n        team {\n          name\n        }\n      }\n    }\n  }\n"])));
@@ -10994,6 +11034,10 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     _useState24 = _slicedToArray(_useState23, 2),
     addCaptainsError = _useState24[0],
     setAddCaptainsError = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState26 = _slicedToArray(_useState25, 2),
+    teamToEdit = _useState26[0],
+    setTeamToEdit = _useState26[1];
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_auth__WEBPACK_IMPORTED_MODULE_2__.AuthContext),
     user = _useContext.user;
   var seasonID = (_match$params = match.params) === null || _match$params === void 0 ? void 0 : _match$params.seasonID;
@@ -11204,11 +11248,12 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
       setCaptainsToAdd(_newCaptainsToAddMap);
     }
   };
-  var onCompleteCreateTeam = function onCompleteCreateTeam(res) {
-    var _res$createTeam;
+  var onCompleteCreateEditTeam = function onCompleteCreateEditTeam(newTeam) {
     // update cache to update view
-    if ((res === null || res === void 0 ? void 0 : (_res$createTeam = res.createTeam) === null || _res$createTeam === void 0 ? void 0 : _res$createTeam.teamInstance) != null) {
-      setSeasonTeams([].concat(_toConsumableArray(seasonTeams), [_objectSpread({}, res.createTeam.teamInstance)]));
+    if (newTeam != null) {
+      setSeasonTeams([].concat(_toConsumableArray(seasonTeams.filter(function (team) {
+        return team.id !== newTeam.id;
+      })), [_objectSpread({}, newTeam)]));
     }
     // close create team modal
     setCreateTeamExpanded(false);
@@ -11460,7 +11505,7 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     onCancel: function onCancel() {
       return setCreateTeamExpanded(false);
     },
-    onComplete: onCompleteCreateTeam,
+    onComplete: onCompleteCreateEditTeam,
     seasonID: seasonID
   }), Object.keys(teamsToAdd).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     flexWrap: "wrap",
@@ -11505,16 +11550,40 @@ var SeasonConfigurationPage = function SeasonConfigurationPage(_ref) {
     justify: "flex-start",
     flexWrap: "wrap"
   }, seasonTeams.length > 0 && seasonTeams.map(function (team, idx) {
-    var _team$team$name, _team$team2, _team$captain, _team$captain2, _team$players2, _team$team3;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
+    var _team$captain, _team$players2, _team$team2, _team$team$name, _team$team3, _ref4, _ref5, _team$captain$name, _team$captain2, _team$captain3, _team$captain4, _team$players3, _team$team4;
+    var isTeamCaptain = ((_team$captain = team.captain) === null || _team$captain === void 0 ? void 0 : _team$captain.id) === user.id;
+    var canEdit = isLeagueAdmin || isTeamCaptain || team.captain == null && isCaptain;
+    var playersObject = (_team$players2 = team.players) === null || _team$players2 === void 0 ? void 0 : _team$players2.reduce(function (acc, player) {
+      acc[player.id] = player;
+      return acc;
+    }, {});
+    return teamToEdit === team.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CreateTeamComponent_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      defaultCaptain: team.captain,
+      isEditing: true,
       key: "season-teams-".concat(team.id, "-").concat(idx),
-      title: (_team$team$name = team === null || team === void 0 ? void 0 : (_team$team2 = team.team) === null || _team$team2 === void 0 ? void 0 : _team$team2.name) !== null && _team$team$name !== void 0 ? _team$team$name : 'team name missing',
-      subTitle: team !== null && team !== void 0 && (_team$captain = team.captain) !== null && _team$captain !== void 0 && _team$captain.name ? "Captain: ".concat(team === null || team === void 0 ? void 0 : (_team$captain2 = team.captain) === null || _team$captain2 === void 0 ? void 0 : _team$captain2.name) : 'No captain assigned',
-      details: team === null || team === void 0 ? void 0 : (_team$players2 = team.players) === null || _team$players2 === void 0 ? void 0 : _team$players2.map(function (player) {
-        var _ref4, _player$name5;
-        return (_ref4 = (_player$name5 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name5 !== void 0 ? _player$name5 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref4 !== void 0 ? _ref4 : player === null || player === void 0 ? void 0 : player.email;
+      onCancel: function onCancel() {
+        return setTeamToEdit(null);
+      },
+      onComplete: function onComplete(newTeam) {
+        onCompleteCreateEditTeam(newTeam);
+        setTeamToEdit(null);
+      },
+      seasonID: seasonID,
+      teamID: team.id,
+      teamName: (_team$team2 = team.team) === null || _team$team2 === void 0 ? void 0 : _team$team2.name,
+      teamPlayers: playersObject
+    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_15__["default"], {
+      key: "season-teams-".concat(team.id, "-").concat(idx),
+      onEdit: canEdit ? function () {
+        setTeamToEdit(team.id);
+      } : null,
+      title: (_team$team$name = team === null || team === void 0 ? void 0 : (_team$team3 = team.team) === null || _team$team3 === void 0 ? void 0 : _team$team3.name) !== null && _team$team$name !== void 0 ? _team$team$name : 'team name missing',
+      subTitle: team !== null && team !== void 0 && team.captain ? "Captain: ".concat((_ref4 = (_ref5 = (_team$captain$name = team === null || team === void 0 ? void 0 : (_team$captain2 = team.captain) === null || _team$captain2 === void 0 ? void 0 : _team$captain2.name) !== null && _team$captain$name !== void 0 ? _team$captain$name : team === null || team === void 0 ? void 0 : (_team$captain3 = team.captain) === null || _team$captain3 === void 0 ? void 0 : _team$captain3.username) !== null && _ref5 !== void 0 ? _ref5 : team === null || team === void 0 ? void 0 : (_team$captain4 = team.captain) === null || _team$captain4 === void 0 ? void 0 : _team$captain4.email) !== null && _ref4 !== void 0 ? _ref4 : 'Captain name missing') : 'No captain assigned',
+      details: team === null || team === void 0 ? void 0 : (_team$players3 = team.players) === null || _team$players3 === void 0 ? void 0 : _team$players3.map(function (player) {
+        var _ref6, _player$name5;
+        return (_ref6 = (_player$name5 = player === null || player === void 0 ? void 0 : player.name) !== null && _player$name5 !== void 0 ? _player$name5 : player === null || player === void 0 ? void 0 : player.username) !== null && _ref6 !== void 0 ? _ref6 : player === null || player === void 0 ? void 0 : player.email;
       }),
-      picture: team === null || team === void 0 ? void 0 : (_team$team3 = team.team) === null || _team$team3 === void 0 ? void 0 : _team$team3.profilePicture
+      picture: team === null || team === void 0 ? void 0 : (_team$team4 = team.team) === null || _team$team4 === void 0 ? void 0 : _team$team4.profilePicture
     });
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.Divider, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
     alignItems: "center",

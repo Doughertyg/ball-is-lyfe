@@ -106,6 +106,7 @@ const FETCH_SEASON_QUERY = gql`
         teams {
           id
           captain {
+            id
             email
             name
             profilePicture
@@ -283,6 +284,7 @@ const SeasonConfigurationPage = ({match}) => {
   const [confirmMutationError, setConfirmMutationError] = useState(null);
   const [validationErrors, setValidationErrors] = useState([]);
   const [addCaptainsError, setAddCaptainsError] = useState(null);
+  const [teamToEdit, setTeamToEdit] = useState(null);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -478,10 +480,10 @@ const SeasonConfigurationPage = ({match}) => {
     }
   }
 
-  const onCompleteCreateTeam = (res) => {
+  const onCompleteCreateEditTeam = (newTeam) => {
     // update cache to update view
-    if (res?.createTeam?.teamInstance != null) {
-      setSeasonTeams([...seasonTeams, {...res.createTeam.teamInstance}]);
+    if (newTeam != null) {
+      setSeasonTeams([...seasonTeams.filter(team => team.id !== newTeam.id), {...newTeam}]);
     }
     // close create team modal
     setCreateTeamExpanded(false);
@@ -711,7 +713,7 @@ const SeasonConfigurationPage = ({match}) => {
             <CreatetTeamComponent
               defaultCaptain={isCaptain ? user : null}
               onCancel={() => setCreateTeamExpanded(false)}
-              onComplete={onCompleteCreateTeam}
+              onComplete={onCompleteCreateEditTeam}
               seasonID={seasonID}/>
           )}
           {Object.keys(teamsToAdd).length > 0 && (
@@ -738,11 +740,32 @@ const SeasonConfigurationPage = ({match}) => {
           <FlexContainer justify="flex-start" flexWrap="wrap">
             {seasonTeams.length > 0 && (
               seasonTeams.map((team, idx) => {
-                return (
+                const isTeamCaptain = team.captain?.id === user.id;
+                const canEdit = isLeagueAdmin || isTeamCaptain || (team.captain == null && isCaptain);
+                const playersObject = team.players?.reduce((acc, player) => {
+                  acc[player.id] = player;
+                  return acc;
+                }, {});
+                return teamToEdit === team.id ? (
+                  <CreatetTeamComponent
+                    defaultCaptain={team.captain}
+                    isEditing
+                    key={`season-teams-${team.id}-${idx}`}
+                    onCancel={() => setTeamToEdit(null)}
+                    onComplete={newTeam => {
+                      onCompleteCreateEditTeam(newTeam);
+                      setTeamToEdit(null);
+                    }}
+                    seasonID={seasonID}
+                    teamID={team.id}
+                    teamName={team.team?.name}
+                    teamPlayers={playersObject} />
+                ) : (
                   <CompactDetailsCard
                     key={`season-teams-${team.id}-${idx}`}
+                    onEdit={canEdit ? () => {setTeamToEdit(team.id)} : null}
                     title={team?.team?.name ?? 'team name missing'}
-                    subTitle={team?.captain?.name ? `Captain: ${team?.captain?.name }` : 'No captain assigned'}
+                    subTitle={team?.captain ? `Captain: ${team?.captain?.name ?? team?.captain?.username ?? team?.captain?.email ?? 'Captain name missing'}` : 'No captain assigned'}
                     details={team?.players?.map(player => player?.name ?? player?.username ?? player?.email)}
                     picture={team?.team?.profilePicture}
                   />

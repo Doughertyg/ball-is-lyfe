@@ -274,12 +274,20 @@ module.exports = gql`
     term2: ID,
     term2Scalar: Float
   }
+  input EditTeamInmput {
+    captain: ID,
+    name: String,
+    players: [ID!],
+    seasonID: ID!
+    teamID: ID!,
+  }
   type Mutation {
     addGamesToSeason(seasonID: ID!, gamesToAdd: [GamesToAddInput!]): Season!
     addPlayersToLeague(leagueID: ID!, playersToAdd: [ID!]): League!
     addCaptainsToSeason(seasonID: ID!, captains: [ID!]): Season!
     addPlayersToSeason(seasonID: ID!, players: [ID!]): Season!
     addTeamsToSeason(teamIDs: [ID], seasonID: ID!): Season!
+    editTeam(teamInput: EditTeamInmput): TeamInstance!
     register(registerInput: RegisterInput): User!
     registerUser(token: String!): User!
     login(username: String!, password: String!): User!
