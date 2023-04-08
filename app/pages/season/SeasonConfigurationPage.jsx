@@ -11,7 +11,7 @@ import AddGamesComponent from '../../components/AddGamesComponent.jsx';
 import BannerComponent from '../../components/BannerComponent.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
 import Button from '../../components/Button.jsx';
-import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
+import CreateEditTeamComponent from '../../components/CreateEditTeamComponent.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
 import Card from '../../components/Card.jsx';
@@ -710,7 +710,7 @@ const SeasonConfigurationPage = ({match}) => {
             />}
           </FlexContainer>
           {createTeamExpanded && (
-            <CreatetTeamComponent
+            <CreateEditTeamComponent
               defaultCaptain={isCaptain ? user : null}
               onCancel={() => setCreateTeamExpanded(false)}
               onComplete={onCompleteCreateEditTeam}
@@ -747,7 +747,7 @@ const SeasonConfigurationPage = ({match}) => {
                   return acc;
                 }, {});
                 return teamToEdit === team.id ? (
-                  <CreatetTeamComponent
+                  <CreateEditTeamComponent
                     defaultCaptain={team.captain}
                     isEditing
                     key={`season-teams-${team.id}-${idx}`}

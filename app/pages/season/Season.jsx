@@ -10,7 +10,7 @@ import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
 import Button from '../../components/Button.jsx';
-import CreatetTeamComponent from '../../components/CreateTeamComponent.jsx';
+import CreateEditTeamComponent from '../../components/CreateEditTeamComponent.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
 import Card from '../../components/Card.jsx';
@@ -510,7 +510,7 @@ const Season = ({match}) => {
             />
           </FlexContainer>
           {createTeamExpanded && (
-            <CreatetTeamComponent onCancel={() => setCreateTeamExpanded(false)} onComplete={onCompleteCreateTeam} seasonID={seasonID} />
+            <CreateEditTeamComponent onCancel={() => setCreateTeamExpanded(false)} onComplete={onCompleteCreateTeam} seasonID={seasonID} />
           )}
           {Object.keys(teamsToAdd).length > 0 && (
             <>

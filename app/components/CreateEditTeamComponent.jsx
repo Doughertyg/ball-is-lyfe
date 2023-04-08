@@ -144,7 +144,7 @@ const EDIT_TEAM_MUTATION = gql`
  *  `---------------------------------------------------------`
  * 
  */
-const CreatetTeamComponent = ({ defaultCaptain, isEditing, teamName, teamPlayers, onCancel, onComplete, seasonID, teamID }) => {
+const CreateEditTeamComponent = ({ defaultCaptain, isEditing, teamName, teamPlayers, onCancel, onComplete, seasonID, teamID }) => {
   const [name, setName] = useState(isEditing ? (teamName ?? 'Team name not set') : '');
   const [players, setPlayers] = useState(isEditing ? teamPlayers : {});
   const [captain, setCaptain] = useState(defaultCaptain);
@@ -255,11 +255,11 @@ const CreatetTeamComponent = ({ defaultCaptain, isEditing, teamName, teamPlayers
         {mutationError && <BannerComponent title={mutationError} type="error" />}
         <FlexContainer justify="center" marginTop="12px">
           <Button isDisabled={false} label="Cancel" loading={isSubmitting || isEditingTeam} onClick={onCancel} />
-          <Button isLoading={false} label={isEditing ? 'Edit Team' : "Create Team"} loading={isSubmitting || isEditingTeam} onClick={isEditing ? onEditTeam : onCreateTeam} />
+          <Button isLoading={false} label={isEditing ? 'Save' : "Create Team"} loading={isSubmitting || isEditingTeam} onClick={isEditing ? onEditTeam : onCreateTeam} />
         </FlexContainer>
       </FlexContainer>
     </Wrapper>
   )
 }
 
-export default CreatetTeamComponent;
+export default CreateEditTeamComponent;
