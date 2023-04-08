@@ -15,11 +15,13 @@ function Button({
   margin,
   marginTop,
   onClick,
+  primary,
+  secondary,
   width
 }) {
 
   return (
-    <ButtonWrapper border={border} borderRadius={borderRadius} boxShadow={boxShadow} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} width={width}>
+    <ButtonWrapper border={border} borderRadius={borderRadius} boxShadow={boxShadow} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} primary={primary} secondary={secondary} width={width}>
       <FlexContainer>
         {isLoading ? <LoadingSpinnerSpin /> : (<>{children}{label}</>)}
       </FlexContainer>

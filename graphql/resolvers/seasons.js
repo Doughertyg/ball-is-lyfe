@@ -6,6 +6,7 @@ const Stat = require('../../db/models/Stat');
 const Game = require('../../db/models/Game');
 const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
+const dayjs = require('dayjs');
 
 const SeasonStatus = {
   CONFIGURATION: 'CONFIGURATION',
@@ -275,7 +276,6 @@ module.exports = {
       if (user == null) {
         throw new AuthenticationError('User not authenticated');
       }
-      console.log('user: ', user);
 
       const season = await Season.findById(seasonID).populate('league');
       const isLeagueAdmin = season?.league?.admins?.includes(user.id) ?? false;
@@ -292,6 +292,37 @@ module.exports = {
       season.status = SeasonStatus.CONFIRMED;
       return await season.save();
     },
+    async launchSeason(_, { seasonID }, context) {
+      const authHeader = context.req.headers.authorization;
+      if (authHeader == null) {
+        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
+      }
+      const token = authHeader.split('Bearer ')[1];
+      const user = await userResolvers.authenticateExistingUser(token);
+
+      if (user == null) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const season = await Season.findById(seasonID);
+      if (season == null) {
+        throw new Error('Error launching season, season unexpectedly null. Please try again.');
+      }
+
+      if (season.status != SeasonStatus.CONFIRMED) {
+        throw new Error('Error launching season, cannot launch a season that is not confirmed.');
+      }
+
+      const start = dayjs(season?.seasonStart).format('MMM YYYY');
+      const end = dayjs(season?.seasonEnd).format('MMM YYYY');
+
+      if (dayjs().isAfter(end) || dayjs().isBefore(start)) {
+        throw new Error('Error launching season, cannot launch a season that has not started.');
+      }
+
+      season.status = SeasonStatus.ACTIVE;
+      return await season.save();
+    }
   },
   Subscription: {
     newSeason: {

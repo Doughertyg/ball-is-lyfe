@@ -8,32 +8,34 @@ const Banner = styled.div`
   background-color: ${props => props.color ?? 'rgba(239, 239, 239, 1)'};
   color: DimGrey;
   height: fit-content;
-  padding: 4px 12px;
+  padding: 2px 4px 1px 12px;
   width: fit-content
 `;
 
 const StatusIcon = styled.div`
   background-color: ${props => props.color ?? 'dimgrey'};
   border-radius: 50%;
-  box-shadow: ${props => `0 0 5px 5px ${props.shadowColor ?? rgba(0, 0, 0, 0.1)}`};
-  height: 8px;
+  box-shadow: ${props => `0 0 5px 5px ${props.shadowColor ?? "rgba(0, 0, 0, 0.1)"}`};
+  height: 6px;
   margin: 8px;
   margin-left: 12px;
-  width: 8px;
+  width: 6px;
 `;
 
 const STATUS_ICON_COLOR_MAP = {
   ACTIVE: 'springgreen',
+  CONFIRMED: 'dodgerblue',
   INACTIVE: 'dimgrey',
   DRAFT: 'darkorange',
   CANCELLED: 'red'
 }
 
 const STATUS_ICON_SHADOW_COLOR_MAP = {
-  ACTIVE: 'greenyellow',
-  INACTIVE: 'darkgrey',
-  DRAFT: 'orange',
-  CANCELLED: 'orangered'
+  ACTIVE: 'rgba(173, 255, 47, 0.8)',
+  CONFIRMED: 'rgba(30, 144, 255, 0.3)',
+  INACTIVE: 'rgba(105, 105, 105, 0.5)',
+  DRAFT: 'rgba(255, 140, 0, 0.5)',
+  CANCELLED: 'rgba(255, 0, 0, 0.3)'
 }
 
 /**

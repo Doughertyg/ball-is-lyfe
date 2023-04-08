@@ -56,12 +56,9 @@ const ModalWrapper = styled.div`
 const SteppedConfirmationModal = ({ steps, onCancel, onSubmit }) => {
   const [stepIdx, setStepIdx] = useState(0);
   const step = steps[stepIdx];
-  console.log('step: ', step, '  idx: ', stepIdx, '  steps: ', steps);
-  // do the thing
 
   const onBackOrCancel = () => {
     if (stepIdx > 0) {
-      console.log('step back');
       setStepIdx(stepIdx - 1);
     } else {
       onCancel();
@@ -69,11 +66,9 @@ const SteppedConfirmationModal = ({ steps, onCancel, onSubmit }) => {
   }
 
   const onNext = () => {
-    console.log('step: ', step);
     if (step.preventNext) {
       step.onNext?.();
     } else if (stepIdx < steps.length - 1) {
-      console.log('step next');
       setStepIdx(stepIdx + 1);
     } else {
       onSubmit?.();
@@ -96,7 +91,7 @@ const SteppedConfirmationModal = ({ steps, onCancel, onSubmit }) => {
                 {step.title && <SectionHeadingText marginBottom="4px">{step.title}</SectionHeadingText>}
                 <DetailsText marginBottom="10px" overflow="visible"><SectionHeadingText>{step.text}</SectionHeadingText></DetailsText>
                 <FlexContainer justify="flex-end" width="100%">
-                  <Button secondary onClick={onBackOrCancel}>{stepIdx > 0 ? 'Back' : 'Cancel'}</Button>
+                  {step.preventNext == null && <Button secondary onClick={onBackOrCancel}>{stepIdx > 0 ? 'Back' : 'Cancel'}</Button>}
                   <Button onClick={onNext} primary>{nextLabel}</Button>
                 </FlexContainer>
               </FlexContainer>

@@ -531,7 +531,7 @@ const SeasonConfigurationPage = ({match}) => {
       addError(VALIDATION_ERRORS.NO_TEAMS_ADDED, validationErrors);
     }
 
-    if (seasonData?.getSeasonByID?.season?.captains?.length !== 0) {
+    if (seasonData?.getSeasonByID?.season?.captains?.length === 0) {
       addError(VALIDATION_ERRORS.NO_CAPTAINS_ADDED, validationErrors);
     }
 
@@ -816,12 +816,12 @@ const SeasonConfigurationPage = ({match}) => {
           <Divider marginBottom="10px" />
           <SeasonStatsSection isAdmin={isLeagueAdmin} onCreateStat={onCreateStat} seasonID={seasonID} />
           <Divider />
-          <BannerComponent color="dimgrey" marginTop="10px" title="Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active." />
+          {isLeagueAdmin && <><BannerComponent color="dimgrey" marginTop="10px" title="Confirming the season will move it from the Configuration status to Confirmed. Only a confirmed season can be launched and become active." />
           {confirmMutationError && <BannerComponent backgroundColor="rgba(255, 0, 0, 0.2)" color="red" title={confirmMutationError} />}
           <FlexContainer justify="flex-end" marginTop="8px">
             <Button isDisabled={isConfirmingSeason} label="Confirm season" margin="4px" marginTop="4px" onClick={onSubmitConfirmSeason} />
           </FlexContainer>
-          <Divider />
+          <Divider /></>}
         </>
       )}
       {validationErrors.length > 0 ? (

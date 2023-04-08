@@ -19,6 +19,15 @@ import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
 import SeasonConfigurationPage from '../season/SeasonConfigurationPage.jsx';
 import BannerComponent from '../../components/BannerComponent.jsx';
+import BadgeComponent from '../../components/BadgeComponent.jsx';
+import LaunchSeasonButton from '../../components/LaunchSeasonButton.jsx';
+
+const SEASON_STATUS_LABELS = {
+  CONFIGURATION: 'Configuration',
+  CONFIRMED: 'Confirmed',
+  INACTIVE: 'Inactive',
+  ACTIVE: 'Active',
+};
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -200,7 +209,9 @@ const Season = ({match}) => {
   const [createTeamExpanded, setCreateTeamExpanded] = useState(false);
   const [seasonTeams, setSeasonTeams] = useState([]);
   const [seasonGames, setSeasonGames] = useState([]);
+  const [seasonStatus, setSeasonStatus] = useState(null);
   const [addCaptainsError, setAddCaptainsError] = useState(null);
+  const [mutationError, setMutationError] = useState(null);
   const { user } = useContext(AuthContext);
   const seasonID = match.params?.seasonID;
   const history = useHistory();
@@ -220,6 +231,10 @@ const Season = ({match}) => {
   useEffect(() => {
     if (seasonData != null && seasonData?.getSeasonByID?.season?.teams != null) {
       setSeasonTeams(seasonData.getSeasonByID.season.teams);
+    }
+
+    if (seasonData != null && seasonData?.getSeasonByID?.season?.status != null) {
+      setSeasonStatus(seasonData.getSeasonByID.season.status);
     }
   }, [seasonData]);
 
@@ -407,21 +422,26 @@ const Season = ({match}) => {
     }
   }
 
-  if (seasonData?.getSeasonByID?.season?.status === 'CONFIGURATION') {
+  if (seasonStatus === 'CONFIGURATION') {
     return <SeasonConfigurationPage match={match} />
   }
 
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
-        <FlexContainer height="45px" justify="flex-start" width="800px" overflow="hidden">
+        <FlexContainer height="100px" justify="flex-start" width="800px" overflow="hidden" paddingTop="8px">
           <LoadingSpinnerBack />
         </FlexContainer>
       ) : (
         <>
-          <FlexContainer direction="row" justify="space-between">
-            <FlexContainer direction="column">
-              <PageHeader margin="20px 0 8px 0">{seasonData?.getSeasonByID?.season?.name ?? 'Season name missing'}</PageHeader>
+          {mutationError && <BannerComponent title={mutationError} type="error" />}
+          <FlexContainer alignItems="flex-start" direction="row" justify="space-between">
+            <FlexContainer direction="column" width="100%">
+              <FlexContainer alignItems="center" justify="space-between" width="100%">
+                <PageHeader margin="20px 0 8px 0">
+                  {seasonData?.getSeasonByID?.season?.name ?? 'Season name missing'}
+                </PageHeader>
+              </FlexContainer>
               <DetailsText padding="0 0 4px 0">
                 <SectionHeadingText>{seasonData?.getSeasonByID?.season?.league?.name ?? 'League missing'}</SectionHeadingText>
               </DetailsText>
@@ -430,6 +450,17 @@ const Season = ({match}) => {
                   (dayjs(seasonData?.getSeasonByID?.season?.seasonStart).format('MMM YYYY') ?? 'Season start missing') + ' - ' + (dayjs(seasonData?.getSeasonByID?.season?.seasonEnd).format('MMM YYYY') ?? 'season end missing')
                 }</DetailsText>
               </FlexContainer>
+            </FlexContainer>
+            <FlexContainer direction="column" marginTop="8px" shrink={0}>
+              <BadgeComponent label={SEASON_STATUS_LABELS[seasonStatus]} status={seasonStatus} />
+              {isLeagueAdmin && seasonStatus === 'CONFIRMED' && (
+                <LaunchSeasonButton
+                  onComplete={(season) => setSeasonStatus(season.status)}
+                  onError={setMutationError}
+                  seasonEnd={seasonData?.getSeasonByID?.season?.seasonEnd}
+                  seasonID={seasonID}
+                  seasonStart={seasonData?.getSeasonByID?.season?.seasonStart}
+                />)}
             </FlexContainer>
           </FlexContainer>
           <br />

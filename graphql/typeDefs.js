@@ -290,6 +290,7 @@ module.exports = gql`
     editTeam(teamInput: EditTeamInmput): TeamInstance!
     register(registerInput: RegisterInput): User!
     registerUser(token: String!): User!
+    launchSeason(seasonID: ID!): Season!
     login(username: String!, password: String!): User!
     loginUser(token: String!): User!
     createPost(body: String!): Post!
