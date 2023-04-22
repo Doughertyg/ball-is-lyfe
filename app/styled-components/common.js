@@ -118,11 +118,11 @@ width: ${props => props.width ?? '100%'};
 `;
 
 export const ModalStyle = styled.div`
-  position: absolute;
+  position: ${props => props.position ?? 'absolute'};
   border-radius: 6px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);
   background-color: white;
-  width: 100%;
+  width: ${props => props.width ?? '100%'};
   z-index: 1000;
 `;
 

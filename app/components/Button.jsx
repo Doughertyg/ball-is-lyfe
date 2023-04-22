@@ -2,6 +2,7 @@ import React from 'react';
 import { FlexContainer } from '../styled-components/common';
 import { Button as ButtonWrapper } from '../styled-components/interactive';
 import LoadingSpinnerSpin from './LoadingSpinnerSpin.jsx';
+import TooltipComponent from './TooltipComponent.jsx';
 
 function Button({
   border,
@@ -17,15 +18,20 @@ function Button({
   onClick,
   primary,
   secondary,
+  tooltip,
   width
 }) {
 
   return (
-    <ButtonWrapper border={border} borderRadius={borderRadius} boxShadow={boxShadow} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} primary={primary} secondary={secondary} width={width}>
-      <FlexContainer>
-        {isLoading ? <LoadingSpinnerSpin /> : (<>{children}{label}</>)}
-      </FlexContainer>
-    </ButtonWrapper>
+    <>
+      <TooltipComponent tooltip={tooltip}>
+        <ButtonWrapper border={border} borderRadius={borderRadius} boxShadow={boxShadow} height={height} disabled={isDisabled} margin={margin} marginTop={marginTop} onClick={onClick} primary={primary} secondary={secondary} width={width}>
+          <FlexContainer>
+            {isLoading ? <LoadingSpinnerSpin /> : (<>{children}{label}</>)}
+          </FlexContainer>
+        </ButtonWrapper>
+      </TooltipComponent>
+    </>
   )
 }
 

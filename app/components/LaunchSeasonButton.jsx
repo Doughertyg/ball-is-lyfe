@@ -46,12 +46,20 @@ const LaunchSeasonButton = ({ onComplete, onError, seasonEnd, seasonID, seasonSt
   const start = dayjs(seasonStart).format('MMM YYYY');
   const end = dayjs(seasonEnd).format('MMM YYYY');
 
-  if (dayjs().isAfter(end) || dayjs().isBefore(start)) {
-    return null;
-  }
+  const isDisabled = dayjs().isAfter(end) || dayjs().isBefore(start);
 
   return (
-    <Button isLoading={isSubmitting} label="Launch" margin="4px 0 0 auto" marginTop="4px" onClick={onSubmit} primary width="fit-content" />
+    <Button
+      isDisabled={isDisabled}
+      isLoading={isSubmitting}
+      label="Launch"
+      margin="4px 0 0 auto"
+      marginTop="4px"
+      onClick={onSubmit}
+      primary
+      tooltip={isDisabled ? 'Season cannot be launched outside of the season start and end dates' : null}
+      width="fit-content"
+    />
   )
 }
 

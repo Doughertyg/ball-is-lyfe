@@ -4784,6 +4784,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
 /* harmony import */ var _styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styled-components/interactive */ "./app/styled-components/interactive.js");
 /* harmony import */ var _LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoadingSpinnerSpin.jsx */ "./app/components/LoadingSpinnerSpin.jsx");
+/* harmony import */ var _TooltipComponent_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TooltipComponent.jsx */ "./app/components/TooltipComponent.jsx");
+
 
 
 
@@ -4803,8 +4805,11 @@ function Button(_ref) {
     onClick = _ref.onClick,
     primary = _ref.primary,
     secondary = _ref.secondary,
+    tooltip = _ref.tooltip,
     width = _ref.width;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Button, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TooltipComponent_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    tooltip: tooltip
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_interactive__WEBPACK_IMPORTED_MODULE_2__.Button, {
     border: border,
     borderRadius: borderRadius,
     boxShadow: boxShadow,
@@ -4816,7 +4821,7 @@ function Button(_ref) {
     primary: primary,
     secondary: secondary,
     width: width
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, null, isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, children, label)));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, null, isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_LoadingSpinnerSpin_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, children, label)))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Button);
 
@@ -7273,16 +7278,16 @@ var LaunchSeasonButton = function LaunchSeasonButton(_ref) {
   };
   var start = dayjs__WEBPACK_IMPORTED_MODULE_2___default()(seasonStart).format('MMM YYYY');
   var end = dayjs__WEBPACK_IMPORTED_MODULE_2___default()(seasonEnd).format('MMM YYYY');
-  if (dayjs__WEBPACK_IMPORTED_MODULE_2___default()().isAfter(end) || dayjs__WEBPACK_IMPORTED_MODULE_2___default()().isBefore(start)) {
-    return null;
-  }
+  var isDisabled = dayjs__WEBPACK_IMPORTED_MODULE_2___default()().isAfter(end) || dayjs__WEBPACK_IMPORTED_MODULE_2___default()().isBefore(start);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    isDisabled: isDisabled,
     isLoading: isSubmitting,
     label: "Launch",
     margin: "4px 0 0 auto",
     marginTop: "4px",
     onClick: onSubmit,
     primary: true,
+    tooltip: isDisabled ? 'Season cannot be launched outside of the season start and end dates' : null,
     width: "fit-content"
   });
 };
@@ -8562,6 +8567,75 @@ var SteppedConfirmationModal = function SteppedConfirmationModal(_ref) {
   }, nextLabel))))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SteppedConfirmationModal);
+
+/***/ }),
+
+/***/ "./app/components/TooltipComponent.jsx":
+/*!*********************************************!*\
+  !*** ./app/components/TooltipComponent.jsx ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _styled_components_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styled-components/common */ "./app/styled-components/common.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+var TransitionWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  opacity: ", ";\n  transition: opacity 0.5s ease-in-out;\n"])), function (props) {
+  return props.hide ? '0' : '1';
+});
+var TriggerWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  inset: 0;\n  position: absolute;\n"])));
+var TextWrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  padding: 8px;\n  width: fit-content;\n"])));
+var Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  position: relative;\n"])));
+
+/**
+ * Tool tip component that shows a modal with the tooltip text
+ *  ,-------------------,
+ * |   Tooltip text...  |
+ *  '-----------------._:,
+ */
+var TooltipComponent = function TooltipComponent(_ref) {
+  var children = _ref.children,
+    tooltip = _ref.tooltip;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    showTooltip = _useState2[0],
+    setShowTooltip = _useState2[1];
+  if (tooltip == null) {
+    return children;
+  }
+  var enter = function enter() {
+    setShowTooltip(true);
+  };
+  var leave = function leave() {
+    setShowTooltip(false);
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, {
+    onMouseLeave: leave
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(TransitionWrapper, {
+    hide: !showTooltip
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.ModalStyle, {
+    position: "fixed",
+    width: "fit-content"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(TextWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.DetailsText, null, tooltip)))), children, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(TriggerWrapper, {
+    onMouseEnter: enter
+  }));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TooltipComponent);
 
 /***/ }),
 
@@ -10654,6 +10728,7 @@ var Season = function Season(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.DetailsText, {
     overflow: "hidden"
   }, ((_dayjs$format = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason37 = seasonData.getSeasonByID) === null || _seasonData$getSeason37 === void 0 ? void 0 : (_seasonData$getSeason38 = _seasonData$getSeason37.season) === null || _seasonData$getSeason38 === void 0 ? void 0 : _seasonData$getSeason38.seasonStart).format('MMM YYYY')) !== null && _dayjs$format !== void 0 ? _dayjs$format : 'Season start missing') + ' - ' + ((_dayjs$format2 = dayjs__WEBPACK_IMPORTED_MODULE_4___default()(seasonData === null || seasonData === void 0 ? void 0 : (_seasonData$getSeason39 = seasonData.getSeasonByID) === null || _seasonData$getSeason39 === void 0 ? void 0 : (_seasonData$getSeason40 = _seasonData$getSeason39.season) === null || _seasonData$getSeason40 === void 0 ? void 0 : _seasonData$getSeason40.seasonEnd).format('MMM YYYY')) !== null && _dayjs$format2 !== void 0 ? _dayjs$format2 : 'season end missing')))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_3__.FlexContainer, {
+    alignItems: "flex-end",
     direction: "column",
     marginTop: "8px",
     shrink: 0
@@ -12368,7 +12443,13 @@ var BodyText = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_te
   var _props$width4;
   return (_props$width4 = props.width) !== null && _props$width4 !== void 0 ? _props$width4 : '100%';
 });
-var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["\n  position: absolute;\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: 100%;\n  z-index: 1000;\n"])));
+var ModalStyle = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["\n  position: ", ";\n  border-radius: 6px;\n  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.07);\n  background-color: white;\n  width: ", ";\n  z-index: 1000;\n"])), function (props) {
+  var _props$position;
+  return (_props$position = props.position) !== null && _props$position !== void 0 ? _props$position : 'absolute';
+}, function (props) {
+  var _props$width5;
+  return (_props$width5 = props.width) !== null && _props$width5 !== void 0 ? _props$width5 : '100%';
+});
 var ProfilePictureThumb = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].img(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["\n  border-radius: ", ";\n  height: ", ";\n  margin: ", ";\n  width: ", ";\n  referrerPolicy: no-referrer;\n"])), function (props) {
   var _props$borderRadius2;
   return (_props$borderRadius2 = props.borderRadius) !== null && _props$borderRadius2 !== void 0 ? _props$borderRadius2 : '50%';
@@ -12379,8 +12460,8 @@ var ProfilePictureThumb = styled_components__WEBPACK_IMPORTED_MODULE_0__["defaul
   var _props$margin6;
   return (_props$margin6 = props.margin) !== null && _props$margin6 !== void 0 ? _props$margin6 : "4px";
 }, function (props) {
-  var _props$width5;
-  return (_props$width5 = props.width) !== null && _props$width5 !== void 0 ? _props$width5 : "32px";
+  var _props$width6;
+  return (_props$width6 = props.width) !== null && _props$width6 !== void 0 ? _props$width6 : "32px";
 });
 var EmptyProfilePicture = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["\n  align-items: center;\n  background-color: rgb(85, 82, 219);\n  border-radius: ", ";\n  color: white;\n  display: flex;\n  font-size: 24px;\n  font-weight: 600;\n  height: ", ";\n  justify-content: center;\n  margin: ", ";\n  width: ", ";\n"])), function (props) {
   var _props$borderRadius3;
@@ -12392,8 +12473,8 @@ var EmptyProfilePicture = styled_components__WEBPACK_IMPORTED_MODULE_0__["defaul
   var _props$margin7;
   return (_props$margin7 = props.margin) !== null && _props$margin7 !== void 0 ? _props$margin7 : "4px";
 }, function (props) {
-  var _props$width6;
-  return (_props$width6 = props.width) !== null && _props$width6 !== void 0 ? _props$width6 : "32px";
+  var _props$width7;
+  return (_props$width7 = props.width) !== null && _props$width7 !== void 0 ? _props$width7 : "32px";
 });
 
 /***/ }),
@@ -12454,8 +12535,8 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border: ", ";\n  border-radius: ", ";\n  color: ", ";\n  disabled: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  cursor: ", ";\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  &:hover {\n    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);\n  }\n  &:active {\n    background-color: teal;\n    color: white;\n  }\n  ", "\n  ", "\n"])), function (props) {
-  return props.primary ? 'lightskyblue' : props.secondary ? 'lightgrey' : 'white';
+var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border: ", ";\n  border-radius: ", ";\n  color: ", ";\n  height: ", ";\n  padding: 8px 20px;\n  cursor: ", ";\n  margin: ", ";\n  margin-top: ", ";\n  width: ", ";\n  box-shadow: ", ";\n  ", "\n  ", "\n  ", "\n  ", "\n"])), function (props) {
+  return props.disabled ? 'darkgrey' : props.primary ? 'lightskyblue' : props.secondary ? 'lightgrey' : 'white';
 }, function (props) {
   var _props$border;
   return (_props$border = props.border) !== null && _props$border !== void 0 ? _props$border : '1px solid rgba(0, 0, 0, 0.1)';
@@ -12463,16 +12544,13 @@ var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_t
   var _props$borderRadius;
   return (_props$borderRadius = props.borderRadius) !== null && _props$borderRadius !== void 0 ? _props$borderRadius : "4px";
 }, function (props) {
-  return props.primary || props.secondary ? 'white' : 'black';
-}, function (props) {
-  var _props$disabled;
-  return (_props$disabled = props.disabled) !== null && _props$disabled !== void 0 ? _props$disabled : 'initial';
+  return props.disabled ? 'dimgrey' : props.primary || props.secondary ? 'white' : 'black';
 }, function (props) {
   var _props$height;
   return (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : 'auto';
 }, function (props) {
   var _props$cursor;
-  return (_props$cursor = props.cursor) !== null && _props$cursor !== void 0 ? _props$cursor : 'pointer';
+  return !props.disabled ? (_props$cursor = props.cursor) !== null && _props$cursor !== void 0 ? _props$cursor : 'pointer' : 'initial';
 }, function (props) {
   var _props$margin;
   return (_props$margin = props.margin) !== null && _props$margin !== void 0 ? _props$margin : '4px';
@@ -12486,9 +12564,13 @@ var Button = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].button(_t
   var _props$boxShadow;
   return (_props$boxShadow = props.boxShadow) !== null && _props$boxShadow !== void 0 ? _props$boxShadow : "0 0 10px rgba(0, 0, 0, 0.07)";
 }, function (props) {
-  return props.primary ? '&:hover { background-color: dodgerblue }' : '';
+  return !props.disabled ? '&:hover { box-shadow: 0 0 15px rgba(0, 0, 0, 0.15) }' : '';
 }, function (props) {
-  return props.secondary ? '&:hover { background-color: darkgrey }' : '';
+  return !props.disabled ? '&:active { background-color: teal; color: white; }' : '';
+}, function (props) {
+  return props.primary && !props.disabled ? '&:hover { background-color: dodgerblue }' : '';
+}, function (props) {
+  return props.secondary && !props.disabled ? '&:hover { background-color: darkgrey }' : '';
 });
 var Clickable = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\nborder-radius: ", ";\ncursor: pointer;\n&:hover {\n  stroke: white;\n  fill: black;\n}\n"])), function (props) {
   var _props$borderRadius2;

@@ -1,30 +1,35 @@
 import styled from 'styled-components';
 
 export const Button = styled.button`
-  background-color: ${props => props.primary ? 'lightskyblue' : props.secondary ? 'lightgrey' : 'white'};
+  background-color: ${props => props.disabled
+    ? 'darkgrey'
+    : props.primary
+    ? 'lightskyblue'
+    : props.secondary
+    ? 'lightgrey'
+    : 'white'};
   border: ${props => props.border ?? '1px solid rgba(0, 0, 0, 0.1)'};
   border-radius: ${props => props.borderRadius ?? "4px"};
-  color: ${props => props.primary || props.secondary ? 'white' : 'black'};
-  disabled: ${props => props.disabled ?? 'initial'};
+  color: ${props => props.disabled ? 'dimgrey' : props.primary || props.secondary ? 'white' : 'black'};
   height: ${props => props.height ?? 'auto'};
   padding: 8px 20px;
-  cursor: ${props => props.cursor ?? 'pointer'};
+  cursor: ${props => !props.disabled ? props.cursor ?? 'pointer' : 'initial'};
   margin: ${props => props.margin ?? '4px'};
   margin-top: ${props => props.marginTop ?? 0};
   width: ${props => props.width ?? 'auto'};
   box-shadow: ${props => props.boxShadow ?? "0 0 10px rgba(0, 0, 0, 0.07)"};
-  &:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  ${props => !props.disabled ?
+    '&:hover { box-shadow: 0 0 15px rgba(0, 0, 0, 0.15) }' : ''
   }
-  &:active {
-    background-color: teal;
-    color: white;
+  ${props => !props.disabled
+    ? '&:active { background-color: teal; color: white; }'
+    : ''
   }
-  ${props => props.primary 
+  ${props => props.primary && !props.disabled
     ? '&:hover { background-color: dodgerblue }' 
     : ''
   }
-  ${props => props.secondary
+  ${props => props.secondary && !props.disabled
     ? '&:hover { background-color: darkgrey }'
     : ''
   }

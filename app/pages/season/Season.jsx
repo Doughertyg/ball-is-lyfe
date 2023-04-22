@@ -451,7 +451,7 @@ const Season = ({match}) => {
                 }</DetailsText>
               </FlexContainer>
             </FlexContainer>
-            <FlexContainer direction="column" marginTop="8px" shrink={0}>
+            <FlexContainer alignItems="flex-end" direction="column" marginTop="8px" shrink={0}>
               <BadgeComponent label={SEASON_STATUS_LABELS[seasonStatus]} status={seasonStatus} />
               {isLeagueAdmin && seasonStatus === 'CONFIRMED' && (
                 <LaunchSeasonButton
