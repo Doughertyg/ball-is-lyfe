@@ -74,7 +74,9 @@ module.exports = {
         const isCaptain = season?.captains?.reduce((acc, val) => {
           return val._id?.toString() === userID ? true : acc; 
         }, false);
+        const standings = season?.teams?.sort((teamA, teamB) => teamA?.wins - teamB?.wins);
         if (season) {
+          season.standings = standings;
           return { season, isCaptain, isLeagueAdmin };
         } else {
           throw new Error('Season not found');

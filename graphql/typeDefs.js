@@ -88,6 +88,7 @@ module.exports = gql`
     description: String!
     seasonStart: String!
     seasonEnd: String!
+    standings: [TeamInstance]
     stats: [Stat]
     statUnits: [StatUnit]
     status: SeasonStatus!
