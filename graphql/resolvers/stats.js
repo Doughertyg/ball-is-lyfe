@@ -89,7 +89,7 @@ module.exports = {
         return season?.stats ?? [];
       }
 
-      return await Season.find();
+      return await Stat.find();
     }
   }
 }

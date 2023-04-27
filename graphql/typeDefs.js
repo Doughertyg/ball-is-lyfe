@@ -17,6 +17,8 @@ module.exports = gql`
     getStats(seasonID: ID): [Stat]
     getStatOperations(seasonID: ID): [Operation]
     getStatUnits(seasonID: ID): [StatUnit]
+    getStatUnitRecords(seasonID: ID, gameID: ID, playerID: ID, statID: ID): [StatUnitRecord]
+    getStatRecords(seasonID: ID, playerID: ID): [StatRecord]
     getUserContext(token: String!): User
     getTeam(teamID: ID!): Team
     getTeams(seasonIDToExclude: ID): [Team]
@@ -114,8 +116,10 @@ module.exports = gql`
     createdAt: String!
     players: [User]!
     captain: User
+    losses: Int
     team: Team!
     season: Season!
+    wins: Int
   }
   type PlayerInstance {
     id: ID!
@@ -139,12 +143,24 @@ module.exports = gql`
     name: String!
     value: Int!
   }
+  type StatUnitRecord {
+    player: User!
+    season: Season!
+    game: Game!
+    statUnit: StatUnit!
+  }
   type Stat {
     description: String,
     id: ID!
     isPerGame: Boolean!
     name: String!
     operation: Operation!
+  }
+  type StatRecord {
+    player: User!
+    season: Season!
+    game: Game!
+    stat: Stat!
   }
   type Operation {
     expression: String
@@ -288,6 +304,8 @@ module.exports = gql`
     addCaptainsToSeason(seasonID: ID!, captains: [ID!]): Season!
     addPlayersToSeason(seasonID: ID!, players: [ID!]): Season!
     addTeamsToSeason(teamIDs: [ID], seasonID: ID!): Season!
+    addStatUnitRecord(seasonID: ID!, gameID: ID!, playerID: ID!, timeCode: Int): Game!
+    addStatRecord(seasonID: ID!, gameID: ID!, player: ID!): Game!
     editTeam(teamInput: EditTeamInmput): TeamInstance!
     register(registerInput: RegisterInput): User!
     registerUser(token: String!): User!
