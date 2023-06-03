@@ -304,7 +304,7 @@ module.exports = gql`
     addCaptainsToSeason(seasonID: ID!, captains: [ID!]): Season!
     addPlayersToSeason(seasonID: ID!, players: [ID!]): Season!
     addTeamsToSeason(teamIDs: [ID], seasonID: ID!): Season!
-    addStatUnitRecord(seasonID: ID!, gameID: ID!, playerID: ID!, timeCode: Int): Game!
+    addStatUnitRecord(seasonID: ID!, statUnitID: ID!, gameID: ID!, playerID: ID!, timeCode: Int): Game
     addStatRecord(seasonID: ID!, gameID: ID!, player: ID!): Game!
     editTeam(teamInput: EditTeamInmput): TeamInstance!
     register(registerInput: RegisterInput): User!

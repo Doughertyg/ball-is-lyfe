@@ -5,6 +5,8 @@ const leagueResolvers = require('./leagues');
 const seasonResolvers = require('./seasons');
 const teamResolvers = require('./teams');
 const statUnitResolvers = require('./statUnits');
+const statUnitRecordsResolvers = require('./statUnitRecords');
+const statRecordsResolvers = require('./statRecords');
 const statResolvers = require('./stats');
 const statOperationsResolvers = require('./statOperations');
 
@@ -81,7 +83,9 @@ module.exports = {
     ...leagueResolvers.Mutation,
     ...seasonResolvers.Mutation,
     ...statOperationsResolvers.Mutation,
+    ...statRecordsResolvers.Mutation,
     ...statResolvers.Mutation,
+    ...statUnitRecordsResolvers.Mutation,
     ...statUnitResolvers.Mutation,
     ...teamResolvers.Mutation,
   },

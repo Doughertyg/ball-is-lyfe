@@ -23,6 +23,7 @@ const StatUnitRecordSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Season"
   },
+  timeCode: String
 });
 
 module.exports = model('StatUnitRecord', StatUnitRecordSchema);
