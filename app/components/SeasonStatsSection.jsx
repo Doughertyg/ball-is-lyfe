@@ -106,9 +106,9 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
 
   return (
     <>
-      <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
+      {isAdmin && (<FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
         <SectionHeadingText margin="20px 12px 20px 0">Stats</SectionHeadingText>
-        {isAdmin && seasonID && (
+        {seasonID && (
           <CollapsibleSearchField
             filterResults={filterStatsResults}
             getRightButton={getCreateStatButton}
@@ -119,12 +119,12 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
             selected={statsToAdd}
             source={stats ?? []}
           />)}
-      </FlexContainer>
+      </FlexContainer>)}
       {createStatExpanded && (
         <CreateStatComponent onCancel={() => setCreateStatExpanded(false)} onCompleted={onCreateStat} seasonID={seasonID} />
       )}
       <FlexContainer flexWrap="wrap" justify="flex-start">
-        {stats != null && stats.length > 0 && (
+        {stats != null && stats.length > 0 && isAdmin && (
           stats.map((seasonStat, idx) => (
             <CompactDetailsCard
               key={idx}
@@ -151,8 +151,40 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
               />
             ))}
           </FlexContainer>
-        </>)}
-      </>
+          <Divider />
+      </>)}
+      {stats && stats.length > 0 && (
+        <>
+          <SectionHeadingText margin="20px 12px 12px 0">Stat Leaders</SectionHeadingText>
+          <FlexContainer justify="flex-start" flexWrap="wrap">
+          {stats.map((stat, idx) => (
+            <FlexContainer direction="column" key={idx} padding="0 16px 0 0" paddingTop="16px">
+              <SectionHeadingText margin="0 0 8px">{stat?.name ?? 'Stat name missing'}</SectionHeadingText>
+              <CompactDetailsCard
+                details={/* other stat leaders. query on stat or stat records */ ['Shez - 43%', 'Mikey - 42%', 'Tim - 40%']}
+                
+                picture={/* stat leader picture url */null}
+                title={/* stat leader name. query on stat or stat records */ 'Graham Dougherty'}
+                subTitle="46.4%"
+              />
+            </FlexContainer>
+          ))}
+          {stats.map((stat, idx) => (
+            <FlexContainer direction="column" key={idx} padding="0 16px 0 0" paddingTop="16px">
+              <SectionHeadingText margin="0 0 8px">{stat?.name ?? 'Stat name missing'}</SectionHeadingText>
+              <CompactDetailsCard
+                details={/* other stat leaders. query on stat or stat records */ ['Shez - 43%', 'Mikey - 42%', 'Tim - 40%']}
+                
+                picture={/* stat leader picture url */null}
+                title={/* stat leader name. query on stat or stat records */ 'Graham Dougherty'}
+                subTitle="46.4%"
+              />
+            </FlexContainer>
+          ))}
+          </FlexContainer>
+        </>
+       )}
+    </>
   )
 }
 

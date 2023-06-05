@@ -18,7 +18,7 @@ module.exports = gql`
     getStatOperations(seasonID: ID): [Operation]
     getStatUnits(seasonID: ID): [StatUnit]
     getStatUnitRecords(seasonID: ID, gameID: ID, playerID: ID, statID: ID): [StatUnitRecord]
-    getStatRecords(seasonID: ID, playerID: ID): [StatRecord]
+    getStatRecords(seasonID: ID, gameID: ID, playerID: ID, statID: ID): [StatRecord]
     getUserContext(token: String!): User
     getTeam(teamID: ID!): Team
     getTeams(seasonIDToExclude: ID): [Team]
