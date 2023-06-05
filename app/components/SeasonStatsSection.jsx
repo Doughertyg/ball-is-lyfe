@@ -162,19 +162,6 @@ const SeasonStatsSection = ({ seasonID, isAdmin }) => {
               <SectionHeadingText margin="0 0 8px">{stat?.name ?? 'Stat name missing'}</SectionHeadingText>
               <CompactDetailsCard
                 details={/* other stat leaders. query on stat or stat records */ ['Shez - 43%', 'Mikey - 42%', 'Tim - 40%']}
-                
-                picture={/* stat leader picture url */null}
-                title={/* stat leader name. query on stat or stat records */ 'Graham Dougherty'}
-                subTitle="46.4%"
-              />
-            </FlexContainer>
-          ))}
-          {stats.map((stat, idx) => (
-            <FlexContainer direction="column" key={idx} padding="0 16px 0 0" paddingTop="16px">
-              <SectionHeadingText margin="0 0 8px">{stat?.name ?? 'Stat name missing'}</SectionHeadingText>
-              <CompactDetailsCard
-                details={/* other stat leaders. query on stat or stat records */ ['Shez - 43%', 'Mikey - 42%', 'Tim - 40%']}
-                
                 picture={/* stat leader picture url */null}
                 title={/* stat leader name. query on stat or stat records */ 'Graham Dougherty'}
                 subTitle="46.4%"

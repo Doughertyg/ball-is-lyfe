@@ -8366,21 +8366,6 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
       title: /* stat leader name. query on stat or stat records */'Graham Dougherty',
       subTitle: "46.4%"
     }));
-  }), stats.map(function (stat, idx) {
-    var _stat$name2;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.FlexContainer, {
-      direction: "column",
-      key: idx,
-      padding: "0 16px 0 0",
-      paddingTop: "16px"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_styled_components_common__WEBPACK_IMPORTED_MODULE_1__.SectionHeadingText, {
-      margin: "0 0 8px"
-    }, (_stat$name2 = stat === null || stat === void 0 ? void 0 : stat.name) !== null && _stat$name2 !== void 0 ? _stat$name2 : 'Stat name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      details: /* other stat leaders. query on stat or stat records */['Shez - 43%', 'Mikey - 42%', 'Tim - 40%'],
-      picture: /* stat leader picture url */null,
-      title: /* stat leader name. query on stat or stat records */'Graham Dougherty',
-      subTitle: "46.4%"
-    }));
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SeasonStatsSection);
