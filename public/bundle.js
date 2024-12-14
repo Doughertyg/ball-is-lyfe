@@ -8362,7 +8362,7 @@ var SeasonStatsSection = function SeasonStatsSection(_ref) {
       margin: "0 0 8px"
     }, (_stat$name = stat === null || stat === void 0 ? void 0 : stat.name) !== null && _stat$name !== void 0 ? _stat$name : 'Stat name missing'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CompactDetailsCard_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
       details: /* other stat leaders. query on stat or stat records */['Shez - 43%', 'Mikey - 42%', 'Tim - 40%'],
-      picture: /* stat leader picture url */null,
+      picture: /* stat leader picture url */'https://lh3.googleusercontent.com/a/AAcHTtfNMU42hvQYO0gCOWTYXRisYuoWV8JJ6BAV55ciink=s96-c',
       title: /* stat leader name. query on stat or stat records */'Graham Dougherty',
       subTitle: "46.4%"
     }));

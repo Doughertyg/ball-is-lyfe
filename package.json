@@ -5,11 +5,12 @@
   "main": "app/index.jsx",
   "scripts": {
     "start": "node server/index",
-    "start-dev": "NODE_ENV=development node server/index",
+    "start-dev": "NODE_ENV=development nodemon server/index",
     "serve": "webpack serve",
     "dev": "webpack --devtool source-map",
     "dev:dev": "webpack --devtool source-map --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretty": "prettier . -w"
   },
   "engines": {
     "node": "16.x"
@@ -71,7 +72,6 @@
     "graphql-tag": "^2.12.4",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
-    "lodash.clonedeep": "^4.5.0",
     "moment": "^2.29.1",
     "mongoose": "^5.12.13",
     "prop-types": "^15.7.2",
