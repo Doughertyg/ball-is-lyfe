@@ -28,7 +28,6 @@
     "@svgr/webpack": "^5.5.0",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
-    "apollo-link-context": "^1.0.20",
     "autoprefixer": "^10.4.20",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -59,6 +58,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.10",
     "@apollo/react-hooks": "^4.0.0",
+    "apollo-link-context": "^1.0.20",
     "@babel/core": "^7.17.9",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
