@@ -4,8 +4,8 @@ import { NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AuthContext } from '../context/auth';
+import Navbar from './Navbar.jsx';
 import {ButtonContainer, FlexContainer, ProfilePictureThumb} from '../styled-components/common';
-import ProfileCircle from '../icons/profilecircle.svg';
 
 const Wrapper = styled.div`
   border-bottom: 1px solid lightgrey;
@@ -35,15 +35,13 @@ function MenuBar({ match }) {
   }, []);
 
   return (
-    <div className='shadow-md h-16 w-full flex items-center justify-between px-1'>
+    <div className='shadow-md h-16 shrink-0 w-full flex items-center justify-between px-1'>
       <NavLink className='flex items-center mx-3' to={user ? '/home' : '/'}>
         <span className='text-indigo-500 font-extrabold font-sans text-5xl tracking-wide italic'>RLN</span>
       </NavLink>
-      {user && user.profilePicture ?
+      {user ?
         (
-          <img className='h-10 w-10 m-1 rounded-full mr-3' referrerPolicy="no-referrer" src={user.profilePicture} />
-        ) : user ? (
-          <ProfileCircle />
+          <Navbar user={user} logoutCallback={logout} />
         ) : (
           <div className='text-slate-700 flex items-center px-1 h-full font-bold font-sans px-3 hover:text-indigo-500'>
             <NavLink  onClick={() => setActive('login')} exact to="/login">
