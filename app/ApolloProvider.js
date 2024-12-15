@@ -8,10 +8,9 @@ const GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
 const URI = process.env.NODE_ENV == 'development' ?
   'http://localhost:5000/' :
   'https://protected-fortress-16665.herokuapp.com/';
-console.log(' uri:   ', URI,  ' process.env.NODE_ENV:  ', process.env.NODE_ENV);
 
 const httpLink = createHttpLink({
-  uri: 'https://protected-fortress-16665.herokuapp.com/'
+  uri: URI
 });
 
 const authLink = setContext(() => {
@@ -22,6 +21,23 @@ const authLink = setContext(() => {
     }
   }
 })
+
+// const cache = new InMemoryCache({
+//   typePolicies: {
+//     Team: {
+//       fields: {
+//         seasonPlayers: {
+//           read(_, { args, readField }) {
+//             const players = readField('players');
+//             if (args && args.seasonID != null) {
+//               return players.filter(player => )
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// });
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),

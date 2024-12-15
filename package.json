@@ -5,14 +5,19 @@
   "main": "app/index.jsx",
   "scripts": {
     "start": "node server/index",
-    "start-dev": "NODE_ENV=development node server/index",
+    "start-dev": "NODE_ENV=development nodemon server/index",
     "serve": "webpack serve",
+    "tailwind": "npx tailwindcss -i ./app/input.css -o ./public/output.css --watch",
     "dev": "webpack --devtool source-map",
     "dev:dev": "webpack --devtool source-map --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretty": "prettier . -w"
   },
   "engines": {
     "node": "16.x"
+  },
+  "resolutions": {
+    "apollo-client": "2.6.4"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "apollo-link-context": "^1.0.20",
+    "autoprefixer": "^10.4.20",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -37,6 +43,7 @@
     "eslint-plugin-redux-saga": "^1.2.1",
     "file-loader": "^6.0.0",
     "nodemon": "^2.0.7",
+    "postcss": "^8.4.49",
     "prettier": "^2.3.0",
     "react-is": "^18.1.0",
     "resolve-url-loader": "^3.1.1",
@@ -46,8 +53,8 @@
     "stylelint-config-recommended": "^5.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.10.0",
+    "tailwindcss": "^3.4.16",
     "terser": "^5.12.1",
-    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
   },
@@ -71,7 +78,6 @@
     "graphql-tag": "^2.12.4",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
-    "lodash.clonedeep": "^4.5.0",
     "moment": "^2.29.1",
     "mongoose": "^5.12.13",
     "prop-types": "^15.7.2",
