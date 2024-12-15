@@ -67,6 +67,7 @@
     "babel-loader": "^9.2.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "css-loader": "^7.1.2",
     "dayjs": "^1.11.2",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
