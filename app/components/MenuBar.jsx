@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { AuthContext } from '../context/auth';
 import {ButtonContainer, FlexContainer, ProfilePictureThumb} from '../styled-components/common';
+import ProfileCircle from '../icons/profilecircle.svg';
 
 const Wrapper = styled.div`
   border-bottom: 1px solid lightgrey;
@@ -34,74 +35,24 @@ function MenuBar({ match }) {
   }, []);
 
   return (
-    <Wrapper>
-      <FlexContainer backgroundColor="rgba(239, 239, 239, 1)" width={'100%'}>
-        {user ?
-          (<>
-            <ButtonContainer active={active === 'home'}>
-              <NavLink onClick={() => setActive('home')} exact to="/home">
-                Home
-              </NavLink>
-            </ButtonContainer>
-            <FlexComponent>
-              <FlexContainer alignItems="center" height="43px" overflow="hidden">
-                {innerWidth > 600 && (
-                  <>
-                    <Offset />
-                    <NavLink to="/">
-                      <img referrerPolicy="no-referrer" height={310} src="./logo.jpeg" />
-                    </NavLink>
-                  </>)}
-              </FlexContainer>
-            </FlexComponent>
-            <FlexContainer>
-              <ButtonContainer>
-                <NavLink onClick={logout} exact to="/login">
-                  Logout
-                </NavLink>
-              </ButtonContainer>
-              <ButtonContainer active={active === 'profile'} padding="none">
-                <NavLink onClick={() => setActive('profile')} exact to="/profile">
-                  <FlexContainer alignItems="center">
-                    {user.name?.split(' ')[0] ?? user.username}
-                    <ProfilePictureThumb referrerPolicy="no-referrer" src={user.profilePicture} />
-                  </FlexContainer>
-                </NavLink>
-              </ButtonContainer>
-            </FlexContainer>
-          </>
-          ) : (
-            <>
-              <ButtonContainer active={active === 'home'}>
-                <NavLink onClick={() => setActive("home")} exact to="/">
-                  Home
-                </NavLink>
-              </ButtonContainer>
-              <FlexComponent>
-                <FlexContainer alignItems="center" height="43px" overflow="hidden">
-                  <Offset />
-                  <NavLink to="/">
-                    <img referrerPolicy="no-referrer" height={310} src="./logo.jpeg" />
-                  </NavLink>
-                </FlexContainer>
-              </FlexComponent>
-              <FlexContainer>
-                <ButtonContainer active={active === "login"}>
-                  <NavLink onClick={() => setActive('login')} exact to="/login">
-                    Login
-                  </NavLink>
-                </ButtonContainer>
-                <ButtonContainer active={active === "register"}>
-                  <NavLink onClick={() => setActive("register")} exact to="/register">
-                    Register
-                  </NavLink>
-                </ButtonContainer>
-              </FlexContainer>
-            </>
-          )
-        }
-      </FlexContainer>
-    </Wrapper>
+    <div className='shadow-md h-16 w-full flex items-center justify-between px-1'>
+      <NavLink className='flex items-center mx-3' to={user ? '/home' : '/'}>
+        <span className='text-indigo-500 font-extrabold font-sans text-5xl tracking-wide italic'>RLN</span>
+      </NavLink>
+      {user && user.profilePicture ?
+        (
+          <img className='h-10 w-10 m-1 rounded-full mr-3' referrerPolicy="no-referrer" src={user.profilePicture} />
+        ) : user ? (
+          <ProfileCircle />
+        ) : (
+          <div className='text-slate-700 flex items-center px-1 h-full font-bold font-sans px-3 hover:text-indigo-500'>
+            <NavLink  onClick={() => setActive('login')} exact to="/login">
+              Login
+            </NavLink>
+          </div>
+        )
+      }
+    </div>
   )
 }
 

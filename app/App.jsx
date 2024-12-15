@@ -19,6 +19,8 @@ import SplashPage from './pages/splashPage/SplashPage.jsx';
 import {CommonPageLayout, FlexContainer} from './styled-components/common';
 import League from './pages/league/LeaguePage.jsx';
 
+import './input.css';
+
 const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
 
 const Wrapper = styled.div`
@@ -51,8 +53,7 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Wrapper>
-          <CommonPageLayout>
+        <div className="w-full h-full">
             <MenuBar />
             <FlexContainer>
               <ScrollContainer width="100%">
@@ -70,8 +71,7 @@ function App() {
                 </Switch>
               </ScrollContainer>
             </FlexContainer>
-          </CommonPageLayout>
-        </Wrapper>
+          </div>
       </Routes>
     </AuthProvider>   
   )

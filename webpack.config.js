@@ -55,7 +55,15 @@ module.exports = {
       {
         test: /\.svg$/,
         use: ['@svgr/webpack'],
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+          { loader: "postcss-loader" }
+        ]
+      },
     ],
   },
   optimization: {
