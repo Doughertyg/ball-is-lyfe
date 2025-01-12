@@ -35,7 +35,7 @@ function MenuBar({ match }) {
   }, []);
 
   return (
-    <div className='shadow-md h-16 shrink-0 w-full flex items-center justify-between px-1'>
+    <div className='shadow-lg z-10 h-16 shrink-0 w-full flex items-center justify-between px-1'>
       <NavLink className='flex items-center mx-3' to={user ? '/home' : '/'}>
         <span className='text-indigo-500 font-extrabold font-sans text-5xl tracking-wide italic'>RLN</span>
       </NavLink>

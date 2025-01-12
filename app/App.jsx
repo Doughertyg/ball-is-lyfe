@@ -55,22 +55,20 @@ function App() {
       <Routes>
         <div className="flex flex-col w-full h-screen">
           <MenuBar />
-          <FlexContainer>
-            <ScrollContainer width="100%">
-              <Switch>
-                <ProtectedRoute exact path='/home' component={Home} />
-                <AuthRoute exact path='/login' component={Login} />
-                <AuthRoute exact path='/register' component={Register} />
-                <ProtectedRoute exact path="/posts/:postId" component={Post} />
-                <ProtectedRoute exact path="/season/:seasonID" component={Season} />
-                <ProtectedRoute exact path="/league/new" component={LeagueNewPage} />
-                <ProtectedRoute exact path="/league/:leagueID" component={League} />
-                <ProtectedRoute exact path="/league/:leagueID/season/new" component={SeasonNewPage} />
-                <Route exact path='/' component={SplashPage} />
-                <Route exact render={() => <Redirect to="/" />} />
-              </Switch>
-            </ScrollContainer>
-          </FlexContainer>
+          <div className='w-full h-full no-scrollbar overflow-y-scroll'>
+            <Switch>
+              <ProtectedRoute exact path='/home' component={Home} />
+              <AuthRoute exact path='/login' component={Login} />
+              <AuthRoute exact path='/register' component={Register} />
+              <ProtectedRoute exact path="/posts/:postId" component={Post} />
+              <ProtectedRoute exact path="/season/:seasonID" component={Season} />
+              <ProtectedRoute exact path="/league/new" component={LeagueNewPage} />
+              <ProtectedRoute exact path="/league/:leagueID" component={League} />
+              <ProtectedRoute exact path="/league/:leagueID/season/new" component={SeasonNewPage} />
+              <Route exact path='/' component={SplashPage} />
+              <Route exact render={() => <Redirect to="/" />} />
+            </Switch>
+          </div>
         </div>
       </Routes>
     </AuthProvider>   

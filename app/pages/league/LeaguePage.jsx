@@ -22,7 +22,9 @@ import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import { CardWrapper } from '../../styled-components/card.js';
+import PageBanner from '../../components/PageBanner.jsx';
 import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
+import Plus from '../../icons/plus.svg';
 
 const SearchWrapper = styled.div`
   height: 100%;
@@ -155,39 +157,42 @@ const League = ({match}) => {
     }
   }
 
+  const getSubTitleComponent = () => (
+    <div className='flex'>
+      <span className='italic'>{
+        (leagueData?.getLeagueByID?.league?.location ?? 'League location missing') + ' - ' + (leagueData?.getLeagueByID?.league?.sport ?? 'League sport missing')
+      }</span>
+      <Icon
+        icon="info"
+        onClick={() => {console.log('league info open!'/* Open league info panel */);}}
+      />
+    </div>
+  )
+
+  const getJoinLeagueButton = () => (
+    <button
+      className='hover:text-slate-200 hover:fill-slate-200 cursor-pointer flex items-center p-1 px-2 rounded-lg'
+      onClick={() => {console.log('join league click')}}
+    >
+      Join league
+    </button>
+  )
+
   return (
-    <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
-      {loading ? (
-        <FlexContainer height="45px" justify="flex-start" width="800px">
-          <LoadingSpinnerSpin />
-        </FlexContainer>
-      ) : (
-        <>
-          <FlexContainer direction="row" justify="space-between">
-            <FlexContainer direction="column">
-              <PageHeader margin="20px 0 0 0">{leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}</PageHeader>
-              <FlexContainer alignItems="center" justify="start">
-                <DetailsText>{
-                  (leagueData?.getLeagueByID?.league?.location ?? 'League location missing') + ' - ' + (leagueData?.getLeagueByID?.league?.sport ?? 'League sport missing')
-                }</DetailsText>
-                <Icon
-                  icon="info"
-                  onClick={() => {console.log('league info open!'/* Open league info panel */);}}
-                />
-              </FlexContainer>
-            </FlexContainer>
-            {!isLeagueMemeber && <Button label="Join league" marginTop="8px" onClick={() => {console.log('join league click')}} />}
-          </FlexContainer>
-          <br />
-          <BodyText>
-            {leagueData?.getLeagueByID?.league?.description}
-          </BodyText>
-          <Divider marginBottom="12px" />
-          <FlexContainer alignItems="center" justify="start">
-            <SectionHeadingText margin="20px 12px 20px 0">Recent Seasons</SectionHeadingText>
-            {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push(`/league/${leagueID}/season/new`)} />}
-          </FlexContainer>
-          <FlexContainer justify="flex-start" overFlow="scroll" width="100%">
+    <div className='flex flex-col w-full h-full bg-slate-50'>
+      <PageBanner
+        title={leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}
+        subTitle={getSubTitleComponent()}
+        description={leagueData?.getLeagueByID?.league?.description}
+        loading={loading || !leagueData?.getLeagueByID?.league?.name}
+        rightContent={isLeagueMemeber && getJoinLeagueButton()}
+      />
+      <div className='flex flex-col max-w-4xl mx-auto w-full bg-white h-full px-4 shadow-md'>
+        <div className='flex items-center justify-items-start'>
+          <SectionHeadingText margin="20px 12px 20px 0">Recent Seasons</SectionHeadingText>
+          {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push(`/league/${leagueID}/season/new`)} />}
+        </div>
+        <div className='flex w-full'>
           {leagueData?.getLeagueByID?.league?.seasons.length > 0 ?
             leagueData?.getLeagueByID?.league?.seasons?.map((season, idx) => {
               const start = dayjs(season?.seasonStart).format('MMM YYYY');
@@ -207,10 +212,10 @@ const League = ({match}) => {
             <DetailsText>No Seasons</DetailsText>
           </FlexContainer>
           )}
-          </FlexContainer>
-          <FlexContainer alignItems="center" flexWrap="wrap" justify="flex-start" overflow="visible">
-            <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
-            {isLeagueAdmin && (
+        </div>
+        <div className='flex items-center justify-items-start'>
+          <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
+          {isLeagueAdmin && (
               <AddPlayerSection
                 excludeLeague
                 isCollapsible
@@ -221,35 +226,32 @@ const League = ({match}) => {
                 onSelectPlayer={onSelectPlayer}
                 selectedPlayers={selectedPlayers}
                 submitLabel="Add players to league"/>)}
-          </FlexContainer>
-          <FlexContainer justify="flex-start" flexWrap="wrap">
+        </div>
+        <div className='flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-4'>
           {leagueData?.getPlayersInLeague?.length > 0 ?
             leagueData.getPlayersInLeague.map((player, idx) => {
               return (
-                <PlayerCard
-                  email={player.email}
-                  key={player.id ?? idx}
-                  margin="0 8px 8px 0"
-                  name={player.name}
-                  picture={player.profilePicture}
-                  username={player.username}
-                />
+                <div className='snap-start snap-always'>
+                  <PlayerCard
+                    email={player.email}
+                    key={player.id ?? idx}
+                    margin="0 8px 8px 0"
+                    name={player.name}
+                    picture={player.profilePicture}
+                    username={player.username}
+                  />
+                </div>
               )
             }) : (
-              <FlexContainer justify="flex-start" width="800px">
+              <div className="flex items-center justify-items-start" width="800px">
                 <DetailsText>No players in league</DetailsText>
-              </FlexContainer>
+              </div>
             )
           }
-          </FlexContainer>
-          {/* <Divider marginBottom="12px" />
-          <SectionHeadingText>Stat Leaders</SectionHeadingText>
-            :: :: :: :: stat cards :: :: :: :: 
-          <Divider /> */}
-        </>
-      )}
-    </FlexContainer>
-  );
+          </div>
+      </div>
+    </div>
+  )
 }
 
 export default League;
