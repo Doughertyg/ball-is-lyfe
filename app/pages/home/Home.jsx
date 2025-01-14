@@ -15,6 +15,7 @@ import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
 import LoadingSpinnerBounce from '../../components/LoadingSpinnerBounce.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
 import Button from '../../components/Button.jsx';
+import CommonPageLayout from '../../components/layout/CommonPageLayout.jsx';
 dayjs.extend(isBetween);
 
 const FETCH_LEAGUES_QUERY = gql`
@@ -191,153 +192,176 @@ function Home(props) {
       onClick={() => history.push('/league/new')}
     />
   )
+
+  const getSeasonsContent = () => (
+    (
+      loadingSeasons
+    ) ? (
+      <FlexContainer height="45px" justify="flex-start" width="800px">
+        <LoadingSpinnerBack />
+      </FlexContainer>
+    ) : (
+      activeSeasons?.length > 0 ?
+      activeSeasons?.map((season, idx) => {
+        return (
+          <Card
+            body={season.description}
+            bodyTitle={season?.league?.name?.toUpperCase()}
+            bodySubTitle={`(${season?.league?.sport})`}
+            key={season.id ?? idx}
+            margin="0 8px 8px 0"
+            onClick={() => history.push(`/season/${season.id}`)}
+            subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
+            title={season.name}
+          />
+        )
+      }) : (
+        <FlexContainer justify="flex-start" width="800px">
+          <DetailsText>No active seasons</DetailsText>
+        </FlexContainer>
+      )
+    )
+  )
+
+  const getLeaguesContent = () => (
+    loadingLeagues ? (
+      <FlexContainer height="45px" justify="flex-start" width="800px">
+        <LoadingSpinnerSpin />
+      </FlexContainer>
+    ) : (
+      leagueData?.getLeaguesByUser?.length > 0 ?
+        leagueData?.getLeaguesByUser?.map((league, idx) => {
+          return (
+            <Card
+              body={league.description ?? ''}
+              onClick={() => history.push(`/league/${league._id}`)}
+              subTitle={`${league.location} - ${league.sport}`}
+              title={league.name}
+              margin="0 8px 8px 0"
+              key={league._id ?? idx}
+            />
+          )
+        }) : (
+          <FlexContainer justify="flex-start" width="800px">
+            <DetailsText>No Leagues</DetailsText>
+          </FlexContainer>
+        )
+    )
+  )
+
+  const getPastSeasonsContent = () => (
+    loadingSeasons ? 
+      (
+        <FlexContainer height="45px" justify="flex-start" width="800px">
+          <LoadingSpinnerBounce />
+        </FlexContainer>
+      ) :
+      pastSeasons?.length > 0 ?
+      pastSeasons?.map((season, idx) => {
+        return (
+          <Card
+            body={season.description}
+            bodyTitle={season?.league?.name?.toUpperCase()}
+            bodySubTitle={`(${season?.league?.sport})`}
+            key={season.id ?? idx}
+            margin="0 8px 8px 0"
+            onClick={() => history.push(`/season/${season.id}`)}
+            subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
+            title={season.name}
+          />
+        )
+      }) :
+      <FlexContainer justify="flex-start" width="800px">
+        <DetailsText>No past seasons</DetailsText>
+      </FlexContainer>
+  )
+
+  const getUpcomingSeasonsContent = () => (
+    loadingSeasons ? 
+      (
+        <FlexContainer height="45px" justify="flex-start" width="800px">
+          <LoadingSpinnerSpin />
+        </FlexContainer>
+      ) :
+      futureSeasons?.length > 0 ?
+      futureSeasons?.map((season, idx) => {
+        return (
+          <Card
+            body={season.description}
+            bodyTitle={season?.league?.name?.toUpperCase()}
+            bodySubTitle={`(${season?.league?.sport})`}
+            key={season.id ?? idx}
+            margin="0 8px 8px 0"
+            onClick={() => history.push(`/season/${season.id}`)}
+            subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
+            title={season.name}
+          />
+        )
+      }) :
+      <FlexContainer justify="flex-start" width="800px">
+        <DetailsText>No upcoming seasons</DetailsText>
+      </FlexContainer>
+  )
+
+  const getTeamsContent = () => (
+    loadingTeams ? 
+      (
+        <FlexContainer height="45px" justify="flex-start" width="800px">
+          <LoadingSpinnerSpin />
+        </FlexContainer>
+      ) :
+      teamData?.getTeamsByUser?.length > 0 ?
+        teamData?.getTeamsByUser.map((post, idx) => {
+          return (
+            <PostCard key={post.id ?? idx} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
+          )
+        }) :
+        <FlexContainer justify="flex-start" width="800px">
+          <DetailsText>No teams</DetailsText>
+        </FlexContainer>
+  )
+
+  const getContent = () => (
+    [
+      {
+        title: 'Active seasons',
+        content: getSeasonsContent()
+      },
+      {
+        title: 'Leagues',
+        rightContent: (
+          <CollapsibleSearchField
+            filterResults={filterLeagueSearchResults}
+            getResultComponent={getLeagueResultsComponent}
+            getRightButton={getRightButton}
+            label="Search leagues..."
+            loading={loadingLeagues}
+            onClick={onClickLeagueEntry}
+            source={leagueData?.getLeagues ?? []}
+          />
+        ),
+        content: getLeaguesContent()
+      },
+      {
+        title: 'Past seasons',
+        content: getPastSeasonsContent()
+      },
+      {
+        title: 'Upcoming season',
+        content: getUpcomingSeasonsContent()
+      },
+      {
+        title: 'Teams',
+        content: getTeamsContent(),
+        rightContent: (
+          <Icon borderRadius="50%" icon="plus" onClick={() => {console.log('add Team!');}} />
+        )
+      }
+    ]
+  )
   
   return (
-    <FlexContainer alignContent="start" alignItems="start" direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" width="100%" padding="0 12px">
-      <PageHeader>Active seasons</PageHeader>
-      <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingSeasons ? 
-          (
-            <FlexContainer height="45px" justify="flex-start" width="800px">
-              <LoadingSpinnerBack />
-            </FlexContainer>
-          ) :
-          activeSeasons?.length > 0 ?
-          activeSeasons?.map((season, idx) => {
-            return (
-              <Card
-                body={season.description}
-                bodyTitle={season?.league?.name?.toUpperCase()}
-                bodySubTitle={`(${season?.league?.sport})`}
-                key={season.id ?? idx}
-                margin="0 8px 8px 0"
-                onClick={() => history.push(`/season/${season.id}`)}
-                subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
-                title={season.name}
-              />
-            )
-          }) :
-          <FlexContainer justify="flex-start" width="800px">
-            <DetailsText>No active seasons</DetailsText>
-          </FlexContainer>
-        }
-      </FlexContainer>
-      <FlexContainer alignItems="center" overflow="visible">
-        <PageHeader margin="20px 12px 20px 0">Leagues</PageHeader>
-        <CollapsibleSearchField
-          filterResults={filterLeagueSearchResults}
-          getResultComponent={getLeagueResultsComponent}
-          getRightButton={getRightButton}
-          label="Search leagues..."
-          loading={loadingLeagues}
-          onClick={onClickLeagueEntry}
-          source={leagueData?.getLeagues ?? []}
-        />
-      </FlexContainer>
-      <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingLeagues ? 
-          (
-            <FlexContainer height="45px" justify="flex-start" width="800px">
-              <LoadingSpinnerSpin />
-            </FlexContainer>
-          ) :
-          leagueData?.getLeaguesByUser?.length > 0 ?
-            leagueData?.getLeaguesByUser?.map((league, idx) => {
-              return (
-                <Card
-                  body={league.description ?? ''}
-                  onClick={() => history.push(`/league/${league._id}`)}
-                  subTitle={`${league.location} - ${league.sport}`}
-                  title={league.name}
-                  margin="0 8px 8px 0"
-                  key={league._id ?? idx}
-                />
-              )
-            }) :
-            <FlexContainer justify="flex-start" width="800px">
-              <DetailsText>No Leagues</DetailsText>
-            </FlexContainer>
-        }
-      </FlexContainer>
-      <PageHeader>Past seasons</PageHeader>
-      <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingSeasons ? 
-          (
-            <FlexContainer height="45px" justify="flex-start" width="800px">
-              <LoadingSpinnerBounce />
-            </FlexContainer>
-          ) :
-          pastSeasons?.length > 0 ?
-          pastSeasons?.map((season, idx) => {
-            return (
-              <Card
-                body={season.description}
-                bodyTitle={season?.league?.name?.toUpperCase()}
-                bodySubTitle={`(${season?.league?.sport})`}
-                key={season.id ?? idx}
-                margin="0 8px 8px 0"
-                onClick={() => history.push(`/season/${season.id}`)}
-                subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
-                title={season.name}
-              />
-            )
-          }) :
-          <FlexContainer justify="flex-start" width="800px">
-            <DetailsText>No past seasons</DetailsText>
-          </FlexContainer>
-        }
-      </FlexContainer>
-      <PageHeader>Upcoming seasons</PageHeader>
-      <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingSeasons ? 
-          (
-            <FlexContainer height="45px" justify="flex-start" width="800px">
-              <LoadingSpinnerSpin />
-            </FlexContainer>
-          ) :
-          futureSeasons?.length > 0 ?
-          futureSeasons?.map((season, idx) => {
-            return (
-              <Card
-                body={season.description}
-                bodyTitle={season?.league?.name?.toUpperCase()}
-                bodySubTitle={`(${season?.league?.sport})`}
-                key={season.id ?? idx}
-                margin="0 8px 8px 0"
-                onClick={() => history.push(`/season/${season.id}`)}
-                subTitle={`${dayjs(season.seasonStart).format('MMM YYYY')} - ${dayjs(season.seasonEnd).format('MMM YYYY')}`}
-                title={season.name}
-              />
-            )
-          }) :
-          <FlexContainer justify="flex-start" width="800px">
-            <DetailsText>No upcoming seasons</DetailsText>
-          </FlexContainer>
-        }
-      </FlexContainer>
-      <FlexContainer alignItems="center">
-        <PageHeader margin="20px 12px 20px 0">Teams</PageHeader>
-        <Icon borderRadius="50%" icon="plus" onClick={() => {console.log('add Team!');}} />
-      </FlexContainer>
-      <FlexContainer justify="start" flexWrap="wrap" width="100%">
-        {loadingTeams ? 
-          (
-            <FlexContainer height="45px" justify="flex-start" width="800px">
-              <LoadingSpinnerSpin />
-            </FlexContainer>
-          ) :
-          teamData?.getTeamsByUser?.length > 0 ?
-            teamData?.getTeamsByUser.map((post, idx) => {
-              return (
-                <PostCard key={post.id ?? idx} post={post} link={() => props.history.push(`/posts/${post.id}`)} />
-              )
-            }) :
-            <FlexContainer justify="flex-start" width="800px">
-              <DetailsText>No teams</DetailsText>
-            </FlexContainer>
-        }
-      </FlexContainer>
-    </FlexContainer>
+    <CommonPageLayout content={getContent()} />
   )
 };
 
