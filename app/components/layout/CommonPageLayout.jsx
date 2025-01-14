@@ -33,13 +33,15 @@ const CommonPageLayout = ({
 }) => {
   return (
     <div className='flex flex-col w-full h-full bg-slate-50'>
-      <PageBanner
-        title={title}
-        subTitle={subTitle}
-        description={description}
-        loading={loading}
-        rightContent={rightContent}
-      />
+      {title && (
+        <PageBanner
+          title={title}
+          subTitle={subTitle}
+          description={description}
+          loading={loading}
+          rightContent={rightContent}
+        />
+      )}
       <div className='flex flex-col max-w-4xl mx-auto w-full bg-white h-full px-4 shadow-md'>
         {
           content.map((section, idx) => (
