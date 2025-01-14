@@ -1,38 +1,16 @@
 import React, {useContext, useState} from 'react';
 import Icon from '../../components/Icon.jsx';
 import { AuthContext } from '../../context/auth';
-import {
-  BodyText,
-  DetailsText,
-  Divider,
-  FlexContainer,
-  PageHeader,
-  SectionHeadingText,
-  ScrollableContainer,
-  ProfilePictureThumb
-} from '../../styled-components/common';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import Card from '../../components/Card.jsx';
-import Button from '../../components/Button.jsx';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
-import { CardWrapper } from '../../styled-components/card.js';
-import PageBanner from '../../components/PageBanner.jsx';
-import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
-import Plus from '../../icons/plus.svg';
-
-const SearchWrapper = styled.div`
-  height: 100%;
-  width: ${props => props.width ?? 0};
-  overflow: ${props => props.overflow ?? 'hidden'};
-  transition: width .24s;
-  transition-timing-function: ease-out;
-`;
+import CommonPageLayout from '../../components/layout/CommonPageLayout.jsx';
 
 const FETCH_LEAGUE_QUERY = gql`
   query($leagueID: ID!, $userID: ID!) {
@@ -178,79 +156,90 @@ const League = ({match}) => {
     </button>
   )
 
-  return (
-    <div className='flex flex-col w-full h-full bg-slate-50'>
-      <PageBanner
-        title={leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}
-        subTitle={getSubTitleComponent()}
-        description={leagueData?.getLeagueByID?.league?.description}
-        loading={loading || !leagueData?.getLeagueByID?.league?.name}
-        rightContent={isLeagueMemeber && getJoinLeagueButton()}
-      />
-      <div className='flex flex-col max-w-4xl mx-auto w-full bg-white h-full px-4 shadow-md'>
-        <div className='flex items-center justify-items-start'>
-          <SectionHeadingText margin="20px 12px 20px 0">Recent Seasons</SectionHeadingText>
-          {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push(`/league/${leagueID}/season/new`)} />}
-        </div>
-        <div className='flex w-full'>
-          {leagueData?.getLeagueByID?.league?.seasons.length > 0 ?
-            leagueData?.getLeagueByID?.league?.seasons?.map((season, idx) => {
-              const start = dayjs(season?.seasonStart).format('MMM YYYY');
-              const end = dayjs(season?.seasonEnd).format('MMM YYYY');
-              return (
-                <Card
-                  body={season?.description}
-                  key={idx}
-                  subTitle={start + ' - ' + end}
-                  title={season?.name}
-                  margin="0 8px 0 0"
-                  onClick={() => {history.push(`/season/${season.id}`)}}
-                />
-              )
-          }) : (
-          <FlexContainer justify="flex-start" width="800px">
-            <DetailsText>No Seasons</DetailsText>
-          </FlexContainer>
-          )}
-        </div>
-        <div className='flex items-center justify-items-start'>
-          <SectionHeadingText margin="20px 12px 20px 0">Players</SectionHeadingText>
-          {isLeagueAdmin && (
-              <AddPlayerSection
-                excludeLeague
-                isCollapsible
-                isSubmitting={isSubmitting}
-                leagueID={leagueID}
-                onClose={() => setSelectedPlayers({})}
-                onSubmit={addPlayersToLeague}
-                onSelectPlayer={onSelectPlayer}
-                selectedPlayers={selectedPlayers}
-                submitLabel="Add players to league"/>)}
-        </div>
-        <div className='flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-4'>
-          {leagueData?.getPlayersInLeague?.length > 0 ?
-            leagueData.getPlayersInLeague.map((player, idx) => {
-              return (
-                <div className='snap-start snap-always'>
-                  <PlayerCard
-                    email={player.email}
-                    key={player.id ?? idx}
-                    margin="0 8px 8px 0"
-                    name={player.name}
-                    picture={player.profilePicture}
-                    username={player.username}
-                  />
-                </div>
-              )
-            }) : (
-              <div className="flex items-center justify-items-start" width="800px">
-                <DetailsText>No players in league</DetailsText>
-              </div>
-            )
-          }
-          </div>
+  const getSeasonsContent = () => (
+    (
+      leagueData?.getLeagueByID?.league?.seasons.length > 0
+    ) ? (
+      leagueData?.getLeagueByID?.league?.seasons?.map((season, idx) => {
+        const start = dayjs(season?.seasonStart).format('MMM YYYY');
+        const end = dayjs(season?.seasonEnd).format('MMM YYYY');
+        return (
+          <Card
+            body={season?.description}
+            key={idx}
+            subTitle={start + ' - ' + end}
+            title={season?.name}
+            margin="0 8px 0 0"
+            onClick={() => {history.push(`/season/${season.id}`)}}
+          />
+        )
+      })
+    ) : (
+      <div className='w-full flex items-center justify-items-start'>
+        <div className='text-slate-300'>No Seasons</div>
       </div>
-    </div>
+    )
+  )
+
+  const getPlayersContent = () => (
+    (
+      leagueData?.getPlayersInLeague?.length > 0
+    ) ? (
+      leagueData.getPlayersInLeague.map((player, idx) => {
+        return (
+          <div className='snap-start snap-always'>
+            <PlayerCard
+              email={player.email}
+              key={player.id ?? idx}
+              margin="0 8px 8px 0"
+              name={player.name}
+              picture={player.profilePicture}
+              username={player.username}
+            />
+          </div>
+        )
+      })
+    ) : (
+      <div className="flex items-center justify-items-start">
+        <div className='text-slate-300'>No players in league</div>
+      </div>
+    )
+  )
+
+  const getPageContent = () => ([
+    {
+      title: 'Recent Seasons',
+      rightContent: isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => history.push(`/league/${leagueID}/season/new`)} />,
+      content: getSeasonsContent()
+    },
+    {
+      title: 'Players',
+      rightContent: isLeagueAdmin && (
+        <AddPlayerSection
+          excludeLeague
+          isCollapsible
+          isSubmitting={isSubmitting}
+          leagueID={leagueID}
+          onClose={() => setSelectedPlayers({})}
+          onSubmit={addPlayersToLeague}
+          onSelectPlayer={onSelectPlayer}
+          selectedPlayers={selectedPlayers}
+          submitLabel="Add players to league"
+        />
+      ),
+      content: getPlayersContent()
+    }
+  ])
+
+  return (
+    <CommonPageLayout
+      title={leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}
+      subTitle={getSubTitleComponent()}
+      description={leagueData?.getLeagueByID?.league?.description}
+      loading={loading || !leagueData?.getLeagueByID?.league?.name}
+      rightContent={isLeagueMemeber && getJoinLeagueButton()}
+      content={getPageContent()}
+    />
   )
 }
 
