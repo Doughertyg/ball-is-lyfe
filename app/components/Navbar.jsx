@@ -26,7 +26,7 @@ const Navbar = ({ user, logoutCallback }) => {
   return (
     <>
       <div className={`w-screen absolute top-0 left-0 bg-slate-700 z-0 transition-opacity duration-500 h-screen ${expanded ? 'opacity-40' : 'opacity-0 pointer-events-none'}`} onClick={() => setExpanded(false)} />
-      <div className={`z-50 bg-white flex flex-col fixed right-0 top-0 transition-[height_delay-1000,width] duration-500 ease-in-out p-2 overflow-hidden ${expanded ? 'w-96 h-full shadow-md' : 'w-16 h-16'}`}>
+      <div className={`z-50 bg-white flex flex-col fixed right-0 top-0 transition-[height_delay-1000,width] duration-500 ease-in-out p-2 overflow-hidden ${expanded ? 'w-96 h-full shadow-md' : 'w-16 h-16 rounded-xl'}`}>
         <div className='flex flex-row'>
           {
             expanded ? (
