@@ -21,7 +21,7 @@ import League from './pages/league/LeaguePage.jsx';
 
 import './input.css';
 
-const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 const Wrapper = styled.div`
   background-color: white;
