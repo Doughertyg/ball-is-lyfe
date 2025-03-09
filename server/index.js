@@ -3,7 +3,7 @@ const { PubSub } = require('graphql-subscriptions');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   // if we are in dev mode, put .env vars into process
   dotenv.config();
 }
