@@ -7,7 +7,6 @@ var DEST_DIR = path.join(__dirname, "/public");
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
-  console.log('isProduction?: ', isProduction);
 
   return {
     mode: isProduction ? "production" : "development",
