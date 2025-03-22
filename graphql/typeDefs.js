@@ -1,5 +1,14 @@
 const { gql } = require('graphql-tag');
 
+/**
+ * TODO: Update seasonStatus enum to:
+ * enum SeasonStatus {
+ *   DRAFT
+ *   OPEN
+ *   ACTIVE
+ *   CLOSED
+ * }
+ */
 module.exports = gql`
   type Query {
     getAllPlayers: [User]

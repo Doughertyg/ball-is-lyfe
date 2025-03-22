@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './Button.jsx';
+import { ButtonTW } from './Button.jsx';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import dayjs from 'dayjs';
@@ -23,7 +23,7 @@ const LAUNCH_SEASON_MUTATION = gql`
  * - renders a simple button if season is confirmed and user is admin
  * - allows admin to launch season
  */
-const LaunchSeasonButton = ({ onComplete, onError, seasonEnd, seasonID, seasonStart }) => {
+const LaunchSeasonButton = ({ onComplete, onError, seasonEnd, seasonID, seasonStart, variant = 'flat' }) => {
   const [launchSeason, {isSubmitting}] = useMutation(LAUNCH_SEASON_MUTATION, {
     onCompleted: res => {
       onComplete?.(res.launchSeason);
@@ -49,16 +49,13 @@ const LaunchSeasonButton = ({ onComplete, onError, seasonEnd, seasonID, seasonSt
   const isDisabled = dayjs().isAfter(end) || dayjs().isBefore(start);
 
   return (
-    <Button
+    <ButtonTW
       isDisabled={isDisabled}
       isLoading={isSubmitting}
       label="Launch"
-      margin="4px 0 0 auto"
-      marginTop="4px"
       onClick={onSubmit}
-      primary
-      tooltip={isDisabled ? 'Season cannot be launched outside of the season start and end dates' : null}
-      width="fit-content"
+      variant={variant}
+      tooltip={isDisabled && !isSubmitting ? 'Season cannot be launched outside of the season start and end dates' : null}
     />
   )
 }

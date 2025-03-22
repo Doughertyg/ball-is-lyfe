@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
-import Button from '../../components/Button.jsx';
+import Button, { ButtonTW } from '../../components/Button.jsx';
 import CreateEditTeamComponent from '../../components/CreateEditTeamComponent.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
@@ -19,8 +19,9 @@ import CompactDetailsCard from '../../components/CompactDetailsCard.jsx';
 import SeasonStatsSection from '../../components/SeasonStatsSection.jsx';
 import SeasonConfigurationPage from '../season/SeasonConfigurationPage.jsx';
 import BannerComponent from '../../components/BannerComponent.jsx';
-import BadgeComponent from '../../components/BadgeComponent.jsx';
+import BadgeComponent, { BadgeTW } from '../../components/BadgeComponent.jsx';
 import LaunchSeasonButton from '../../components/LaunchSeasonButton.jsx';
+import CommonPageLayout from '../../components/layout/CommonPageLayout.jsx';
 
 const SEASON_STATUS_LABELS = {
   CONFIGURATION: 'Configuration',
@@ -28,6 +29,22 @@ const SEASON_STATUS_LABELS = {
   INACTIVE: 'Inactive',
   ACTIVE: 'Active',
 };
+
+/**
+ * const SEASON_STATUS = {
+ *   DRAFT
+ *   OPEN
+ *   ACTIVE
+ *   CLOSED
+ * }
+ */
+
+const SEASON_STATUS_MAP = {
+  CONFIGURATION: 'info',
+  CONFIRMED: 'confirmed',
+  INACTIVE: 'warning',
+  ACTIVE: 'active',
+}
 
 const FETCH_SEASON_QUERY = gql`
   query($seasonID: ID!, $userID: ID!) {
@@ -426,6 +443,86 @@ const Season = ({match}) => {
     return <SeasonConfigurationPage match={match} />
   }
 
+  const getSeasonDates = () => {
+    return `${(dayjs(seasonData?.getSeasonByID?.season?.seasonStart).format('MMM YYYY') ?? 'Season start missing')} - 
+      ${(dayjs(seasonData?.getSeasonByID?.season?.seasonEnd).format('MMM YYYY') ?? 'season end missing')}`
+  }
+
+  const getPageContent = () => ([
+    {
+      title: 'Recent Games',
+      content: (recentGames.length > 0 ?
+        recentGames.map((game, idx) => {
+          const date = dayjs(game?.date).format('MMM YYYY');
+          return (
+            <CompactDetailsCard
+              details={[
+                game?.homeTeam?.team?.name,
+                game?.awayTeam?.team?.name
+              ]}
+              picture={game?.homeTeam?.team?.profilePicture}
+              key={idx}
+              title={date}
+              onclose={() => {/* delete game */}}
+            />
+          )
+      }) : (
+      <FlexContainer justify="flex-start" width="800px">
+        <DetailsText>No recent Games</DetailsText>
+      </FlexContainer>
+      ))
+    },
+    {
+      title: 'Upcoming Games',
+      content: (upcomingGames.length > 0 ?
+        upcomingGames.map((game, idx) => {
+          const date = `${dayjs(game?.date).format('MMM DD')} at ${dayjs(game?.date).format('h:MM')}`;
+          return (
+            <CompactDetailsCard
+              details={[
+                game?.homeTeam?.team?.name,
+                game?.awayTeam?.team?.name
+              ]}
+              picture={game?.homeTeam?.team?.profilePicture}
+              key={idx}
+              title={date}
+              onclose={() => {/* delete game */}}
+            />
+          )
+      }) : (
+      <FlexContainer justify="flex-start" width="800px">
+        <DetailsText>No upcoming Games</DetailsText>
+      </FlexContainer>
+      )),
+    }
+  ]);
+
+  const pg = () => (
+    <CommonPageLayout
+      title={seasonData?.getSeasonByID?.season?.name ?? 'Season name missing'}
+      subTitle={getSeasonDates()}
+      description={seasonData?.getSeasonByID?.season?.description}
+      loading={loading}
+      content={getPageContent()}
+      rightContent={
+        isLeagueAdmin && seasonStatus === 'CONFIRMED' && (
+          <div className='flex-grow flex items-end justify-between'>
+            <BadgeTW label={SEASON_STATUS_LABELS[seasonStatus]} status={'info'} />
+            {isLeagueAdmin && seasonStatus === 'CONFIRMED' && (
+              <LaunchSeasonButton
+                onComplete={(season) => setSeasonStatus(season.status)}
+                onError={setMutationError}
+                seasonEnd={seasonData?.getSeasonByID?.season?.seasonEnd}
+                seasonID={seasonID}
+                seasonStart={seasonData?.getSeasonByID?.season?.seasonStart}
+                variant='flat'
+              />
+            )}
+          </div>)
+      }
+    />
+  );
+
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">
       {loading ? (
@@ -451,6 +548,7 @@ const Season = ({match}) => {
                 }</DetailsText>
               </FlexContainer>
             </FlexContainer>
+            {/* UGLY SHIT BELOW */}
             <FlexContainer alignItems="flex-end" direction="column" marginTop="8px" shrink={0}>
               <BadgeComponent label={SEASON_STATUS_LABELS[seasonStatus]} status={seasonStatus} />
               {isLeagueAdmin && seasonStatus === 'CONFIRMED' && (

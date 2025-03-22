@@ -32,7 +32,7 @@ const CommonPageLayout = ({
   content
 }) => {
   return (
-    <div className='flex flex-col w-full bg-slate-50'>
+    <div className='flex flex-col h-screen w-full bg-slate-50'>
       {title && (
         <PageBanner
           title={title}
@@ -42,7 +42,7 @@ const CommonPageLayout = ({
           rightContent={rightContent}
         />
       )}
-      <div className='flex flex-col max-w-4xl mx-auto w-full bg-white px-4 shadow-md'>
+      <div className='flex flex-col max-w-4xl mx-auto w-full bg-white px-4 shadow-md rounded -mt-4'>
         {
           content.map((section, idx) => (
             <CommonSectionLayout key={idx} title={section.title} rightComponent={section.rightContent}>{section.content}</CommonSectionLayout>

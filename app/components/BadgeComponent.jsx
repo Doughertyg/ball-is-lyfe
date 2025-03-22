@@ -38,6 +38,61 @@ const STATUS_ICON_SHADOW_COLOR_MAP = {
   CANCELLED: 'rgba(255, 0, 0, 0.3)'
 }
 
+const getColors = (status) => {
+  switch(status) {
+    case 'info':
+      return {
+        bg: 'bg-yellow-500',
+        border: 'border-yellow-500',
+        text: 'text-yellow-500'
+      };
+    case 'warning':
+      return {
+        bg: 'bg-red-500',
+        border: 'border-red-500',
+        text: 'text-red-500'
+      };
+    case 'active':
+      return {
+        bg: 'bg-green-500',
+        border: 'border-green-500',
+        text: 'text-green-500'
+      };
+    case 'confirmed':
+      return {
+        bg: 'bg-blue-500',
+        border: 'border-blue-500',
+        text: 'text-blue-500'
+      };
+    default: 
+      return {
+        bg: 'bg-gray-400',
+        border: 'border-gray-400',
+        text: 'text-gray-400'
+      };
+  }
+}
+
+export const BadgeTW = ({
+  label,
+  status,
+  variant = 'flat',
+  border = false
+}) => {
+  const colors = getColors(status);
+  const flatStyle = `${border ? 'border-2 border-solid' : 'border-none'} ${colors.border} ${colors.text}`;
+  const primaryStyle = `shadow-md ${colors.bg} text-white`;
+  const style = variant === 'flat' ? flatStyle : variant === 'primary' ? primaryStyle : '';
+
+  return (
+    <div className={`${style} inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium max-h-6 px-2.5 py-1 text-xs text-foreground`}>
+      {label}
+      {variant !== 'primary' && <span className={`animate-ping h-3 w-3 inline-flex rounded-full ${colors.bg} opacity-75`} />}
+    </div>
+  )
+}
+
+
 /**
  * Component that displays a status badge
  * 

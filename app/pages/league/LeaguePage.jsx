@@ -234,7 +234,7 @@ const League = ({match}) => {
   return (
     <CommonPageLayout
       title={leagueData?.getLeagueByID?.league?.name ?? 'League name missing'}
-      subTitle={getSubTitleComponent()}
+      subTitle={`${leagueData?.getLeagueByID?.league?.location ?? 'League location missing'} - ${leagueData?.getLeagueByID?.league?.sport ?? 'League sport missing'}`}
       description={leagueData?.getLeagueByID?.league?.description}
       loading={loading || !leagueData?.getLeagueByID?.league?.name}
       rightContent={isLeagueMemeber && getJoinLeagueButton()}
