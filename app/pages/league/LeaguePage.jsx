@@ -11,6 +11,7 @@ import PlayerSearchField from '../../components/PlayerSearchField.jsx';
 import PlayerCard from '../../components/PlayerCard.jsx';
 import AddPlayerSection from '../../components/AddPlayerSection.jsx';
 import CommonPageLayout from '../../components/layout/CommonPageLayout.jsx';
+import { ButtonTW } from '../../components/Button.jsx';
 
 const FETCH_LEAGUE_QUERY = gql`
   query($leagueID: ID!, $userID: ID!) {
@@ -148,12 +149,11 @@ const League = ({match}) => {
   )
 
   const getJoinLeagueButton = () => (
-    <button
-      className='hover:text-slate-200 hover:fill-slate-200 cursor-pointer flex items-center p-1 px-2 rounded-lg'
+    <ButtonTW
       onClick={() => {console.log('join league click')}}
     >
       Join league
-    </button>
+    </ButtonTW>
   )
 
   const getSeasonsContent = () => (
