@@ -68,13 +68,15 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
-      new Dotenv({
+      ...(!isProduction ? [new Dotenv({
         path: "./.env",
         systemvars: true,
         allowEmptyValues: true,
-      }),
+      })] : []),
       new webpack.DefinePlugin({
-        "process.env": JSON.stringify(process.env),
+        "process.env.NODE_ENV": JSON.stringify(argv.mode),
+        "process.env.GRAPHQL_ADDRESS": JSON.stringify(process.env.GRAPHQL_ADDRESS),
+        "process.env.GOOGLE_CLIENT_ID": JSON.stringify(process.env.GOOGLE_CLIENT_ID),
       }),
     ],
     devServer: {
