@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonTW } from './Button.jsx';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import dayjs from 'dayjs';
 
 const LAUNCH_SEASON_MUTATION = gql`

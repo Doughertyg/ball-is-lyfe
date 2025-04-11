@@ -40,19 +40,10 @@ module.exports = {
   },
   Mutation: {
     async addPlayersToLeague(_, { leagueID, playersToAdd }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const league = await League.findById(leagueID).exec();
-      const isAdmin = league.admins.includes(user.id);
+      const isAdmin = league.admins.includes(context.user?.id);
 
       if (!isAdmin) {
         throw new ForbiddenError('Only league admins can add players to the league');
@@ -80,27 +71,18 @@ module.exports = {
       return league;
     },
     async createLeague(_, { leagueInput }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1]
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const players = leagueInput?.players ?? [];
 
-      if (!players.includes((user.id).toString())) {
-        players.push(user.id);
+      if (!players.includes((context.user?.id).toString())) {
+        players.push(context.user?.id);
       }
 
       const newLeague = new League({
         ...leagueInput,
         createdAt: new Date().toDateString(),
-        admins: [user.id],
+        admins: [context.user?.id],
         players,
         seasons: []
       });

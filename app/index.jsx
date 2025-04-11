@@ -1,4 +1,9 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
-import ApolloProvider from './ApolloProvider.js';
+import Providers from './ApolloProvider.js';
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
-ReactDOM.render(ApolloProvider, document.getElementById('app'));
+  loadDevMessages();
+  loadErrorMessages();
+
+ReactDOM.render(<Providers />, document.getElementById('app'));

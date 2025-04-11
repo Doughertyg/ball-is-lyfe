@@ -1,27 +1,25 @@
 import React, { useContext, useEffect } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { useHistory } from 'react-router';
 
 import { AuthContext } from '../context/auth';
 
-function ProtectedRoute({ component, ...rest }) {
-  const { user, checkIsTokenValid } = useContext(AuthContext);
+function ProtectedRoute({ component, fallback, ...rest }) {
+  const { loadingUser, checkAndRefreshToken } = useContext(AuthContext);
   const history = useHistory();
-
-  if (user == null) {
-    history.push('/');
-    return null;
-  }
 
   useEffect(() => {
     console.log('useffect in protected route');
-    checkIsTokenValid();
+    checkAndRefreshToken()
+    .catch((err) => {
+      history.push('/');
+    });
   }, [])
 
   return (
     <Route
       {...rest}
-      component={component}
+      component={fallback && loadingUser ? fallback : component}
     />
   )
 }

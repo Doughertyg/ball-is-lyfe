@@ -246,13 +246,16 @@ module.exports = gql`
     location: String!
     name: String
     email: String!
-    token: String!
     username: String
     createdAt: String!
   }
   type CreateTeamMutationReturnType {
     team: Team,
     teamInstance: TeamInstance
+  }
+  type LoginMutationReturnType {
+    user: User!,
+    token: String!
   }
   input RegisterInput {
     username: String!
@@ -316,11 +319,15 @@ module.exports = gql`
     addStatUnitRecord(seasonID: ID!, statUnitID: ID!, gameID: ID!, playerID: ID!, timeCode: Int): Game
     addStatRecord(seasonID: ID!, gameID: ID!, player: ID!): Game!
     editTeam(teamInput: EditTeamInmput): TeamInstance!
+    refreshToken: LoginMutationReturnType!
     register(registerInput: RegisterInput): User!
     registerUser(token: String!): User!
+    registerUserWithGoogle(token: String!): LoginMutationReturnType!
     launchSeason(seasonID: ID!): Season!
     login(username: String!, password: String!): User!
     loginUser(token: String!): User!
+    loginUserWithGoogle(token: String!): LoginMutationReturnType!
+    logout: Boolean
     createPost(body: String!): Post!
     deletePost(postId: String!): String!
     configureSeason(input: ConfigureSeasonInput): Season!

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import React, {useEffect, useMemo, useState} from 'react';
 import gql from 'graphql-tag';
 import InputField from './InputField.jsx';

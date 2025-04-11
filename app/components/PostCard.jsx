@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 
 import {DetailsText, Divider, FlexContainer, SectionHeadingText, VerticalDivider} from '../styled-components/common';
@@ -66,7 +66,7 @@ function PostCard({ post: { body, createdAt, id, username, likeCount, comments, 
   const [showComments, setShowComments] = useState(false);
   useEffect(() => {
     console.log('useEffect likes run');
-    if (user && likes.find(like => like.username === user.username)) {
+    if (user && likes?.find(like => like.username === user.username)) {
       setLiked(true);
     } else {
       setLiked(false);

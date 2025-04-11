@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import React, {useContext, useState} from 'react';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import InputField from './InputField.jsx';

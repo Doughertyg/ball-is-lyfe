@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/auth';
 import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, ProfilePictureThumb, SectionHeadingText } from '../../styled-components/common';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import dayjs from 'dayjs';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';
@@ -234,7 +234,7 @@ const Season = ({match}) => {
   const history = useHistory();
 
   const { loading, data: seasonData, error } = useQuery(FETCH_SEASON_QUERY, {
-    variables: {seasonID, userID: user.id }
+    variables: {seasonID, userID: user?.id ?? user?._id }
   });
   const isLeagueAdmin = seasonData?.getSeasonByID?.isLeagueAdmin ?? false;
   const isCaptain = seasonData?.getSeasonByID?.isCaptain ?? false;
@@ -522,6 +522,9 @@ const Season = ({match}) => {
       }
     />
   );
+
+  // TODO: complete migrating page to new layout
+  return pg();
 
   return (
     <FlexContainer direction="column" justify="flex-start" margin="0 auto" maxWidth="800px" padding="0 12px">

@@ -14,7 +14,7 @@ module.exports = {
   Query: {
     async getTeamsByUser(_, { userID }) {
       try {
-        const teams = Team.find(team => team.players?.includes(userID))
+        const teams = Team.find(team => team?.players?.includes(userID))
          .sort({ createdAt: -1 });
         return teams ?? [];
       } catch (err) {
@@ -53,16 +53,7 @@ module.exports = {
   },
   Mutation: {
     async addTeamsToSeason(_, { teamIDs, seasonID }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context)
 
       const season = await Season.findById(seasonID);
       const seasonTeams = [...season.teams];
@@ -94,16 +85,7 @@ module.exports = {
       }).execPopulate());
     },
     async createTeam(_, { bannerPicture, captain, description, name, players, profilePicture, seasonID, sport }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const playersToAdd = [...players];
       if (captain != null) {
@@ -118,7 +100,7 @@ module.exports = {
         profilePicture,
         sport,
         createdAt: new Date().toISOString(),
-        createdBy: user.id,
+        createdBy: context.user?.id,
         admins: [captain]
       }); 
 
@@ -130,7 +112,7 @@ module.exports = {
         }
 
         const isAlreadyCaptain = season?.teams?.reduce((acc, team) => {
-          return team.captain?.toString() === user.id?.toString() ? true : acc;
+          return team.captain?.toString() === context.user?.id?.toString() ? true : acc;
         }, false);
 
         if (isAlreadyCaptain) {
@@ -170,16 +152,7 @@ module.exports = {
       return {team, teamInstance};
     },
     async editTeam(_, { teamInput: {captain, name, players, seasonID, teamID} }, context) {
-      const authHeader = context.req?.headers?.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const team = await TeamInstance.findById(teamID);
       if (team == null) {

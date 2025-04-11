@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Date from 'dayjs';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import useTimerHook from './useTimerHook';
 
 const MUTATION_MIN_INTERVAL = 1000;

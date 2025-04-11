@@ -9,7 +9,7 @@ import InputField from './InputField.jsx';
 import CreateStatMetricComponent from './CreateStatMetricComponent.jsx';
 import SimpleSelector from './SimpleSelector.jsx';
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 
 const Wrapper = styled.div`
   border-radius: 8px;

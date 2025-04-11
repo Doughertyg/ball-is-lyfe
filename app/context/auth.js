@@ -1,121 +1,141 @@
-import React, {createContext, useEffect, useReducer } from 'react';
+import React, {createContext, useState, useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
-import gql from 'graphql-tag';
-import { useLazyQuery } from '@apollo/react-hooks';
-
-const initialState = {
-  user: null
-}
-
-if (localStorage.getItem('jwtToken')) {
-  const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
-
-  if (decodedToken.exp * 1000 < Date.now()) {
-    localStorage.removeItem('jwtToken');
-  } else {
-    initialState.user = decodedToken;
-  }
-}
+import { LOGIN_WITH_GOOGLE_MUTATION, LOGOUT_MUTATION, REFRESH_TOKEN_MUTATION } from '../../graphql/mutations/userMutations';
 
 const AuthContext = createContext({
   user: null,
-  checkIsTokenValid: () => {},
-  login: (data) => {},  
-  logout: () => {}
+  accessToken: null,
+  checkAndRefreshToken: () => {},
+  errors: {},
+  loadingUser: false,
+  login: () => {},  
+  logout: () => {},
+  setErrors: () => {}
 })
 
-const USER_QUERY = gql`
-  query($token: String!) {
-    getUserContext(token: $token) {
-      id
-      name
-      profilePicture
-      email
-      username
-    }
+const isTokenExpired = (token) => {
+  try {
+    const { exp } = jwtDecode(token);
+    return exp * 1000 < Date.now();
+  } catch {
+    return true;
   }
-`;
+};
 
-function authReducer(state, action) {
-  switch(action.type) {
-    case 'LOGIN':
+/**
+ * 
+ * Auth Provider to encapsulate all auth logic
+ * - store user info and accessToken
+ * - refresh accessToken if null or expired
+ * - logout
+ */
+function AuthProvider({ children }) {
+  const [user, setUser] = useState();
+  const [accessToken, setAccessToken] = useState();
+  const [loadingUser, setLoadingUser] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const login = useCallback(async (googleToken) => {
+    setLoadingUser(true);
+
+    try {
+      const res = await fetch('/graphql', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: LOGIN_WITH_GOOGLE_MUTATION(googleToken) })
+      });
+
+      const json = await res.json();
+      const token = json?.data?.loginUserWithGoogle?.token;
+      const user = json?.data?.loginUserWithGoogle?.user;
+
+      if (!token) {
+        console.error('Login failed: No token received');
+        throw new Error('Login failed: No token received');
+      }
+
+      setAccessToken(token);
+      setUser(user);
       return {
-        ...state,
-        user: action.value
+        token,
+        user
       }
-    case 'LOGOUT':
+    } catch (err) {
+      console.log('Error in the onGoogleAuthError callback: ', err);
+      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
+      setErrors(errors => ({...errors, ...graphQLErrors}));
+      setAccessToken(null);
+      setUser(null);
+      throw err;
+    }
+
+    setLoadingUser(false);
+  }, [setErrors, setUser, setAccessToken]);
+
+  const logout = useCallback(async () => {
+    try {
+      await fetch('/graphql', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: LOGOUT_MUTATION })
+      });
+    } catch (err) {
+      console.log('Error calling logout mutation: ', err);
+    } finally {
+      setAccessToken(null);
+      setUser(null);
+    }
+  }, [setAccessToken, setUser]);
+
+  const refreshAccessToken = useCallback(async () => {
+    setLoadingUser(true);
+
+    try {
+      const res = await fetch('/graphql', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: REFRESH_TOKEN_MUTATION })
+      });
+      const json = await res.json();
+      const token = json?.data?.refreshToken?.token;
+      const user = json?.data?.refreshToken?.user;
+
+      if (!token) {
+        console.log('Error refreshing user token: No token received');
+        throw new Error('Error refreshing user token: No token received');
+      }
+
+      setAccessToken(token);
+      setUser(user);
       return {
-        ...state,
-        user: null
+        token,
+        user
       }
-    default: 
-      return state;
-  }
-}
-
-function AuthProvider(props) {
-  const [state, dispatch] = useReducer(authReducer, initialState);
-
-  const [loadUserData, { called }] = useLazyQuery(
-    USER_QUERY
-  )
-
-  const login = (data) => {
-    localStorage.setItem('jwtToken', data.token);
-
-    dispatch({
-      type: 'LOGIN',
-      value: data
-    })
-  }
-
-  const logout = () => {
-    localStorage.removeItem('jwtToken');
-    dispatch({
-      type: 'LOGOUT'
-    })
-  }
-
-  const checkIsTokenValid = () => {
-    if (localStorage.getItem('jwtToken')) {
-      const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
-    
-      // is token expired?
-      if (decodedToken.exp * 1000 < Date.now()) {
-        localStorage.removeItem('jwtToken');
-        dispatch({
-          type: 'LOGOUT'
-        })
-      }
+    } catch (err) {
+      console.error('Token refresh failed:', err);
+      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
+      setErrors(errors => ({...errors, ...graphQLErrors}));
+      setAccessToken(null);
+      setUser(null);
+      throw err;
     }
-  }
 
-  /**
-   * if the page is refreshed with a valid token in storage
-   * but the user object in state is null or does not include userID
-   * refresh/rehydrate the user object from the backend
-   */
-  useEffect(() => {
-    if (localStorage.getItem('jwtToken') && (state?.user == null || state?.user?.id == null) && !called) {
-      loadUserData({ variables: { token: localStorage.getItem('jwtToken') }}).then(res => {
-        dispatch({
-          type: 'LOGIN',
-          value: {...res.data.getUserContext}
-        })
-      })
+    setLoadingUser(false);
+  }, [setAccessToken, setUser]);
+
+  const checkAndRefreshToken = useCallback(async () => {
+    if (!accessToken || isTokenExpired(accessToken)) {
+      await refreshAccessToken();
     }
-  }, [state.user, called]);
-
-  useEffect(() => {
-    console.log('IN USE EFFECT');
-    checkIsTokenValid();
-  }, []);
+  }, [accessToken, refreshAccessToken]);
 
   return (
-    <AuthContext.Provider
-      value={{ user: state.user, checkIsTokenValid, login, logout}}
-      {...props}
-    />
+    <AuthContext.Provider value={{user, accessToken, checkAndRefreshToken, errors, login, logout, setErrors }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 
