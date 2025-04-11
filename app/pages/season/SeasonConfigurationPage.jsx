@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/auth';
 import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, ProfilePictureThumb, SectionHeadingText } from '../../styled-components/common';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import dayjs from 'dayjs';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import AddGamesComponent from '../../components/AddGamesComponent.jsx';

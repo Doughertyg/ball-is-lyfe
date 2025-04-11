@@ -96,16 +96,7 @@ module.exports = {
   },
   Mutation: {
     async addCaptainsToSeason(_, { seasonID, captains }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
       
       const season = await Season.findById(seasonID);
       if (season.status !== SeasonStatus.CONFIGURATION) {
@@ -123,16 +114,7 @@ module.exports = {
       return await season.save();
     },
     async addGamesToSeason(_, { seasonID, gamesToAdd }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const season = await Season.findById(seasonID);
       if (season == null) {
@@ -184,16 +166,7 @@ module.exports = {
       return szn;
     },
     async addPlayersToSeason(_, { seasonID, players }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const season = await Season.findById(seasonID);
 
@@ -206,21 +179,12 @@ module.exports = {
       return await season.save();
     },
     async createSeason(_, { seasonInput }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const newSeason = new Season({
         ...seasonInput,
         createdAt: new Date().toISOString(),
-        admins: [user.id],
+        admins: [context.user?.id],
         status: SeasonStatus.CONFIGURATION
       });
 
@@ -236,16 +200,7 @@ module.exports = {
       return season;
     },
     async configureSeason(_, { input: { seasonID, periods, periodLength, scoreStat, winCondition }}, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const season = await Season.findById(seasonID);
       if (season == null) {
@@ -268,19 +223,10 @@ module.exports = {
       return await season.save().then(szn => szn.populate('gameConfiguration.scoreStat').execPopulate());
     },
     async confirmSeason(_, { seasonID }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const season = await Season.findById(seasonID).populate('league');
-      const isLeagueAdmin = season?.league?.admins?.includes(user.id) ?? false;
+      const isLeagueAdmin = season?.league?.admins?.includes(context.user?.id) ?? false;
       if (!isLeagueAdmin) {
         throw new ApolloError('User is not authorized to confirm the season. Only admins can confirm seasons');
       }
@@ -295,16 +241,7 @@ module.exports = {
       return await season.save();
     },
     async launchSeason(_, { seasonID }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const season = await Season.findById(seasonID);
       if (season == null) {

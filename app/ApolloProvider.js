@@ -1,51 +1,52 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import App from './App.jsx';
-import { ApolloClient, InMemoryCache, createHttpLink, } from '@apollo/client';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+
 import { setContext } from 'apollo-link-context';
+import { AuthProvider, AuthContext } from './context/auth';
 
 const GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
 const URI = process.env.NODE_ENV == 'development' ?
-  'http://localhost:5000/' :
+  'http://localhost:3000/graphql' :
   GRAPHQL_ADDRESS;
 
 const httpLink = createHttpLink({
-  uri: URI
+  uri: URI,
+  credentials: 'include'
 });
 
-const authLink = setContext(() => {
-  const token = localStorage.getItem('jwtToken');
-  return {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : ''
-    }
-  }
-})
+const ApolloAuthProvider = ({ children }) => {
+  const { accessToken } = useContext(AuthContext);
 
-// const cache = new InMemoryCache({
-//   typePolicies: {
-//     Team: {
-//       fields: {
-//         seasonPlayers: {
-//           read(_, { args, readField }) {
-//             const players = readField('players');
-//             if (args && args.seasonID != null) {
-//               return players.filter(player => )
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// });
+  const authLink = setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        Authorization: accessToken ? `Bearer ${accessToken}` : '',
+      },
+    };
+  });
 
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
-});
+  const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache(),
+  });
 
-export default (
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>
-);
+  return (
+    <ApolloProvider client={client}>
+      {children}
+    </ApolloProvider>
+  );
+}
+
+const Providers = () => {
+  return (
+    <AuthProvider>
+      <ApolloAuthProvider>
+        <App />
+      </ApolloAuthProvider>
+    </AuthProvider>
+  )
+};
+
+export default Providers;

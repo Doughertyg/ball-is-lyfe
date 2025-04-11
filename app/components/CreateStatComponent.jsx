@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import { BodyText, DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } from '../styled-components/common';
 import Button from './Button.jsx';
 import CollapsibleSearchField from './CollapsibleSearchField.jsx';

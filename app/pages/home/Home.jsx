@@ -1,6 +1,5 @@
-import React, { useContext, useMemo } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import React, { useContext, useEffect, useMemo } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { useHistory } from 'react-router';
 
 import PostCard from '../../components/PostCard.jsx';
@@ -16,62 +15,10 @@ import LoadingSpinnerBounce from '../../components/LoadingSpinnerBounce.jsx';
 import CollapsibleSearchField from '../../components/CollapsibleSearchField.jsx';
 import Button from '../../components/Button.jsx';
 import CommonPageLayout from '../../components/layout/CommonPageLayout.jsx';
+import { FETCH_USER_LEAGUES_QUERY } from '../../../graphql/queries/leagueQueries.js';
+import { FETCH_USER_SEASONS_QUERY } from '../../../graphql/queries/seasonQueries.js';
+import { FETCH_USER_TEAMS_QUERY } from '../../../graphql/queries/teamQueries.js';
 dayjs.extend(isBetween);
-
-const FETCH_LEAGUES_QUERY = gql`
-  query($userID: ID!) {
-    getLeagues {
-      _id
-      name
-      description
-      profilePicture
-      sport
-      location
-    }
-    getLeaguesByUser(userID: $userID) {
-      _id
-      name
-      description
-      profilePicture
-      sport
-      location
-    }
-  }
-`;
-
-const FETCH_SEASONS_QUERY = gql`
-  query($userID: ID!) {
-    getSeasonsByUser(userID: $userID) {
-      description
-      id
-      league {
-        name
-        sport
-      }
-      name
-      seasonStart
-      seasonEnd
-    }
-  }
-`;
-
-const FETCH_TEAMS_QUERY = gql`
-  query($userID: ID!) {
-    getTeamsByUser(userID: $userID) {
-      id
-      name
-      description
-      profilePicture
-      bannerPicture
-      sport
-      players {
-        name
-        profilePicture
-      }
-    }
-  }
-`;
-
 
 /**
  * 
@@ -108,24 +55,20 @@ const FETCH_TEAMS_QUERY = gql`
  *      `-----------------------------------"
  */
 function Home(props) {
-  const { user } = useContext(AuthContext);
+  const { accessToken, user } = useContext(AuthContext);
   const history = useHistory();
 
-  const {
-    loading: loadingLeagues,
-    data: leagueData,
-    error: leagueQueryError
-  } = useQuery(FETCH_LEAGUES_QUERY, {
-    variables: {userID: user?.id}
-  });
+  const [fetchLeagues, { data: leagueData, loading: loadingLeagues, error: leagueError }] = useLazyQuery(FETCH_USER_LEAGUES_QUERY);
+  const [fetchSeasons, { data: seasonData, loading: loadingSeasons, error: seasonError }] = useLazyQuery(FETCH_USER_SEASONS_QUERY);
+  const [fetchTeams, { data: teamData, loading: loadingTeams, error: teamError }] = useLazyQuery(FETCH_USER_TEAMS_QUERY);
 
-  const {
-    loading: loadingSeasons,
-    data: seasonData,
-    error: seasonQueryError
-  } = useQuery(FETCH_SEASONS_QUERY, {
-    variables: {userID: user?.id}
-  });
+  useEffect(() => {
+    if (user?.id) {
+      fetchLeagues({ variables: { userID: user.id } });
+      fetchSeasons({ variables: { userID: user.id } });
+      fetchTeams({ variables: { userID: user.id } });
+    }
+  }, [user?.id]);
   
   const activeSeasons = useMemo(() => {
     return seasonData?.getSeasonsByUser?.filter(season => {
@@ -147,10 +90,8 @@ function Home(props) {
     }) ?? [];
   }, [seasonData]);
 
-  const { loading: loadingTeams, data: teamData } = useQuery(FETCH_TEAMS_QUERY);
-
-  if (seasonQueryError) {
-    console.log('error:  ', JSON.stringify(seasonQueryError, null, 2))
+  if (seasonError) {
+    console.log('error:  ', JSON.stringify(seasonError, null, 2))
   }
 
   const filterLeagueSearchResults = (league, searchString) => {

@@ -3,7 +3,7 @@ import Icon from '../../components/Icon.jsx';
 import { AuthContext } from '../../context/auth';
 import {useHistory} from 'react-router';
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import Card from '../../components/Card.jsx';
 import dayjs from 'dayjs';
 import styled from 'styled-components';

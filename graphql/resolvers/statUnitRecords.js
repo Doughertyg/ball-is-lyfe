@@ -7,16 +7,7 @@ const userResolvers = require('./users');
 module.exports = {
   Mutation: {
     async addStatUnitRecord(_, { seasonID, statUnitID, gameID, playerID, timeCode }, context) {
-      const authHeader = context.req.headers.authorization;
-      if (authHeader == null) {
-        throw new AuthenticationError('Authentication header not provided. User not authenticated.');
-      }
-      const token = authHeader.split('Bearer ')[1];
-      const user = await userResolvers.authenticateExistingUser(token);
-
-      if (user == null) {
-        throw new AuthenticationError('User not authenticated');
-      }
+      userResolvers.requireAuth(context);
 
       const statUnitRecord = new StatUnitRecord({
         season: seasonID,

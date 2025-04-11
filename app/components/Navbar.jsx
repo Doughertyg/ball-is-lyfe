@@ -48,7 +48,7 @@ const Navbar = ({ user, logoutCallback }) => {
           expanded && 
           (
             <div className='flex flex-col justify-between h-full p-3 pb-0'>
-              <dfiv className='flex flex-col'>
+              <div className='flex flex-col'>
                 <NavLink className='flex items-center p-1 h-10 cursor-pointer' to='/home'>
                   <span className='text-slate-700 font-bold font-sans hover:text-indigo-500'>Home</span>
                 </NavLink>
@@ -64,7 +64,7 @@ const Navbar = ({ user, logoutCallback }) => {
                 <NavLink className='flex items-center p-1 h-10 cursor-pointer' to='/schedule'>
                   <span className='text-slate-700 font-bold font-sans hover:text-indigo-500'>Schedule</span>
                 </NavLink>
-              </dfiv>
+              </div>
               <NavLink onClick={logoutCallback} to='/login'>
                 <div className='hover:text-red-500 flex'>
                   <Logout />

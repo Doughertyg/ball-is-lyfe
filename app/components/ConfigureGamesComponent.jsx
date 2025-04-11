@@ -8,7 +8,7 @@ import CreateStatComponent from './CreateStatComponent.jsx';
 import InputField from './InputField.jsx';
 import SearchField from './SearchField.jsx';
 import SimpleSelector from './SimpleSelector.jsx';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import { concatAST } from 'graphql';
 import Button from './Button.jsx';
 import Icon from './Icon.jsx';

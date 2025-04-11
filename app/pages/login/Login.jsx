@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import {useState} from 'react';
 import styled from 'styled-components';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router';
 import { GoogleLogin } from 'react-google-login';
 
@@ -25,76 +23,11 @@ const ErrorWrapper = styled.div`
   margin-top: 8px;
 `;
 
-const LOGIN_USER = gql`
-  mutation login(
-    $username: String!
-    $password: String!
-  ) {
-    login(
-        username: $username
-        password: $password
-    ) {
-      id
-      email
-      username
-      createdAt
-      token
-    }
-  }
-`;
-
-const LOGIN = gql`
-  mutation loginUser(
-    $token: String!
-  ) {
-    loginUser(
-      token: $token
-    ) {
-      email
-      id
-      username
-      token
-    }
-  }
-`;
-
 function Login({ oldLoginPageFlag }) {
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({});
   const [username, setUsername] = useState('');
   const history = useHistory();
-  const { login, logout } = useContext(AuthContext);
-
-  const onGoogleAuthError = (err) => {
-    const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-    setErrors({...errors, ...graphQLErrors});
-  }
-
-  const [loginWithGoogleToken, { loading }] = useMutation(LOGIN, {
-    onCompleted: (res) => {
-      history.push('/home');
-    },
-    update: (_proxy, { data: { loginUser } }) => {
-      login(loginUser);
-    },
-    onError: onGoogleAuthError
-  })
-
-  const [_loginUser, { _loading }] = useMutation(LOGIN_USER, {
-    onCompleted: (res) => {
-      history.push('/');
-    },
-    update(_proxy, { data: { login: userData }}) {
-      login(userData);
-    },
-    onError: (err) => {
-      setErrors({...errors, ...err.graphQLErrors[0]?.extensions.exception.errors})
-    },
-    variables: {
-      username: username,
-      password: password,
-    }
-  })
+  const { errors, loggingIn, login, setErrors } = useContext(AuthContext);
 
   const _validateForm = () => {
     const formErrors = {};
@@ -107,7 +40,7 @@ function Login({ oldLoginPageFlag }) {
       formErrors.password = 'Must type a password';
     }
 
-    setErrors(formErrors);
+    // setErrors(formErrors);
     return formErrors;
   }
 
@@ -121,17 +54,18 @@ function Login({ oldLoginPageFlag }) {
   }
 
   const onGoogleAuthSuccess = (res) => {
-    loginWithGoogleToken({
-      variables: {
-        token: res.tokenId,
-        userData: res.profileObj
-      }
-    });
+    login(res.tokenId).then(() => history.push('/home')).catch(() => console.log('LOGIN failed'))
+  }
+
+  const onGoogleAuthError = (err) => {
+    console.log('Error in the onGoogleAuthError callback: ', err);
+    const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
+    setErrors(errors => ({...errors, ...graphQLErrors}));
   }
   
   return (
     <CenteredContainer>
-        {loading ? (
+        {loggingIn ? (
           <FlexContainer height="45px" justify="flex-start" marginTop="20px" width="800px">
             <LoadingSpinnerSpin />
           </FlexContainer>) : (

@@ -1,6 +1,7 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
+const TerserPlugin = require("terser-webpack-plugin");
 
 var SRC_DIR = path.join(__dirname, "/app");
 var DEST_DIR = path.join(__dirname, "/public");
@@ -12,9 +13,9 @@ module.exports = (env, argv) => {
     mode: isProduction ? "production" : "development",
     optimization: {
       minimize: isProduction,
-      minimizer: isProduction ? new TerserPlugin({
+      minimizer: isProduction ? [new TerserPlugin({
         parallel: false,
-      }) : [],
+      })] : [],
     },
     entry: `${SRC_DIR}/index.jsx`,
     output: {

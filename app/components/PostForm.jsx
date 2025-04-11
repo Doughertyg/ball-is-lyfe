@@ -4,7 +4,7 @@ import { ButtonContainer, Divider } from '../styled-components/common';
 import { Button } from '../styled-components/interactive';
 import InputField from './InputField.jsx';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 
 import { FETCH_POSTS_QUERY } from '../../graphql/queries/graphql';
 

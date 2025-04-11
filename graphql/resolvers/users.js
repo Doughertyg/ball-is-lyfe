@@ -8,6 +8,9 @@ const { OAuth2Client } = require("google-auth-library");
 const {validateRegisterInput, validateLoginInput} = require('../../util/validators');
 
 const SECRET_KEY = process.env.SECRET_KEY;
+const REFRESH_SECRET = process.env.REFRESH_SECRET;
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+
 function generateToken(user) {
   return jwt.sign({
     id: user.id, 
@@ -16,21 +19,22 @@ function generateToken(user) {
   }, SECRET_KEY, { expiresIn: '1h'});
 }
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const createAccessToken = (userId) => jwt.sign({ userId: userId }, SECRET_KEY, { expiresIn: "5m" });
+const createRefreshToken = (userId) => jwt.sign({ userId: userId }, REFRESH_SECRET, { expiresIn: "30d" });
+
 const googleClient = new OAuth2Client({
   clientId: `${CLIENT_ID}`,
 });
 
-const authenticateNewUser = async (token) => {
+const authenticateOrCreateUser = async (token, res, createUser = false) => {
   const ticket = await googleClient.verifyIdToken({
     idToken: token,
     audient: `${process.env.GOOGLE_CLIENT_ID}`,
   });
 
   const payload = ticket.getPayload();
-
   let user = await User.findOne({ email: payload?.email });
-  if (!user) {
+  if (!user && createUser) {
     user = await new User({
       email: payload?.email,
       profilePicture: payload?.picture,
@@ -39,35 +43,35 @@ const authenticateNewUser = async (token) => {
     });
 
     await user.save();
-  }
-
-  return {
-    ...user._doc,
-    ...user,
-    id: user._id,
-    token
-  }
-};
-
-const authenticateExistingUser = async (token) => {
-  const ticket = await googleClient.verifyIdToken({
-    idToken: token,
-    audient: `${process.env.GOOGLE_CLIENT_ID}`,
-  });
-
-  const payload = ticket.getPayload();
-  let user = await User.findOne({ email: payload?.email });
-  if (!user) {
+  } else if (!user && !createUser) {
     return null;
   }
 
+  const accessToken = createAccessToken(user._id);
+  const refreshToken = createRefreshToken(user._id);
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict", // Prevent CSRF
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  });
+
   return {
-    ...user._doc,
-    ...user,
-    name: payload.name,
-    profilePicture: payload.picture,
-    id: user._id,
-    token
+    user: {
+      ...user,
+      ...user._doc,
+      name: payload.name,
+      profilePicture: payload.picture,
+      id: user._id,
+    },
+    token: accessToken
+  }
+}
+
+const requireAuth = (context) => {
+  if (!context.user) {
+    throw new AuthenticationError('You must be logged in');
   }
 }
 
@@ -101,16 +105,21 @@ module.exports = {
         token
       };
     },
-    async loginUser (_, { token }) {
-      const user = await authenticateExistingUser(token);
+    async loginUserWithGoogle (_, { token }, { res }) {
+      try {
+        const response = await authenticateOrCreateUser(token, res, false);
 
-      if (user == null) {
-        throw new UserInputError('User not yet registered.');
+        if (response == null) {
+          throw new UserInputError('User does not exist.');
+        }
+
+        return response;
+      } catch (err) {
+        console.error('Error logging in with Google: ', err);
+        throw err;
       }
-
-      return user;
     },
-    async register(_āparents, { registerInput: { username, email, password, confirmPassword }}) {
+    async register(_parents, { registerInput: { username, email, password, confirmPassword }}) {
       // todo: validate user data
       let inputErrors = {};
       const { valid, errors} = validateRegisterInput(username, email, password, confirmPassword);
@@ -149,8 +158,49 @@ module.exports = {
         token
       }
     },
-    async registerUser(_, { token }) {
-      return await authenticateNewUser(token);
+    async registerUserWithGoogle(_, { token }, { res }) {
+      try {
+        return await authenticateOrCreateUser(token, res, true);
+      } catch (err) {
+        console.error('Error registering new user with Google');
+        throw err;
+      }
+    },
+    async refreshToken(_, __, { req, res }) {
+      const token = req.cookies.refreshToken;
+      if (!token) throw new Error('Missing refresh token');
+
+      try {
+        const payload = jwt.verify(token, REFRESH_SECRET);
+        const user = await User.findById(payload.userId);
+        if (!user) throw new Error('User not found');
+
+        const newAccessToken = createAccessToken(user._id);
+        const newRefreshToken = createRefreshToken(user._id);
+
+        res.cookie('refreshToken', newRefreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'Strict', // Prevent CSRF
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        });
+
+        return {
+          token: newAccessToken,
+          user,
+        };
+      } catch (err) {
+        console.log('Error refreshing access token: ', err);
+        throw new Error('Error refreshing access token: ', err.message ?? 'Missing or invalid refresh token');
+      }
+    },
+    logout: async (_, __, { res }) => {
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict',
+      });
+      return true;
     }
   },
   Query: {
@@ -204,11 +254,11 @@ module.exports = {
     },
     async getUserContext(_, {token}) {
       try {
-        return await authenticateExistingUser(token);
+        return await authenticateOrCreateUser(token, false);
       } catch (err) {
         throw new Error(err)
       }
     }
   },
-  authenticateExistingUser
+  requireAuth
 }

@@ -4,7 +4,7 @@ import { DetailsText, Divider, FlexContainer, PageHeader, SectionHeadingText } f
 import InputField from './InputField.jsx';
 import Button from './Button.jsx';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 
 const Wrapper = styled.div`
   border-radius: 8px;
