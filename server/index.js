@@ -79,7 +79,7 @@ const startServer = async () => {
     .connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
       return httpServer.listen(PORT, () => {
-        console.log(`🚀 Server running at http://localhost:${PORT}/graphql`);
+        console.log(`🚀 Server running at ${process.env.GRAPHQL_ADDRESS ?? 'http://localhost'}:${PORT}/graphql`);
       });
     })
     .catch((err) => {

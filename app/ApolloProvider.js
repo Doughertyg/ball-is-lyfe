@@ -10,6 +10,9 @@ const URI = process.env.NODE_ENV == 'development' ?
   'http://localhost:3000/graphql' :
   GRAPHQL_ADDRESS;
 
+console.log('WHAT is the uri passing to apolloProvider?: ', URI);
+console.log('What is the uri in process.env?: ', process.env.GRAPHQL_ADDRESS);
+
 const httpLink = createHttpLink({
   uri: URI,
   credentials: 'include'
