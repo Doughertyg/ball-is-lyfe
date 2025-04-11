@@ -11,7 +11,7 @@ import {Button, ErrorList, ErrorListWrapper} from '../../styled-components/inter
 import { AuthContext } from '../../context/auth.js';
 import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
 
-const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 const CenteredContainer = styled.div`
   margin: 0 auto;

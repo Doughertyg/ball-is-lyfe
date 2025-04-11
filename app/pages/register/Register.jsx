@@ -13,7 +13,7 @@ import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components
 import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 
-const CLIENT_ID = '1014510632298-mpkf456qeabonn3q835i3nk6b44g1v91.apps.googleusercontent.com';
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 const CenteredContainer = styled.div`
   margin: 0 auto;
