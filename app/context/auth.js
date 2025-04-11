@@ -22,6 +22,10 @@ const isTokenExpired = (token) => {
   }
 };
 
+const ENDPOINT = process.env.NODE_ENV != 'production' ?
+  '/graphql' : 
+  `${process.env.GRAPHQL_ADDRESS}/graphql`;
+
 /**
  * 
  * Auth Provider to encapsulate all auth logic
@@ -39,7 +43,7 @@ function AuthProvider({ children }) {
     setLoadingUser(true);
 
     try {
-      const res = await fetch('/graphql', {
+      const res = await fetch(ENDPOINT, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -75,7 +79,7 @@ function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     try {
-      await fetch('/graphql', {
+      await fetch(ENDPOINT, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -93,7 +97,7 @@ function AuthProvider({ children }) {
     setLoadingUser(true);
 
     try {
-      const res = await fetch('/graphql', {
+      const res = await fetch(ENDPOINT, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
