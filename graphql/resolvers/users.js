@@ -52,8 +52,8 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: "Strict", // Prevent CSRF
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 
@@ -181,7 +181,7 @@ module.exports = {
         res.cookie('refreshToken', newRefreshToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'Strict', // Prevent CSRF
+          sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
           maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
 
@@ -198,7 +198,7 @@ module.exports = {
       res.clearCookie('refreshToken', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
       });
       return true;
     }
