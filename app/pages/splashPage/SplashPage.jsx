@@ -14,7 +14,7 @@ export default function SplashPage() {
 
   return (
     <FlexContainer alignContent="center" alignItems="center" direction="column" height="100%" justify="start">
-      <Wrapper src="./logo-crooked-transparent.png" />
+      <Wrapper src="./logo-soft-level.png" />
     </FlexContainer>
   )
 }
