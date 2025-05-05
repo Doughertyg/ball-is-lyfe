@@ -27,7 +27,7 @@ function Login({ oldLoginPageFlag }) {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const history = useHistory();
-  const { errors, loggingIn, login, setErrors } = useContext(AuthContext);
+  const { errors, loading, login, setErrors } = useContext(AuthContext);
 
   const _validateForm = () => {
     const formErrors = {};
@@ -65,7 +65,7 @@ function Login({ oldLoginPageFlag }) {
   
   return (
     <CenteredContainer>
-        {loggingIn ? (
+        {loading ? (
           <FlexContainer height="45px" justify="flex-start" marginTop="20px" width="800px">
             <LoadingSpinnerSpin />
           </FlexContainer>) : (

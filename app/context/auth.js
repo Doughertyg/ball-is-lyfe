@@ -7,7 +7,7 @@ const AuthContext = createContext({
   accessToken: null,
   checkAndRefreshToken: () => {},
   errors: {},
-  loadingUser: false,
+  loading: false,
   login: () => {},  
   logout: () => {},
   setErrors: () => {}
@@ -36,11 +36,11 @@ const ENDPOINT = process.env.NODE_ENV != 'production' ?
 function AuthProvider({ children }) {
   const [user, setUser] = useState();
   const [accessToken, setAccessToken] = useState();
-  const [loadingUser, setLoadingUser] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const login = useCallback(async (googleToken) => {
-    setLoadingUser(true);
+    setLoading(true);
 
     try {
       const res = await fetch(ENDPOINT, {
@@ -72,13 +72,14 @@ function AuthProvider({ children }) {
       setAccessToken(null);
       setUser(null);
       throw err;
-    }
-
-    setLoadingUser(false);
+    } finally {
+      setLoading(false);
+    }    
   }, [setErrors, setUser, setAccessToken]);
 
   const logout = useCallback(async () => {
     try {
+      setLoading(true);
       await fetch(ENDPOINT, {
         method: 'POST',
         credentials: 'include',
@@ -90,11 +91,12 @@ function AuthProvider({ children }) {
     } finally {
       setAccessToken(null);
       setUser(null);
+      setLoading(false);
     }
   }, [setAccessToken, setUser]);
 
   const refreshAccessToken = useCallback(async () => {
-    setLoadingUser(true);
+    setLoading(true);
 
     try {
       const res = await fetch(ENDPOINT, {
@@ -125,9 +127,9 @@ function AuthProvider({ children }) {
       setAccessToken(null);
       setUser(null);
       throw err;
+    } finally {
+      setLoading(false);
     }
-
-    setLoadingUser(false);
   }, [setAccessToken, setUser]);
 
   const checkAndRefreshToken = useCallback(async () => {
@@ -137,7 +139,7 @@ function AuthProvider({ children }) {
   }, [accessToken, refreshAccessToken]);
 
   return (
-    <AuthContext.Provider value={{user, accessToken, checkAndRefreshToken, errors, login, logout, setErrors }}>
+    <AuthContext.Provider value={{user, accessToken, checkAndRefreshToken, errors, loading, login, logout, setErrors }}>
       {children}
     </AuthContext.Provider>
   )
