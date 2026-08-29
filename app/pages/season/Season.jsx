@@ -595,7 +595,7 @@ const Season = ({match}) => {
             )}
           </FlexContainer>
           <FlexContainer alignItems="center" justify="start" overFlow="visible">
-            < ectionHeadingText margin="20px 12px 20px 0">Upcoming Games</SectionHeadingText>
+            <SectionHeadingText margin="20px 12px 20px 0">Upcoming Games</SectionHeadingText>
             {isLeagueAdmin && <Icon borderRadius="50%" icon="plus" onClick={() => setAddGamesExpanded(!addGamesExpanded)} />}
           </FlexContainer>
           {addGamesExpanded && (
