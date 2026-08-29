@@ -4,25 +4,13 @@ const http = require("http");
 const jwt = require("jsonwebtoken");
 const { PubSub } = require('graphql-subscriptions');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const express = require("express");
 
-const ENV = process.env.NODE_ENV || 'development';
-
-if (ENV !== 'production') {
-  // if we are in dev mode, put .env vars into process
-  dotenv.config();
-}
-
-const PORT = process.env.PORT || 3000;
-const MONGODB = process.env.MONGODB || '';
-const ORIGIN = process.env.ORIGIN || 'http://localhost:3000';
-
-const resolvers = require('../graphql/resolvers');
-const typeDefs = require('../graphql/typeDefs');
+// Load centralized configuration
+const config = require('../config');
 
 const pubSub = new PubSub();
 
@@ -30,21 +18,36 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
+// CORS Configuration
 app.use(
   cors({
-    origin: ORIGIN,
+    origin: config.origin,
     credentials: true,
   })
 );
 
+/**
+ * Initialize and start the Apollo GraphQL server
+ */
 const startServer = async () => {
+  const resolvers = require('../graphql/resolvers');
+  const typeDefs = require('../graphql/typeDefs');
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    formatError: (error) => {
+      // Log errors in development
+      if (config.isDevelopment) {
+        console.error('GraphQL Error:', error);
+      }
+      return error;
+    },
   });
 
   await server.start();
 
+  // GraphQL endpoint
   app.use(
     "/graphql",
     expressMiddleware(server, {
@@ -55,9 +58,11 @@ const startServer = async () => {
         if (authHeader) {
           try {
             const token = authHeader.split(" ")[1];
-            user = jwt.verify(token, process.env.SECRET_KEY);
+            user = jwt.verify(token, config.secretKey);
           } catch (_err) {
-            console.log('No token attached to request or token invalid');
+            if (config.isDevelopment) {
+              console.log('No token attached to request or token invalid');
+            }
           }
         }
   
@@ -66,25 +71,45 @@ const startServer = async () => {
     })
   );
 
+  // Serve static files (built React app)
   const distPath = path.join(__dirname, "../public");
   app.use(express.static(distPath));
 
+  // Fallback to index.html for all other routes (SPA routing)
   app.get("*", (req, res) => {
     res.sendFile(path.join(distPath, "index.html"));
   });
 
   const httpServer = http.createServer(app);
 
-  mongoose
-    .connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-      return httpServer.listen(PORT, () => {
-        console.log(`🚀 Server running at ${process.env.GRAPHQL_ADDRESS ?? 'http://localhost'}:${PORT}/graphql`);
-      });
-    })
-    .catch((err) => {
-      console.log('error connecting to the db! err: ', err);
+  // Connect to MongoDB and start listening
+  try {
+    await mongoose.connect(config.mongodb, { 
+      useNewUrlParser: true, 
+      useUnifiedTopology: true 
     });
+    
+    console.log('✅ Connected to MongoDB');
+
+    await new Promise((resolve) => {
+      httpServer.listen(config.port, () => {
+        console.log(
+          `🚀 Server running!\n` +
+          `   GraphQL: ${config.graphqlAddress}\n` +
+          `   Environment: ${config.env}\n` +
+          `   Port: ${config.port}`
+        );
+        resolve();
+      });
+    });
+  } catch (err) {
+    console.error('❌ Error connecting to MongoDB:', err.message);
+    process.exit(1);
+  }
 };
 
-startServer();
+// Start the server
+startServer().catch((err) => {
+  console.error('❌ Failed to start server:', err);
+  process.exit(1);
+});

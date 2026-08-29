@@ -3,11 +3,28 @@ const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
 
-var SRC_DIR = path.join(__dirname, "/app");
-var DEST_DIR = path.join(__dirname, "/public");
+const SRC_DIR = path.join(__dirname, "/app");
+const DEST_DIR = path.join(__dirname, "/public");
 
+/**
+ * Webpack Configuration
+ * 
+ * Supports different environments: local, development, production
+ * Environment variables are loaded from .env.{NODE_ENV} files
+ */
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
+  const nodeEnv = process.env.NODE_ENV || (isProduction ? "production" : "development");
+
+  // Determine which .env file to use
+  let envPath = path.join(__dirname, ".env");
+  if (nodeEnv !== "production") {
+    // Try environment-specific file first
+    const specificEnvPath = path.join(__dirname, `.env.${nodeEnv}`);
+    if (require("fs").existsSync(specificEnvPath)) {
+      envPath = specificEnvPath;
+    }
+  }
 
   return {
     mode: isProduction ? "production" : "development",
@@ -23,8 +40,8 @@ module.exports = (env, argv) => {
       path: DEST_DIR,
       publicPath: "/",
     },
-    target: "web", // Make sure Webpack knows this is a browser build
-    devtool: "eval-source-map",
+    target: "web",
+    devtool: isProduction ? "source-map" : "eval-source-map",
     module: {
       rules: [
         {
@@ -68,15 +85,23 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
-      ...(!isProduction ? [new Dotenv({
-        path: "./.env",
+      // Load environment variables from .env file
+      new Dotenv({
+        path: envPath,
         systemvars: true,
         allowEmptyValues: true,
-      })] : []),
+        safe: !isProduction, // Use .env.example in non-production
+      }),
+      // Define global variables for the frontend
       new webpack.DefinePlugin({
-        "process.env.NODE_ENV": JSON.stringify(argv.mode),
-        "process.env.GRAPHQL_ADDRESS": JSON.stringify(process.env.GRAPHQL_ADDRESS),
-        "process.env.GOOGLE_CLIENT_ID": JSON.stringify(process.env.GOOGLE_CLIENT_ID),
+        "process.env.NODE_ENV": JSON.stringify(nodeEnv),
+        "process.env.GRAPHQL_ADDRESS": JSON.stringify(
+          process.env.GRAPHQL_ADDRESS || 
+          (isProduction ? undefined : "http://localhost:3000/graphql")
+        ),
+        "process.env.GOOGLE_CLIENT_ID": JSON.stringify(
+          process.env.GOOGLE_CLIENT_ID || ""
+        ),
       }),
     ],
     devServer: {
@@ -84,6 +109,7 @@ module.exports = (env, argv) => {
       compress: true,
       historyApiFallback: true,
       port: 3000,
+      hot: true,
     },
     node: {
       __dirname: false,
@@ -95,5 +121,5 @@ module.exports = (env, argv) => {
       inspector: "empty",
       child_process: "empty",
     },
-  }
+  };
 };

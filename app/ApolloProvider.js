@@ -1,14 +1,20 @@
 import React, { useContext } from 'react';
 import App from './App.jsx';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
-
 import { setContext } from 'apollo-link-context';
 import { AuthProvider, AuthContext } from './context/auth';
+import clientConfig from './config';
 
-const GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
-const URI = process.env.NODE_ENV == 'development' ?
-  'http://localhost:3000/graphql' :
-  GRAPHQL_ADDRESS;
+// Determine GraphQL URI based on environment
+const getGraphQLUri = () => {
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'local') {
+    return 'http://localhost:3000/graphql';
+  }
+  // For production/deployed environments, use the configured endpoint
+  return process.env.GRAPHQL_ADDRESS || 'http://localhost:3000/graphql';
+};
+
+const URI = getGraphQLUri();
 
 const httpLink = createHttpLink({
   uri: URI,
@@ -48,5 +54,7 @@ const Providers = () => {
     </AuthProvider>
   )
 };
+
+export default Providers;
 
 export default Providers;
