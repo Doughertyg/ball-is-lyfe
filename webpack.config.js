@@ -96,8 +96,7 @@ module.exports = (env, argv) => {
       new webpack.DefinePlugin({
         "process.env.NODE_ENV": JSON.stringify(nodeEnv),
         "process.env.GRAPHQL_ADDRESS": JSON.stringify(
-          process.env.GRAPHQL_ADDRESS || 
-          (isProduction ? undefined : "http://localhost:3000/graphql")
+          process.env.GRAPHQL_ADDRESS || "http://localhost:3000/graphql"
         ),
         "process.env.GOOGLE_CLIENT_ID": JSON.stringify(
           process.env.GOOGLE_CLIENT_ID || ""

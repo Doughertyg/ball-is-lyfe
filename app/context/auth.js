@@ -1,6 +1,7 @@
 import React, {createContext, useState, useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
 import { LOGIN_WITH_GOOGLE_MUTATION, LOGOUT_MUTATION, REFRESH_TOKEN_MUTATION } from '../../graphql/mutations/userMutations';
+import clientConfig from '../config';
 
 const AuthContext = createContext({
   user: null,
@@ -22,9 +23,7 @@ const isTokenExpired = (token) => {
   }
 };
 
-const ENDPOINT = process.env.NODE_ENV != 'production' ?
-  '/graphql' : 
-  `${process.env.GRAPHQL_ADDRESS}/graphql`;
+const ENDPOINT = clientConfig.graphqlUri;
 
 /**
  * 

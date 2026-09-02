@@ -73,12 +73,7 @@ const config = {
   graphqlAddress: getEnv('GRAPHQL_ADDRESS', 'http://localhost:3000/graphql'),
 
   // Frontend config
-  frontendGraphqlUri: (() => {
-    if (NODE_ENV === 'development' || NODE_ENV === 'local') {
-      return 'http://localhost:3000/graphql';
-    }
-    return getEnv('GRAPHQL_ADDRESS', 'http://localhost:3000/graphql');
-  })(),
+  frontendGraphqlUri: getEnv('GRAPHQL_ADDRESS', 'http://localhost:3000/graphql'),
 
   // Third-party services
   googleClientId: getEnv('GOOGLE_CLIENT_ID', ''),
