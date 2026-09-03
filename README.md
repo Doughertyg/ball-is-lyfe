@@ -18,7 +18,7 @@ A full-stack web application for creating and managing recreational sports leagu
 - **Node.js** - Runtime environment
 - **Apollo Server** - GraphQL server
 - **Express** - HTTP server framework
-- **MongoDB** - Database (local or Atlas cloud)
+- **MongoDB** - Database (local or team-managed Atlas)
 - **JWT** - Authentication
 
 ### Hosting & Deployment
@@ -34,8 +34,7 @@ Before getting started, ensure you have:
 - **Node.js** 16.x or higher ([Download](https://nodejs.org/))
 - **npm** 7.x or higher (comes with Node.js)
 - **Git** for version control
-- **MongoDB Atlas Account** for the database ([Sign up free](https://www.mongodb.com/cloud/atlas))
-- **Google Cloud Project** (optional, for OAuth) ([Setup Guide](./docs/GOOGLE_AUTH_SETUP.md))
+- Access to the team's shared dev environment credentials
 
 ### Verify Installation
 
@@ -101,14 +100,14 @@ This project supports three environments:
 
 | Environment | Purpose | Status | Database |
 |---|---|---|---|
-| **local** | Your computer | ✅ Active | Local MongoDB OR Dev cluster (when set up) |
-| **dev** | Staging/Testing | ⏳ Planned | Dev MongoDB cluster (not yet set up) |
+| **local** | Your computer | ✅ Active | Local MongoDB OR team dev cluster |
+| **dev** | Staging/Testing | ✅ Active | Team dev MongoDB Atlas cluster |
 | **production** | Live app | ✅ Active | Production MongoDB cluster |
 
 ### Environment Files
 
 - **`.env.local`** - Your local development environment (git-ignored, never commit)
-- **`.env.dev`** - Dev/staging environment (git-ignored, never commit) - *Not yet deployed*
+- **`.env.dev`** - Dev/staging reference (git-ignored, never commit; hosted values are managed by Render)
 - **`.env.example`** - Template with all required variables
 - **Production** - Set environment variables in your hosting platform (Render for backend, Netlify for frontend)
 
@@ -136,18 +135,6 @@ openssl rand -hex 32
 
 # Generate REFRESH_SECRET
 openssl rand -hex 32
-```
-
-### Setting Up MongoDB
-
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a free cluster
-3. Create a database user with a secure password
-4. Whitelist your IP address (or 0.0.0.0 for development)
-5. Get your connection string and add it to `.env.local`:
-
-```
-MONGODB=mongodb+srv://username:password@cluster0.mongodb.net/ball-is-lyfe?retryWrites=true&w=majority
 ```
 
 ### Local Development (.env.local)
@@ -178,7 +165,7 @@ MONGODB=mongodb://localhost:27017/ball-is-lyfe-dev
 
 **Setup:** See [Local MongoDB Setup](#local-mongodb-setup-optional) below.
 
-#### Option B: Dev MongoDB Cluster (When Available)
+#### Option B: Team Dev MongoDB Cluster
 
 Once the dev environment is set up, use the shared dev cluster:
 
@@ -186,7 +173,7 @@ Once the dev environment is set up, use the shared dev cluster:
 MONGODB=mongodb+srv://dev-user:dev-password@cluster-dev.mongodb.net/ball-is-lyfe-dev?retryWrites=true&w=majority
 ```
 
-*Note: This is not yet configured. Use Option A for now.*
+Use the team-provided dev connection string when you need shared staging data. Do not create a personal Atlas account or cluster for this project.
 
 #### Option C: Production MongoDB (⚠️ Not Recommended for Local Dev)
 
@@ -198,7 +185,7 @@ MONGODB=mongodb+srv://prod-user:prod-password@cluster-prod.mongodb.net/ball-is-l
 
 ### Production Environment
 
-Set these variables in your hosting platform's configuration:
+Production configuration is already managed by the project administrators in Render and Netlify. Developers should not create or change production credentials. The deployed services use:
 
 **Render (Backend):**
 - `NODE_ENV=production`
