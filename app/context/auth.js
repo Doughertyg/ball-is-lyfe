@@ -39,32 +39,44 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const login = useCallback(async (googleToken) => {
+  const login = useCallback(async (payload) => {
     setLoading(true);
 
     try {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: LOGIN_WITH_GOOGLE_MUTATION(googleToken) })
-      });
+      const isGoogleLogin = typeof payload === 'string';
 
-      const json = await res.json();
-      const token = json?.data?.loginUserWithGoogle?.token;
-      const user = json?.data?.loginUserWithGoogle?.user;
+      if (isGoogleLogin) {
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: LOGIN_WITH_GOOGLE_MUTATION(payload) })
+        });
+
+        const json = await res.json();
+        const token = json?.data?.loginUserWithGoogle?.token;
+        const user = json?.data?.loginUserWithGoogle?.user;
+
+        if (!token) {
+          console.error('Login failed: No token received');
+          throw new Error('Login failed: No token received');
+        }
+
+        setAccessToken(token);
+        setUser(user);
+        return { token, user };
+      }
+
+      const token = payload?.token;
+      const user = payload?.user ?? payload;
 
       if (!token) {
-        console.error('Login failed: No token received');
         throw new Error('Login failed: No token received');
       }
 
       setAccessToken(token);
       setUser(user);
-      return {
-        token,
-        user
-      }
+      return { token, user };
     } catch (err) {
       console.log('Error in the onGoogleAuthError callback: ', err);
       const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
@@ -74,7 +86,7 @@ function AuthProvider({ children }) {
       throw err;
     } finally {
       setLoading(false);
-    }    
+    }
   }, [setErrors, setUser, setAccessToken]);
 
   const logout = useCallback(async () => {
