@@ -5,16 +5,7 @@ import { setContext } from 'apollo-link-context';
 import { AuthProvider, AuthContext } from './context/auth';
 import clientConfig from './config';
 
-// Determine GraphQL URI based on environment
-const getGraphQLUri = () => {
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'local') {
-    return 'http://localhost:3000/graphql';
-  }
-  // For production/deployed environments, use the configured endpoint
-  return process.env.GRAPHQL_ADDRESS || 'http://localhost:3000/graphql';
-};
-
-const URI = getGraphQLUri();
+const URI = clientConfig.graphqlUri;
 
 const httpLink = createHttpLink({
   uri: URI,

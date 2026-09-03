@@ -10,13 +10,8 @@
 
 // Determine GraphQL endpoint based on environment
 function getGraphQLEndpoint() {
-  // Check if GRAPHQL_ADDRESS is provided (from .env or webpack)
-  if (process.env.GRAPHQL_ADDRESS && process.env.GRAPHQL_ADDRESS !== 'http://localhost:3000/graphql') {
-    return process.env.GRAPHQL_ADDRESS;
-  }
-
-  // Default to localhost for local/dev
-  return 'http://localhost:3000/graphql';
+  // Each Netlify site supplies its own public API endpoint at build time.
+  return process.env.GRAPHQL_ADDRESS || 'http://localhost:3000/graphql';
 }
 
 const clientConfig = {

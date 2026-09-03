@@ -32,7 +32,7 @@ npm run start
 
 - Single run (no auto-reload)
 - Uses production configuration
-- Used by Heroku for deployment
+- Used by Render for deployment
 - Connects to production database
 
 **Best for:** Production deployment
@@ -153,7 +153,7 @@ All three running together = full development environment.
 npm run build
 
 # Then push to production
-git push heroku main    # If using Heroku
+git push origin main    # Render/Netlify can deploy from the main branch
 ```
 
 ---
