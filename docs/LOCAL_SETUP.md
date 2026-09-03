@@ -110,65 +110,24 @@ MONGODB=mongodb://localhost:27017/ball-is-lyfe-dev
 
 ---
 
-### Option B: MongoDB Atlas Cloud (Requires Internet)
+### Option B: Team MongoDB Atlas Dev Database (Requires Internet)
 
-Use MongoDB's cloud database if you prefer managed setup.
+The team dev database is already configured. Request the dev connection string through the team's approved secret-sharing process. Do not create a personal Atlas account, cluster, or database user for this project.
 
-#### 1. Create MongoDB Atlas Account
-
-1. Visit https://www.mongodb.com/cloud/atlas
-2. Click "Sign Up" and create an account (email or Google)
-3. Verify your email address
-
-#### 2. Create a Cluster
-
-1. After signing up, click "Create a deployment"
-2. Select **"Shared Cluster"** (free tier)
-3. Choose your preferred region (geographically closest)
-4. Click "Create Cluster" and wait 1-3 minutes
-
-#### 3. Set Up Database User
-
-1. In the MongoDB Atlas dashboard, click **"Database Access"** (left sidebar)
-2. Click **"Add New Database User"**
-3. Choose **"Password"** authentication method
-4. Enter a username (e.g., `ball-lyfe-dev`)
-5. Enter a strong password (copy this, you'll need it)
-6. Select **"Built-in Role"** → **"readWriteAnyDatabase"**
-7. Click "Add User"
-
-#### 4. Whitelist Your IP
-
-1. Click **"Network Access"** (left sidebar)
-2. Click **"Add IP Address"**
-3. For development: Click **"Add Current IP Address"** to whitelist your current IP
-   - Or for easier development: Add **0.0.0.0/0** (allows all IPs, less secure)
-4. Click "Confirm"
-
-#### 5. Get Connection String
-
-1. Click **"Database"** (left sidebar)
-2. Click **"Connect"** on your cluster
-3. Choose **"Drivers"** → **"Node.js"**
-4. Copy the connection string
-   - It looks like: `mongodb+srv://username:password@cluster.mongodb.net/`
-5. **Replace `<password>` with your actual password**
-6. **Replace `myFirstDatabase` with `ball-is-lyfe-dev`**
-
-In `.env.local`, use:
+In `.env.local`, use the team-provided value:
 ```env
-MONGODB=mongodb+srv://ball-lyfe-dev:MySecurePassword123@cluster0.2k6ad.mongodb.net/ball-is-lyfe-dev?retryWrites=true&w=majority
+MONGODB=<team-dev-atlas-connection-string>
 ```
 
 **Benefits:**
 - ✅ No local setup needed
 - ✅ Managed by MongoDB
 - ✅ Works from anywhere
-- ✅ Can be shared with team (separate credentials)
+- ✅ Uses the shared project dev data
 
 **Drawbacks:**
 - ❌ Requires internet connection
-- ❌ Requires MongoDB Atlas account
+- ❌ Requires network access to the team dev database
 - ❌ Slightly slower than local (network latency)
 
 ---
@@ -182,8 +141,7 @@ MONGODB=mongodb+srv://ball-lyfe-dev:MySecurePassword123@cluster0.2k6ad.mongodb.n
 - ✅ You're doing lots of testing/data manipulation
 - ✅ You're new to development
 
-**Choose MongoDB Atlas if:**
-- ✅ You already have an Atlas account
+**Choose the team dev database if:**
 - ✅ You need to share data with teammates
 - ✅ You prefer "managed" solutions
 - ✅ You're always connected to internet
@@ -255,10 +213,10 @@ GOOGLE_CLIENT_ID=
 LOG_LEVEL=debug
 ```
 
-**For MongoDB Atlas (Cloud):**
+**For the team MongoDB Atlas dev database:**
 ```env
-# Copy your MongoDB connection string
-MONGODB=mongodb+srv://ball-lyfe-dev:MyPassword@cluster0.2k6ad.mongodb.net/ball-is-lyfe-dev?retryWrites=true&w=majority
+# Use the team-provided connection string
+MONGODB=<team-dev-atlas-connection-string>
 
 # ... (rest same as above)
 ```

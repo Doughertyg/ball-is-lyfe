@@ -8,14 +8,14 @@ The project supports three environments:
 
 | Environment | Purpose | Status | Database | Branch |
 |---|---|---|---|---|
-| **local** | Your computer for development | ✅ Active | Local MongoDB OR Dev cluster (when set up) | N/A (local only) |
-| **dev** | Staging/Testing | ⏳ Planned | Dev MongoDB cluster (not yet set up) | `develop` |
+| **local** | Your computer for development | ✅ Active | Local MongoDB OR team dev cluster | N/A (local only) |
+| **dev** | Staging/Testing | ✅ Active | Team dev MongoDB Atlas cluster | `develop` |
 | **production** | Live app for users | ✅ Active | Production MongoDB cluster | `main` |
 
 ### Key Points
 
 - **Local** can use either local MongoDB (for offline) or the dev cluster once it's created
-- **Dev** is the staging environment where features are tested before production (not yet deployed)
+- **Dev** is the staging environment where features are tested before production
 - **Production** is live and actively serving users
 
 ---
@@ -90,9 +90,9 @@ LOG_LEVEL=debug
 
 ---
 
-#### Option B: Dev MongoDB Cluster (When Available)
+#### Option B: Team Dev MongoDB Cluster
 
-Once the dev environment is set up, you can use the shared dev cluster:
+Use the team-provided shared dev cluster when you need shared staging data:
 
 ```env
 NODE_ENV=local
@@ -109,7 +109,7 @@ LOG_LEVEL=debug
 - ✅ Data syncs with dev environment
 - ✅ Closer to production setup
 
-**Status:** ⏳ Not yet configured - Use Option A for now
+**Status:** Active. Request the connection string through the team's approved secret-sharing process. Do not create a personal Atlas account or cluster for this project.
 
 ---
 
@@ -129,14 +129,12 @@ npm run tailwind       # Watch CSS in third terminal
 
 ---
 
-## Development Environment (.env.dev) - ⏳ Not Yet Set Up
+## Development Environment (.env.dev)
 
 ### Purpose
 Shared staging/testing environment where features are tested before production release.
 
-### Planned Setup
-
-Once configured, the dev environment will be:
+The dev environment is already configured and deploys the `develop` branch:
 
 ```env
 NODE_ENV=development
@@ -158,9 +156,7 @@ LOG_LEVEL=info
 - **Testing** - Team can test features before production merge
 - **Separate Credentials** - Different database user/password than production
 
-### Deployment
-
-When dev environment is set up:
+### Deployment Workflow
 
 ```bash
 # Features go to develop branch
@@ -184,28 +180,12 @@ git merge develop
 git push origin main
 ```
 
-### Status
-- ⏳ Database cluster: Not yet created
-- ⏳ Deployment: Not yet configured
-- ⏳ Domain: Not yet deployed
-- 📋 Documented for future setup
-
-
-
 ### Purpose
 Live app serving real users at https://RecLeagueNation.com
 
-### Setup
+The production environment is already configured on Render and Netlify. Production configuration is managed by project administrators.
 
-**Do NOT create a `.env` file in production!**
-
-Set environment variables in your hosting platform:
-
-#### Render (Backend)
-
-1. Go to your Render service dashboard
-2. Click "Environment"
-3. Add each variable:
+#### Production runtime values
 
 ```
 NODE_ENV=production
@@ -218,11 +198,7 @@ GOOGLE_CLIENT_ID=your-production-google-client-id
 LOG_LEVEL=warn
 ```
 
-#### Netlify (Frontend)
-
-1. Go to your Netlify app
-2. Click "Site Settings" → "Build & Deploy" → "Environment"
-3. Add build environment variables:
+#### Production frontend values
 
 ```
 GRAPHQL_ADDRESS=https://recleaguenation.com/graphql
@@ -248,21 +224,7 @@ GOOGLE_CLIENT_ID=your-production-google-client-id
 
 ### Deployment Process
 
-```bash
-# 1. Make changes and commit to main branch
-git checkout main
-git pull origin main
-
-# 2. Build frontend for production
-npm run build
-
-# 3. Push to Git (Render auto-deploys on push)
-git push origin main
-
-# 4. Monitor deployment
-# - Render dashboard for backend
-# - Netlify dashboard for frontend
-```
+Merge verified changes from `develop` into `main`. The existing Render and Netlify production services deploy from `main`.
 
 ---
 
@@ -342,7 +304,7 @@ mongodb+srv://username:password@cluster0.mongodb.net/ball-is-lyfe-dev?retryWrite
 The app exits if required variables aren't set.
 
 **Fix:**
-1. Check `.env.local` exists
+1. Check `.env.local` exists for local work
 2. Verify variable name is spelled correctly
 3. Make sure it's not commented out
 4. Check value is not empty
@@ -375,7 +337,7 @@ Production variables not set correctly.
 
 **Fix:**
 1. Compare your setup with this guide
-2. Verify all required variables are set in Render/Netlify
+2. Ask a project administrator to verify hosted configuration
 3. Make sure no typos in variable names
 4. Restart services in hosting platform
 5. Check logs for errors
@@ -392,10 +354,10 @@ Production variables not set correctly.
 | **Branch** | N/A (local) | N/A (local) | `develop` | `main` |
 | **URL** | localhost:3000 | localhost:3000 | dev.recleaguenation.com* | recleaguenation.com |
 | **Commit to git** | ❌ No | ❌ No | ❌ No | N/A |
-| **Status** | ✅ Active | ✅ Active | ⏳ Planned | ✅ Active |
+| **Status** | ✅ Active | ✅ Active | ✅ Active | ✅ Active |
 | **Use case** | Developer testing | Team testing | Team staging | Live users |
 
-*Dev URL not yet deployed
+*The dev site is available at `https://dev.recleaguenation.com`.
 
 ---
 

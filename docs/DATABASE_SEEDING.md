@@ -368,7 +368,7 @@ npm run seed          # Full seed with sample data
 npm run seed          # Reseed when needed
 ```
 
-### Dev Environment (When Set Up)
+### Dev Environment
 
 ```bash
 # On dev server, use production-like data

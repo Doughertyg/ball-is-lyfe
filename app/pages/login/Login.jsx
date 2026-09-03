@@ -26,8 +26,10 @@ const ErrorWrapper = styled.div`
 function Login({ oldLoginPageFlag }) {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [googleLoginLoading, setGoogleLoginLoading] = useState(false);
   const history = useHistory();
   const { errors, loading, login, setErrors } = useContext(AuthContext);
+  const isLoginLoading = loading || googleLoginLoading;
 
   const _validateForm = () => {
     const formErrors = {};
@@ -54,10 +56,14 @@ function Login({ oldLoginPageFlag }) {
   }
 
   const onGoogleAuthSuccess = (res) => {
-    login(res.tokenId).then(() => history.push('/home')).catch(() => console.log('LOGIN failed'))
+    login(res.tokenId)
+      .then(() => history.push('/home'))
+      .catch(() => {})
+      .finally(() => setGoogleLoginLoading(false));
   }
 
   const onGoogleAuthError = (err) => {
+    setGoogleLoginLoading(false);
     console.log('Error in the onGoogleAuthError callback: ', err);
     const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
     setErrors(errors => ({...errors, ...graphQLErrors}));
@@ -65,7 +71,7 @@ function Login({ oldLoginPageFlag }) {
   
   return (
     <CenteredContainer>
-        {loading ? (
+        {isLoginLoading ? (
           <FlexContainer height="45px" justify="flex-start" marginTop="20px" width="800px">
             <LoadingSpinnerSpin />
           </FlexContainer>) : (
@@ -75,6 +81,8 @@ function Login({ oldLoginPageFlag }) {
           </PageHeader>
           <GoogleLogin
             clientId={CLIENT_ID}
+            disabled={isLoginLoading}
+            onRequest={() => setGoogleLoginLoading(true)}
             onSuccess={onGoogleAuthSuccess}
             onFailure={onGoogleAuthError}
             cookiePolicy='single_host_origin'
@@ -89,7 +97,7 @@ function Login({ oldLoginPageFlag }) {
                 <InputField 
                   type="text"
                   errors={errors.username}
-                  disabled={loading}
+                  disabled={isLoginLoading}
                   name="username"
                   onChange={setUsername}
                   placeholder="Type a username..."
@@ -100,7 +108,7 @@ function Login({ oldLoginPageFlag }) {
                 <InputField 
                   type="password"
                   errors={errors.password}
-                  disabled={loading}
+                  disabled={isLoginLoading}
                   name="password"
                   onChange={setPassword}
                   placeholder="Password..."
@@ -109,7 +117,7 @@ function Login({ oldLoginPageFlag }) {
                 <Divider />
                   <Button 
                     aria-label="Login"
-                    disabled={loading}
+                    disabled={isLoginLoading}
                     marginTop="20px"
                     onClick={submitForm}
                   >Login</Button>
