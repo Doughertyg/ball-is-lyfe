@@ -25,6 +25,37 @@ const isTokenExpired = (token) => {
 
 const ENDPOINT = clientConfig.graphqlUri;
 
+const postGraphQL = async (query) => {
+  const response = await fetch(ENDPOINT, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query })
+  });
+  const contentType = response.headers.get('content-type') || '';
+  const responseText = await response.text();
+  let json;
+
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      `GraphQL endpoint returned HTML instead of JSON (HTTP ${response.status}). ` +
+      `Check GRAPHQL_ADDRESS: ${ENDPOINT}`
+    );
+  }
+
+  try {
+    json = JSON.parse(responseText);
+  } catch (_err) {
+    throw new Error(`GraphQL endpoint returned invalid JSON (HTTP ${response.status})`);
+  }
+
+  if (!response.ok || json.errors?.length) {
+    throw new Error(json.errors?.[0]?.message || `GraphQL request failed (HTTP ${response.status})`);
+  }
+
+  return json;
+};
+
 /**
  * 
  * Auth Provider to encapsulate all auth logic
@@ -42,14 +73,7 @@ function AuthProvider({ children }) {
     setLoading(true);
 
     try {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: LOGIN_WITH_GOOGLE_MUTATION(googleToken) })
-      });
-
-      const json = await res.json();
+      const json = await postGraphQL(LOGIN_WITH_GOOGLE_MUTATION(googleToken));
       const token = json?.data?.loginUserWithGoogle?.token;
       const user = json?.data?.loginUserWithGoogle?.user;
 
@@ -79,12 +103,7 @@ function AuthProvider({ children }) {
   const logout = useCallback(async () => {
     try {
       setLoading(true);
-      await fetch(ENDPOINT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: LOGOUT_MUTATION })
-      });
+      await postGraphQL(LOGOUT_MUTATION);
     } catch (err) {
       console.log('Error calling logout mutation: ', err);
     } finally {
@@ -98,13 +117,7 @@ function AuthProvider({ children }) {
     setLoading(true);
 
     try {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: REFRESH_TOKEN_MUTATION })
-      });
-      const json = await res.json();
+      const json = await postGraphQL(REFRESH_TOKEN_MUTATION);
       const token = json?.data?.refreshToken?.token;
       const user = json?.data?.refreshToken?.user;
 
