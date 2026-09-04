@@ -3,14 +3,20 @@ const {model, Schema} = require('mongoose');
 const userSchema = new Schema({
   username: String,
   name: String,
-  phoneNumber: Number, 
+  phoneNumber: Number,
   bio: String,
   height: String,
   weight: String,
   location: String,
   profilePicture: String,
+  googleProfilePicture: String,
   bannerPicture: String,
   password: String,
+  authType: {
+    type: String,
+    enum: ['email_password', 'google'],
+    default: 'email_password'
+  },
   leagues: [{
     type: Schema.Types.ObjectId,
     ref: 'league'

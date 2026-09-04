@@ -14,11 +14,12 @@ import { AuthContext } from '../../context/auth.js';
 import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
 
 const LOGIN_USER = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
       id
       email
       username
+      authType
       token
     }
   }
@@ -38,7 +39,7 @@ const ErrorWrapper = styled.div`
 
 function Login({ oldLoginPageFlag = true }) {
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const history = useHistory();
   const { errors, loading, login, setErrors } = useContext(AuthContext);
   const [loginUser, { loading: emailPasswordLoading }] = useMutation(LOGIN_USER, {
@@ -57,8 +58,8 @@ function Login({ oldLoginPageFlag = true }) {
   const validateForm = () => {
     const formErrors = {};
 
-    if (username === '') {
-      formErrors.username = 'Must type a username';
+    if (email === '') {
+      formErrors.email = 'Must type an email';
     }
 
     if (password === '') {
@@ -75,7 +76,7 @@ function Login({ oldLoginPageFlag = true }) {
       return;
     }
 
-    loginUser({ variables: { username, password }});
+    loginUser({ variables: { email, password }});
   };
 
   const onGoogleAuthSuccess = (res) => {
@@ -113,15 +114,15 @@ function Login({ oldLoginPageFlag = true }) {
           <CardWrapper>
             <CardContentWrapper>
               <CardBody>
-                <SectionHeadingText>Username</SectionHeadingText>
+                <SectionHeadingText>Email</SectionHeadingText>
                 <InputField 
-                  type="text"
-                  errors={errors.username}
+                  type="email"
+                  errors={errors.email}
                   disabled={isLoading}
-                  name="username"
-                  onChange={setUsername}
-                  placeholder="Type a username..."
-                  value={username}
+                  name="email"
+                  onChange={setEmail}
+                  placeholder="Type your email..."
+                  value={email}
                 />
                 <Divider />
                 <SectionHeadingText marginTop="20px">Password</SectionHeadingText>
