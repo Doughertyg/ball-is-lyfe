@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import {useState} from 'react';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import { GoogleLogin } from 'react-google-login';
@@ -10,6 +12,18 @@ import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components
 import {Button, ErrorList, ErrorListWrapper} from '../../styled-components/interactive';
 import { AuthContext } from '../../context/auth.js';
 import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
+
+const LOGIN_USER = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      id
+      email
+      username
+      authType
+      token
+    }
+  }
+`;
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
@@ -23,49 +37,64 @@ const ErrorWrapper = styled.div`
   margin-top: 8px;
 `;
 
-function Login({ oldLoginPageFlag }) {
+function Login({ oldLoginPageFlag = true }) {
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const history = useHistory();
   const { errors, loading, login, setErrors } = useContext(AuthContext);
+  const [loginUser, { loading: emailPasswordLoading }] = useMutation(LOGIN_USER, {
+    onCompleted: (res) => {
+      const userData = res?.login;
+      login(userData)
+        .then(() => history.push('/home'))
+        .catch(() => console.log('LOGIN failed'));
+    },
+    onError: (err) => {
+      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
+      setErrors(errors => ({...errors, ...graphQLErrors}));
+    }
+  });
 
-  const _validateForm = () => {
+  const validateForm = () => {
     const formErrors = {};
 
-    if (username === '') {
-      formErrors.username = 'Must type a username';
+    if (email === '') {
+      formErrors.email = 'Must type an email';
     }
 
     if (password === '') {
       formErrors.password = 'Must type a password';
     }
 
-    // setErrors(formErrors);
     return formErrors;
-  }
+  };
 
-  const _submitForm = () => {
+  const submitForm = () => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
       return;
     }
 
-    loginUser();
-  }
+    loginUser({ variables: { email, password }});
+  };
 
   const onGoogleAuthSuccess = (res) => {
-    login(res.tokenId).then(() => history.push('/home')).catch(() => console.log('LOGIN failed'))
-  }
+    login(res.tokenId).then(() => history.push('/home')).catch(() => console.log('LOGIN failed'));
+  };
 
   const onGoogleAuthError = (err) => {
     console.log('Error in the onGoogleAuthError callback: ', err);
     const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
     setErrors(errors => ({...errors, ...graphQLErrors}));
-  }
+  };
+
+  const showLegacyLogin = oldLoginPageFlag !== false;
+  const isLoading = loading || emailPasswordLoading;
   
   return (
     <CenteredContainer>
-        {loading ? (
+        {isLoading ? (
           <FlexContainer height="45px" justify="flex-start" marginTop="20px" width="800px">
             <LoadingSpinnerSpin />
           </FlexContainer>) : (
@@ -80,27 +109,27 @@ function Login({ oldLoginPageFlag }) {
             cookiePolicy='single_host_origin'
             prompt='consent'
           />
-        </>)}
-        {oldLoginPageFlag && (
+        </>) }
+        {showLegacyLogin && (
           <CardWrapper>
             <CardContentWrapper>
               <CardBody>
-                <SectionHeadingText>Username</SectionHeadingText>
+                <SectionHeadingText>Email</SectionHeadingText>
                 <InputField 
-                  type="text"
-                  errors={errors.username}
-                  disabled={loading}
-                  name="username"
-                  onChange={setUsername}
-                  placeholder="Type a username..."
-                  value={username}
+                  type="email"
+                  errors={errors.email}
+                  disabled={isLoading}
+                  name="email"
+                  onChange={setEmail}
+                  placeholder="Type your email..."
+                  value={email}
                 />
                 <Divider />
                 <SectionHeadingText marginTop="20px">Password</SectionHeadingText>
                 <InputField 
                   type="password"
                   errors={errors.password}
-                  disabled={loading}
+                  disabled={isLoading}
                   name="password"
                   onChange={setPassword}
                   placeholder="Password..."
@@ -109,7 +138,7 @@ function Login({ oldLoginPageFlag }) {
                 <Divider />
                   <Button 
                     aria-label="Login"
-                    disabled={loading}
+                    disabled={isLoading}
                     marginTop="20px"
                     onClick={submitForm}
                   >Login</Button>

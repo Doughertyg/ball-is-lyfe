@@ -26,6 +26,37 @@ const googleClient = new OAuth2Client({
   clientId: `${CLIENT_ID}`,
 });
 
+const normalizeEmail = (email = '') => email.trim().toLowerCase();
+
+const hydrateGoogleProfile = async (user, payload) => {
+  const googleProfilePicture = payload?.picture || user?.googleProfilePicture;
+
+  if (!user || !googleProfilePicture) {
+    return user;
+  }
+
+  const updates = {};
+
+  if (!user.googleProfilePicture) {
+    updates.googleProfilePicture = googleProfilePicture;
+  }
+
+  if (!user.profilePicture) {
+    updates.profilePicture = googleProfilePicture;
+  }
+
+  if (user.name == null && payload?.name) {
+    updates.name = payload.name;
+  }
+
+  if (Object.keys(updates).length > 0) {
+    Object.assign(user, updates);
+    await user.save();
+  }
+
+  return user;
+};
+
 const authenticateOrCreateUser = async (token, res, createUser = false) => {
   const ticket = await googleClient.verifyIdToken({
     idToken: token,
@@ -33,18 +64,40 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
   });
 
   const payload = ticket.getPayload();
-  let user = await User.findOne({ email: payload?.email });
+  const normalizedEmail = normalizeEmail(payload?.email);
+  let user = await User.findOne({ email: normalizedEmail });
+
   if (!user && createUser) {
-    user = await new User({
-      email: payload?.email,
+    user = new User({
+      email: normalizedEmail,
       profilePicture: payload?.picture,
+      googleProfilePicture: payload?.picture,
       name: payload?.name,
+      authType: 'google',
       createdAt: new Date().toISOString()
     });
 
     await user.save();
   } else if (!user && !createUser) {
     return null;
+  }
+
+  const currentAuthType = user?.authType || (user?.password ? 'email_password' : 'google');
+
+  if (user && currentAuthType !== 'google' && createUser) {
+    throw new UserInputError('This email is already linked to an email/password account. Please sign in with your email and password.');
+  }
+
+  if (user && currentAuthType !== 'google' && !createUser) {
+    throw new UserInputError('This email is already linked to an email/password account. Please sign in with your email and password.');
+  }
+
+  if (user && !user.authType) {
+    user.authType = currentAuthType;
+  }
+
+  if (user && currentAuthType === 'google') {
+    await hydrateGoogleProfile(user, payload);
   }
 
   const accessToken = createAccessToken(user._id);
@@ -61,8 +114,10 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
     user: {
       ...user,
       ...user._doc,
-      name: payload.name,
-      profilePicture: payload.picture,
+      name: user.name || payload.name,
+      profilePicture: user.profilePicture || payload.picture,
+      googleProfilePicture: user.googleProfilePicture || payload.picture,
+      authType: user.authType || 'google',
       id: user._id,
     },
     token: accessToken
@@ -77,24 +132,35 @@ const requireAuth = (context) => {
 
 module.exports = {
   Mutation: {
-    async login (_, { username, password }) {
-      const { valid, errors } = validateLoginInput(username, password);
+    async login (_, { email, password }) {
+      const normalizedEmail = normalizeEmail(email);
+      const { valid, errors } = validateLoginInput(normalizedEmail, password);
 
       if(!valid) {
-        throw new UserInputError('Errors', { errors }); 
+        throw new UserInputError('Errors', { errors });
       }
 
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ email: normalizedEmail });
 
       if (!user) {
-        errors.general = 'User not found';
-        throw new UserInputError('User not found', { errors });
+        errors.general = 'No account found for that email.';
+        throw new UserInputError('No account found for that email.', { errors });
+      }
+
+      if (user.authType === 'google') {
+        errors.general = 'This email is linked to Google Sign-In. Please use Google to continue.';
+        throw new UserInputError('This email is linked to Google Sign-In. Please use Google to continue.', { errors });
+      }
+
+      if (!user.password) {
+        errors.general = 'This account does not use email/password sign-in.';
+        throw new UserInputError('This account does not use email/password sign-in.', { errors });
       }
 
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        errors.general = 'Wrong credentials';
-        throw new UserInputError('Wrong credentials', { errors });
+        errors.general = 'Incorrect email or password';
+        throw new UserInputError('Incorrect email or password', { errors });
       }
 
       const token = generateToken(user);
@@ -102,6 +168,7 @@ module.exports = {
       return {
         ...user._doc,
         id: user._id,
+        authType: user.authType || 'email_password',
         token
       };
     },
@@ -120,31 +187,40 @@ module.exports = {
       }
     },
     async register(_parents, { registerInput: { username, email, password, confirmPassword }}) {
-      // todo: validate user data
+      const normalizedEmail = normalizeEmail(email);
+      const normalizedUsername = username.trim();
       let inputErrors = {};
-      const { valid, errors} = validateRegisterInput(username, email, password, confirmPassword);
+      const { valid, errors } = validateRegisterInput(normalizedUsername, normalizedEmail, password, confirmPassword);
       if (!valid) {
         inputErrors = {...inputErrors, ...errors};
       }
-      // todo: make sure user doesn't already exist
-      const user = await User.findOne({
-        username
-      });
 
-      if (user) {
+      const emailTaken = await User.findOne({ email: normalizedEmail });
+      if (emailTaken) {
+        const existingAuthType = emailTaken.authType || (emailTaken.password ? 'email_password' : 'google');
+        if (existingAuthType === 'google') {
+          inputErrors = {...inputErrors, email: 'This email is already linked to a Google account. Please use Google Sign-In.'};
+        } else {
+          inputErrors = {...inputErrors, email: 'An account with this email already exists. Please sign in instead.'};
+        }
+      }
+
+      const usernameTaken = await User.findOne({ username: normalizedUsername });
+      if (usernameTaken) {
         inputErrors = {...inputErrors, username: 'This username is taken'};
       }
 
-      if (user || !valid) {
+      if (!valid || Object.keys(inputErrors).length > 0) {
         throw new UserInputError('Errors registering a new user!', {errors: inputErrors});
       }
 
       password = await bcrypt.hash(password, 12);
 
       const newUser = new User({
-        email,
-        username,
+        email: normalizedEmail,
+        username: normalizedUsername,
         password,
+        authType: 'email_password',
         createdAt: new Date().toISOString()
       });
 
@@ -155,12 +231,14 @@ module.exports = {
       return {
         ...res._doc,
         id: res._id,
+        authType: res.authType,
         token
       }
     },
     async registerUserWithGoogle(_, { token }, { res }) {
       try {
-        return await authenticateOrCreateUser(token, res, true);
+        const response = await authenticateOrCreateUser(token, res, true);
+        return response;
       } catch (err) {
         console.error('Error registering new user with Google');
         throw err;

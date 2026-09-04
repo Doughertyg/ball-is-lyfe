@@ -67,7 +67,7 @@ const REGISTER_GOOGLE_USER = gql`
   }
 `;
 
-function Register({ oldRegisterFlow }) {
+function Register({ oldRegisterFlow = true }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -75,6 +75,7 @@ function Register({ oldRegisterFlow }) {
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const { login } = useContext(AuthContext);
+  const showLegacyRegister = oldRegisterFlow !== false;
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     onCompleted: (res) => {
@@ -178,7 +179,7 @@ function Register({ oldRegisterFlow }) {
             />
           </>
         )}
-        {oldRegisterFlow && (
+        {showLegacyRegister && (
           <CardWrapper>
             <CardContentWrapper>
               <CardBody>
