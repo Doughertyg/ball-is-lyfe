@@ -239,6 +239,7 @@ module.exports = gql`
     id: ID!
     bio: String!
     profilePicture: String
+    googleProfilePicture: String
     bannerPicture: String!
     phoneNumber: Int!
     height: String!
@@ -247,6 +248,7 @@ module.exports = gql`
     name: String
     email: String!
     username: String
+    authType: String!
     createdAt: String!
   }
   type CreateTeamMutationReturnType {
@@ -324,7 +326,7 @@ module.exports = gql`
     registerUser(token: String!): User!
     registerUserWithGoogle(token: String!): LoginMutationReturnType!
     launchSeason(seasonID: ID!): Season!
-    login(username: String!, password: String!): User!
+    login(email: String!, password: String!): User!
     loginUser(token: String!): User!
     loginUserWithGoogle(token: String!): LoginMutationReturnType!
     logout: Boolean

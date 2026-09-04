@@ -1,3 +1,5 @@
+const SAFE_EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 module.exports.validateRegisterInput = (
   username,
   email,
@@ -12,11 +14,8 @@ module.exports.validateRegisterInput = (
 
   if (email.trim() === '') {
     errors.email = 'Email must not be empty';
-  } else {
-    const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
-    if (!email.match(regEx)) {
-      errors.email = 'Email must be a valid email address';
-    }
+  } else if (!SAFE_EMAIL_REGEX.test(email)) {
+    errors.email = 'Email must be a valid email address';
   }
 
   if (password.trim() === '') {
@@ -31,11 +30,13 @@ module.exports.validateRegisterInput = (
   }
 }
 
-module.exports.validateLoginInput = (username, password) => {
+module.exports.validateLoginInput = (email, password) => {
   const errors = {};
 
-  if (username.trim() === '') {
-    errors.username = 'Username must not be empty';
+  if (email.trim() === '') {
+    errors.email = 'Email must not be empty';
+  } else if (!SAFE_EMAIL_REGEX.test(email)) {
+    errors.email = 'Email must be a valid email address';
   }
 
   if (password.trim() === '') {

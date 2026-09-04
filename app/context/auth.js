@@ -69,16 +69,34 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const login = useCallback(async (googleToken) => {
+  const login = useCallback(async (payload) => {
     setLoading(true);
 
     try {
-      const json = await postGraphQL(LOGIN_WITH_GOOGLE_MUTATION(googleToken));
-      const token = json?.data?.loginUserWithGoogle?.token;
-      const user = json?.data?.loginUserWithGoogle?.user;
+      const isGoogleLogin = typeof payload === 'string';
+
+      if (isGoogleLogin) {
+        const json = await postGraphQL(LOGIN_WITH_GOOGLE_MUTATION(payload));
+        const token = json?.data?.loginUserWithGoogle?.token;
+        const user = json?.data?.loginUserWithGoogle?.user;
+
+        if (!token) {
+          console.error('Login failed: No token received');
+          throw new Error('Login failed: No token received');
+        }
+
+        setAccessToken(token);
+        setUser(user);
+        return {
+          token,
+          user
+        }
+      }
+
+      const token = payload?.token;
+      const user = payload?.user ?? payload;
 
       if (!token) {
-        console.error('Login failed: No token received');
         throw new Error('Login failed: No token received');
       }
 
@@ -97,7 +115,7 @@ function AuthProvider({ children }) {
       throw err;
     } finally {
       setLoading(false);
-    }    
+    }
   }, [setErrors, setUser, setAccessToken]);
 
   const logout = useCallback(async () => {
