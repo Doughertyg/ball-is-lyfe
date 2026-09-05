@@ -12,16 +12,18 @@ const SECRET_KEY = config.secretKey;
 const REFRESH_SECRET = config.refreshSecret;
 const CLIENT_ID = config.googleClientId;
 
-function generateToken(user) {
-  return jwt.sign({
-    id: user.id, 
-    email: user.email,
-    username: user.username
-  }, SECRET_KEY, { expiresIn: '1h'});
-}
-
 const createAccessToken = (userId) => jwt.sign({ userId: userId }, SECRET_KEY, { expiresIn: "5m" });
 const createRefreshToken = (userId) => jwt.sign({ userId: userId }, REFRESH_SECRET, { expiresIn: "30d" });
+
+const setRefreshTokenCookie = (res, userId) => {
+  const refreshToken = createRefreshToken(userId);
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: config.isProduction,
+    sameSite: config.isProduction ? 'None' : 'Lax',
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  });
+};
 
 const googleClient = new OAuth2Client({
   clientId: `${CLIENT_ID}`,
@@ -78,7 +80,15 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
       createdAt: new Date().toISOString()
     });
 
-    await user.save();
+    try {
+      await user.save();
+    } catch (err) {
+      // Race with a concurrent registration for the same email.
+      if (err?.code === 11000) {
+        throw new ValidationError('An account with this email already exists. Please sign in instead.');
+      }
+      throw err;
+    }
   } else if (!user && !createUser) {
     return null;
   }
@@ -98,14 +108,7 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
   }
 
   const accessToken = createAccessToken(user._id);
-  const refreshToken = createRefreshToken(user._id);
-
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-  });
+  setRefreshTokenCookie(res, user._id);
 
   return {
     user: {
@@ -129,7 +132,7 @@ const requireAuth = (context) => {
 
 module.exports = {
   Mutation: {
-    async login (_, { email, password }) {
+    async login (_, { email, password }, { res }) {
       const normalizedEmail = normalizeEmail(email);
       const { valid, errors } = validateLoginInput(normalizedEmail, password);
 
@@ -160,7 +163,8 @@ module.exports = {
         throw new ValidationError('Incorrect email or password', { errors });
       }
 
-      const token = generateToken(user);
+      const token = createAccessToken(user._id);
+      setRefreshTokenCookie(res, user._id);
 
       return {
         ...user._doc,
@@ -183,7 +187,7 @@ module.exports = {
         throw err;
       }
     },
-    async register(_parents, { registerInput: { username, email, password, confirmPassword }}) {
+    async register(_parents, { registerInput: { username, email, password, confirmPassword }}, { res }) {
       const normalizedEmail = normalizeEmail(email);
       const normalizedUsername = username.trim();
       let inputErrors = {};
@@ -221,14 +225,28 @@ module.exports = {
         createdAt: new Date().toISOString()
       });
 
-      const res = await newUser.save();
+      let res_;
+      try {
+        res_ = await newUser.save();
+      } catch (err) {
+        // Race with a concurrent registration slipping past the findOne checks above -
+        // the unique index on email/username is the real source of truth.
+        if (err?.code === 11000) {
+          const duplicateField = Object.keys(err.keyPattern || {})[0] || 'email';
+          throw new ValidationError('Errors registering a new user!', {
+            errors: { [duplicateField]: `This ${duplicateField} is already taken.` }
+          });
+        }
+        throw err;
+      }
 
-      const token = generateToken(res);
+      const token = createAccessToken(res_._id);
+      setRefreshTokenCookie(res, res_._id);
 
       return {
-        ...res._doc,
-        id: res._id,
-        authType: res.authType,
+        ...res_._doc,
+        id: res_._id,
+        authType: res_.authType,
         token
       }
     },
@@ -251,14 +269,7 @@ module.exports = {
         if (!user) throw new AuthError('User not found');
 
         const newAccessToken = createAccessToken(user._id);
-        const newRefreshToken = createRefreshToken(user._id);
-
-        res.cookie('refreshToken', newRefreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-        });
+        setRefreshTokenCookie(res, user._id);
 
         return {
           token: newAccessToken,
@@ -272,8 +283,8 @@ module.exports = {
     logout: async (_, __, { res }) => {
       res.clearCookie('refreshToken', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        secure: config.isProduction,
+        sameSite: config.isProduction ? 'None' : 'Lax',
       });
       return true;
     }

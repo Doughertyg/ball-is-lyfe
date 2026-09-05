@@ -1,7 +1,11 @@
 const {model, Schema} = require('mongoose');
 
 const userSchema = new Schema({
-  username: String,
+  username: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   name: String,
   phoneNumber: Number,
   bio: String,
@@ -21,7 +25,11 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'league'
   }],
-  email: String,
+  email: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   createdAt: String
 });
 

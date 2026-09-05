@@ -13,6 +13,7 @@ import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components
 import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
 import { logAndExtractErrors } from '../../util/errorHandling';
+import { PASSWORD_REQUIREMENTS_MESSAGE, meetsPasswordRequirements } from '../../../util/validators';
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
@@ -24,6 +25,13 @@ const CenteredContainer = styled.div`
 
 const ErrorWrapper = styled.div`
   margin-top: 8px;
+`;
+
+const HintText = styled.p`
+  color: #6b7280;
+  font-size: 12px;
+  margin: 4px 0 0;
+  text-align: left;
 `;
 
 const REGISTER_USER = gql`
@@ -123,6 +131,8 @@ function Register({ oldRegisterFlow = true }) {
 
     if (password === '') {
       formErrors.password = 'Must type a password';
+    } else if (!meetsPasswordRequirements(password)) {
+      formErrors.password = PASSWORD_REQUIREMENTS_MESSAGE;
     }
 
     if (confirmPassword === '') {
@@ -231,6 +241,7 @@ function Register({ oldRegisterFlow = true }) {
                   placeholder="Password..."
                   value={password}
                 />
+                {!errors.password && <HintText>{PASSWORD_REQUIREMENTS_MESSAGE}</HintText>}
                 <SectionHeadingText marginTop="20px">Confirm Password</SectionHeadingText>
                 <InputField 
                   type="password"

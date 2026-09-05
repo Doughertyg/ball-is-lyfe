@@ -11,6 +11,7 @@ const express = require("express");
 
 // Load centralized configuration
 const config = require('../config');
+const rateLimit = require('express-rate-limit');
 
 const pubSub = new PubSub();
 
@@ -25,6 +26,19 @@ app.use(
     credentials: true,
   })
 );
+
+// Brute-force protection: only login-related mutations are throttled per-IP,
+// so unrelated GraphQL traffic on this shared /graphql endpoint isn't affected.
+const LOGIN_OPERATIONS = new Set(['login', 'loginUserWithGoogle']);
+const loginRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { errors: [{ message: 'Too many login attempts. Please try again later.' }] },
+  skip: (req) => !LOGIN_OPERATIONS.has(req.body?.operationName),
+});
+app.use('/graphql', loginRateLimiter);
 
 /**
  * Initialize and start the Apollo GraphQL server
