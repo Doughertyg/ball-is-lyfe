@@ -12,6 +12,7 @@ import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components
 import {Button, ErrorList, ErrorListWrapper} from '../../styled-components/interactive';
 import { AuthContext } from '../../context/auth.js';
 import LoadingSpinnerSpin from '../../components/LoadingSpinnerSpin.jsx';
+import { logAndExtractErrors } from '../../util/errorHandling';
 
 const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
@@ -54,8 +55,7 @@ function Login({ oldLoginPageFlag = true }) {
         .catch(() => console.log('LOGIN failed'));
     },
     onError: (err) => {
-      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-      setErrors(errors => ({...errors, ...graphQLErrors}));
+      setErrors(errors => ({...errors, ...logAndExtractErrors(err)}));
     }
   });
 
@@ -81,6 +81,7 @@ function Login({ oldLoginPageFlag = true }) {
       return;
     }
 
+    setErrors({});
     loginUser({ variables: { email, password }});
   }
 
@@ -93,12 +94,33 @@ function Login({ oldLoginPageFlag = true }) {
 
   const onGoogleAuthError = (err) => {
     setGoogleLoginLoading(false);
-    console.log('Error in the onGoogleAuthError callback: ', err);
-    const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-    setErrors(errors => ({...errors, ...graphQLErrors}));
+    setErrors(errors => ({...errors, ...logAndExtractErrors(err)}));
   };
 
   const showLegacyLogin = oldLoginPageFlag !== false;
+
+  // Field-level errors render inline under their input; clear them as soon as
+  // the user edits that field so corrections don't leave a stale message.
+  const clearFieldError = (field) => {
+    setErrors(errors => {
+      if (!errors[field]) return errors;
+      const { [field]: _removed, ...rest } = errors;
+      return rest;
+    });
+  };
+
+  const handleEmailChange = (value) => {
+    setEmail(value);
+    clearFieldError('email');
+  };
+
+  const handlePasswordChange = (value) => {
+    setPassword(value);
+    clearFieldError('password');
+  };
+
+  const FIELD_ERROR_KEYS = ['email', 'password'];
+  const generalErrors = Object.entries(errors ?? {}).filter(([key]) => !FIELD_ERROR_KEYS.includes(key));
   
   return (
     <CenteredContainer>
@@ -130,7 +152,7 @@ function Login({ oldLoginPageFlag = true }) {
                   errors={errors.email}
                   disabled={isLoginLoading}
                   name="email"
-                  onChange={setEmail}
+                  onChange={handleEmailChange}
                   placeholder="Type your email..."
                   value={email}
                 />
@@ -141,7 +163,7 @@ function Login({ oldLoginPageFlag = true }) {
                   errors={errors.password}
                   disabled={isLoginLoading}
                   name="password"
-                  onChange={setPassword}
+                  onChange={handlePasswordChange}
                   placeholder="Password..."
                   value={password}
                 />
@@ -156,13 +178,13 @@ function Login({ oldLoginPageFlag = true }) {
             </CardContentWrapper>
           </CardWrapper>
         )}
-        {errors != null && Object.keys(errors).length > 0 && 
+        {errors != null && generalErrors.length > 0 && 
           (
             <ErrorWrapper>
               <FlexContainer>
                 <ErrorListWrapper>
                   <ErrorList>
-                    {Object.values(errors).map(error => (<li>{error}</li>))}
+                    {generalErrors.map(([key, error]) => (<li key={key}>{error}</li>))}
                   </ErrorList>
                 </ErrorListWrapper>
               </FlexContainer>

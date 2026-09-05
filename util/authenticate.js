@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { AuthenticationError } = require('apollo-server');
-const SECRET_KEY = process.env.SECRET_KEY;
+const config = require('../config');
+const SECRET_KEY = config.secretKey;
 
 module.exports = (context) => {
   // context = { ...headers }

@@ -12,6 +12,7 @@ import {ButtonContainer, Divider, FlexContainer, PageHeader, SectionHeadingText}
 import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components/card';
 import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
+import { logAndExtractErrors } from '../../util/errorHandling';
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
@@ -83,8 +84,7 @@ function Register({ oldRegisterFlow = true }) {
       history.push('/');
     },
     onError: (err) => {
-      console.log('err: ', err.graphQLErrors);
-      setErrors({...errors, ...err.graphQLErrors[0]?.extensions.exception.errors})
+      setErrors({...errors, ...logAndExtractErrors(err)})
     },
     update(proxy, { data: { register: userData }}) {
       console.log('results: ', userData);
@@ -104,8 +104,7 @@ function Register({ oldRegisterFlow = true }) {
       history.push('/');
     },
     onError: (err) => {
-      console.log('error registering new user. err: ', err);
-      setErrors({...errors, ...{err: err.message ?? 'Error registering new user, please try again.'}});
+      setErrors({...errors, ...logAndExtractErrors(err)});
     },
     update(proxy, { data: { registerUser: userData }}) {
       login(userData);
@@ -155,9 +154,26 @@ function Register({ oldRegisterFlow = true }) {
   }
 
   const onGoogleAuthError = (err) => {
-    const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-    setErrors({...errors, ...graphQLErrors});
+    setErrors({...errors, ...logAndExtractErrors(err)});
   }
+
+  // Field-level errors render inline under their input; clear them as soon as
+  // the user edits that field so corrections don't leave a stale message.
+  const clearFieldError = (field) => {
+    setErrors(errors => {
+      if (!errors[field]) return errors;
+      const { [field]: _removed, ...rest } = errors;
+      return rest;
+    });
+  };
+
+  const handleUsernameChange = (value) => { setUsername(value); clearFieldError('username'); };
+  const handleEmailChange = (value) => { setEmail(value); clearFieldError('email'); };
+  const handlePasswordChange = (value) => { setPassword(value); clearFieldError('password'); };
+  const handleConfirmPasswordChange = (value) => { setConfirmPassword(value); clearFieldError('confirmPassword'); };
+
+  const FIELD_ERROR_KEYS = ['username', 'email', 'password', 'confirmPassword'];
+  const generalErrors = Object.entries(errors ?? {}).filter(([key]) => !FIELD_ERROR_KEYS.includes(key));
   
   return (
     <CenteredContainer>
@@ -189,7 +205,7 @@ function Register({ oldRegisterFlow = true }) {
                   errors={errors.username}
                   disabled={loading}
                   name="username"
-                  onChange={setUsername}
+                  onChange={handleUsernameChange}
                   placeholder="Type a username..."
                   value={username}
                 />
@@ -200,7 +216,7 @@ function Register({ oldRegisterFlow = true }) {
                   errors={errors.email}
                   disabled={loading}
                   name="email"
-                  onChange={setEmail}
+                  onChange={handleEmailChange}
                   placeholder="Email..."
                   value={email}
                 />
@@ -211,7 +227,7 @@ function Register({ oldRegisterFlow = true }) {
                   errors={errors.password}
                   disabled={loading}
                   name="password"
-                  onChange={setPassword}
+                  onChange={handlePasswordChange}
                   placeholder="Password..."
                   value={password}
                 />
@@ -221,7 +237,7 @@ function Register({ oldRegisterFlow = true }) {
                   errors={errors.confirmPassword}
                   disabled={loading}
                   name="confirm-password"
-                  onChange={setConfirmPassword}
+                  onChange={handleConfirmPasswordChange}
                   placeholder="Retype your password..."
                   value={confirmPassword}
                 />
@@ -236,13 +252,13 @@ function Register({ oldRegisterFlow = true }) {
             </CardContentWrapper>
           </CardWrapper>
         )}
-        {errors != null && Object.keys(errors).length > 0 && 
+        {errors != null && generalErrors.length > 0 && 
           (
             <ErrorWrapper>
               <FlexContainer>
                 <ErrorListWrapper>
                   <ErrorList>
-                    {Object.values(errors).map(error => (<li>{error}</li>))}
+                    {generalErrors.map(([key, error]) => (<li key={key}>{error}</li>))}
                   </ErrorList>
                 </ErrorListWrapper>
               </FlexContainer>

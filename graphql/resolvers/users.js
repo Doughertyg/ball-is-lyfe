@@ -3,13 +3,14 @@ const League = require('../../db/models/League');
 const Season = require('../../db/models/Season');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { UserInputError} = require('apollo-server');
 const { OAuth2Client } = require("google-auth-library");
 const {validateRegisterInput, validateLoginInput} = require('../../util/validators');
+const config = require('../../config');
+const { ValidationError, AuthError } = require('../errors/AppError');
 
-const SECRET_KEY = process.env.SECRET_KEY;
-const REFRESH_SECRET = process.env.REFRESH_SECRET;
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const SECRET_KEY = config.secretKey;
+const REFRESH_SECRET = config.refreshSecret;
+const CLIENT_ID = config.googleClientId;
 
 function generateToken(user) {
   return jwt.sign({
@@ -60,7 +61,7 @@ const hydrateGoogleProfile = async (user, payload) => {
 const authenticateOrCreateUser = async (token, res, createUser = false) => {
   const ticket = await googleClient.verifyIdToken({
     idToken: token,
-    audient: `${process.env.GOOGLE_CLIENT_ID}`,
+    audience: CLIENT_ID,
   });
 
   const payload = ticket.getPayload();
@@ -84,12 +85,8 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
 
   const currentAuthType = user?.authType || (user?.password ? 'email_password' : 'google');
 
-  if (user && currentAuthType !== 'google' && createUser) {
-    throw new UserInputError('This email is already linked to an email/password account. Please sign in with your email and password.');
-  }
-
-  if (user && currentAuthType !== 'google' && !createUser) {
-    throw new UserInputError('This email is already linked to an email/password account. Please sign in with your email and password.');
+  if (user && currentAuthType !== 'google') {
+    throw new ValidationError('This email is already linked to an email/password account. Please sign in with your email and password.');
   }
 
   if (user && !user.authType) {
@@ -126,7 +123,7 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
 
 const requireAuth = (context) => {
   if (!context.user) {
-    throw new AuthenticationError('You must be logged in');
+    throw new AuthError('You must be logged in');
   }
 }
 
@@ -137,30 +134,30 @@ module.exports = {
       const { valid, errors } = validateLoginInput(normalizedEmail, password);
 
       if(!valid) {
-        throw new UserInputError('Errors', { errors });
+        throw new ValidationError('Errors', { errors });
       }
 
       const user = await User.findOne({ email: normalizedEmail });
 
       if (!user) {
         errors.general = 'No account found for that email.';
-        throw new UserInputError('No account found for that email.', { errors });
+        throw new ValidationError('No account found for that email.', { errors });
       }
 
       if (user.authType === 'google') {
         errors.general = 'This email is linked to Google Sign-In. Please use Google to continue.';
-        throw new UserInputError('This email is linked to Google Sign-In. Please use Google to continue.', { errors });
+        throw new ValidationError('This email is linked to Google Sign-In. Please use Google to continue.', { errors });
       }
 
       if (!user.password) {
         errors.general = 'This account does not use email/password sign-in.';
-        throw new UserInputError('This account does not use email/password sign-in.', { errors });
+        throw new ValidationError('This account does not use email/password sign-in.', { errors });
       }
 
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         errors.general = 'Incorrect email or password';
-        throw new UserInputError('Incorrect email or password', { errors });
+        throw new ValidationError('Incorrect email or password', { errors });
       }
 
       const token = generateToken(user);
@@ -177,7 +174,7 @@ module.exports = {
         const response = await authenticateOrCreateUser(token, res, false);
 
         if (response == null) {
-          throw new UserInputError('User does not exist.');
+          throw new ValidationError('No account found for this Google email. Please register first.');
         }
 
         return response;
@@ -211,7 +208,7 @@ module.exports = {
       }
 
       if (!valid || Object.keys(inputErrors).length > 0) {
-        throw new UserInputError('Errors registering a new user!', {errors: inputErrors});
+        throw new ValidationError('Errors registering a new user!', {errors: inputErrors});
       }
 
       password = await bcrypt.hash(password, 12);
@@ -246,12 +243,12 @@ module.exports = {
     },
     async refreshToken(_, __, { req, res }) {
       const token = req.cookies.refreshToken;
-      if (!token) throw new Error('Missing refresh token');
+      if (!token) throw new AuthError('Missing refresh token');
 
       try {
         const payload = jwt.verify(token, REFRESH_SECRET);
         const user = await User.findById(payload.userId);
-        if (!user) throw new Error('User not found');
+        if (!user) throw new AuthError('User not found');
 
         const newAccessToken = createAccessToken(user._id);
         const newRefreshToken = createRefreshToken(user._id);
@@ -269,7 +266,7 @@ module.exports = {
         };
       } catch (err) {
         console.log('Error refreshing access token: ', err);
-        throw new Error('Error refreshing access token: ', err.message ?? 'Missing or invalid refresh token');
+        throw new AuthError('Missing or invalid refresh token');
       }
     },
     logout: async (_, __, { res }) => {

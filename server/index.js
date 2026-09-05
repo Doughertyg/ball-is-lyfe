@@ -36,12 +36,26 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    formatError: (error) => {
-      // Log errors in development
-      if (config.isDevelopment) {
-        console.error('GraphQL Error:', error);
+    // Codes for errors thrown by resolver files that haven't been migrated to
+    // the custom error types in graphql/errors/AppError.js yet (they still use
+    // apollo-server's raw UserInputError/AuthenticationError/ForbiddenError,
+    // which don't set extensions.isClientSafe). Remove once fully migrated.
+    formatError: (formattedError, error) => {
+      // Always log the full original error server-side for tracing.
+      console.error('GraphQL Error:', error);
+
+      const LEGACY_SAFE_CODES = new Set(['BAD_USER_INPUT', 'UNAUTHENTICATED', 'FORBIDDEN']);
+      const code = formattedError.extensions?.code;
+      const isSafe = formattedError.extensions?.isClientSafe === true || LEGACY_SAFE_CODES.has(code);
+
+      if (isSafe) {
+        return formattedError;
       }
-      return error;
+
+      return {
+        message: 'Something went wrong. Please try again.',
+        extensions: { code: code || 'INTERNAL_SERVER_ERROR' },
+      };
     },
   });
 

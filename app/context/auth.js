@@ -2,6 +2,7 @@ import React, {createContext, useState, useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
 import { LOGIN_WITH_GOOGLE_MUTATION, LOGOUT_MUTATION, REFRESH_TOKEN_MUTATION } from '../../graphql/mutations/userMutations';
 import clientConfig from '../config';
+import { logAndExtractErrors } from '../util/errorHandling';
 
 const AuthContext = createContext({
   user: null,
@@ -107,9 +108,7 @@ function AuthProvider({ children }) {
         user
       }
     } catch (err) {
-      console.log('Error in the onGoogleAuthError callback: ', err);
-      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-      setErrors(errors => ({...errors, ...graphQLErrors}));
+      setErrors(errors => ({...errors, ...logAndExtractErrors(err)}));
       setAccessToken(null);
       setUser(null);
       throw err;
@@ -151,9 +150,7 @@ function AuthProvider({ children }) {
         user
       }
     } catch (err) {
-      console.error('Token refresh failed:', err);
-      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-      setErrors(errors => ({...errors, ...graphQLErrors}));
+      setErrors(errors => ({...errors, ...logAndExtractErrors(err)}));
       setAccessToken(null);
       setUser(null);
       throw err;
