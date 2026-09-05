@@ -12,7 +12,7 @@ const SECRET_KEY = config.secretKey;
 const REFRESH_SECRET = config.refreshSecret;
 const CLIENT_ID = config.googleClientId;
 
-const createAccessToken = (userId) => jwt.sign({ userId: userId }, SECRET_KEY, { expiresIn: "5m" });
+const createAccessToken = (user) => jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: "1h" });
 const createRefreshToken = (userId) => jwt.sign({ userId: userId }, REFRESH_SECRET, { expiresIn: "30d" });
 
 const setRefreshTokenCookie = (res, userId) => {
@@ -107,7 +107,7 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
     await hydrateGoogleProfile(user, payload);
   }
 
-  const accessToken = createAccessToken(user._id);
+  const accessToken = createAccessToken(user);
   setRefreshTokenCookie(res, user._id);
 
   return {
@@ -163,7 +163,7 @@ module.exports = {
         throw new ValidationError('Incorrect email or password', { errors });
       }
 
-      const token = createAccessToken(user._id);
+      const token = createAccessToken(user);
       setRefreshTokenCookie(res, user._id);
 
       return {
@@ -240,7 +240,7 @@ module.exports = {
         throw err;
       }
 
-      const token = createAccessToken(res_._id);
+      const token = createAccessToken(res_);
       setRefreshTokenCookie(res, res_._id);
 
       return {
@@ -268,7 +268,7 @@ module.exports = {
         const user = await User.findById(payload.userId);
         if (!user) throw new AuthError('User not found');
 
-        const newAccessToken = createAccessToken(user._id);
+        const newAccessToken = createAccessToken(user);
         setRefreshTokenCookie(res, user._id);
 
         return {
