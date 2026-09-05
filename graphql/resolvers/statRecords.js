@@ -3,7 +3,6 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 const StatRecord = require('../../db/models/StatRecord');
 const League = require('../../db/models/League');
 const Game = require('../../db/models/Game');
-const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 
 module.exports = {

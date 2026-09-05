@@ -1,7 +1,7 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Post = require('../../db/models/Post');
-const authenticate = require('../../util/authenticate');
+const userResolvers = require('./users');
 
 module.exports = {
   Query: {
@@ -28,7 +28,8 @@ module.exports = {
   },
   Mutation: {
     async createPost(_, { body }, context) {
-      const user = authenticate(context);
+      userResolvers.requireAuth(context);
+      const user = context.user;
 
       if (body.trim() === "") {
         throw new Error("Post body must not be empty");
@@ -48,7 +49,8 @@ module.exports = {
       return post;
     },
     async deletePost(_, { postId }, context) {
-      const user = authenticate(context);
+      userResolvers.requireAuth(context);
+      const user = context.user;
 
       try {
         const post = await Post.findById(postId);
@@ -64,7 +66,8 @@ module.exports = {
       }
     },
     async likePost(_, { postId }, context) {
-      const { username } = authenticate(context);
+      userResolvers.requireAuth(context);
+      const { username } = context.user;
 
       const post = await Post.findById(postId);
       if (post) {

@@ -11,6 +11,7 @@ const express = require("express");
 
 // Load centralized configuration
 const config = require('../config');
+const rateLimit = require('express-rate-limit');
 
 const pubSub = new PubSub();
 
@@ -26,6 +27,19 @@ app.use(
   })
 );
 
+// Brute-force protection: only login-related mutations are throttled per-IP,
+// so unrelated GraphQL traffic on this shared /graphql endpoint isn't affected.
+const LOGIN_OPERATIONS = new Set(['login', 'loginUserWithGoogle']);
+const loginRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { errors: [{ message: 'Too many login attempts. Please try again later.' }] },
+  skip: (req) => !LOGIN_OPERATIONS.has(req.body?.operationName),
+});
+app.use('/graphql', loginRateLimiter);
+
 /**
  * Initialize and start the Apollo GraphQL server
  */
@@ -36,12 +50,26 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    formatError: (error) => {
-      // Log errors in development
-      if (config.isDevelopment) {
-        console.error('GraphQL Error:', error);
+    // Codes for errors thrown by resolver files that haven't been migrated to
+    // the custom error types in graphql/errors/AppError.js yet (they still use
+    // apollo-server's raw UserInputError/AuthenticationError/ForbiddenError,
+    // which don't set extensions.isClientSafe). Remove once fully migrated.
+    formatError: (formattedError, error) => {
+      // Always log the full original error server-side for tracing.
+      console.error('GraphQL Error:', error);
+
+      const LEGACY_SAFE_CODES = new Set(['BAD_USER_INPUT', 'UNAUTHENTICATED', 'FORBIDDEN']);
+      const code = formattedError.extensions?.code;
+      const isSafe = formattedError.extensions?.isClientSafe === true || LEGACY_SAFE_CODES.has(code);
+
+      if (isSafe) {
+        return formattedError;
       }
-      return error;
+
+      return {
+        message: 'Something went wrong. Please try again.',
+        extensions: { code: code || 'INTERNAL_SERVER_ERROR' },
+      };
     },
   });
 

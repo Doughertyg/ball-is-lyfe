@@ -5,7 +5,6 @@ const StatUnit = require('../../db/models/StatUnit');
 const Operation = require('../../db/models/Operation');
 const League = require('../../db/models/League');
 const Game = require('../../db/models/Game');
-const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 
 module.exports = {

@@ -3,66 +3,121 @@ const League = require('../../db/models/League');
 const Season = require('../../db/models/Season');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { UserInputError} = require('apollo-server');
 const { OAuth2Client } = require("google-auth-library");
 const {validateRegisterInput, validateLoginInput} = require('../../util/validators');
+const config = require('../../config');
+const { ValidationError, AuthError } = require('../errors/AppError');
 
-const SECRET_KEY = process.env.SECRET_KEY;
-const REFRESH_SECRET = process.env.REFRESH_SECRET;
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const SECRET_KEY = config.secretKey;
+const REFRESH_SECRET = config.refreshSecret;
+const CLIENT_ID = config.googleClientId;
 
-function generateToken(user) {
-  return jwt.sign({
-    id: user.id, 
-    email: user.email,
-    username: user.username
-  }, SECRET_KEY, { expiresIn: '1h'});
-}
-
-const createAccessToken = (userId) => jwt.sign({ userId: userId }, SECRET_KEY, { expiresIn: "5m" });
+const createAccessToken = (user) => jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: "1h" });
 const createRefreshToken = (userId) => jwt.sign({ userId: userId }, REFRESH_SECRET, { expiresIn: "30d" });
+
+const setRefreshTokenCookie = (res, userId) => {
+  const refreshToken = createRefreshToken(userId);
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: config.isProduction,
+    sameSite: config.isProduction ? 'None' : 'Lax',
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  });
+};
 
 const googleClient = new OAuth2Client({
   clientId: `${CLIENT_ID}`,
 });
 
+const normalizeEmail = (email = '') => email.trim().toLowerCase();
+
+const hydrateGoogleProfile = async (user, payload) => {
+  const googleProfilePicture = payload?.picture || user?.googleProfilePicture;
+
+  if (!user || !googleProfilePicture) {
+    return user;
+  }
+
+  const updates = {};
+
+  if (!user.googleProfilePicture) {
+    updates.googleProfilePicture = googleProfilePicture;
+  }
+
+  if (!user.profilePicture) {
+    updates.profilePicture = googleProfilePicture;
+  }
+
+  if (user.name == null && payload?.name) {
+    updates.name = payload.name;
+  }
+
+  if (Object.keys(updates).length > 0) {
+    Object.assign(user, updates);
+    await user.save();
+  }
+
+  return user;
+};
+
 const authenticateOrCreateUser = async (token, res, createUser = false) => {
   const ticket = await googleClient.verifyIdToken({
     idToken: token,
-    audient: `${process.env.GOOGLE_CLIENT_ID}`,
+    audience: CLIENT_ID,
   });
 
   const payload = ticket.getPayload();
-  let user = await User.findOne({ email: payload?.email });
+  const normalizedEmail = normalizeEmail(payload?.email);
+  let user = await User.findOne({ email: normalizedEmail });
+
   if (!user && createUser) {
-    user = await new User({
-      email: payload?.email,
+    user = new User({
+      email: normalizedEmail,
       profilePicture: payload?.picture,
+      googleProfilePicture: payload?.picture,
       name: payload?.name,
+      authType: 'google',
       createdAt: new Date().toISOString()
     });
 
-    await user.save();
+    try {
+      await user.save();
+    } catch (err) {
+      // Race with a concurrent registration for the same email.
+      if (err?.code === 11000) {
+        throw new ValidationError('An account with this email already exists. Please sign in instead.');
+      }
+      throw err;
+    }
   } else if (!user && !createUser) {
     return null;
   }
 
-  const accessToken = createAccessToken(user._id);
-  const refreshToken = createRefreshToken(user._id);
+  const currentAuthType = user?.authType || (user?.password ? 'email_password' : 'google');
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-  });
+  if (user && currentAuthType !== 'google') {
+    throw new ValidationError('This email is already linked to an email/password account. Please sign in with your email and password.');
+  }
+
+  if (user && !user.authType) {
+    user.authType = currentAuthType;
+  }
+
+  if (user && currentAuthType === 'google') {
+    await hydrateGoogleProfile(user, payload);
+  }
+
+  const accessToken = createAccessToken(user);
+  setRefreshTokenCookie(res, user._id);
 
   return {
     user: {
       ...user,
       ...user._doc,
-      name: payload.name,
-      profilePicture: payload.picture,
+      name: user.name || payload.name,
+      profilePicture: user.profilePicture || payload.picture,
+      googleProfilePicture: user.googleProfilePicture || payload.picture,
+      authType: user.authType || 'google',
       id: user._id,
     },
     token: accessToken
@@ -71,37 +126,50 @@ const authenticateOrCreateUser = async (token, res, createUser = false) => {
 
 const requireAuth = (context) => {
   if (!context.user) {
-    throw new AuthenticationError('You must be logged in');
+    throw new AuthError('You must be logged in');
   }
 }
 
 module.exports = {
   Mutation: {
-    async login (_, { username, password }) {
-      const { valid, errors } = validateLoginInput(username, password);
+    async login (_, { email, password }, { res }) {
+      const normalizedEmail = normalizeEmail(email);
+      const { valid, errors } = validateLoginInput(normalizedEmail, password);
 
       if(!valid) {
-        throw new UserInputError('Errors', { errors }); 
+        throw new ValidationError('Errors', { errors });
       }
 
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ email: normalizedEmail });
 
       if (!user) {
-        errors.general = 'User not found';
-        throw new UserInputError('User not found', { errors });
+        errors.general = 'No account found for that email.';
+        throw new ValidationError('No account found for that email.', { errors });
+      }
+
+      if (user.authType === 'google') {
+        errors.general = 'This email is linked to Google Sign-In. Please use Google to continue.';
+        throw new ValidationError('This email is linked to Google Sign-In. Please use Google to continue.', { errors });
+      }
+
+      if (!user.password) {
+        errors.general = 'This account does not use email/password sign-in.';
+        throw new ValidationError('This account does not use email/password sign-in.', { errors });
       }
 
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        errors.general = 'Wrong credentials';
-        throw new UserInputError('Wrong credentials', { errors });
+        errors.general = 'Incorrect email or password';
+        throw new ValidationError('Incorrect email or password', { errors });
       }
 
-      const token = generateToken(user);
+      const token = createAccessToken(user);
+      setRefreshTokenCookie(res, user._id);
 
       return {
         ...user._doc,
         id: user._id,
+        authType: user.authType || 'email_password',
         token
       };
     },
@@ -110,7 +178,7 @@ module.exports = {
         const response = await authenticateOrCreateUser(token, res, false);
 
         if (response == null) {
-          throw new UserInputError('User does not exist.');
+          throw new ValidationError('No account found for this Google email. Please register first.');
         }
 
         return response;
@@ -119,48 +187,73 @@ module.exports = {
         throw err;
       }
     },
-    async register(_parents, { registerInput: { username, email, password, confirmPassword }}) {
-      // todo: validate user data
+    async register(_parents, { registerInput: { username, email, password, confirmPassword }}, { res }) {
+      const normalizedEmail = normalizeEmail(email);
+      const normalizedUsername = username.trim();
       let inputErrors = {};
-      const { valid, errors} = validateRegisterInput(username, email, password, confirmPassword);
+      const { valid, errors} = validateRegisterInput(normalizedUsername, normalizedEmail, password, confirmPassword);
       if (!valid) {
         inputErrors = {...inputErrors, ...errors};
       }
-      // todo: make sure user doesn't already exist
-      const user = await User.findOne({
-        username
-      });
 
-      if (user) {
+      const emailTaken = await User.findOne({ email: normalizedEmail });
+      if (emailTaken) {
+        const existingAuthType = emailTaken.authType || (emailTaken.password ? 'email_password' : 'google');
+        if (existingAuthType === 'google') {
+          inputErrors = {...inputErrors, email: 'This email is already linked to a Google account. Please use Google Sign-In.'};
+        } else {
+          inputErrors = {...inputErrors, email: 'An account with this email already exists. Please sign in instead.'};
+        }
+      }
+
+      const usernameTaken = await User.findOne({ username: normalizedUsername });
+      if (usernameTaken) {
         inputErrors = {...inputErrors, username: 'This username is taken'};
       }
 
-      if (user || !valid) {
-        throw new UserInputError('Errors registering a new user!', {errors: inputErrors});
+      if (!valid || Object.keys(inputErrors).length > 0) {
+        throw new ValidationError('Errors registering a new user!', {errors: inputErrors});
       }
 
       password = await bcrypt.hash(password, 12);
 
       const newUser = new User({
-        email,
-        username,
+        email: normalizedEmail,
+        username: normalizedUsername,
         password,
+        authType: 'email_password',
         createdAt: new Date().toISOString()
       });
 
-      const res = await newUser.save();
+      let res_;
+      try {
+        res_ = await newUser.save();
+      } catch (err) {
+        // Race with a concurrent registration slipping past the findOne checks above -
+        // the unique index on email/username is the real source of truth.
+        if (err?.code === 11000) {
+          const duplicateField = Object.keys(err.keyPattern || {})[0] || 'email';
+          throw new ValidationError('Errors registering a new user!', {
+            errors: { [duplicateField]: `This ${duplicateField} is already taken.` }
+          });
+        }
+        throw err;
+      }
 
-      const token = generateToken(res);
+      const token = createAccessToken(res_);
+      setRefreshTokenCookie(res, res_._id);
 
       return {
-        ...res._doc,
-        id: res._id,
+        ...res_._doc,
+        id: res_._id,
+        authType: res_.authType,
         token
       }
     },
     async registerUserWithGoogle(_, { token }, { res }) {
       try {
-        return await authenticateOrCreateUser(token, res, true);
+        const response = await authenticateOrCreateUser(token, res, true);
+        return response;
       } catch (err) {
         console.error('Error registering new user with Google');
         throw err;
@@ -168,22 +261,15 @@ module.exports = {
     },
     async refreshToken(_, __, { req, res }) {
       const token = req.cookies.refreshToken;
-      if (!token) throw new Error('Missing refresh token');
+      if (!token) throw new AuthError('Missing refresh token');
 
       try {
         const payload = jwt.verify(token, REFRESH_SECRET);
         const user = await User.findById(payload.userId);
-        if (!user) throw new Error('User not found');
+        if (!user) throw new AuthError('User not found');
 
-        const newAccessToken = createAccessToken(user._id);
-        const newRefreshToken = createRefreshToken(user._id);
-
-        res.cookie('refreshToken', newRefreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-        });
+        const newAccessToken = createAccessToken(user);
+        setRefreshTokenCookie(res, user._id);
 
         return {
           token: newAccessToken,
@@ -191,14 +277,14 @@ module.exports = {
         };
       } catch (err) {
         console.log('Error refreshing access token: ', err);
-        throw new Error('Error refreshing access token: ', err.message ?? 'Missing or invalid refresh token');
+        throw new AuthError('Missing or invalid refresh token');
       }
     },
     logout: async (_, __, { res }) => {
       res.clearCookie('refreshToken', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        secure: config.isProduction,
+        sameSite: config.isProduction ? 'None' : 'Lax',
       });
       return true;
     }

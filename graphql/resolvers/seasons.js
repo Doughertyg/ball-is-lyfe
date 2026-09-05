@@ -4,7 +4,6 @@ const Season = require('../../db/models/Season');
 const League = require('../../db/models/League');
 const Stat = require('../../db/models/Stat');
 const Game = require('../../db/models/Game');
-const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 const dayjs = require('dayjs');
 

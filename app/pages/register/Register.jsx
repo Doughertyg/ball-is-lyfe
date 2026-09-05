@@ -12,6 +12,8 @@ import {ButtonContainer, Divider, FlexContainer, PageHeader, SectionHeadingText}
 import {CardWrapper, CardContentWrapper, CardBody} from '../../styled-components/card';
 import {Button, ErrorList, ErrorListItem, ErrorListWrapper, InputError} from '../../styled-components/interactive';
 import LoadingSpinnerBack from '../../components/LoadingSpinnerBack.jsx';
+import { logAndExtractErrors } from '../../util/errorHandling';
+import { PASSWORD_REQUIREMENTS_MESSAGE, meetsPasswordRequirements } from '../../../util/validators';
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
@@ -23,6 +25,13 @@ const CenteredContainer = styled.div`
 
 const ErrorWrapper = styled.div`
   margin-top: 8px;
+`;
+
+const HintText = styled.p`
+  color: #6b7280;
+  font-size: 12px;
+  margin: 4px 0 0;
+  text-align: left;
 `;
 
 const REGISTER_USER = gql`
@@ -67,7 +76,7 @@ const REGISTER_GOOGLE_USER = gql`
   }
 `;
 
-function Register({ oldRegisterFlow }) {
+function Register({ oldRegisterFlow = true }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -75,6 +84,7 @@ function Register({ oldRegisterFlow }) {
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const { login } = useContext(AuthContext);
+  const showLegacyRegister = oldRegisterFlow !== false;
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     onCompleted: (res) => {
@@ -82,8 +92,7 @@ function Register({ oldRegisterFlow }) {
       history.push('/');
     },
     onError: (err) => {
-      console.log('err: ', err.graphQLErrors);
-      setErrors({...errors, ...err.graphQLErrors[0]?.extensions.exception.errors})
+      setErrors({...errors, ...logAndExtractErrors(err)})
     },
     update(proxy, { data: { register: userData }}) {
       console.log('results: ', userData);
@@ -103,8 +112,7 @@ function Register({ oldRegisterFlow }) {
       history.push('/');
     },
     onError: (err) => {
-      console.log('error registering new user. err: ', err);
-      setErrors({...errors, ...{err: err.message ?? 'Error registering new user, please try again.'}});
+      setErrors({...errors, ...logAndExtractErrors(err)});
     },
     update(proxy, { data: { registerUser: userData }}) {
       login(userData);
@@ -123,6 +131,8 @@ function Register({ oldRegisterFlow }) {
 
     if (password === '') {
       formErrors.password = 'Must type a password';
+    } else if (!meetsPasswordRequirements(password)) {
+      formErrors.password = PASSWORD_REQUIREMENTS_MESSAGE;
     }
 
     if (confirmPassword === '') {
@@ -154,9 +164,26 @@ function Register({ oldRegisterFlow }) {
   }
 
   const onGoogleAuthError = (err) => {
-    const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-    setErrors({...errors, ...graphQLErrors});
+    setErrors({...errors, ...logAndExtractErrors(err)});
   }
+
+  // Field-level errors render inline under their input; clear them as soon as
+  // the user edits that field so corrections don't leave a stale message.
+  const clearFieldError = (field) => {
+    setErrors(errors => {
+      if (!errors[field]) return errors;
+      const { [field]: _removed, ...rest } = errors;
+      return rest;
+    });
+  };
+
+  const handleUsernameChange = (value) => { setUsername(value); clearFieldError('username'); };
+  const handleEmailChange = (value) => { setEmail(value); clearFieldError('email'); };
+  const handlePasswordChange = (value) => { setPassword(value); clearFieldError('password'); };
+  const handleConfirmPasswordChange = (value) => { setConfirmPassword(value); clearFieldError('confirmPassword'); };
+
+  const FIELD_ERROR_KEYS = ['username', 'email', 'password', 'confirmPassword'];
+  const generalErrors = Object.entries(errors ?? {}).filter(([key]) => !FIELD_ERROR_KEYS.includes(key));
   
   return (
     <CenteredContainer>
@@ -178,7 +205,7 @@ function Register({ oldRegisterFlow }) {
             />
           </>
         )}
-        {oldRegisterFlow && (
+        {showLegacyRegister && (
           <CardWrapper>
             <CardContentWrapper>
               <CardBody>
@@ -188,7 +215,7 @@ function Register({ oldRegisterFlow }) {
                   errors={errors.username}
                   disabled={loading}
                   name="username"
-                  onChange={setUsername}
+                  onChange={handleUsernameChange}
                   placeholder="Type a username..."
                   value={username}
                 />
@@ -199,7 +226,7 @@ function Register({ oldRegisterFlow }) {
                   errors={errors.email}
                   disabled={loading}
                   name="email"
-                  onChange={setEmail}
+                  onChange={handleEmailChange}
                   placeholder="Email..."
                   value={email}
                 />
@@ -210,17 +237,18 @@ function Register({ oldRegisterFlow }) {
                   errors={errors.password}
                   disabled={loading}
                   name="password"
-                  onChange={setPassword}
+                  onChange={handlePasswordChange}
                   placeholder="Password..."
                   value={password}
                 />
+                {!errors.password && <HintText>{PASSWORD_REQUIREMENTS_MESSAGE}</HintText>}
                 <SectionHeadingText marginTop="20px">Confirm Password</SectionHeadingText>
                 <InputField 
                   type="password"
                   errors={errors.confirmPassword}
                   disabled={loading}
                   name="confirm-password"
-                  onChange={setConfirmPassword}
+                  onChange={handleConfirmPasswordChange}
                   placeholder="Retype your password..."
                   value={confirmPassword}
                 />
@@ -235,13 +263,13 @@ function Register({ oldRegisterFlow }) {
             </CardContentWrapper>
           </CardWrapper>
         )}
-        {errors != null && Object.keys(errors).length > 0 && 
+        {errors != null && generalErrors.length > 0 && 
           (
             <ErrorWrapper>
               <FlexContainer>
                 <ErrorListWrapper>
                   <ErrorList>
-                    {Object.values(errors).map(error => (<li>{error}</li>))}
+                    {generalErrors.map(([key, error]) => (<li key={key}>{error}</li>))}
                   </ErrorList>
                 </ErrorListWrapper>
               </FlexContainer>
