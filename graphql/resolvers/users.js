@@ -132,7 +132,7 @@ const requireAuth = (context) => {
 
 module.exports = {
   Mutation: {
-    async login (_, { email, password }) {
+    async login (_, { email, password }, { res }) {
       const normalizedEmail = normalizeEmail(email);
       const { valid, errors } = validateLoginInput(normalizedEmail, password);
 
@@ -187,7 +187,7 @@ module.exports = {
         throw err;
       }
     },
-    async register(_parents, { registerInput: { username, email, password, confirmPassword }}) {
+    async register(_parents, { registerInput: { username, email, password, confirmPassword }}, { res }) {
       const normalizedEmail = normalizeEmail(email);
       const normalizedUsername = username.trim();
       let inputErrors = {};
@@ -244,9 +244,9 @@ module.exports = {
       setRefreshTokenCookie(res, res_._id);
 
       return {
-        ...res._doc,
-        id: res._id,
-        authType: res.authType,
+        ...res_._doc,
+        id: res_._id,
+        authType: res_.authType,
         token
       }
     },
