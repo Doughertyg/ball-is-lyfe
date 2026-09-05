@@ -137,30 +137,30 @@ module.exports = {
       const { valid, errors } = validateLoginInput(normalizedEmail, password);
 
       if(!valid) {
-        throw new UserInputError('Errors', { errors });
+        throw new ValidationError('Errors', { errors });
       }
 
       const user = await User.findOne({ email: normalizedEmail });
 
       if (!user) {
         errors.general = 'No account found for that email.';
-        throw new UserInputError('No account found for that email.', { errors });
+        throw new ValidationError('No account found for that email.', { errors });
       }
 
       if (user.authType === 'google') {
         errors.general = 'This email is linked to Google Sign-In. Please use Google to continue.';
-        throw new UserInputError('This email is linked to Google Sign-In. Please use Google to continue.', { errors });
+        throw new ValidationError('This email is linked to Google Sign-In. Please use Google to continue.', { errors });
       }
 
       if (!user.password) {
         errors.general = 'This account does not use email/password sign-in.';
-        throw new UserInputError('This account does not use email/password sign-in.', { errors });
+        throw new ValidationError('This account does not use email/password sign-in.', { errors });
       }
 
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         errors.general = 'Incorrect email or password';
-        throw new UserInputError('Incorrect email or password', { errors });
+        throw new ValidationError('Incorrect email or password', { errors });
       }
 
       const token = createAccessToken(user);
@@ -212,7 +212,7 @@ module.exports = {
       }
 
       if (!valid || Object.keys(inputErrors).length > 0) {
-        throw new UserInputError('Errors registering a new user!', {errors: inputErrors});
+        throw new ValidationError('Errors registering a new user!', {errors: inputErrors});
       }
 
       password = await bcrypt.hash(password, 12);
