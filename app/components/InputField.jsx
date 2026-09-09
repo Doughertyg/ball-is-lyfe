@@ -39,11 +39,11 @@ function InputField({
             onKeyDown={onKeyDown}
             placeholder={placeholder ? placeholder : name ? `Type a ${name}...` : ''}
             value={value}
-            style={{ width, height, margin, borderRadius: borderRadius ?? 16, maxWidth: '400px' }}
+            style={{ width, height, margin, borderRadius: borderRadius ?? 32, maxWidth: '400px' }}
             className={`box-border max-w-full min-w-0 flex-1 border bg-slate-50 px-3 py-3 text-sm text-slate-800 shadow-sm transition-all duration-200 placeholder:text-slate-400 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 ${
               errors != null
-                ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100'
-                : 'border-slate-200 focus:border-sky-400 focus:bg-white focus:ring-sky-100'
+                ? 'border-red-300 bg-red-50 hover:border-red-400 hover:bg-red-50 focus:border-red-400 focus:ring-red-100'
+                : 'border-slate-200 hover:border-slate-400 hover:bg-white focus:border-sky-400 focus:bg-white focus:ring-sky-100'
             } ${!width ? 'w-full' : ''} ${!height ? 'h-auto' : ''}`}
           />
           {loading && <div className="ml-2"><LoadingSpinnerSpin /></div>}
