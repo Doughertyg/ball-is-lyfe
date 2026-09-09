@@ -250,6 +250,7 @@ module.exports = gql`
     username: String
     authType: String!
     createdAt: String!
+    token: String
   }
   type CreateTeamMutationReturnType {
     team: Team,

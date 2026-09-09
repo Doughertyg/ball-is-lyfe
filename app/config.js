@@ -10,6 +10,7 @@
 
 // Determine GraphQL endpoint based on environment
 function getGraphQLEndpoint() {
+  console.log('GRAMBO: what is the env?: ', process.env.GRAPHQL_ADDRESS)
   // Each Netlify site supplies its own public API endpoint at build time.
   return process.env.GRAPHQL_ADDRESS || 'http://localhost:3000/graphql';
 }
@@ -18,6 +19,8 @@ const clientConfig = {
   // Environment
   environment: process.env.NODE_ENV || 'development',
   isDevelopment: (process.env.NODE_ENV || 'development') === 'development',
+  isLocal: process.env.NODE_ENV === 'local',
+  isProduction: process.env.NODE_ENV === 'production',
 
   // GraphQL Configuration
   graphqlUri: getGraphQLEndpoint(),
@@ -28,7 +31,7 @@ const clientConfig = {
 
 // Log config in development
 if (clientConfig.isDevelopment) {
-  console.log('🔧 Frontend Config:', {
+  console.log('🔧 Frontend Config GRAMBOO:', {
     environment: clientConfig.environment,
     graphqlUri: clientConfig.graphqlUri,
   });
