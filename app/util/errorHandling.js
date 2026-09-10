@@ -13,7 +13,7 @@ import clientConfig from '../config';
 export function logAndExtractErrors(err, fallbackKey = 'general') {
   // Avoid leaking error/stack details into the browser console in production;
   // TODO: swap for a real logging service (e.g. Sentry) when one is added.
-  if (clientConfig.isDevelopment) {
+  if (!clientConfig.isProduction) {
     console.error(err);
   }
 

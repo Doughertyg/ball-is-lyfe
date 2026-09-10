@@ -92,15 +92,10 @@ module.exports = (env, argv) => {
         allowEmptyValues: true,
         safe: !isProduction, // Use .env.example in non-production
       }),
-      // Define global variables for the frontend
+      // NODE_ENV drives webpack's own build mode, so define it explicitly
+      // here rather than relying on the .env file (which may not set it).
       new webpack.DefinePlugin({
         "process.env.NODE_ENV": JSON.stringify(nodeEnv),
-        "process.env.GRAPHQL_ADDRESS": JSON.stringify(
-          process.env.GRAPHQL_ADDRESS || "http://localhost:3000/graphql"
-        ),
-        "process.env.GOOGLE_CLIENT_ID": JSON.stringify(
-          process.env.GOOGLE_CLIENT_ID || ""
-        ),
       }),
     ],
     devServer: {
