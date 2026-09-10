@@ -31,7 +31,7 @@ const clientConfig = {
 
 // Log config in development
 if (clientConfig.isDevelopment) {
-  console.log('🔧 Frontend Config GRAMBOO:', {
+  console.log('🔧 Frontend Config:', {
     environment: clientConfig.environment,
     graphqlUri: clientConfig.graphqlUri,
   });
