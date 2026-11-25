@@ -1,57 +1,46 @@
-import React, { useContext, useEffect, useMemo } from 'react';
-import { useState } from 'react';
-import { NavLink, useRouteMatch, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import { AuthContext } from '../context/auth';
 import Navbar from './Navbar.jsx';
-import {ButtonContainer, FlexContainer, ProfilePictureThumb} from '../styled-components/common';
 
-const Wrapper = styled.div`
-  border-bottom: 1px solid lightgrey;
-`;
-
-const FlexComponent = styled.div`
-  flex-grow: 1;
-`;
-
-const Offset = styled.div`
-  width: 72px;
-`;
-
-function MenuBar({ match }) {
-  const path = useLocation()?.pathname;
-  const [ active, setActive ] = useState(path === '/' ? 'home' : path.split('/')[1]);
+function MenuBar() {
+  const path = useLocation()?.pathname || '/';
   const { user, logout } = useContext(AuthContext);
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
-    const onResize = () => {
-      setInnerWidth(window.innerWidth);
-    }
-
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
+  const authLink = path === '/register'
+    ? { to: '/login', label: 'LOGIN' }
+    : path === '/login'
+      ? { to: '/register', label: 'REGISTER' }
+      : null;
 
   return (
     <div className='shadow-lg z-10 h-16 shrink-0 w-full flex items-center justify-between px-1'>
       <NavLink className='flex items-center mx-3' to={user ? '/home' : '/'}>
         <span className='text-indigo-500 font-extrabold font-sans text-5xl tracking-wide italic'>RLN</span>
       </NavLink>
-      {user ?
-        (
-          <Navbar user={user} logoutCallback={logout} />
-        ) : (
-          <div className='text-slate-700 flex items-center px-1 h-full font-bold font-sans px-3 hover:text-indigo-500'>
-            <NavLink  onClick={() => setActive('login')} exact to="/login">
-              Login
+      {user ? (
+        <Navbar user={user} logoutCallback={logout} />
+      ) : (
+        <div className='flex items-center h-full px-3 gap-4 font-bold font-sans text-slate-700'>
+          {authLink ? (
+            <NavLink className='hover:text-indigo-500 uppercase' exact to={authLink.to}>
+              {authLink.label}
             </NavLink>
-          </div>
-        )
-      }
+          ) : (
+            <>
+              <NavLink className='hover:text-indigo-500' exact to='/login'>
+                Login
+              </NavLink>
+              <NavLink className='hover:text-indigo-500' exact to='/register'>
+                Register
+              </NavLink>
+            </>
+          )}
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
 export default MenuBar;

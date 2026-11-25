@@ -4,25 +4,14 @@ const http = require("http");
 const jwt = require("jsonwebtoken");
 const { PubSub } = require('graphql-subscriptions');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const express = require("express");
 
-const ENV = process.env.NODE_ENV || 'development';
-
-if (ENV !== 'production') {
-  // if we are in dev mode, put .env vars into process
-  dotenv.config();
-}
-
-const PORT = process.env.PORT || 3000;
-const MONGODB = process.env.MONGODB || '';
-const ORIGIN = process.env.ORIGIN || 'http://localhost:3000';
-
-const resolvers = require('../graphql/resolvers');
-const typeDefs = require('../graphql/typeDefs');
+// Load centralized configuration
+const config = require('../config');
+const rateLimit = require('express-rate-limit');
 
 const pubSub = new PubSub();
 
@@ -30,21 +19,63 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
+// CORS Configuration
 app.use(
   cors({
-    origin: ORIGIN,
+    origin: config.origin,
     credentials: true,
   })
 );
 
+// Brute-force protection: only login-related mutations are throttled per-IP,
+// so unrelated GraphQL traffic on this shared /graphql endpoint isn't affected.
+const LOGIN_OPERATIONS = new Set(['login', 'loginUserWithGoogle']);
+const loginRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { errors: [{ message: 'Too many login attempts. Please try again later.' }] },
+  skip: (req) => !LOGIN_OPERATIONS.has(req.body?.operationName),
+});
+app.use('/graphql', loginRateLimiter);
+
+/**
+ * Initialize and start the Apollo GraphQL server
+ */
 const startServer = async () => {
+  const resolvers = require('../graphql/resolvers');
+  const typeDefs = require('../graphql/typeDefs');
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    // Codes for errors thrown by resolver files that haven't been migrated to
+    // the custom error types in graphql/errors/AppError.js yet (they still use
+    // apollo-server's raw UserInputError/AuthenticationError/ForbiddenError,
+    // which don't set extensions.isClientSafe). Remove once fully migrated.
+    formatError: (formattedError, error) => {
+      // Always log the full original error server-side for tracing.
+      console.error('GraphQL Error:', error);
+
+      const LEGACY_SAFE_CODES = new Set(['BAD_USER_INPUT', 'UNAUTHENTICATED', 'FORBIDDEN']);
+      const code = formattedError.extensions?.code;
+      const isSafe = formattedError.extensions?.isClientSafe === true || LEGACY_SAFE_CODES.has(code);
+
+      if (isSafe) {
+        return formattedError;
+      }
+
+      return {
+        message: 'Something went wrong. Please try again.',
+        extensions: { code: code || 'INTERNAL_SERVER_ERROR' },
+      };
+    },
   });
 
   await server.start();
 
+  // GraphQL endpoint
   app.use(
     "/graphql",
     expressMiddleware(server, {
@@ -55,9 +86,11 @@ const startServer = async () => {
         if (authHeader) {
           try {
             const token = authHeader.split(" ")[1];
-            user = jwt.verify(token, process.env.SECRET_KEY);
+            user = jwt.verify(token, config.secretKey);
           } catch (_err) {
-            console.log('No token attached to request or token invalid');
+            if (config.isDevelopment) {
+              console.log('No token attached to request or token invalid');
+            }
           }
         }
   
@@ -66,25 +99,45 @@ const startServer = async () => {
     })
   );
 
+  // Serve static files (built React app)
   const distPath = path.join(__dirname, "../public");
   app.use(express.static(distPath));
 
+  // Fallback to index.html for all other routes (SPA routing)
   app.get("*", (req, res) => {
     res.sendFile(path.join(distPath, "index.html"));
   });
 
   const httpServer = http.createServer(app);
 
-  mongoose
-    .connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-      return httpServer.listen(PORT, () => {
-        console.log(`🚀 Server running at ${process.env.GRAPHQL_ADDRESS ?? 'http://localhost'}:${PORT}/graphql`);
-      });
-    })
-    .catch((err) => {
-      console.log('error connecting to the db! err: ', err);
+  // Connect to MongoDB and start listening
+  try {
+    await mongoose.connect(config.mongodb, { 
+      useNewUrlParser: true, 
+      useUnifiedTopology: true 
     });
+    
+    console.log('✅ Connected to MongoDB');
+
+    await new Promise((resolve) => {
+      httpServer.listen(config.port, () => {
+        console.log(
+          `🚀 Server running!\n` +
+          `   GraphQL: ${config.graphqlAddress}\n` +
+          `   Environment: ${config.env}\n` +
+          `   Port: ${config.port}`
+        );
+        resolve();
+      });
+    });
+  } catch (err) {
+    console.error('❌ Error connecting to MongoDB:', err.message);
+    process.exit(1);
+  }
 };
 
-startServer();
+// Start the server
+startServer().catch((err) => {
+  console.error('❌ Failed to start server:', err);
+  process.exit(1);
+});

@@ -3,7 +3,6 @@ const Season = require('../../db/models/Season');
 
 const Team = require('../../db/models/Team');
 const TeamInstance = require('../../db/models/TeamInstance');
-const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 
 const dedupePlayers = (playerIDs) => {

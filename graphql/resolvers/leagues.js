@@ -1,7 +1,6 @@
 const { AuthenticationError, ForbiddenError } = require('apollo-server');
 
 const League = require('../../db/models/League');
-const authenticate = require('../../util/authenticate');
 const userResolvers = require('./users');
 
 module.exports = {

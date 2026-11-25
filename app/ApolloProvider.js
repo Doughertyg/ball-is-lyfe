@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
 import App from './App.jsx';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
-
 import { setContext } from 'apollo-link-context';
 import { AuthProvider, AuthContext } from './context/auth';
+import clientConfig from './config';
 
-const GRAPHQL_ADDRESS = process.env.GRAPHQL_ADDRESS;
-const URI = process.env.NODE_ENV == 'development' ?
-  'http://localhost:3000/graphql' :
-  GRAPHQL_ADDRESS;
+const URI = clientConfig.graphqlUri;
 
 const httpLink = createHttpLink({
   uri: URI,

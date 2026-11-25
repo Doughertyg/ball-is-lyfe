@@ -2,12 +2,13 @@ const { UserInputError, AuthenticationError } = require('apollo-server');
 const { PossibleTypeExtensionsRule } = require('graphql');
 
 const Post = require('../../db/models/Post');
-const authenticate = require('../../util/authenticate');
+const userResolvers = require('./users');
 
 module.exports = {
   Mutation: {
     createComment: async (_, { postId, body }, context) => {
-      const { username } = authenticate(context);
+      userResolvers.requireAuth(context);
+      const { username } = context.user;
 
       if (body.trim() === "") {
         throw new UserInputError('Empty Comment', {
@@ -33,7 +34,8 @@ module.exports = {
       }
     },
     async deleteComment(_, { postId, commentId}, context) {
-      const { username } = authenticate(context);
+      userResolvers.requireAuth(context);
+      const { username } = context.user;
 
       const post = await Post.findById(postId);
 

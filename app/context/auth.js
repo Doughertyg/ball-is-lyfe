@@ -1,6 +1,8 @@
 import React, {createContext, useState, useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
 import { LOGIN_WITH_GOOGLE_MUTATION, LOGOUT_MUTATION, REFRESH_TOKEN_MUTATION } from '../../graphql/mutations/userMutations';
+import clientConfig from '../config';
+import { logAndExtractErrors } from '../util/errorHandling';
 
 const AuthContext = createContext({
   user: null,
@@ -22,9 +24,38 @@ const isTokenExpired = (token) => {
   }
 };
 
-const ENDPOINT = process.env.NODE_ENV != 'production' ?
-  '/graphql' : 
-  `${process.env.GRAPHQL_ADDRESS}/graphql`;
+const ENDPOINT = clientConfig.graphqlUri;
+
+const postGraphQL = async (query) => {
+  const response = await fetch(ENDPOINT, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query })
+  });
+  const contentType = response.headers.get('content-type') || '';
+  const responseText = await response.text();
+  let json;
+
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      `GraphQL endpoint returned HTML instead of JSON (HTTP ${response.status}). ` +
+      `Check GRAPHQL_ADDRESS: ${ENDPOINT}`
+    );
+  }
+
+  try {
+    json = JSON.parse(responseText);
+  } catch (_err) {
+    throw new Error(`GraphQL endpoint returned invalid JSON (HTTP ${response.status})`);
+  }
+
+  if (!response.ok || json.errors?.length) {
+    throw new Error(json.errors?.[0]?.message || `GraphQL request failed (HTTP ${response.status})`);
+  }
+
+  return json;
+};
 
 /**
  * 
@@ -39,23 +70,34 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const login = useCallback(async (googleToken) => {
+  const login = useCallback(async (payload) => {
     setLoading(true);
 
     try {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: LOGIN_WITH_GOOGLE_MUTATION(googleToken) })
-      });
+      const isGoogleLogin = typeof payload === 'string';
 
-      const json = await res.json();
-      const token = json?.data?.loginUserWithGoogle?.token;
-      const user = json?.data?.loginUserWithGoogle?.user;
+      if (isGoogleLogin) {
+        const json = await postGraphQL(LOGIN_WITH_GOOGLE_MUTATION(payload));
+        const token = json?.data?.loginUserWithGoogle?.token;
+        const user = json?.data?.loginUserWithGoogle?.user;
+
+        if (!token) {
+          console.error('Login failed: No token received');
+          throw new Error('Login failed: No token received');
+        }
+
+        setAccessToken(token);
+        setUser(user);
+        return {
+          token,
+          user
+        }
+      }
+
+      const token = payload?.token;
+      const user = payload?.user ?? payload;
 
       if (!token) {
-        console.error('Login failed: No token received');
         throw new Error('Login failed: No token received');
       }
 
@@ -66,26 +108,19 @@ function AuthProvider({ children }) {
         user
       }
     } catch (err) {
-      console.log('Error in the onGoogleAuthError callback: ', err);
-      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-      setErrors(errors => ({...errors, ...graphQLErrors}));
+      setErrors(errors => ({...errors, ...logAndExtractErrors(err)}));
       setAccessToken(null);
       setUser(null);
       throw err;
     } finally {
       setLoading(false);
-    }    
+    }
   }, [setErrors, setUser, setAccessToken]);
 
   const logout = useCallback(async () => {
     try {
       setLoading(true);
-      await fetch(ENDPOINT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: LOGOUT_MUTATION })
-      });
+      await postGraphQL(LOGOUT_MUTATION);
     } catch (err) {
       console.log('Error calling logout mutation: ', err);
     } finally {
@@ -99,13 +134,7 @@ function AuthProvider({ children }) {
     setLoading(true);
 
     try {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: REFRESH_TOKEN_MUTATION })
-      });
-      const json = await res.json();
+      const json = await postGraphQL(REFRESH_TOKEN_MUTATION);
       const token = json?.data?.refreshToken?.token;
       const user = json?.data?.refreshToken?.user;
 
@@ -121,9 +150,7 @@ function AuthProvider({ children }) {
         user
       }
     } catch (err) {
-      console.error('Token refresh failed:', err);
-      const graphQLErrors = err.message ? {err: err.message} : err?.graphQLErrors[0]?.extensions?.exception?.errors ?? {'graphQLError': 'Server error has ocurred, please try again'};
-      setErrors(errors => ({...errors, ...graphQLErrors}));
+      setErrors(errors => ({...errors, ...logAndExtractErrors(err)}));
       setAccessToken(null);
       setUser(null);
       throw err;
